@@ -1,5 +1,6 @@
 0.1.0 2000-11-12 const
-   Initial release
+   Initial CVS release
 0.?.?
-   - A suite runner was updated.
-   - "-once" argument was added to goal runner
+   - A suite runner was updated. Temporary files created by suite 
+     were removed from cvs.
+   - "-once" argument was added to goal runner.
