@@ -24,6 +24,13 @@ import java.util.*;
 import gnu.prolog.database.PrologTextLoaderError;
 public class GoalRunner
 {
+  private static void usage()
+  {
+    System.out.println("usage: java gnu.prolog.test.GoalRunner [-once] <text to load> <goal to run>");
+    System.out.println("example: java gnu.prolog.test.GoalRunner append.pro append([a,b],[c,d],R)");
+    System.exit(-1);
+  }
+
   public static void main (String args[]) 
   {
     try
@@ -31,11 +38,27 @@ public class GoalRunner
       System.out.println("GNU Prolog for Java Goal runner (c) Constantine Plotnikov, 1997-1999.");
       if (args.length < 2)
       {
-        System.out.println("usage: java gnu.prolog.test.GoalRunner <text to load> <goal to run>");
-        System.out.println("example: java gnu.prolog.test.GoalRunner append.pro append([a,b],[c,d],R)");
+        usage();
       }
-      String textToLoad = args[0];
-      String goalToRun = args[1];
+      boolean once;
+      String textToLoad;
+      String goalToRun;
+      if("-once".equals(args[0]))
+      {
+        if (args.length < 3)
+        {
+          usage();
+        }
+        once = true;
+        textToLoad = args[1];
+        goalToRun = args[2];
+      }
+      else
+      {
+        once = false;
+        textToLoad = args[0];
+        goalToRun = args[1];
+      }
       Environment env = new Environment();
       env.ensureLoaded(AtomTerm.get(textToLoad));
       Interpreter interpreter = env.createInterpreter();
@@ -85,17 +108,22 @@ public class GoalRunner
               out.print("; ");
             }
             out.println();
+            if(once)
+            {
+              out.print("SUCCESS. redo suppressed by command line option \"-once\"");
+              return;
+            }
             out.print("SUCCESS. redo (y/n/a)?");
             out.flush();
             response = kin.readLine();
   
-            if (response.equals("a"))
+            if ("a".equals(response))
             {
               interpreter.stop(goal);
               goal = interpreter.prepareGoal(goalTerm);
             }
   
-            if (response.equals("n"))
+            if ("n".equals(response))
             {
               return;
             }
