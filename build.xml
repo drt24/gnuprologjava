@@ -47,7 +47,7 @@
     </zip> 
   </target>
 
-  <target name="copy_src" depends="jar,javadoc">
+  <target name="copy_src" depends="jar">
     <delete dir="${package.dir}"/>
     <copy todir="${package.dir}/src"> 
       <fileset dir="${src.dir}"/>
@@ -57,10 +57,11 @@
     </copy>
     <copy file="${manifest}" todir="${package.dir}"/>
     <copy file="${basedir}/build.xml" todir="${package.dir}"/>
+    <copy file="${basedir}/changes.txt" todir="${package.dir}"/>
     <copy file="${basedir}/package-list" todir="${package.dir}"/>
   </target>
 
-  <target name="copy_complete" depends="src_zip">
+  <target name="copy_complete" depends="src_zip,javadoc">
     <copy todir="${package.dir}/docs/api">
       <fileset dir="${build.dir}/api"/>
     </copy>
