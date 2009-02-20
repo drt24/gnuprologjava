@@ -87,6 +87,12 @@ public class Environment implements PredicateListener
     setPrologFlag(doubleQuotesAtom, codesAtom, true);
     initStreams();
   }
+  
+  /** true if the environment was already initialized */
+  public boolean isInitialized()
+  {
+    return initalizationRun;
+  }
 
   /** get get copy of current state of flags for this environemnt */
   public synchronized Map getPrologFlags()
@@ -216,6 +222,11 @@ public class Environment implements PredicateListener
   public List getLoadingErrors()
   {
     return prologTextLoaderState.getErrors();
+  }
+  
+  protected PrologTextLoaderState getPrologTextLoaderState() 
+  {
+    return prologTextLoaderState;
   }
 
   /** ensure that prolog text designated by term is loaded */

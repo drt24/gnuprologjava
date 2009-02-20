@@ -69,10 +69,15 @@ public class PrologTextLoader
   CompoundTermTag url1Tag = CompoundTermTag.get("url",1);
   CompoundTermTag resource1Tag = CompoundTermTag.get("resource",1);
   CompoundTermTag file1Tag = CompoundTermTag.get("file",1);
+  
+  protected PrologTextLoader(PrologTextLoaderState prologTextLoaderState)
+  {
+    this.prologTextLoaderState = prologTextLoaderState;
+  }
 
   public PrologTextLoader(PrologTextLoaderState prologTextLoaderState, Term root)
   {
-    this.prologTextLoaderState = prologTextLoaderState;
+    this(prologTextLoaderState);
     this.rootFile = prologTextLoaderState.getInputName(root);
     currentFile = rootFile;
     try
