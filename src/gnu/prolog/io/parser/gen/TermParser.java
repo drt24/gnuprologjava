@@ -182,7 +182,7 @@ public final class TermParser implements TermParserConstants {
 
   void skipToDot() throws ParseException {
   Token tok = getToken(0);
-  while (tok.kind != END_TOKEN) {
+  while (tok.kind != END_TOKEN && tok.kind != EOF) {
     tok = getNextToken();
   }
   }

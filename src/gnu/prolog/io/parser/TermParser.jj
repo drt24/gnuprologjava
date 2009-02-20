@@ -202,7 +202,7 @@ Term readTerm(ReadOptions options):
 JAVACODE void skipToDot()
 {
   Token tok = getToken(0);
-  while (tok.kind != END_TOKEN) {
+  while (tok.kind != END_TOKEN && tok.kind != EOF) {
     tok = getNextToken();
   }
 }
