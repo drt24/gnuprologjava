@@ -84,7 +84,7 @@ public class ICall extends Instruction implements PrologCodeListener
     {
     case PrologCode.SUCCESS:
       /* push backtrack info */
-      state.pushBacktrackInfo(state.getCallBacktrackInfo(codePosition,args,code));
+      state.pushBacktrackInfo(state.getCallBacktrackInfo(codePosition,args,code,tag));
       rc = ExecutionState.NEXT; /* proceed to next instruction */
       //System.err.println("success: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
       break;

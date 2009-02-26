@@ -50,6 +50,10 @@ public class TermReader extends FilterReader
     {
       throw new ParseException(ex);
     }
+    catch(gnu.prolog.io.parser.gen.TokenMgrError ex)
+    {
+      throw new ParseException(ex);
+    }
   }
 
   public static Term stringToTerm(ReadOptions options, String str) throws ParseException
@@ -73,6 +77,10 @@ public class TermReader extends FilterReader
       return parser.readTermEof(options);
     }
     catch(gnu.prolog.io.parser.gen.ParseException ex)
+    {
+      throw new ParseException(ex);
+    }
+    catch(gnu.prolog.io.parser.gen.TokenMgrError ex)
     {
       throw new ParseException(ex);
     }

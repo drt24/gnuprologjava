@@ -72,9 +72,9 @@ public class ExecutionState
   }
   
   /** get BacktrackInfo for call instruction. */
-  public CallBacktrackInfo getCallBacktrackInfo(int codePosition,Term args[],PrologCode code)
+  public CallBacktrackInfo getCallBacktrackInfo(int codePosition,Term args[],PrologCode code,CompoundTermTag tag)
   {
-    return new CallBacktrackInfo(interpreter.getUndoPosition(),codePosition,args,code);
+    return new CallBacktrackInfo(interpreter.getUndoPosition(),codePosition,args,code,tag);
   }
 
   /** get BacktrackInfo for try family instructions. */

@@ -203,3 +203,17 @@ repeat:-repeat.
 :-build_in(current_prolog_flag/2,'gnu.prolog.vm.buildins.imphooks.Predicate_current_prolog_flag'). 
 :-build_in(halt/1,'gnu.prolog.vm.buildins.imphooks.Predicate_halt'). 
 halt:-halt(0).
+
+% Debugging additions
+:-build_in(trace/0,'gnu.prolog.vm.buildins.debug.Predicate_trace'). 
+:-build_in(notrace/0,'gnu.prolog.vm.buildins.imphooks.Predicate_notrace'). 
+:-build_in(tracing/0,'gnu.prolog.vm.buildins.imphooks.Predicate_tracing'). 
+:-build_in(spy/2,'gnu.prolog.vm.buildins.imphooks.Predicate_spy'). 
+spy(Pred):-spy(Pred,all).
+trace(Pred):-spy(Pred,all).
+trace(Pred,Opt):-spy(Pred,Opt).
+:-build_in(nospy/1,'gnu.prolog.vm.buildins.imphooks.Predicate_nospy'). 
+:-build_in(nospyall/0,'gnu.prolog.vm.buildins.imphooks.Predicate_nospyall'). 
+%:-build_in(debug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_debug'). 
+%:-build_in(nodebug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_nodebug'). 
+build_in(leash/1,'gnu.prolog.vm.buildins.imphooks.Predicate_leash'). 

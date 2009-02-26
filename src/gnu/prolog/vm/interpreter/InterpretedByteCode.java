@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm.interpreter;
 import gnu.prolog.vm.*;
+import gnu.prolog.vm.interpreter.Tracer.TraceLevel;
 import gnu.prolog.io.*;
 import gnu.prolog.term.*;
 import java.util.*;
@@ -463,18 +464,20 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
             {
               PrologCode code;
               Term cargs[];
+              CompoundTermTag tag;
 
               if (backtrackMode)
               {
                 CallBacktrackInfo cbi = (CallBacktrackInfo)cur_bi;
                 code = cbi.code;
                 cargs = cbi.args;
+                tag = cbi.tag;
               }
               else
               {
                 int cd = ((instructions[currentPosition+1]&255)<<8)+
                          (instructions[currentPosition+2]&255);
-                CompoundTermTag tag = tags[cd];
+                tag = tags[cd];
                 int arity = tag.arity;
                 cargs = new Term[arity];
                 for (int i = arity-1; i>=0; i--)
@@ -489,13 +492,16 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
                   predicateCodes[cd] = code;
                 }
               }
+              interpreter.getTracer().traceEvent(backtrackMode ? TraceLevel.REDO : TraceLevel.CALL, interpreter, tag, args);
               int rc = code.execute(interpreter, backtrackMode, cargs);
               switch (rc)
               {
               case SUCCESS_LAST:
+              	interpreter.getTracer().traceEvent(TraceLevel.EXIT, interpreter, tag, args);
                 backtrackMode = false;
                 break;
               case SUCCESS:
+              	interpreter.getTracer().traceEvent(TraceLevel.EXIT, interpreter, tag, args);
                 if (backtrackMode)
                 {
                   cur_bi.undoPosition = interpreter.getUndoPosition();
@@ -506,12 +512,13 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
                   interpreter.pushBacktrackInfo(
                     new CallBacktrackInfo(interpreter.getUndoPosition(), 
                                           currentPosition, 
-                                          cargs, code)
+                                          cargs, code, tag)
                   );
                 }
                 backtrackMode = false;
                 break;
               case FAIL:
+              	interpreter.getTracer().traceEvent(TraceLevel.FAIL, interpreter, tag, args);
                 backtrackMode = true;
               }
               currentPosition += 3;

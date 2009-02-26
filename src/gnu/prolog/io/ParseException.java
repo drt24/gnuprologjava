@@ -27,6 +27,11 @@ public class ParseException extends java.io.IOException
     //line = ex.currentToken.endLine;
     //column = ex.currentToken.endColumn;
   }
+  
+  ParseException(gnu.prolog.io.parser.gen.TokenMgrError ex)
+  {
+    super(ex.getMessage());
+  }
 
   int    line;
   int    column;

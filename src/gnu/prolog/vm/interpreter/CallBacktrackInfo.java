@@ -29,14 +29,17 @@ public class CallBacktrackInfo extends BacktrackInfo
     * exactly same code will be used. 
     */
   public PrologCode code;
+  
+  public CompoundTermTag tag;
 
 
   /** a constructor */
-  public CallBacktrackInfo(int undoPosition, int codePosition, Term args[], PrologCode code) 
+  public CallBacktrackInfo(int undoPosition, int codePosition, Term args[], PrologCode code, CompoundTermTag tag) 
   {
     super(undoPosition, codePosition);
     this.args = args;
     this.code = code;
+    this.tag = tag;
   }
 
 }
