@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * @author Michiel Hendriks
@@ -59,7 +60,7 @@ public class Tracer
 			{
 				return "Fail";
 			}
-		};	
+		};
 
 		/**
 		 * Convert a string to an enum set
@@ -92,10 +93,11 @@ public class Tracer
 			return EnumSet.noneOf(TraceLevel.class);
 		}
 	}
-	
+
 	public static final Set<String> UNTRACEABLE = new HashSet<String>();
-	
-	static {
+
+	static
+	{
 		UNTRACEABLE.add("trace/0");
 		UNTRACEABLE.add("untrace/0");
 		UNTRACEABLE.add("tracing/0");
@@ -267,7 +269,8 @@ public class Tracer
 				}
 				sb.append(TermWriter.toString(arg));
 			}
-			println(String.format("%7s: (%d) %s(%s)", level.toString(), interpreter.getExecutionDepth(), tag.functor.value, sb.toString()));
+			println(String.format("%7s: (%d) %s(%s)", level.toString(), interpreter.getExecutionDepth(), tag.functor.value,
+					sb.toString()));
 		}
 	}
 
@@ -283,6 +286,15 @@ public class Tracer
 			catch (Exception e)
 			{
 			}
+		}
+	}
+
+	public void reportStatus()
+	{
+		println(String.format("%% Tracing enabled: %s", tracingActive));
+		for (Entry<String, EnumSet<TraceLevel>> entry : tracePoints.entrySet())
+		{
+			println(String.format("%% Trace point: %s = %s", entry.getKey(), entry.getValue()));
 		}
 	}
 

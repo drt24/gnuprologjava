@@ -50,10 +50,13 @@ trace(Pred,Opt):-spy(Pred,Opt).
 :-build_in(nospyall/0,'gnu.prolog.vm.buildins.debug.Predicate_nospyall'). 
 
 % Enable debugging (not supported)
-%:-build_in(debug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_debug'). 
+%:-build_in(debug/0,'gnu.prolog.vm.buildins.debug.Predicate_debug'). 
 
 % Disable debugging (not supported)
-%:-build_in(nodebug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_nodebug'). 
+%:-build_in(nodebug/0,'gnu.prolog.vm.buildins.debug.Predicate_nodebug'). 
+
+% Disable debugging (not supported)
+:-build_in(debugging/0,'gnu.prolog.vm.buildins.debug.Predicate_debugging'). 
 
 % TODO
 %build_in(leash/1,'gnu.prolog.vm.buildins.debug.Predicate_leash'). 
