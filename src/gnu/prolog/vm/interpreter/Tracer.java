@@ -104,7 +104,7 @@ public class Tracer
 	/**
 	 * If tracing is active
 	 */
-	protected boolean tracingActive = true;
+	protected boolean tracingActive;
 
 	/**
 	 * Current active trace points
@@ -267,7 +267,7 @@ public class Tracer
 				}
 				sb.append(TermWriter.toString(arg));
 			}
-			println(String.format("%7s: %s(%s)", level.toString(), tag.functor.value, sb.toString()));
+			println(String.format("%7s: (%d) %s(%s)", level.toString(), interpreter.getExecutionDepth(), tag.functor.value, sb.toString()));
 		}
 	}
 

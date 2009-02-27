@@ -56,5 +56,5 @@ trace(Pred,Opt):-spy(Pred,Opt).
 %:-build_in(nodebug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_nodebug'). 
 
 % TODO
-build_in(leash/1,'gnu.prolog.vm.buildins.debug.Predicate_leash'). 
+%build_in(leash/1,'gnu.prolog.vm.buildins.debug.Predicate_leash'). 
 

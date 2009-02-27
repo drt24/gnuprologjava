@@ -430,6 +430,8 @@ public class TermWriter extends PrintWriter
 				else
 				{
 					print(term.value.getClass().getName().toString());
+					print(" ");
+					print(System.identityHashCode(term.value));
 				}
 				print("')");
 			}
