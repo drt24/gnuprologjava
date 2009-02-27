@@ -54,6 +54,16 @@ public class WriteOptions implements Cloneable
     * Term Writer.
     */
   Map variable2name;
+  
+  /**
+   * Include JavaObjects in the output
+   */
+  public boolean javaObjects = true;
+  
+  /**
+   * Use .toString() in the output 
+   */
+  public boolean javaObjectsToString;
 
 
   public Object clone()

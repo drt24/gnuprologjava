@@ -200,7 +200,7 @@ public class PrologTextLoader
           }
           else
           {
-            logError("invalid directive");
+            logError("invalid directive: "+dirTerm.args[0]);
           }
         }
       }

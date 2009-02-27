@@ -492,16 +492,16 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
                   predicateCodes[cd] = code;
                 }
               }
-              interpreter.getTracer().traceEvent(backtrackMode ? TraceLevel.REDO : TraceLevel.CALL, interpreter, tag, args);
+              interpreter.getTracer().traceEvent(backtrackMode ? TraceLevel.REDO : TraceLevel.CALL, interpreter, tag, cargs);
               int rc = code.execute(interpreter, backtrackMode, cargs);
               switch (rc)
               {
               case SUCCESS_LAST:
-              	interpreter.getTracer().traceEvent(TraceLevel.EXIT, interpreter, tag, args);
+              	interpreter.getTracer().traceEvent(TraceLevel.EXIT, interpreter, tag, cargs);
                 backtrackMode = false;
                 break;
               case SUCCESS:
-              	interpreter.getTracer().traceEvent(TraceLevel.EXIT, interpreter, tag, args);
+              	interpreter.getTracer().traceEvent(TraceLevel.EXIT, interpreter, tag, cargs);
                 if (backtrackMode)
                 {
                   cur_bi.undoPosition = interpreter.getUndoPosition();
@@ -518,7 +518,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
                 backtrackMode = false;
                 break;
               case FAIL:
-              	interpreter.getTracer().traceEvent(TraceLevel.FAIL, interpreter, tag, args);
+              	interpreter.getTracer().traceEvent(TraceLevel.FAIL, interpreter, tag, cargs);
                 backtrackMode = true;
               }
               currentPosition += 3;

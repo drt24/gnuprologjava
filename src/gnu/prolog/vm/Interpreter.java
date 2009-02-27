@@ -44,7 +44,17 @@ public final class Interpreter
 	Interpreter(Environment environment)
 	{
 		this.environment = environment;
-		tracer = new Tracer();
+		PrologStream outstream = null;
+		try
+		{
+			outstream = environment.getUserOutput();
+		}
+		catch (PrologException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tracer = new Tracer(outstream);
 	}
 
 	/** get environment */
@@ -208,7 +218,7 @@ public final class Interpreter
 	boolean undoPositionAsked = true;
 
 	private class VariableUndoData implements UndoData// maybe later this class
-																										// will be pooled
+	// will be pooled
 	{
 		int startPosion;
 

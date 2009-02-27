@@ -147,6 +147,7 @@ public abstract class PrologStream
   public abstract int getCode(Term streamTerm, Interpreter interptreter) throws PrologException;
   public abstract int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException;
   public abstract void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException;
+  public abstract void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException;
 
   public abstract Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException;
   public abstract void writeTerm(Term streamTerm, Interpreter interptreter, WriteOptions options, Term term) throws PrologException;

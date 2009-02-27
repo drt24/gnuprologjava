@@ -77,6 +77,11 @@ public class TextOutputPrologStream extends PrologStream
   {
     termWriter.print((char)code);
   }
+
+  public void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException
+  {
+  	termWriter.print(seq);
+  }
   public Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException
   {
     PrologException.permissionError(inputAtom, streamAtom, streamTerm);

@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm;
 import gnu.prolog.term.*;
+
 import java.io.*;
 import gnu.prolog.io.*;
 
@@ -197,6 +198,10 @@ public class BinaryPrologStream extends PrologStream
   public void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException
   {
     PrologException.permissionError(outputAtom, binaryStreamAtom, streamTerm);
+  }
+  public void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException
+  {
+  	PrologException.permissionError(outputAtom, binaryStreamAtom, streamTerm);  	
   }
 
   public gnu.prolog.term.Term readTerm(Term streamTerm, gnu.prolog.vm.Interpreter i, gnu.prolog.io.ReadOptions o) throws PrologException

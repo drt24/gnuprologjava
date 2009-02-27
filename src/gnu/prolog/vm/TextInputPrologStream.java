@@ -142,6 +142,12 @@ public class TextInputPrologStream extends PrologStream
     PrologException.permissionError(outputAtom, streamAtom, streamTerm);
   }
 
+  public void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException
+  {
+  	checkExists();
+    PrologException.permissionError(outputAtom, streamAtom, streamTerm);  	
+  }
+
   public Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException
   {
     checkExists();

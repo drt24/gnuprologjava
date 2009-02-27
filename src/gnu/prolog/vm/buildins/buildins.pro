@@ -205,15 +205,41 @@ repeat:-repeat.
 halt:-halt(0).
 
 % Debugging additions
+
+% Enable tracing
 :-build_in(trace/0,'gnu.prolog.vm.buildins.debug.Predicate_trace'). 
-:-build_in(notrace/0,'gnu.prolog.vm.buildins.imphooks.Predicate_notrace'). 
-:-build_in(tracing/0,'gnu.prolog.vm.buildins.imphooks.Predicate_tracing'). 
-:-build_in(spy/2,'gnu.prolog.vm.buildins.imphooks.Predicate_spy'). 
+
+% Disable tracing
+:-build_in(notrace/0,'gnu.prolog.vm.buildins.debug.Predicate_notrace'). 
+
+% True when tracing is enabled, or fail when it is not
+:-build_in(tracing/0,'gnu.prolog.vm.buildins.debug.Predicate_tracing'). 
+
+% Set a trace point
+% spy(+Pred,+Ports)
+% @param the predicate to trace
+% @param the event to trace (all,call,redo,exit,fail)
+%	use +call to add tracing for call events,
+%	use -call to remove the trace for call events
+%	use call to set tracing for just call events
+:-build_in(spy/2,'gnu.prolog.vm.buildins.debug.Predicate_spy'). 
 spy(Pred):-spy(Pred,all).
 trace(Pred):-spy(Pred,all).
 trace(Pred,Opt):-spy(Pred,Opt).
-:-build_in(nospy/1,'gnu.prolog.vm.buildins.imphooks.Predicate_nospy'). 
-:-build_in(nospyall/0,'gnu.prolog.vm.buildins.imphooks.Predicate_nospyall'). 
+
+% Remove a trace point
+% nospy(+Pred)
+% @param the predicate to remove a trace point for
+:-build_in(nospy/1,'gnu.prolog.vm.buildins.debug.Predicate_nospy'). 
+
+% Remove all trace points
+:-build_in(nospyall/0,'gnu.prolog.vm.buildins.debug.Predicate_nospyall'). 
+
+% Enable debugging (not supported)
 %:-build_in(debug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_debug'). 
+
+% Disable debugging (not supported)
 %:-build_in(nodebug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_nodebug'). 
-build_in(leash/1,'gnu.prolog.vm.buildins.imphooks.Predicate_leash'). 
+
+% TODO
+build_in(leash/1,'gnu.prolog.vm.buildins.debug.Predicate_leash'). 
