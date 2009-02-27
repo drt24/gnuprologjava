@@ -15,6 +15,10 @@
  * Boston, MA  02111-1307, USA. The text ol license can be also found 
  * at http://www.gnu.org/copyleft/lgpl.html
  */
+ 
+% See the following site for additional information
+% http://pauillac.inria.fr/~deransar/prolog/bips.html
+ 
 % build in predicates
 % Numbers before section descriptions correspond to parts of ISO Prolog 
 % standard
@@ -204,44 +208,5 @@ repeat:-repeat.
 :-build_in(halt/1,'gnu.prolog.vm.buildins.imphooks.Predicate_halt'). 
 halt:-halt(0).
 
-%
-% Debugging additions
-%
-
-% Enable tracing
-:-build_in(trace/0,'gnu.prolog.vm.buildins.debug.Predicate_trace'). 
-
-% Disable tracing
-:-build_in(notrace/0,'gnu.prolog.vm.buildins.debug.Predicate_notrace'). 
-
-% True when tracing is enabled, or fail when it is not
-:-build_in(tracing/0,'gnu.prolog.vm.buildins.debug.Predicate_tracing'). 
-
-% Set a trace point
-% spy(+Pred,+Ports)
-% @param the predicate to trace
-% @param the event to trace (all,call,redo,exit,fail)
-%	use +call to add tracing for call events,
-%	use -call to remove the trace for call events
-%	use call to set tracing for just call events
-:-build_in(spy/2,'gnu.prolog.vm.buildins.debug.Predicate_spy'). 
-spy(Pred):-spy(Pred,all).
-trace(Pred):-spy(Pred,all).
-trace(Pred,Opt):-spy(Pred,Opt).
-
-% Remove a trace point
-% nospy(+Pred)
-% @param the predicate to remove a trace point for
-:-build_in(nospy/1,'gnu.prolog.vm.buildins.debug.Predicate_nospy'). 
-
-% Remove all trace points
-:-build_in(nospyall/0,'gnu.prolog.vm.buildins.debug.Predicate_nospyall'). 
-
-% Enable debugging (not supported)
-%:-build_in(debug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_debug'). 
-
-% Disable debugging (not supported)
-%:-build_in(nodebug/0,'gnu.prolog.vm.buildins.imphooks.Predicate_nodebug'). 
-
-% TODO
-build_in(leash/1,'gnu.prolog.vm.buildins.debug.Predicate_leash'). 
+% Load non-ISO extensions
+:-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.debug.pro')).
