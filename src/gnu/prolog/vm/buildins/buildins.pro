@@ -204,7 +204,9 @@ repeat:-repeat.
 :-build_in(halt/1,'gnu.prolog.vm.buildins.imphooks.Predicate_halt'). 
 halt:-halt(0).
 
+%
 % Debugging additions
+%
 
 % Enable tracing
 :-build_in(trace/0,'gnu.prolog.vm.buildins.debug.Predicate_trace'). 

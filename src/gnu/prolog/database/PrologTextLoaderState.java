@@ -336,12 +336,31 @@ public class PrologTextLoaderState
       new PrologTextLoader(this, term);
     }
   }
+  
+  /**
+   * Resolve the input filename. Will add a .pl or .pro when needed.
+   * @param filename
+   * @return
+   */
+  File resolveInputFile(String filename)
+  {
+  	File fl = new File(filename);
+  	if (fl.exists()) return fl;
+  	if (!(filename.endsWith(".pl") || filename.endsWith(".pro")))
+  	{
+  		fl = new File(filename+".pro");
+  		if (fl.exists()) return fl;
+  		fl = new File(filename+".pl");
+  		if (fl.exists()) return fl;
+  	}
+  	return new File(filename);
+  }
 
   String getInputName(Term term)
   {
     if (term instanceof AtomTerm) // argument is an atom, which is an filename
     {
-      return ((AtomTerm)term).value;
+    	return resolveInputFile(((AtomTerm)term).value).toString();
     }
     else if (term instanceof CompoundTerm)
     {
@@ -350,7 +369,7 @@ public class PrologTextLoaderState
       {
         if ((ct.args[0] instanceof AtomTerm))
         {
-          return getInputName(ct.args[0]);
+          return resolveInputFile(getInputName(ct.args[0])).toString();
         }
       }
       else if (ct.tag == urlTag || ct.tag == resourceTag )
@@ -376,7 +395,7 @@ public class PrologTextLoaderState
   {
     if (term instanceof AtomTerm) // argument is an atom, which is an filename
     {
-      return new FileInputStream(((AtomTerm)term).value);
+      return new FileInputStream(resolveInputFile(((AtomTerm)term).value));
     }
     else if (term instanceof CompoundTerm)
     {
