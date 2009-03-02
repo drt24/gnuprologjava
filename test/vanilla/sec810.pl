@@ -48,7 +48,7 @@ test_bagof :-
 	test_true(bagof(f(X,Y), (X=a;Y=b), L1)),
 	test_true(bagof(X, Y^((X=1,Y=1);(X=2;Y=2)), L2)),
 	test_true(bagof(X, Y^((X=1;Y=1);(X=2;Y=2)), L3)),
-	test_true(bagof(X, (Y^(X=1;Y=2);X=3), Si1)),
+	test_true(bagof(X, Y^((X=1;Y=2);X=3), Si1)),
 	test_true(bagof(X, (X=Y;X=Z;Y=1), S3)),
 	test_val(bagof(X, (X=1;X=2), S4), S4, [1,2]),
 %	error_test(bagof(X,Y^Z,L), instantiation_error),
