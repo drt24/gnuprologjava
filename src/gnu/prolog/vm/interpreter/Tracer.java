@@ -115,13 +115,26 @@ public class Tracer
 
 	protected PrologStream output;
 
+	protected Set<TracerEventListener> listeners;
+
 	/**
 	 * 
 	 */
 	public Tracer(PrologStream stdout)
 	{
+		listeners = new HashSet<TracerEventListener>();
 		tracePoints = new HashMap<String, EnumSet<TraceLevel>>();
 		output = stdout;
+	}
+
+	public void addTracerEventListener(TracerEventListener listener)
+	{
+		listeners.add(listener);
+	}
+
+	public void removeTracerEventListener(TracerEventListener listener)
+	{
+		listeners.remove(listener);
 	}
 
 	/**
@@ -271,6 +284,27 @@ public class Tracer
 			}
 			println(String.format("%7s: (%d) %s(%s)", level.toString(), interpreter.getExecutionDepth(), tag.functor.value,
 					sb.toString()));
+			if (!listeners.isEmpty())
+			{
+				sendEvent(level, interpreter, tag, args);
+			}
+		}
+	}
+
+	/**
+	 * Notify the listeners
+	 * 
+	 * @param level
+	 * @param interpreter
+	 * @param tag
+	 * @param args
+	 */
+	protected void sendEvent(TraceLevel level, Interpreter interpreter, CompoundTermTag tag, Term args[])
+	{
+		TracerEvent event = new TracerEvent(this, level, tag, args);
+		for (TracerEventListener listener : listeners)
+		{
+			listener.tracerEvent(event);
 		}
 	}
 

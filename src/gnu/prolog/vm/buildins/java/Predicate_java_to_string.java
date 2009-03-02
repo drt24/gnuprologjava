@@ -1,8 +1,10 @@
 /**
  * 
  */
-package gnu.prolog.vm.buildins.debug;
+package gnu.prolog.vm.buildins.java;
 
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
@@ -13,11 +15,15 @@ import gnu.prolog.vm.PrologException;
  * @author Michiel Hendriks
  * 
  */
-public class Predicate_debugging implements PrologCode
+public class Predicate_java_to_string implements PrologCode
 {
-	public Predicate_debugging()
+	public static final AtomTerm javaObjectAtom = AtomTerm.get("java_object");
+
+	/**
+	 * 
+	 */
+	public Predicate_java_to_string()
 	{
-		super();
 	}
 
 	/*
@@ -28,8 +34,17 @@ public class Predicate_debugging implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		interpreter.getTracer().reportStatus();
-		return SUCCESS_LAST;
+		Object obj = null;
+		if (args[0] instanceof JavaObjectTerm)
+		{
+			obj = ((JavaObjectTerm) args[0]).value;
+		}
+		else
+		{
+			PrologException.typeError(javaObjectAtom, args[0]);
+		}
+		Term val = AtomTerm.get(obj!=null?obj.toString():"null");
+		return interpreter.unify(args[1], val);
 	}
 
 	/*
@@ -49,4 +64,5 @@ public class Predicate_debugging implements PrologCode
 	public void uninstall(Environment env)
 	{
 	}
+
 }

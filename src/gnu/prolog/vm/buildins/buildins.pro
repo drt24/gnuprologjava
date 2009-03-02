@@ -210,3 +210,5 @@ halt:-halt(0).
 
 % Load non-ISO extensions
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.debug.pro')).
+:-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.misc.pro')).
+:-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.java.pro')).
