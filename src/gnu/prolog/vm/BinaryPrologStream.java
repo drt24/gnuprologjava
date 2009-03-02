@@ -16,10 +16,13 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.term.*;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.JavaObjectTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 
-import java.io.*;
-import gnu.prolog.io.*;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 public class BinaryPrologStream extends PrologStream
 {

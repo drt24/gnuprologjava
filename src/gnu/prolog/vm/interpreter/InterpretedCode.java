@@ -16,8 +16,12 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
 
 /** Interpreted Code. This class is used by call_term instruction and
   * InterpretedCode   

@@ -16,11 +16,13 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTermTag;
 /** event notifying about event with predicates */
 public class PredicateUpdatedEvent extends java.util.EventObject
 {
-  CompoundTermTag tag;
+	private static final long serialVersionUID = -7290433520091984961L;
+	
+	CompoundTermTag tag;
   PredicateUpdatedEvent(Module module, CompoundTermTag tag)
   {
     super(module);

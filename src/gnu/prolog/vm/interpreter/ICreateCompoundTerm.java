@@ -16,8 +16,11 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.PrologException;
 /** create compound term 
   */
 public class ICreateCompoundTerm extends Instruction

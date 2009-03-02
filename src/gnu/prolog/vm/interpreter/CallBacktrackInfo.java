@@ -16,8 +16,10 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.PrologCode;
 
 /** call backtrack info */
 public class CallBacktrackInfo extends BacktrackInfo

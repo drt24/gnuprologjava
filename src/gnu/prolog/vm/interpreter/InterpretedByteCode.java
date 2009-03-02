@@ -16,11 +16,25 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
+import gnu.prolog.io.TermWriter;
+import gnu.prolog.term.AtomicTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.JavaObjectTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologCodeListener;
+import gnu.prolog.vm.PrologCodeUpdatedEvent;
+import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.interpreter.Tracer.TraceLevel;
-import gnu.prolog.io.*;
-import gnu.prolog.term.*;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /** Interpreted Code. This class is used by call_term instruction and
   * InterpretedCode   

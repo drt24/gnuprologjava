@@ -23,7 +23,9 @@ package gnu.prolog.term;
 
 public class VariableTerm extends Term
 {
-  /** create new unnamed variable term */
+	private static final long serialVersionUID = -8440602532721728373L;
+
+	/** create new unnamed variable term */
   public VariableTerm() 
   {
   }

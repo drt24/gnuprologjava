@@ -21,11 +21,12 @@ package gnu.prolog.term;
   * @version 0.0.1
   */
 import java.util.HashMap;
+import java.util.Map;
 
 public class TermCloneContext
 {
   /** term to cloned term map */
-  private HashMap term2clone = new HashMap();
+  private Map<Term,Term> term2clone = new HashMap<Term, Term>();
   /** get cloned term if it is alrady added to context
     * @param term source term
     * @return cloned term or null if it was not added

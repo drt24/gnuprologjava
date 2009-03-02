@@ -17,9 +17,9 @@
  */
 package gnu.prolog.io.parser;
 
-import gnu.prolog.io.*;
-import gnu.prolog.io.parser.gen.*;
-import gnu.prolog.term.*;
+import gnu.prolog.io.Operator;
+import gnu.prolog.io.OperatorSet;
+import gnu.prolog.io.parser.gen.Token;
 
 public class NameToken extends Token
 {

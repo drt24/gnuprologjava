@@ -16,28 +16,34 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-/** Term which is embeding JavaObject
-  * This term should never participate in text IO operations.
-  * It is always created as result of function calls.
-  * It could be unifed only with variable or other JavaObjectTerm that 
-  * has value identical (==) to value of this object.
-  */
+
+/**
+ * Term which is embeding JavaObject This term should never participate in text
+ * IO operations. It is always created as result of function calls. It could be
+ * unifed only with variable or other JavaObjectTerm that has value identical
+ * (==) to value of this object.
+ */
 
 public class JavaObjectTerm extends AtomicTerm
 {
-  /** value of the term */
-  public final Object value;
-  
-  public JavaObjectTerm(Object object)
-  {
-    value = object;
-  }
+	private static final long serialVersionUID = 6283774008823926111L;
+	
+	/** value of the term */
+	// TODO make this transient?
+	public final Object value;
 
-  /** get type of term 
-    * @return type of term
-    */
-  public int getTermType()
-  {
-    return JAVA_OBJECT;
-  }
+	public JavaObjectTerm(Object object)
+	{
+		value = object;
+	}
+
+	/**
+	 * get type of term
+	 * 
+	 * @return type of term
+	 */
+	public int getTermType()
+	{
+		return JAVA_OBJECT;
+	}
 }

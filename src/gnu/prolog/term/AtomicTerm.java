@@ -22,7 +22,9 @@ package gnu.prolog.term;
   */
 public abstract class AtomicTerm extends Term
 {
-  public Term clone(TermCloneContext context)
+	private static final long serialVersionUID = -3966209611457278787L;
+
+	public Term clone(TermCloneContext context)
   {
     return this;
   }

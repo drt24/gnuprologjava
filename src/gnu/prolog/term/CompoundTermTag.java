@@ -32,8 +32,10 @@ import java.util.WeakHashMap;
  */
 final public class CompoundTermTag implements java.io.Serializable
 {
+	private static final long serialVersionUID = -208937166475321367L;
+
 	/** atom to rag map */
-	private static final Map atom2tag = new WeakHashMap();
+	private static final Map<AtomTerm,List<CompoundTermTag>> atom2tag = new WeakHashMap<AtomTerm, List<CompoundTermTag>>();
 
 	// some standard tags
 	/** list tag */
@@ -130,11 +132,11 @@ final public class CompoundTermTag implements java.io.Serializable
 	{
 		synchronized (atom2tag)
 		{
-			List ctgs = (List) atom2tag.get(functor);
+			List<CompoundTermTag> ctgs =  atom2tag.get(functor);
 			CompoundTermTag tg;
 			if (ctgs != null)
 			{
-				Iterator e = ctgs.iterator();
+				Iterator<CompoundTermTag> e = ctgs.iterator();
 				while (e.hasNext())
 				{
 					tg = (CompoundTermTag) e.next();
@@ -148,7 +150,7 @@ final public class CompoundTermTag implements java.io.Serializable
 				return tg;
 			}
 			tg = new CompoundTermTag(functor, arity);
-			ctgs = new ArrayList();
+			ctgs = new ArrayList<CompoundTermTag>();
 			ctgs.add(tg);
 			atom2tag.put(functor, ctgs);
 			return tg;

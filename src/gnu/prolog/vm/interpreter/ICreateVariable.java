@@ -16,8 +16,9 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.PrologException;
 /** create variable on pushDownStack
   */
 public class ICreateVariable extends Instruction

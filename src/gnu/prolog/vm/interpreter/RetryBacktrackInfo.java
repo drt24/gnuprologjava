@@ -16,8 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.vm.BacktrackInfo;
 /** retry backtrack info. 
   * this backtrack info is used only by try_me_else, retry_me_else and trust_me
   * instructions. It does not contains additional information.

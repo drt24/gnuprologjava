@@ -22,7 +22,9 @@ package gnu.prolog.term;
   */
 public class IntegerTerm extends AtomicTerm
 {
-  // terms from -32k to +32k are cached
+	private static final long serialVersionUID = 4778268363190379033L;
+
+	// terms from -32k to +32k are cached
   private static IntegerTerm cache[] = new IntegerTerm[64*1024];
 
   // often used integers

@@ -20,7 +20,9 @@ package gnu.prolog.database;
 
 public class PrologTextLoaderError extends Exception
 {
-  String file;
+	private static final long serialVersionUID = 4388822484504978038L;
+	
+	String file;
   int    line;
   int    column;
   //String message;

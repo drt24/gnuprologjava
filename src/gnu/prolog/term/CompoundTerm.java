@@ -23,7 +23,9 @@ import java.util.List;
   */
 public class CompoundTerm extends Term
 {
-  /** tag for list */
+	private static final long serialVersionUID = -8207470525318790957L;
+	
+	/** tag for list */
   public static final CompoundTermTag listTag = CompoundTermTag.get(".",2);
   /** tag for conjunction */
   public static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
@@ -46,7 +48,7 @@ public class CompoundTerm extends Term
   }
   
   /** get prolog list by java list */
-  public static Term getList(List list)
+  public static Term getList(List<Term> list)
   {
     Term tlist = AtomTerm.emptyList;
     for (int i=list.size()-1;i>=0;i--)

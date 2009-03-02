@@ -16,8 +16,10 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.PrologException;
 /** allocate environment instruction */
 public class IAllocate extends Instruction
 {

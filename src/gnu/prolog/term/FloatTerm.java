@@ -22,7 +22,10 @@ package gnu.prolog.term;
   */
 public class FloatTerm extends AtomicTerm
 {
-  /** get floating point number term
+	private static final long serialVersionUID = -5988244457397590539L;
+
+
+	/** get floating point number term
     * @param str string reppresentation of float number
     * @retuns new floating point number term
     * @throw IllegalArgumentException when str is not valid string

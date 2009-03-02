@@ -17,10 +17,18 @@
  */
 package gnu.prolog.vm.interpreter;
 
-import gnu.prolog.vm.*;
-import gnu.prolog.vm.interpreter.Tracer.TraceLevel;
-import gnu.prolog.term.*;
-import java.util.*;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
+
+import java.util.ArrayList;
 
 /**
  * prolog code

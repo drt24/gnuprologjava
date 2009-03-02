@@ -16,10 +16,21 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.database;
-import gnu.prolog.term.*;
-import gnu.prolog.vm.*;
-import gnu.prolog.database.*;
-import java.util.*;
+import gnu.prolog.database.Predicate;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /** prolog code 
   */

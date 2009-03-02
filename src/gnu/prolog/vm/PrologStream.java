@@ -16,9 +16,18 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
-import java.util.*;
+import gnu.prolog.io.ReadOptions;
+import gnu.prolog.io.WriteOptions;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.JavaObjectTerm;
+import gnu.prolog.term.Term;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 public abstract class PrologStream
 {
   public static class OpenOptions
@@ -27,7 +36,7 @@ public abstract class PrologStream
     public AtomTerm type = PrologStream.textAtom;
     public AtomTerm eofAction = PrologStream.eofCodeAtom;
     public AtomTerm reposition = PrologStream.falseAtom;
-    public HashSet  aliases = new HashSet();
+    public Set<AtomTerm>  aliases = new HashSet<AtomTerm>();
     public AtomTerm filename;
     public Environment environment;
   }
@@ -79,7 +88,7 @@ public abstract class PrologStream
   protected AtomTerm eofAction;
   protected AtomTerm endOfStream = notAtom;
   protected AtomTerm type;
-  protected HashSet  aliases;
+  protected Set<AtomTerm>  aliases;
   protected Term streamTerm = new JavaObjectTerm(this);
   protected boolean closed = false;
   protected Environment environment;
@@ -91,7 +100,7 @@ public abstract class PrologStream
     reposition = options.reposition;
     eofAction = options.eofAction;
     type = options.type;
-    aliases = new HashSet(options.aliases);
+    aliases = new HashSet<AtomTerm>(options.aliases);
     environment = options.environment;
   }
 
@@ -114,12 +123,12 @@ public abstract class PrologStream
   }
 
 
-  public void getProperties(List list) throws PrologException
+  public void getProperties(List<Term> list) throws PrologException
   {
     list.add(new CompoundTerm(filenameTag, filename));
     //list.add(new CompoundTerm(modeTag, mode));
     list.add(mode);
-    for (Iterator i = aliases.iterator();i.hasNext();)
+    for (Iterator<AtomTerm> i = aliases.iterator();i.hasNext();)
     {
       list.add(new CompoundTerm(aliasTag, (Term)i.next()));
     }

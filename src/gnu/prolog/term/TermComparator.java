@@ -17,11 +17,15 @@
  */
 package gnu.prolog.term;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+
 /** comparator for two term */
-public class TermComparator implements java.util.Comparator
+public class TermComparator implements Comparator<Term>
 {
   int currentIdx;
-  java.util.HashMap orderMap = new java.util.HashMap();
+  Map<Term,Integer> orderMap = new HashMap<Term, Integer>();
 
   /** Compares its two arguments for order.  Returns a negative integer,
     * zero, or a positive integer as the first argument is less than, equal
@@ -48,7 +52,7 @@ public class TermComparator implements java.util.Comparator
     * 		  being compared by this Comparator.
     * @since   JDK1.2
     */
-  public int compare(Object o1, Object o2)
+  public int compare(Term o1, Term o2)
   {
     Term t1 = ((Term)o1).dereference();
     Term t2 = ((Term)o2).dereference();

@@ -16,14 +16,15 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
-import gnu.prolog.term.Term;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /** Module in database
   * @author Contantine A Plotnikov
@@ -31,10 +32,10 @@ import gnu.prolog.term.CompoundTermTag;
 public class Module
 {
   /** map from tag to predicates */
-  HashMap tag2predicate = new HashMap();
+  Map<CompoundTermTag,Predicate> tag2predicate = new HashMap<CompoundTermTag, Predicate>();
 
   /** initialization */
-  List initialization = new ArrayList();
+  List<Term> initialization = new ArrayList<Term>();
   /** create new predicate defined in this module
     * @param tag tag of this predicate
     * @return created predicate
@@ -79,23 +80,23 @@ public class Module
   }
 
   /** get initaliztion */
-  public synchronized List getInitialization()
+  public synchronized List<Term> getInitialization()
   {
     return initialization;
   }
 
-  /** get initaliztion */
-  public synchronized Set getPredicateTags()
+  /** get predicate tags */
+  public synchronized Set<CompoundTermTag> getPredicateTags()
   {
-    Set set = tag2predicate.keySet();
-    return set;
+    return tag2predicate.keySet();
   }
 
-  ArrayList predicateListeners = new ArrayList();
+  List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
+  
   public synchronized void predicateUpdated(CompoundTermTag tag)
   {
     PredicateUpdatedEvent evt = new PredicateUpdatedEvent(this,tag);
-    Iterator i = ((List)predicateListeners.clone()).iterator();
+    Iterator<PredicateListener> i = new ArrayList<PredicateListener>(predicateListeners).iterator();
     while (i.hasNext())
     {
       PredicateListener listener = (PredicateListener)i.next();

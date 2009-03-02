@@ -16,10 +16,19 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
-import  gnu.prolog.io.*;
-import  java.io.*;
-import  gnu.prolog.term.*;
-import  java.util.Stack;
+import gnu.prolog.io.Operator;
+import gnu.prolog.io.OperatorSet;
+import gnu.prolog.io.ParseException;
+import gnu.prolog.io.TermReader;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.Term;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Stack;
 
 public class PrologTextLoader
 {
@@ -28,11 +37,11 @@ public class PrologTextLoader
   /** current file */
   protected String currentFile;
   /** current term reader */
-  protected TermReader  currentReader;
+  protected TermReader currentReader;
   /** stack of previous readers */
-  protected Stack       readerStack = new Stack();
+  protected Stack<TermReader> readerStack = new Stack<TermReader>();
   /** stack of previous files */
-  protected Stack       fileStack = new Stack();
+  protected Stack<String> fileStack = new Stack<String>();
   /** operator set */
   protected OperatorSet operatorSet =  new OperatorSet();
   /** prolog text loader state */

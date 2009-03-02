@@ -16,7 +16,10 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.term.*;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
 
 /** prolog code 
   */

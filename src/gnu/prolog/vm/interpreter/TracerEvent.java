@@ -7,21 +7,24 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.interpreter.Tracer.TraceLevel;
 
+import java.util.EventObject;
+
 /**
  * The event object send to TracerEventListeners
  * 
  * @author Michiel Hendriks
  */
-public class TracerEvent
+public class TracerEvent extends EventObject
 {
-	protected Tracer tracer;
+	private static final long serialVersionUID = -3951954998561990757L;
+	
 	protected TraceLevel level;
 	protected CompoundTermTag tag;
 	protected Term[] args;
 
 	public TracerEvent(Tracer tracer, TraceLevel level, CompoundTermTag tag, Term[] args)
 	{
-		this.tracer = tracer;
+		super(tracer);
 		this.level = level;
 		this.tag = tag;
 		this.args = args;
@@ -44,6 +47,6 @@ public class TracerEvent
 
 	public Tracer getTracer()
 	{
-		return tracer;
+		return (Tracer) getSource();
 	}
 }

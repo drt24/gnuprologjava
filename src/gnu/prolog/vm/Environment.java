@@ -17,14 +17,43 @@
  */
 package gnu.prolog.vm;
 
-import gnu.prolog.database.*;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
+import gnu.prolog.database.Module;
+import gnu.prolog.database.Predicate;
+import gnu.prolog.database.PredicateListener;
+import gnu.prolog.database.PredicateUpdatedEvent;
+import gnu.prolog.database.PrologTextLoaderError;
+import gnu.prolog.database.PrologTextLoaderState;
+import gnu.prolog.io.OperatorSet;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.JavaObjectTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.interpreter.InterpretedCodeCompiler;
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import java.lang.ref.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * this class represent prolog processor.
@@ -37,7 +66,7 @@ public class Environment implements PredicateListener
 	/** predicate which used instead of real code when predicate is not defined */
 	PrologCode undefinedPredicate;
 	/** PredicateTag to code mapping */
-	HashMap tag2code = new HashMap();
+	Map<CompoundTermTag,PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
 	// flag atmoms
 	public final static AtomTerm boundedAtom = AtomTerm.get("bounded");
 	public final static AtomTerm trueAtom = AtomTerm.get("true");
@@ -76,8 +105,8 @@ public class Environment implements PredicateListener
 	public final static AtomTerm flagAtom = AtomTerm.get("flag");
 	public final static CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 	/** atom to flag */
-	HashMap atom2flag = new HashMap();
-	HashSet changableFlags = new HashSet();
+	Map<AtomTerm,Term> atom2flag = new HashMap<AtomTerm, Term>();
+	Set<AtomTerm> changableFlags = new HashSet<AtomTerm>();
 	boolean initalizationRun = false;
 
 	/** constructor of environment, it loads buildins to database at start. */
@@ -114,9 +143,9 @@ public class Environment implements PredicateListener
 	}
 
 	/** get get copy of current state of flags for this environemnt */
-	public synchronized Map getPrologFlags()
+	public synchronized Map<AtomTerm, Term> getPrologFlags()
 	{
-		return new HashMap(atom2flag);
+		return new HashMap<AtomTerm, Term>(atom2flag);
 	}
 
 	public void runIntialization(Interpreter interpreter)
@@ -126,7 +155,7 @@ public class Environment implements PredicateListener
 			throw new IllegalStateException("initialization cannot be run again");
 		}
 		initalizationRun = true;
-		Iterator iterator = getModule().getInitialization().iterator();
+		Iterator<Term> iterator = getModule().getInitialization().iterator();
 		while (iterator.hasNext())
 		{
 			Term term = (Term) iterator.next();
@@ -238,7 +267,7 @@ public class Environment implements PredicateListener
 		atom2flag.put(flag, newValue);
 	}
 
-	public List getLoadingErrors()
+	public List<PrologTextLoaderError> getLoadingErrors()
 	{
 		return prologTextLoaderState.getErrors();
 	}
@@ -287,7 +316,7 @@ public class Environment implements PredicateListener
 			{
 				try
 				{
-					Class cls = Class.forName(p.getJavaClassName());
+					Class<?> cls = Class.forName(p.getJavaClassName());
 					PrologCode code = (PrologCode) cls.newInstance();
 					code.install(this);
 					return code;
@@ -333,22 +362,22 @@ public class Environment implements PredicateListener
 		return code;
 	}
 
-	HashMap tag2listeners = new HashMap();
-	ReferenceQueue prologCodeListenerReferenceQueue = new ReferenceQueue();
+	Map<CompoundTermTag,List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
+	ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
 
 	private void pollPrologCodeListeners()
 	{
 		PrologCodeListenerRef ref;
 		while (null != (ref = (PrologCodeListenerRef) prologCodeListenerReferenceQueue.poll()))
 		{
-			ArrayList list = (ArrayList) tag2listeners.get(ref.tag);
+			List<PrologCodeListenerRef> list = tag2listeners.get(ref.tag);
 			list.remove(ref);
 		}
 	}
 
-	private static class PrologCodeListenerRef extends WeakReference
+	private static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
 	{
-		PrologCodeListenerRef(ReferenceQueue queue, PrologCodeListener listener, CompoundTermTag tag)
+		PrologCodeListenerRef(ReferenceQueue<? super PrologCodeListener> queue, PrologCodeListener listener, CompoundTermTag tag)
 		{
 			super(listener, queue);
 			this.tag = tag;
@@ -362,10 +391,10 @@ public class Environment implements PredicateListener
 	public synchronized void addPrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
 		pollPrologCodeListeners();
-		ArrayList list = (ArrayList) tag2listeners.get(tag);
+		List<PrologCodeListenerRef> list = tag2listeners.get(tag);
 		if (list == null)
 		{
-			list = new ArrayList();
+			list = new ArrayList<PrologCodeListenerRef>();
 			tag2listeners.put(tag, list);
 		}
 		list.add(new PrologCodeListenerRef(prologCodeListenerReferenceQueue, listener, tag));
@@ -375,10 +404,10 @@ public class Environment implements PredicateListener
 	public synchronized void removePrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
 		pollPrologCodeListeners();
-		ArrayList list = (ArrayList) tag2listeners.get(tag);
+		List<PrologCodeListenerRef> list =  tag2listeners.get(tag);
 		if (list != null)
 		{
-			ListIterator i = list.listIterator();
+			ListIterator<PrologCodeListenerRef> i = list.listIterator();
 			while (i.hasNext())
 			{
 				PrologCodeListenerRef ref = (PrologCodeListenerRef) i.next();
@@ -405,11 +434,11 @@ public class Environment implements PredicateListener
 			return;
 		}
 		CompoundTermTag tag = evt.getTag();
-		ArrayList list = (ArrayList) tag2listeners.get(tag);
+		List<PrologCodeListenerRef> list =  tag2listeners.get(tag);
 		if (list != null)
 		{
 			PrologCodeUpdatedEvent uevt = new PrologCodeUpdatedEvent(this, tag);
-			ListIterator i = list.listIterator();
+			ListIterator<PrologCodeListenerRef> i = list.listIterator();
 			while (i.hasNext())
 			{
 				PrologCodeListenerRef ref = (PrologCodeListenerRef) i.next();
@@ -433,8 +462,8 @@ public class Environment implements PredicateListener
 	PrologStream currentInput;
 	PrologStream currentOutput;
 
-	ArrayList openStreams = new ArrayList();
-	HashMap alias2stream = new HashMap();
+	List<PrologStream> openStreams = new ArrayList<PrologStream>();
+	Map<AtomTerm,PrologStream> alias2stream = new HashMap<AtomTerm, PrologStream>();
 
 	public OperatorSet getOperatorSet()
 	{
@@ -504,14 +533,14 @@ public class Environment implements PredicateListener
 		currentOutput = stream;
 	}
 
-	public synchronized Map getStreamProperties() throws PrologException
+	public synchronized Map<PrologStream,List<Term>> getStreamProperties() throws PrologException
 	{
-		HashMap map = new HashMap();
-		Iterator srt = openStreams.iterator();
+		Map<PrologStream,List<Term>> map = new HashMap<PrologStream, List<Term>>();
+		Iterator<PrologStream> srt = openStreams.iterator();
 		while (srt.hasNext())
 		{
 			PrologStream stream = (PrologStream) srt.next();
-			ArrayList list = new ArrayList();
+			List<Term> list = new ArrayList<Term>();
 			stream.getProperties(list);
 			map.put(stream, list);
 		}
@@ -559,7 +588,7 @@ public class Environment implements PredicateListener
 			throws PrologException
 	{
 
-		Iterator ia = options.aliases.iterator();
+		Iterator<AtomTerm> ia = options.aliases.iterator();
 		while (ia.hasNext())
 		{
 			AtomTerm a = (AtomTerm) ia.next();
@@ -634,7 +663,7 @@ public class Environment implements PredicateListener
 		{
 			return;
 		}
-		Iterator aliases = stream.aliases.iterator();
+		Iterator<AtomTerm> aliases = stream.aliases.iterator();
 		while (aliases.hasNext())
 		{
 			alias2stream.remove(aliases.next());

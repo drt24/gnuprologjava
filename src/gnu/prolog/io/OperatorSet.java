@@ -17,10 +17,14 @@
  */
 package gnu.prolog.io;
 
+import gnu.prolog.term.CompoundTermTag;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import gnu.prolog.term.CompoundTermTag;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 final public class OperatorSet
 {
@@ -34,9 +38,9 @@ final public class OperatorSet
     int priority;
     //int usage;
   }
-  ArrayList priorityLevels = new ArrayList();
-  HashMap xfOps = new HashMap();
-  HashMap fxOps = new HashMap();
+  List<OperatorLevel> priorityLevels = new ArrayList<OperatorLevel>();
+  Map<String,Operator> xfOps = new HashMap<String, Operator>();
+  Map<String,Operator> fxOps = new HashMap<String, Operator>();
 
   public synchronized Operator lookupXf(String value)
   {
@@ -51,9 +55,9 @@ final public class OperatorSet
   }
   
   /** get all oprators currently in the set */
-  public synchronized HashSet getOperators()
+  public synchronized Set<Operator> getOperators()
   {
-    HashSet rc = new HashSet();
+    Set<Operator> rc = new HashSet<Operator>();
     rc.addAll(fxOps.values());
     rc.addAll(xfOps.values());
     return rc;

@@ -16,9 +16,12 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
-import java.io.*;
+import gnu.prolog.io.ReadOptions;
+import gnu.prolog.io.TermWriter;
+import gnu.prolog.io.WriteOptions;
+import gnu.prolog.term.Term;
+
+import java.io.Writer;
 
 public class TextOutputPrologStream extends PrologStream
 {

@@ -29,8 +29,10 @@ import java.util.WeakHashMap;
  */
 public class AtomTerm extends AtomicTerm implements Serializable
 {
+	private static final long serialVersionUID = -7013961090908432585L;
+	
 	/** a map from string to atom */
-	private final static Map string2atom = new WeakHashMap();
+	private final static Map<String,AtomTerm> string2atom = new WeakHashMap<String,AtomTerm>();
 	/** empty list atom */
 	public final static AtomTerm emptyList = get("[]");
 	/** empty curly atom */

@@ -23,7 +23,9 @@ package gnu.prolog.term;
   */
 public abstract class Term implements java.io.Serializable, Cloneable
 {
-  public static final int UNKNOWN = -1;
+	private static final long serialVersionUID = -5388107925239494079L;
+	
+	public static final int UNKNOWN = -1;
   public static final int VARIABLE    = 1;
   public static final int JAVA_OBJECT = 2;
   public static final int FLOAT       = 3;

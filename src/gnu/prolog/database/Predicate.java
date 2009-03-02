@@ -16,8 +16,17 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
-import java.util.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /** Predicate in database
   * @author Contantine A Plotnikov
@@ -43,7 +52,7 @@ public class Predicate
   /** a tag of predicate head */
   CompoundTermTag tag;
   /** list of clauses for this predicate */
-  ArrayList clauses = new ArrayList();
+  List<Term> clauses = new ArrayList<Term>();
   /** flag which indicate that clauses was added for this predicate */
   boolean propertiesLocked = false;
   /** dynamic property of predicate */
@@ -51,7 +60,7 @@ public class Predicate
   /** class name for external predicate */
   String  javaClassName;
   /** set files where this predicate is defined */
-  HashSet files = new HashSet();
+  Set<String> files = new HashSet<String>();
   /** current module */
   Module module;
 
@@ -63,7 +72,7 @@ public class Predicate
   }
 
   /** get clauses of predicate */
-  public List getClauses()
+  public List<Term> getClauses()
   {
     return Collections.unmodifiableList(clauses);
   }

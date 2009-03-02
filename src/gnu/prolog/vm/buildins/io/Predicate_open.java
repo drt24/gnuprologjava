@@ -16,8 +16,16 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
-import gnu.prolog.term.*;
-import gnu.prolog.vm.*;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.PrologStream;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code for open/4
   */
@@ -127,7 +135,7 @@ public class Predicate_open implements PrologCode, TermConstants
         {
           PrologException.domainError(streamOptionAtom, op);
         }
-        options.aliases.add(val);
+        options.aliases.add((AtomTerm) val);
       }
       else if (op.tag == PrologStream.eofActionTag)
       {

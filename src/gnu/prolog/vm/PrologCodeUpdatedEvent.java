@@ -16,7 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTermTag;
 /** Event that indicates changes in prolog code.
   */
 public class PrologCodeUpdatedEvent extends java.util.EventObject

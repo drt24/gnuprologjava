@@ -19,7 +19,9 @@ package gnu.prolog.io;
 
 public class ParseException extends java.io.IOException
 {
-  ParseException(gnu.prolog.io.parser.gen.ParseException ex)
+	private static final long serialVersionUID = -7824584186874732911L;
+
+	ParseException(gnu.prolog.io.parser.gen.ParseException ex)
   {
     super(ex.getMessage());
     line = ex.currentToken.next.beginLine;
