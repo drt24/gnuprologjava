@@ -111,7 +111,7 @@ public class Tracer
 	/**
 	 * Current active trace points
 	 */
-	protected Map<String, EnumSet<TraceLevel>> tracePoints;
+	protected Map<CompoundTermTag, EnumSet<TraceLevel>> tracePoints;
 
 	protected PrologStream output;
 
@@ -123,7 +123,7 @@ public class Tracer
 	public Tracer(PrologStream stdout)
 	{
 		listeners = new HashSet<TracerEventListener>();
-		tracePoints = new HashMap<String, EnumSet<TraceLevel>>();
+		tracePoints = new HashMap<CompoundTermTag, EnumSet<TraceLevel>>();
 		output = stdout;
 	}
 
@@ -159,7 +159,7 @@ public class Tracer
 	 * @param pred
 	 * @param levels
 	 */
-	public void setTrace(String pred, EnumSet<TraceLevel> levels)
+	public void setTrace(CompoundTermTag pred, EnumSet<TraceLevel> levels)
 	{
 		tracePoints.put(pred, EnumSet.copyOf(levels));
 		println(String.format("%% Tracing %s for %s", pred, levels));
@@ -171,7 +171,7 @@ public class Tracer
 	 * @param pred
 	 * @param level
 	 */
-	public void addTrace(String pred, EnumSet<TraceLevel> levels)
+	public void addTrace(CompoundTermTag pred, EnumSet<TraceLevel> levels)
 	{
 		if (UNTRACEABLE.contains(pred))
 		{
@@ -194,7 +194,7 @@ public class Tracer
 	 * @param pred
 	 * @param levels
 	 */
-	public void addTrace(String pred, TraceLevel level)
+	public void addTrace(CompoundTermTag pred, TraceLevel level)
 	{
 		addTrace(pred, EnumSet.of(level));
 	}
@@ -204,10 +204,10 @@ public class Tracer
 	 * 
 	 * @param pred
 	 */
-	public void removeTrace(String pred)
+	public void removeTrace(CompoundTermTag pred)
 	{
 		tracePoints.remove(pred);
-		println(String.format("%% Not tracing", pred));
+		println(String.format("%% Not tracing %s", pred));
 	}
 
 	/**
@@ -216,7 +216,7 @@ public class Tracer
 	 * @param pred
 	 * @param level
 	 */
-	public void removeTrace(String pred, EnumSet<TraceLevel> levels)
+	public void removeTrace(CompoundTermTag pred, EnumSet<TraceLevel> levels)
 	{
 		EnumSet<TraceLevel> set = tracePoints.get(pred);
 		if (set != null)
@@ -225,7 +225,7 @@ public class Tracer
 			if (set.isEmpty())
 			{
 				tracePoints.remove(pred);
-				println(String.format("%% Not tracing", pred));
+				println(String.format("%% Not tracing %s", pred));
 			}
 			else
 			{
@@ -238,7 +238,7 @@ public class Tracer
 	 * @param pred
 	 * @param levels
 	 */
-	public void removeTrace(String pred, TraceLevel level)
+	public void removeTrace(CompoundTermTag pred, TraceLevel level)
 	{
 		removeTrace(pred, EnumSet.of(level));
 	}
@@ -265,7 +265,7 @@ public class Tracer
 		{
 			return;
 		}
-		EnumSet<TraceLevel> lvlset = tracePoints.get(tag.toString());
+		EnumSet<TraceLevel> lvlset = tracePoints.get(tag);
 		if (lvlset == null)
 		{
 			// not tracing this tag
@@ -326,7 +326,7 @@ public class Tracer
 	public void reportStatus()
 	{
 		println(String.format("%% Tracing enabled: %s", tracingActive));
-		for (Entry<String, EnumSet<TraceLevel>> entry : tracePoints.entrySet())
+		for (Entry<CompoundTermTag, EnumSet<TraceLevel>> entry : tracePoints.entrySet())
 		{
 			println(String.format("%% Trace point: %s = %s", entry.getKey(), entry.getValue()));
 		}

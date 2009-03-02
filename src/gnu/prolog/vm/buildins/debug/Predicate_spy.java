@@ -5,6 +5,7 @@ package gnu.prolog.vm.buildins.debug;
 
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
@@ -14,6 +15,7 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 import gnu.prolog.vm.interpreter.Tracer.TraceLevel;
 
+import java.util.Collection;
 import java.util.EnumSet;
 
 /**
@@ -45,23 +47,36 @@ public class Predicate_spy implements PrologCode
 	 * @return
 	 * @throws PrologException
 	 */
-	public static String getTag(Term term) throws PrologException
+	public static CompoundTermTag getTag(Term term) throws PrologException
 	{
-		String tag = "";
+		String functor = "";
+		int arity = -1;
 		if (term instanceof AtomTerm)
 		{
-			tag = ((AtomTerm) term).value;
+			functor = ((AtomTerm) term).value;
+			int idx = functor.indexOf('/');
+			if (idx > -1)
+			{
+				try
+				{
+					arity = Integer.parseInt(functor.substring(idx + 1));
+					functor = functor.substring(0, idx);
+				}
+				catch (NumberFormatException e)
+				{
+				}
+			}
 		}
 		else if (term instanceof CompoundTerm)
 		{
 			CompoundTerm ct = (CompoundTerm) term;
-			if (!ct.tag.toString().endsWith("//2"))
+			if (!ct.tag.toString().equals("//2"))
 			{
 				PrologException.typeError(TermConstants.compoundAtom, term);
 			}
 			if (ct.args[0] instanceof AtomTerm)
 			{
-				tag = ((AtomTerm) ct.args[0]).value;
+				functor = ((AtomTerm) ct.args[0]).value;
 			}
 			else
 			{
@@ -69,7 +84,7 @@ public class Predicate_spy implements PrologCode
 			}
 			if (ct.args[1] instanceof IntegerTerm)
 			{
-				tag = tag + "/" + ((IntegerTerm) ct.args[1]).value;
+				arity = ((IntegerTerm) ct.args[1]).value;
 			}
 			else
 			{
@@ -80,7 +95,7 @@ public class Predicate_spy implements PrologCode
 		{
 			PrologException.typeError(TermConstants.compoundAtom, term);
 		}
-		return tag;
+		return CompoundTermTag.get(functor, arity);
 	}
 
 	public Predicate_spy()
@@ -95,15 +110,34 @@ public class Predicate_spy implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		String tag = getTag(args[0]);
-		if (args[1] instanceof AtomTerm)
+		CompoundTermTag tag = getTag(args[0]);
+		if (tag.arity == -1)
 		{
-			EnumSet<TraceLevel> lvl = getTraceLevel(args[1]);
+			for (CompoundTermTag ptag : (Collection<CompoundTermTag>) interpreter.environment.getModule().getPredicateTags())
+			{
+				if (ptag.functor.equals(tag.functor))
+				{
+					setSpyPoint(interpreter, ptag, args[1]);
+				}
+			}
+		}
+		else
+		{
+			setSpyPoint(interpreter, tag, args[1]);
+		}
+		return SUCCESS_LAST;
+	}
+
+	protected void setSpyPoint(Interpreter interpreter, CompoundTermTag tag, Term arg) throws PrologException
+	{
+		if (arg instanceof AtomTerm)
+		{
+			EnumSet<TraceLevel> lvl = getTraceLevel(arg);
 			interpreter.getTracer().setTrace(tag, lvl);
 		}
-		else if (args[1] instanceof CompoundTerm)
+		else if (arg instanceof CompoundTerm)
 		{
-			CompoundTerm ct = (CompoundTerm) args[1];
+			CompoundTerm ct = (CompoundTerm) arg;
 			EnumSet<TraceLevel> lvl = getTraceLevel(ct.args[0]);
 			if (ct.tag.toString().equals("+/1"))
 			{
@@ -115,10 +149,9 @@ public class Predicate_spy implements PrologCode
 			}
 			else
 			{
-				PrologException.representationError(args[0]);
+				PrologException.representationError(arg);
 			}
 		}
-		return SUCCESS_LAST;
 	}
 
 	/*

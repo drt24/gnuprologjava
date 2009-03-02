@@ -16,157 +16,217 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
 
-/** A tag of compound term. A tag consists of functor and arity.
-  * All tags are unique in one JVM.
-  * @author Constatine Plotinikov
-  * @version 0.0.1
-  */
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+/**
+ * A tag of compound term. A tag consists of functor and arity. All tags are
+ * unique in one JVM.
+ * 
+ * @author Constatine Plotinikov
+ * @version 0.0.1
+ */
 final public class CompoundTermTag implements java.io.Serializable
 {
-  /** atom to rag map */
-  private static final Map atom2tag = new HashMap();
+	/** atom to rag map */
+	private static final Map atom2tag = new WeakHashMap();
 
-  // some standard tags
-  /** list tag */
-  public final static CompoundTermTag list = get(".",2);
-  /** comma tag */
-  public final static CompoundTermTag comma = get(",",2);
-  /** clause tag */
-  public final static CompoundTermTag clause = get(":-",2);
-  /** derective tag */
-  public final static CompoundTermTag directive = get(":-",1);
-  /** '{}'/1 tag */
-  public final static CompoundTermTag curly1 = get("{}",1);
-  /** '-'/2 tag */
-  public final static CompoundTermTag minus2 = get("-",2);
-  /** '/'/2 tag */
-  public final static CompoundTermTag divide2 = get("/",2);
+	// some standard tags
+	/** list tag */
+	public final static CompoundTermTag list = get(".", 2);
+	/** comma tag */
+	public final static CompoundTermTag comma = get(",", 2);
+	/** clause tag */
+	public final static CompoundTermTag clause = get(":-", 2);
+	/** derective tag */
+	public final static CompoundTermTag directive = get(":-", 1);
+	/** '{}'/1 tag */
+	public final static CompoundTermTag curly1 = get("{}", 1);
+	/** '-'/2 tag */
+	public final static CompoundTermTag minus2 = get("-", 2);
+	/** '/'/2 tag */
+	public final static CompoundTermTag divide2 = get("/", 2);
 
-  /** get predicate indicator for this tag */
-  public CompoundTerm getPredicateIndicator()
-  {
-    return new CompoundTerm(divide2, functor, IntegerTerm.get(arity));
-  }
+	/** get predicate indicator for this tag */
+	public CompoundTerm getPredicateIndicator()
+	{
+		return new CompoundTerm(divide2, functor, IntegerTerm.get(arity));
+	}
 
-  /** get compound term tag
-    * @param predicateIndicator a term which represent a predicate indicator of term
-    * @return a tag that have specified by a term which represent a predicate indicator of term
-    * @throws IllegalArgumentException if term is not a valid predicate indicator
-    */
-  public static CompoundTermTag get(Term t)
-  {
-    if (!(t instanceof CompoundTerm))
-    {
-      throw new IllegalArgumentException();
-    }
-    CompoundTerm ct = (CompoundTerm)t;
-    if (!(ct.args[0] instanceof AtomTerm ) || !(ct.args[1] instanceof IntegerTerm))
-    {
-      throw new IllegalArgumentException();
-    }
-    return get((AtomTerm)ct.args[0], ((IntegerTerm)ct.args[1]).value);
-  }
+	/**
+	 * get compound term tag
+	 * 
+	 * @param predicateIndicator
+	 *          a term which represent a predicate indicator of term
+	 * @return a tag that have specified by a term which represent a predicate
+	 *         indicator of term
+	 * @throws IllegalArgumentException
+	 *           if term is not a valid predicate indicator
+	 */
+	public static CompoundTermTag get(Term t)
+	{
+		if (!(t instanceof CompoundTerm))
+		{
+			throw new IllegalArgumentException();
+		}
+		CompoundTerm ct = (CompoundTerm) t;
+		if (!(ct.args[0] instanceof AtomTerm) || !(ct.args[1] instanceof IntegerTerm))
+		{
+			throw new IllegalArgumentException();
+		}
+		return get((AtomTerm) ct.args[0], ((IntegerTerm) ct.args[1]).value);
+	}
 
-  /** check if term is predicate indicator 
-    * @param term term to check
-    * @return true if term is predicate indicator
-    */
+	/**
+	 * check if term is predicate indicator
+	 * 
+	 * @param term
+	 *          term to check
+	 * @return true if term is predicate indicator
+	 */
 
-  public static boolean isPredicateIndicator(Term term)
-  {
-    if (!(term instanceof CompoundTerm))
-    {
-      return false;
-    }
-    CompoundTerm ct = (CompoundTerm)term;
-    if (!(ct.args[0] instanceof AtomTerm ) || !(ct.args[1] instanceof IntegerTerm))
-    {
-      return false;
-    }
-    return true;
-  }
+	public static boolean isPredicateIndicator(Term term)
+	{
+		if (!(term instanceof CompoundTerm))
+		{
+			return false;
+		}
+		CompoundTerm ct = (CompoundTerm) term;
+		if (!(ct.args[0] instanceof AtomTerm) || !(ct.args[1] instanceof IntegerTerm))
+		{
+			return false;
+		}
+		return true;
+	}
 
-  /** get compound term tag
-    * @param functor functor of tag
-    * @param arity arity of tag
-    * @return a tag that have specified arity ond functor
-    */
-  public static CompoundTermTag get(String functor, int arity)
-  {
-     return get(AtomTerm.get(functor),arity);
-  }
-  /** get compound term tag
-    * @param functor functor of tag
-    * @param arity arity of tag
-    * @return a tag that have specified arity ond functor
-    */
-  public static CompoundTermTag get(AtomTerm functor, int arity)
-  {
-    synchronized (atom2tag)
-    {
-      List ctgs = (List)atom2tag.get(functor);
-      CompoundTermTag tg;
-      if (ctgs != null)
-      {
-        Iterator e = ctgs.iterator();
-        while (e.hasNext())
-        {
-          tg = (CompoundTermTag)e.next();
-          if (tg.arity == arity)
-          {
-            return tg;
-          }
-        }
-        tg = new CompoundTermTag(functor,arity);
-        ctgs.add(tg);
-        return tg;
-      }
-      tg = new CompoundTermTag(functor,arity);
-      ctgs = new ArrayList();
-      ctgs.add(tg);
-      atom2tag.put(functor,ctgs);
-      return tg;
-    }
-  }
+	/**
+	 * get compound term tag
+	 * 
+	 * @param functor
+	 *          functor of tag
+	 * @param arity
+	 *          arity of tag
+	 * @return a tag that have specified arity ond functor
+	 */
+	public static CompoundTermTag get(String functor, int arity)
+	{
+		return get(AtomTerm.get(functor), arity);
+	}
 
-  /** a functor of term */
-  public final AtomTerm functor;
+	/**
+	 * get compound term tag
+	 * 
+	 * @param functor
+	 *          functor of tag
+	 * @param arity
+	 *          arity of tag
+	 * @return a tag that have specified arity ond functor
+	 */
+	public static CompoundTermTag get(AtomTerm functor, int arity)
+	{
+		synchronized (atom2tag)
+		{
+			List ctgs = (List) atom2tag.get(functor);
+			CompoundTermTag tg;
+			if (ctgs != null)
+			{
+				Iterator e = ctgs.iterator();
+				while (e.hasNext())
+				{
+					tg = (CompoundTermTag) e.next();
+					if (tg.arity == arity)
+					{
+						return tg;
+					}
+				}
+				tg = new CompoundTermTag(functor, arity);
+				ctgs.add(tg);
+				return tg;
+			}
+			tg = new CompoundTermTag(functor, arity);
+			ctgs = new ArrayList();
+			ctgs.add(tg);
+			atom2tag.put(functor, ctgs);
+			return tg;
+		}
+	}
 
-  /** arity of term. Arity of tag could be 0. But in this case this tag
-    * could not be used to cunstruct the compound terms.
-    */
-  public final int      arity;
+	/** a functor of term */
+	public final AtomTerm functor;
 
-  /** a constructor
-    * @param f functor of term
-    * @param a arity of term
-    */
-  private CompoundTermTag(AtomTerm f, int a)
-  {
-    functor = f;
-    arity   = a;
-  }
+	/**
+	 * arity of term. Arity of tag could be 0. But in this case this tag could not
+	 * be used to cunstruct the compound terms.
+	 */
+	public final int arity;
 
-  /** Return an object to replace the object extracted from the stream.
-    * The object will be used in the graph in place of the original.
-    * @return resloved object
-    * @see java.io.Resolvable
-    */
-  public Object readResolve()
-  {
-    return get(functor,arity);
-  }
+	/**
+	 * a constructor
+	 * 
+	 * @param f
+	 *          functor of term
+	 * @param a
+	 *          arity of term
+	 */
+	private CompoundTermTag(AtomTerm f, int a)
+	{
+		functor = f;
+		arity = a;
+	}
 
-  /** convert tag to string */
-  public String toString()
-  {
-    return functor.value+"/"+arity;
-  }
+	/**
+	 * Return an object to replace the object extracted from the stream. The
+	 * object will be used in the graph in place of the original.
+	 * 
+	 * @return resloved object
+	 * @see java.io.Resolvable
+	 */
+	public Object readResolve()
+	{
+		return get(functor, arity);
+	}
+
+	/** convert tag to string */
+	public String toString()
+	{
+		return functor.value + "/" + arity;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + arity;
+		result = prime * result + ((functor == null) ? 0 : functor.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj)
+	{
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		CompoundTermTag other = (CompoundTermTag) obj;
+		if (arity != other.arity) return false;
+		if (functor == null)
+		{
+			if (other.functor != null) return false;
+		}
+		else if (!functor.equals(other.functor)) return false;
+		return true;
+	}
 }
-

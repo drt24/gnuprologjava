@@ -3,11 +3,14 @@
  */
 package gnu.prolog.vm.buildins.debug;
 
+import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+
+import java.util.Collection;
 
 /**
  * Remove a trace point
@@ -28,8 +31,21 @@ public class Predicate_nospy implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		String tag = Predicate_spy.getTag(args[0]);
-		interpreter.getTracer().removeTrace(tag);
+		CompoundTermTag tag = Predicate_spy.getTag(args[0]);
+		if (tag.arity == -1)
+		{
+			for (CompoundTermTag ptag : (Collection<CompoundTermTag>) interpreter.environment.getModule().getPredicateTags())
+			{
+				if (ptag.functor.equals(tag.functor))
+				{
+					interpreter.getTracer().removeTrace(ptag);
+				}
+			}
+		}
+		else
+		{
+			interpreter.getTracer().removeTrace(tag);
+		}
 		return SUCCESS_LAST;
 	}
 

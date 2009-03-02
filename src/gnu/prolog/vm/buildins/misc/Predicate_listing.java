@@ -34,23 +34,10 @@ public class Predicate_listing implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		String filter = null;
-		int arity = -1;
+		CompoundTermTag filter = null;
 		if (args.length >= 1)
 		{
 			filter = Predicate_spy.getTag(args[0]);
-			int idx = filter.indexOf('/');
-			if (idx > -1)
-			{
-				try
-				{
-					arity = Integer.parseInt(filter.substring(idx + 1));
-					filter = filter.substring(0, idx);
-				}
-				catch (NumberFormatException e)
-				{
-				}
-			}
 		}
 		WriteOptions options = new WriteOptions();
 		options.operatorSet = interpreter.environment.getOperatorSet();
@@ -61,13 +48,13 @@ public class Predicate_listing implements PrologCode
 		{
 			if (filter != null)
 			{
-				if (!tag.functor.value.equals(filter))
+				if (!tag.functor.equals(filter.functor))
 				{
 					continue;
 				}
-				if (arity > -1)
+				if (filter.arity != -1)
 				{
-					if (tag.arity != arity)
+					if (tag.arity != filter.arity)
 					{
 						continue;
 					}
@@ -86,6 +73,7 @@ public class Predicate_listing implements PrologCode
 				for (Term t : (Collection<Term>) p.getClauses())
 				{
 					stream.writeTerm(null, interpreter, options, t);
+					stream.putCode(null, interpreter, '.');
 					stream.putCode(null, interpreter, '\n');
 				}
 				stream.putCode(null, interpreter, '\n');

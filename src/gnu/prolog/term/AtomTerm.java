@@ -16,81 +16,131 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-import java.util.HashMap;
+
 import java.io.Serializable;
-/** Atom term. The object of this class represent prolog atom.
-  * @author Constantin Plotnikov
-  * @version 0.0.1
-  */
+import java.util.Map;
+import java.util.WeakHashMap;
+
+/**
+ * Atom term. The object of this class represent prolog atom.
+ * 
+ * @author Constantin Plotnikov
+ * @version 0.0.1
+ */
 public class AtomTerm extends AtomicTerm implements Serializable
 {
-  /** a map from string to atom */
-  private final static HashMap string2atom = new HashMap();
-  /** empty list atom */
-  public final static AtomTerm emptyList = get("[]");
-  /** empty curly atom */
-  public final static AtomTerm emptyCurly = get("{}");
-  /** cut atom */
-  public final static AtomTerm cut = get("!");
-  /** get atom term
-    * @param s string reprentation of atom.
-    */
-  public static AtomTerm get(String s)
-  {
-    synchronized(string2atom)
-    {
-      AtomTerm atom = (AtomTerm)string2atom.get(s);
-      if (atom == null)
-      {
-        atom = new AtomTerm(s);
-        string2atom.put(s,atom);
-      }
-      return atom;
-    }
-  }
-  
-  private static StringBuffer chbu = new StringBuffer(1);
-  /** get atom term
-    * @param s string reprentation of atom.
-    */
-  public static AtomTerm getChar(char ch)
-  {
-    synchronized(chbu)
-    {
-      chbu.setLength(0);
-      chbu.append(ch);
-      return get(chbu.toString());
-    }
-  }
-  
-  /** Return an object to replace the object extracted from the stream.
-    * The object will be used in the graph in place of the original.
-    * @return resloved object
-    * @see java.io.Resolvable
-    */
-  public Object readResolve()
-  {
-    return get(value);
-  }
-  /** value of atom */
-  final public String value;
-  /** a constructor.
-    * @param value value of atom
-    */
-  private AtomTerm(String value) // constructor is private to package
-  {
-    this.value = value;
-  }
+	/** a map from string to atom */
+	private final static Map string2atom = new WeakHashMap();
+	/** empty list atom */
+	public final static AtomTerm emptyList = get("[]");
+	/** empty curly atom */
+	public final static AtomTerm emptyCurly = get("{}");
+	/** cut atom */
+	public final static AtomTerm cut = get("!");
 
-  /** get type of term 
-    * @return type of term
-    */
-  public int getTermType()
-  {
-    return ATOM;
-  }
+	/**
+	 * get atom term
+	 * 
+	 * @param s
+	 *          string reprentation of atom.
+	 */
+	public static AtomTerm get(String s)
+	{
+		synchronized (string2atom)
+		{
+			AtomTerm atom = (AtomTerm) string2atom.get(s);
+			if (atom == null)
+			{
+				atom = new AtomTerm(s);
+				string2atom.put(s, atom);
+			}
+			return atom;
+		}
+	}
 
+	private static StringBuffer chbu = new StringBuffer(1);
 
+	/**
+	 * get atom term
+	 * 
+	 * @param s
+	 *          string reprentation of atom.
+	 */
+	public static AtomTerm getChar(char ch)
+	{
+		synchronized (chbu)
+		{
+			chbu.setLength(0);
+			chbu.append(ch);
+			return get(chbu.toString());
+		}
+	}
+
+	/**
+	 * Return an object to replace the object extracted from the stream. The
+	 * object will be used in the graph in place of the original.
+	 * 
+	 * @return resloved object
+	 * @see java.io.Resolvable
+	 */
+	public Object readResolve()
+	{
+		return get(value);
+	}
+
+	/** value of atom */
+	final public String value;
+
+	/**
+	 * a constructor.
+	 * 
+	 * @param value
+	 *          value of atom
+	 */
+	private AtomTerm(String value) // constructor is private to package
+	{
+		this.value = value;
+	}
+
+	/**
+	 * get type of term
+	 * 
+	 * @return type of term
+	 */
+	public int getTermType()
+	{
+		return ATOM;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj)
+	{
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		AtomTerm other = (AtomTerm) obj;
+		if (value == null)
+		{
+			if (other.value != null) return false;
+		}
+		else if (!value.equals(other.value)) return false;
+		return true;
+	}
 }
-
-
