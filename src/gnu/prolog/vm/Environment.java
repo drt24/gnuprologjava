@@ -23,6 +23,7 @@ import gnu.prolog.database.PredicateListener;
 import gnu.prolog.database.PredicateUpdatedEvent;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.database.PrologTextLoaderState;
+import gnu.prolog.io.CharConversionTable;
 import gnu.prolog.io.OperatorSet;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
@@ -709,5 +710,13 @@ public class Environment implements PredicateListener
 			catch (PrologException e)
 			{}
 		}
+	}
+	
+	/**
+	 * @return the convTable
+	 */
+	public CharConversionTable getConversionTable()
+	{
+		return prologTextLoaderState.getConversionTable();
 	}
 }

@@ -179,8 +179,9 @@ write_canonical(S,Term):-write_term(S,Term,[quoted(true),ignore_ops(true)]).
 :-build_in(current_op/3, 'gnu.prolog.vm.buildins.io.Predicate_current_op').
 
 % char conversions are not yet supported
-%:-build_in(char_conversion/2, 'gnu.prolog.vm.buildins.io.Predicate_char_conversion').
-%:-build_in(current_char_conversion/2, 'gnu.prolog.vm.buildins.io.Predicate_current_char_conversion').
+% Note: even though these are accepted the conversion is not performed during reading
+:-build_in(char_conversion/2, 'gnu.prolog.vm.buildins.io.Predicate_char_conversion').
+:-build_in(current_char_conversion/2, 'gnu.prolog.vm.buildins.io.Predicate_current_char_conversion').
 
 % 8.15 logic and cotrol
 

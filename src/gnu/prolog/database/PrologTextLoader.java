@@ -25,6 +25,9 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -264,7 +267,45 @@ public class PrologTextLoader
 
   protected void processCharConversionDirective(Term from,Term to)
   {
-    logError("char_conversion/2 directive was ignored");
+  	if (from instanceof AtomTerm)
+		{
+			if (((AtomTerm) from).value.length() != 1)
+			{
+				logError("Should be a single length atom");
+				return;
+			}
+		}
+  	else if (from instanceof VariableTerm)
+		{
+  		logError("instantiation error");
+			return;
+		}
+		else 
+		{
+			logError("representation error");
+			return;
+		}
+		if (to instanceof AtomTerm)
+		{
+			if (((AtomTerm) to).value.length() != 1)
+			{
+				logError("Should be a single length atom");
+				return;
+			}
+		}
+		else if (to instanceof VariableTerm)
+		{
+			logError("instantiation error");
+			return;
+		}
+		else 
+		{
+			logError("representation error");
+			return;
+		}
+		char cfrom = ((AtomTerm) from).value.charAt(0);
+		char cto = ((AtomTerm) to).value.charAt(0);
+		prologTextLoaderState.getConversionTable().setConversion(cfrom, cto);    
   }
 
   protected void processOpDirective(Term priority,Term specifier,Term operatorAtom)

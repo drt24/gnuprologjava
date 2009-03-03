@@ -17,6 +17,7 @@
  */
 package gnu.prolog.database;
 
+import gnu.prolog.io.CharConversionTable;
 import gnu.prolog.io.ParseException;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.AtomTerm;
@@ -44,6 +45,7 @@ public class PrologTextLoaderState
 	Predicate currentPredicate = null;
 	List<PrologTextLoaderError> errorList = new ArrayList<PrologTextLoaderError>();
 	Set<String> loadedFiles = new HashSet<String>();
+	CharConversionTable convTable = new CharConversionTable();
 
 	// arguments of ensure_loaded/1 and include/2 derectived
 	final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
@@ -58,6 +60,14 @@ public class PrologTextLoaderState
 	public Module getModule()
 	{
 		return module;
+	}
+	
+	/**
+	 * @return the convTable
+	 */
+	public CharConversionTable getConversionTable()
+	{
+		return convTable;
 	}
 
 	private boolean testOption(PrologTextLoader loader, Predicate p, String option)

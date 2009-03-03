@@ -710,10 +710,8 @@ public class Evaluate
       {
         Term arg0 = args[0];
         Term arg1 = args[1];
-        if (!(arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm))
-        {
-          undefined();
-        }
+        typeTestInt(arg0);
+        typeTestInt(arg1);
         IntegerTerm i0 = (IntegerTerm)arg0;
         IntegerTerm i1 = (IntegerTerm)arg1;
         int res = i0.value >> i1.value;
@@ -723,10 +721,8 @@ public class Evaluate
       {
         Term arg0 = args[0];
         Term arg1 = args[1];
-        if (!(arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm))
-        {
-          undefined();
-        }
+        typeTestInt(arg0);
+        typeTestInt(arg1);
         IntegerTerm i0 = (IntegerTerm)arg0;
         IntegerTerm i1 = (IntegerTerm)arg1;
         int res = i0.value << i1.value;
@@ -736,10 +732,8 @@ public class Evaluate
       {
         Term arg0 = args[0];
         Term arg1 = args[1];
-        if (!(arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm))
-        {
-          undefined();
-        }
+        typeTestInt(arg0);
+        typeTestInt(arg1);
         IntegerTerm i0 = (IntegerTerm)arg0;
         IntegerTerm i1 = (IntegerTerm)arg1;
         int res = i0.value & i1.value;
@@ -749,10 +743,8 @@ public class Evaluate
       {
         Term arg0 = args[0];
         Term arg1 = args[1];
-        if (!(arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm))
-        {
-          undefined();
-        }
+        typeTestInt(arg0);
+        typeTestInt(arg1);
         IntegerTerm i0 = (IntegerTerm)arg0;
         IntegerTerm i1 = (IntegerTerm)arg1;
         int res = i0.value | i1.value;
@@ -761,10 +753,7 @@ public class Evaluate
       else if ( tag == bnot1     ) // ***************************************
       {
         Term arg0 = args[0];
-        if (!(arg0 instanceof IntegerTerm))
-        {
-          undefined();
-        }
+        typeTestInt(arg0);
         IntegerTerm i0 = (IntegerTerm)arg0;
         int res = ~i0.value;
         return IntegerTerm.get(res);
@@ -784,6 +773,23 @@ public class Evaluate
       PrologException.typeError(evaluableAtom, term);
     }
     return null; // fake return
+  }
+  
+  /**
+   * Test the term for an interget term
+   * @param t1
+   */
+  protected static void typeTestInt(Term term) throws PrologException
+  {
+  	if (term instanceof IntegerTerm)
+  	{
+  		return;
+  	}
+  	if (term instanceof VariableTerm)
+  	{
+  		PrologException.instantiationError();
+  	}
+  	PrologException.typeError(TermConstants.integerAtom, term);
   }
 }
 
