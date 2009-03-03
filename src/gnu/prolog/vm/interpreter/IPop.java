@@ -16,7 +16,6 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
 /** delete term from top of pushdown stack
@@ -30,7 +29,7 @@ public class IPop extends Instruction
     */  
   public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
   {
-    Term term = state.popPushDown();
+    state.popPushDown();
     return ExecutionState.NEXT;
   }
 

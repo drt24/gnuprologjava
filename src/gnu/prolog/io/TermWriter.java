@@ -108,7 +108,7 @@ public class TermWriter extends PrintWriter
 	 */
 	public TermWriter(Writer w)
 	{
-		super(w);
+		super(w, true);
 	}
 
 	/**

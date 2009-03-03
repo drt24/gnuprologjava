@@ -26,8 +26,6 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
-import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.TermConstants;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

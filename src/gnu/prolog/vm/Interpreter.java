@@ -492,6 +492,7 @@ public final class Interpreter
 		}
 		catch (PrologHalt ph)
 		{
+			stop(goal);
 			haltExitCode = ph;
 			return PrologCode.HALT;
 		}

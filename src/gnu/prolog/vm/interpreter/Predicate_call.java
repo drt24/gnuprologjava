@@ -114,7 +114,6 @@ public class Predicate_call implements PrologCode
 	public static int staticExecute(Interpreter interpreter, boolean backtrackMode, Term arg) throws PrologException
 	{
 		CallTermBacktrackInfo cbi = backtrackMode ? (CallTermBacktrackInfo) interpreter.popBacktrackInfo() : null;
-		BacktrackInfo tbi;
 		PrologCode code; // code to call
 		Term args[]; // arguments of code
 		Term callTerm; // term being called
