@@ -29,6 +29,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
@@ -107,7 +108,8 @@ public class Predicate_number_codes implements PrologCode
       }
       if (!CompoundTerm.isListPair(cur))
       {
-        PrologException.domainError(characterCodeListAtom,list);
+        //PrologException.domainError(characterCodeListAtom,list);
+        PrologException.typeError(TermConstants.listAtom, cur);
       }
       CompoundTerm ct = (CompoundTerm)cur;
       Term head = ct.args[0].dereference();

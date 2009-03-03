@@ -700,7 +700,7 @@ public class Environment implements PredicateListener
 	 */
 	public void closeStreams()
 	{
-		for (PrologStream stream : openStreams)
+		for (PrologStream stream : new ArrayList<PrologStream>(openStreams))
 		{
 			try
 			{

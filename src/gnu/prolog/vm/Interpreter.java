@@ -33,6 +33,8 @@ import gnu.prolog.vm.interpreter.Tracer;
 
 public final class Interpreter
 {
+	final double FLOAT_EPSILON = 0.0000001d;
+	
 	/** environemt for this interpreter */
 	public Environment environment;
 
@@ -310,7 +312,7 @@ public final class Interpreter
 		{
 			FloatTerm ct1 = (FloatTerm) t1;
 			FloatTerm ct2 = (FloatTerm) t2;
-			if (ct1.value != ct2.value)
+			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON )
 			{
 				rc = PrologCode.FAIL;
 			}
@@ -391,7 +393,7 @@ public final class Interpreter
 		{
 			FloatTerm ct1 = (FloatTerm) t1;
 			FloatTerm ct2 = (FloatTerm) t2;
-			if (ct1.value != ct2.value)
+			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON )
 			{
 				rc = PrologCode.FAIL;
 			}

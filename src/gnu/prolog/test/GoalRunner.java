@@ -101,6 +101,7 @@ public class GoalRunner
         long startTime = System.currentTimeMillis();
         int rc = interpreter.execute(goal);
         long stopTime = System.currentTimeMillis();
+        env.getUserOutput().flushOutput(null);
         System.out.println("time = "+(stopTime-startTime)+"ms");
         response = "n";
         switch (rc)

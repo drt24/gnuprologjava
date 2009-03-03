@@ -64,6 +64,7 @@ public class TermParserUtils
             ch = (char)(ch * 16 + Character.digit(buch,16));
             // @@@ rethow parse error if not digit
           }
+          break;
         default:
           buch = str.charAt(i);
           if (buch >= '0' && buch < '8')

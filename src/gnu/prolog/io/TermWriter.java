@@ -649,7 +649,7 @@ public class TermWriter extends PrintWriter
 			buf.append('\\');
 			buf.append(quote);
 		}
-		else if (ch < ' ' || ch >= 127) // if control character or non ascii
+		else if (ch <= ' ' || ch >= 127) // if control character or non ascii
 		{
 			buf.append('\\');
 			switch (ch)
