@@ -35,6 +35,8 @@ import gnu.prolog.vm.interpreter.Tracer.TraceLevel;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /** Interpreted Code. This class is used by call_term instruction and
   * InterpretedCode   
@@ -62,8 +64,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
   {
     this.codeTag = codeTag;
     int ipos[] = new int[isrc.length];
-    HashMap tag2idx = new HashMap();
-    HashMap constant2idx = new HashMap();
+    Map<CompoundTermTag,Integer> tag2idx = new HashMap<CompoundTermTag, Integer>();
+    Map<AtomicTerm,Integer> constant2idx = new HashMap<AtomicTerm, Integer>();
     pass1(isrc, ipos, tag2idx, constant2idx);
     exceptionHandlers = new ExceptionHandlerInfo[ehs.length];
     int i,n = ehs.length;
@@ -77,11 +79,11 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
     pass2(isrc, ipos, tag2idx, constant2idx);
   }
 
-  private void pass1(Instruction isrc[], int ipos[], HashMap tag2idx, HashMap constant2idx)
+  private void pass1(Instruction isrc[], int ipos[], Map<CompoundTermTag,Integer> tag2idx, Map<AtomicTerm,Integer> constant2idx)
   {
-    HashSet callTags = new HashSet();
-    HashSet createCompoundTermTags = new HashSet();
-    HashSet constantSet = new HashSet();
+    Set<CompoundTermTag> callTags = new HashSet<CompoundTermTag>();
+    Set<CompoundTermTag> createCompoundTermTags = new HashSet<CompoundTermTag>();
+    Set<AtomicTerm> constantSet = new HashSet<AtomicTerm>();
     
     int bytes = 0;
     int i,n = isrc.length;
@@ -220,7 +222,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
     createCompoundTermTags.removeAll(callTags);
     tags = new CompoundTermTag[createCompoundTermTags.size()+callTags.size()];
     predicateCodes = new PrologCode[callTags.size()];
-    Iterator j = callTags.iterator();
+    Iterator<CompoundTermTag> j = callTags.iterator();
     for (i=0; j.hasNext(); i++)
     {
       CompoundTermTag tag = (CompoundTermTag)j.next();
@@ -235,10 +237,10 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
       tag2idx.put(tag, new Integer(i));
     }
     constants = new AtomicTerm[constantSet.size()];
-    j = constantSet.iterator();
-    for (i=0; j.hasNext(); i++)
+    Iterator<AtomicTerm> j2 = constantSet.iterator();
+    for (i=0; j2.hasNext(); i++)
     {
-      AtomicTerm term = (AtomicTerm)j.next();
+      AtomicTerm term = (AtomicTerm)j2.next();
       constants[i] = term;
       constant2idx.put(term, new Integer(i));
     }
@@ -246,7 +248,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
   }
 
 
-  private void pass2(Instruction isrc[], int ipos[], HashMap tag2idx, HashMap constant2idx)
+  private void pass2(Instruction isrc[], int ipos[], Map<CompoundTermTag,Integer> tag2idx, Map<AtomicTerm,Integer> constant2idx)
   {
     int bytes = 0;
     int i,n = isrc.length;
@@ -715,7 +717,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
               {
                 PrologException.instantiationError();
               }
-              throw new PrologException(t);
+              throw new PrologException(t, null);
             }
           case ITRUE:
             {
@@ -761,9 +763,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
         }
         catch (RuntimeException ex)
         {
-          ex.printStackTrace();
           // unchecked exception behaves as system_error
-          PrologException.systemError();
+          PrologException.systemError(ex);
         }
       }
       catch (PrologException ex)

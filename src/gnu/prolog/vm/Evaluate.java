@@ -776,7 +776,12 @@ public class Evaluate
     }
     else
     {
-      PrologException.typeError(numberAtom, term);
+    	if (term instanceof AtomTerm)
+    	{
+    		// because it is expected to be an expression
+    		term = new CompoundTerm(CompoundTermTag.divide2, term, IntegerTerm.int_0);
+    	}
+      PrologException.typeError(evaluableAtom, term);
     }
     return null; // fake return
   }

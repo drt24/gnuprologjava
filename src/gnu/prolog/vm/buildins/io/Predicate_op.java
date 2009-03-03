@@ -31,6 +31,7 @@ import gnu.prolog.vm.TermConstants;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /** prolog code 
   */
@@ -60,7 +61,7 @@ public class Predicate_op implements PrologCode, TermConstants
 
     int priority=0; // parsed priority
     int opspec=-1;  // parsed operator specifier
-    HashSet ops = new HashSet(); // set of operators
+    Set<AtomTerm> ops = new HashSet<AtomTerm>(); // set of operators
     boolean fx = false;
     boolean xf = false;
     boolean xfx = false;
@@ -138,7 +139,7 @@ public class Predicate_op implements PrologCode, TermConstants
     else if (tops instanceof AtomTerm)
     {
       validateOp(priority, opspec, (AtomTerm)tops, opSet);
-      ops.add(tops);
+      ops.add((AtomTerm)tops);
     }
     else if (tops instanceof CompoundTerm)
     {
@@ -169,7 +170,7 @@ public class Predicate_op implements PrologCode, TermConstants
           PrologException.typeError(atomAtom, head);
         }
         validateOp(priority, opspec, (AtomTerm)head, opSet);
-        ops.add(head);
+        ops.add((AtomTerm)head);
       }
     }
     else
@@ -178,7 +179,7 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     if (priority == 0) // if remove requested
     {
-      Iterator i = ops.iterator();
+      Iterator<AtomTerm> i = ops.iterator();
       while (i.hasNext())
       {
         AtomTerm op = (AtomTerm)i.next();
@@ -187,7 +188,7 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     else
     {
-      Iterator i = ops.iterator();
+      Iterator<AtomTerm> i = ops.iterator();
       while (i.hasNext())
       {
         AtomTerm op = (AtomTerm)i.next();

@@ -26,6 +26,8 @@ public interface PrologCode
    public final static int SUCCESS_LAST = 1;
    /** predicate failed */
    public final static int FAIL         = -1;
+   /** returned by the interpreter when it was halted, shown never be returned by prolog code */
+   public static final int HALT 				= -2;
    /** this method is used for execution of code
      * @param interpreter interpreter in which context code is executed 
      * @param backtrackMode true if predicate is called on backtracking and false otherwise

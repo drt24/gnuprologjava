@@ -28,6 +28,7 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** Unify two terms occur check
   */
@@ -42,7 +43,7 @@ public class Predicate_unify_with_occurs_check implements PrologCode
   public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
          throws PrologException
   {
-    ArrayList stack = new ArrayList(10);
+    List<Term> stack = new ArrayList<Term>(10);
     stack.add(args[0]);
     stack.add(args[1]);
     int rc = SUCCESS_LAST;

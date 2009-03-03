@@ -161,6 +161,12 @@ public class GoalRunner
           out.println("FAIL");
           out.flush();
           return;
+        case PrologCode.HALT:
+          env.closeStreams();
+          out.println("HALT");
+          out.flush();
+          System.exit(interpreter.getExitCode());
+          return;
         }
       } while (true);
     }

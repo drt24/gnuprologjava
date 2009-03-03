@@ -1,5 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
+ * Copyright (C) 2009       Michiel Hendriks
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -17,33 +19,28 @@
  */
 package gnu.prolog.vm;
 
-import gnu.prolog.term.CompoundTermTag;
-
 /**
- * Event that indicates changes in prolog code.
+ * Thrown by the halt/1 prolog predicate to stop the interpreter
+ * 
+ * @author Michiel Hendriks
  */
-public class PrologCodeUpdatedEvent extends java.util.EventObject
+public class PrologHalt extends Error
 {
-	private static final long serialVersionUID = 3547991978575619876L;
-	/** tag for predicate */
-	CompoundTermTag tag;
+	private static final long serialVersionUID = -8799959644073589092L;
 
-	/** a constructor */
-	public PrologCodeUpdatedEvent(Environment environment, CompoundTermTag tag)
+	protected int exitCode;
+
+	public PrologHalt(int exit)
 	{
-		super(environment);
-		this.tag = tag;
+		super("Halt prolog interpreter");
+		exitCode = exit;
 	}
 
-	/** get environemnt */
-	public Environment getEnvironment()
+	/**
+	 * @return the exitCode
+	 */
+	public int getExitCode()
 	{
-		return (Environment) getSource();
-	}
-
-	/** get tag of predicate */
-	public CompoundTermTag getPredicateTag()
-	{
-		return tag;
+		return exitCode;
 	}
 }

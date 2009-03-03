@@ -19,13 +19,19 @@ package gnu.prolog.vm;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.io.WriteOptions;
+import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.Writer;
 
 public class TextOutputPrologStream extends PrologStream
 {
   TermWriter termWriter; 
+  RandomAccessFileWriter fileWriter;
+  
   TextOutputPrologStream(OpenOptions options, Writer wr)
   {
     super(options);
@@ -33,7 +39,19 @@ public class TextOutputPrologStream extends PrologStream
     termWriter = new TermWriter(wr);
   }
 
-  public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
+  /**
+	 * @param options
+	 * @param raf
+	 */
+	public TextOutputPrologStream(OpenOptions options, RandomAccessFile raf)
+	{
+		super(options);
+    endOfStream = atAtom;
+    this.fileWriter = new RandomAccessFileWriter(raf);
+    termWriter = new TermWriter(this.fileWriter);
+	}
+
+	public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(inputAtom, textStreamAtom, streamTerm);
@@ -55,13 +73,59 @@ public class TextOutputPrologStream extends PrologStream
   public Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
+    if (fileWriter != null)
+  	{
+  		try
+      {
+  			return new JavaObjectTerm(Long.valueOf(fileWriter.getPosition()));
+      }
+  		catch(IOException ex)
+      {
+        PrologException.systemError(ex);
+        return null;
+      }
+  	}
     PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
     return null;
   }
-  public void setPosition(Term streamTerm, Interpreter interptreter, Term pos) throws PrologException
+  public void setPosition(Term streamTerm, Interpreter interptreter, Term position) throws PrologException
   {
     checkExists();
-    PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
+    if (fileWriter != null)
+  	{
+    	try
+      {
+        if (reposition == falseAtom)
+        {
+          PrologException.permissionError(repositionAtom,streamAtom,getStreamTerm());
+        }
+        if (position instanceof VariableTerm)
+        {
+          PrologException.instantiationError();
+        }
+        else if (!(position instanceof JavaObjectTerm))
+        {
+          PrologException.domainError(TermConstants.streamPositionAtom, position);
+        }
+        JavaObjectTerm jt = (JavaObjectTerm)position;
+        if (!(jt.value  instanceof Long))
+        {
+          PrologException.domainError(TermConstants.streamPositionAtom, position);
+        }
+        long pos =  ((Long)jt.value).longValue();
+        if (pos > fileWriter.size())
+        {
+          PrologException.domainError(TermConstants.streamPositionAtom, position);
+        }
+        fileWriter.seek(pos);
+      }
+      catch(IOException ex)
+      {
+        PrologException.systemError(ex);
+      }
+      return;
+  	}
+    PrologException.permissionError(repositionAtom, streamAtom, streamTerm);
   }
   
   public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
@@ -108,7 +172,7 @@ public class TextOutputPrologStream extends PrologStream
     {
       if (!force)
       {
-        PrologException.systemError();
+        PrologException.systemError(ex);
       }
     }
     super.close(force);

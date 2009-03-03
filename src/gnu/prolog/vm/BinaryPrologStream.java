@@ -74,7 +74,7 @@ public class BinaryPrologStream extends PrologStream
         }
         catch(IOException ex)
         {
-          PrologException.systemError();
+          PrologException.systemError(ex);
         }
       }
     }
@@ -113,7 +113,7 @@ public class BinaryPrologStream extends PrologStream
         }
         catch(IOException ex)
         {
-          PrologException.systemError();
+          PrologException.systemError(ex);
         }
       }
     }
@@ -134,7 +134,7 @@ public class BinaryPrologStream extends PrologStream
       }
       catch(IOException ex)
       {
-        PrologException.systemError();
+        PrologException.systemError(ex);
       }
     }
     else
@@ -150,7 +150,7 @@ public class BinaryPrologStream extends PrologStream
     }
     catch(IOException ex)
     {
-      PrologException.systemError();
+      PrologException.systemError(ex);
     }
     return null; //fake
   }
@@ -184,7 +184,7 @@ public class BinaryPrologStream extends PrologStream
     }
     catch(IOException ex)
     {
-      PrologException.systemError();
+      PrologException.systemError(ex);
     }
   }
   
@@ -266,7 +266,7 @@ public class BinaryPrologStream extends PrologStream
     }
     catch(IOException ex)
     {
-      PrologException.systemError();
+      PrologException.systemError(ex);
     }
     return super.getEndOfStreamState();
   }

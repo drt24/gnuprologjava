@@ -23,6 +23,7 @@ import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 
 import java.util.ArrayList;
+import java.util.List;
 /** execution state class */
 public class ExecutionState
 {
@@ -51,7 +52,7 @@ public class ExecutionState
   /** current environment */
   public Term environment[];
   /** pushdown stack, used for unification and calls */
-  public ArrayList pushdown = new ArrayList();
+  public List<Term> pushdown = new ArrayList<Term>();
   /** current position */
   public int jumpPosition;
   /** arguments */ 

@@ -41,9 +41,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -607,11 +607,12 @@ public class Environment implements PredicateListener
 		}
 		else if (options.type == PrologStream.textAtom)
 		{
-			if (options.reposition == PrologStream.trueAtom)
-			{
-				PrologException.permissionError(PrologStream.openAtom, PrologStream.sourceSinkAtom, new CompoundTerm(
-						PrologStream.repositionTag, PrologStream.trueAtom));
-			}
+			boolean randAccess = options.reposition == PrologStream.trueAtom;
+//			if (options.reposition == PrologStream.trueAtom)
+//			{
+//				PrologException.permissionError(PrologStream.openAtom, PrologStream.sourceSinkAtom, new CompoundTerm(
+//						PrologStream.repositionTag, PrologStream.trueAtom));
+//			}
 			if (options.mode == PrologStream.readAtom)
 			{
 				if (!(new File(source_sink.value)).exists())
@@ -620,8 +621,15 @@ public class Environment implements PredicateListener
 				}
 				try
 				{
-					Reader rd = new FileReader(source_sink.value);
-					stream = new TextInputPrologStream(options, rd);
+					if (randAccess)
+					{
+						RandomAccessFile raf = new RandomAccessFile(source_sink.value ,"r");
+						stream = new TextInputPrologStream(options, raf);
+					}
+					else {
+						Reader rd = new FileReader(source_sink.value);
+						stream = new TextInputPrologStream(options, rd);
+					}
 				}
 				catch (IOException ex)
 				{
@@ -633,8 +641,15 @@ public class Environment implements PredicateListener
 				boolean append = (options.mode == PrologStream.appendAtom);
 				try
 				{
-					Writer wr = new FileWriter(source_sink.value, append);
-					stream = new TextOutputPrologStream(options, wr);
+					if (randAccess)
+					{
+						RandomAccessFile raf = new RandomAccessFile(source_sink.value ,"rw");
+						stream = new TextOutputPrologStream(options, raf);
+					}
+					else {
+						Writer wr = new FileWriter(source_sink.value, append);
+						stream = new TextOutputPrologStream(options, wr);
+					}
 				}
 				catch (IOException ex)
 				{
@@ -661,6 +676,7 @@ public class Environment implements PredicateListener
 		}
 		if (stream == userOutput)
 		{
+			userOutput.flushOutput(null);
 			return;
 		}
 		Iterator<AtomTerm> aliases = stream.aliases.iterator();
@@ -676,6 +692,22 @@ public class Environment implements PredicateListener
 		if (currentOutput == stream)
 		{
 			currentOutput = userOutput;
+		}
+	}
+
+	/**
+	 * Closes all open streams
+	 */
+	public void closeStreams()
+	{
+		for (PrologStream stream : openStreams)
+		{
+			try
+			{
+				close(stream);
+			}
+			catch (PrologException e)
+			{}
 		}
 	}
 }

@@ -30,6 +30,7 @@ import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /** prolog code 
   */
@@ -51,9 +52,9 @@ public class Predicate_current_op implements PrologCode, TermConstants
 
     int startUndoPosition;
 
-    Iterator ops;
-    Iterator specifiers;
-    Iterator priorities;
+    Iterator<AtomTerm> ops;
+    Iterator<AtomTerm> specifiers;
+    Iterator<IntegerTerm> priorities;
     
     Term op;
     Term specifier;
@@ -109,11 +110,11 @@ public class Predicate_current_op implements PrologCode, TermConstants
       }
 
       // prepare and exec
-      ArrayList ops = new ArrayList();
-      ArrayList specifiers = new ArrayList();
-      ArrayList priorities = new ArrayList();
+      List<AtomTerm> ops = new ArrayList<AtomTerm>();
+      List<AtomTerm> specifiers = new ArrayList<AtomTerm>();
+      List<IntegerTerm> priorities = new ArrayList<IntegerTerm>();
       
-      Iterator i = interpreter.environment.getOperatorSet().getOperators().iterator();
+      Iterator<Operator> i = interpreter.environment.getOperatorSet().getOperators().iterator();
       while (i.hasNext())
       {
         Operator o = (Operator)i.next();

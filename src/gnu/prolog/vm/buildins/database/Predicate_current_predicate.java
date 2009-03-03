@@ -31,6 +31,7 @@ import gnu.prolog.vm.PrologException;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 /** prolog code 
   */
@@ -46,7 +47,7 @@ public class Predicate_current_predicate implements PrologCode
       super(-1,-1);
     }
     int startUndoPosition;
-    Iterator tagsIterator;
+    Iterator<CompoundTermTag> tagsIterator;
     Term     pi;
   }
   /** this method is used for execution of code
@@ -93,7 +94,7 @@ public class Predicate_current_predicate implements PrologCode
       {
         PrologException.typeError(predicateIndicatorAtom,pi);
       }
-      HashSet tagSet = new HashSet(interpreter.environment.getModule().getPredicateTags());
+      Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.environment.getModule().getPredicateTags());
       CurrentPredicateBacktrackInfo bi = new CurrentPredicateBacktrackInfo();
       bi.startUndoPosition = interpreter.getUndoPosition();
       bi.pi = pi;

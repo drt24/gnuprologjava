@@ -34,8 +34,8 @@ public class Predicate_current_prolog_flag implements PrologCode
    private class CurrentPrologFlagBacktrackInfo extends BacktrackInfo
    {
      CurrentPrologFlagBacktrackInfo(){super(-1,-1);}
-     Map map;
-     Iterator keys; 
+     Map<AtomTerm, Term> map;
+     Iterator<AtomTerm> keys; 
      int startUndoPosition;
      Term flag;
      Term value;

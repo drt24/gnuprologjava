@@ -35,7 +35,7 @@ public class IThrow extends Instruction
     {
       PrologException.instantiationError();
     }
-    throw new PrologException(term);
+    throw new PrologException(term, null);
   }
 
   /** convert instruction to string */

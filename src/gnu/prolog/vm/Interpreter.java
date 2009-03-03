@@ -37,6 +37,8 @@ public final class Interpreter
 	public Environment environment;
 
 	public Tracer tracer;
+	
+	protected PrologHalt haltExitCode;
 
 	/**
 	 * this constructor should not be used by client programs
@@ -449,6 +451,7 @@ public final class Interpreter
 
 	public int execute(Goal goal) throws PrologException
 	{
+		haltExitCode = null;
 		try
 		{
 			try
@@ -481,9 +484,14 @@ public final class Interpreter
 			}
 			catch (RuntimeException rex)
 			{
-				PrologException.systemError();
+				PrologException.systemError(rex);
 				throw rex; // fake
 			}
+		}
+		catch (PrologHalt ph)
+		{
+			haltExitCode = ph;
+			return PrologCode.HALT;
 		}
 		catch (PrologException ex)
 		{
@@ -510,5 +518,17 @@ public final class Interpreter
 		}
 		backtrackInfoAmount = 0;
 		currentGoal = null;
+	}
+	
+	/**
+	 * @return The exit code when the prolog interpreter was halted
+	 */
+	public int getExitCode()
+	{
+		if (haltExitCode == null)
+		{
+			throw new IllegalStateException("Prolog Interpreter was not halted");
+		}
+		return haltExitCode.getExitCode();
 	}
 }

@@ -29,6 +29,7 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * prolog code
@@ -124,8 +125,8 @@ public class Predicate_call implements PrologCode
 			{
 				PrologException.instantiationError();
 			}
-			ArrayList argumentVariables = new ArrayList();
-			ArrayList arguments = new ArrayList();
+			List<VariableTerm> argumentVariables = new ArrayList<VariableTerm>();
+			List<Term> arguments = new ArrayList<Term>();
 			Term body;
 			try
 			{
@@ -140,7 +141,7 @@ public class Predicate_call implements PrologCode
 			Term head = new CompoundTerm(headFunctor, headArgs);
 			Term clause = new CompoundTerm(clauseTag, head, body);
 			args = (Term[]) arguments.toArray(termArrayType);
-			ArrayList clauses = new ArrayList(1);
+			List<Term> clauses = new ArrayList<Term>(1);
 			clauses.add(clause);
 			code = InterpretedCodeCompiler.compile(clauses);
 			code.install(interpreter.environment);
@@ -175,7 +176,7 @@ public class Predicate_call implements PrologCode
 	}
 
 	/** convert callable term to clause */
-	public static Term getClause(Term term, ArrayList argumentVariables, ArrayList arguments)
+	public static Term getClause(Term term, List<VariableTerm> argumentVariables, List<Term> arguments)
 	{
 		if (term instanceof AtomTerm)
 		{
@@ -207,7 +208,7 @@ public class Predicate_call implements PrologCode
 				if (!arguments.contains(arg))
 				{
 					newArgs[i] = new VariableTerm();
-					argumentVariables.add(newArgs[i]);
+					argumentVariables.add((VariableTerm)newArgs[i]);
 					arguments.add(arg);
 				}
 				else

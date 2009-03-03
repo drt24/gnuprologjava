@@ -139,7 +139,7 @@ public class InterpretedCode implements PrologCode
         {
           ex.printStackTrace();
           // unchecked exception behaves as system_error
-          PrologException.systemError();
+          PrologException.systemError(null);
         }
       }
       catch (PrologException ex)

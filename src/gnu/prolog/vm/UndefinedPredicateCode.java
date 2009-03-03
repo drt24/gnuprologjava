@@ -69,7 +69,7 @@ public class UndefinedPredicateCode implements PrologCode
       System.err.println("predicate "+predicateTag.functor.value+"/"+predicateTag.arity+" does not exists.");
       return FAIL;
     }
-    throw new PrologException(PrologException.systemErrorAtom);
+    throw new PrologException(PrologException.systemErrorAtom, null);
   }
 
   /** this method is called when code is installed to the environment

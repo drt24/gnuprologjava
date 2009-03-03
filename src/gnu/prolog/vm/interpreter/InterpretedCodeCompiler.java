@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /** compiler from predicate to interpreted code
@@ -74,15 +75,15 @@ public class InterpretedCodeCompiler
 
   // compilation variables
   /** code so far compiled */
-  ArrayList code = new ArrayList();
+  List<Instruction> code = new ArrayList<Instruction>();
   /** exception handlers */
-  ArrayList exceptionHandlers = new ArrayList();
+  List<ExceptionHandlerInfo> exceptionHandlers = new ArrayList<ExceptionHandlerInfo>();
   /** current code position */
   int  currentCodePosition = 0;
   /** number of already allocated reserved variables */
   int  allocatedReserved = 0;
   /** mapping from variables to environment indexes */
-  HashMap variableToEnvironmentIndex = new HashMap();
+  Map<Term,Integer> variableToEnvironmentIndex = new HashMap<Term, Integer>();
   /** this predicate tag */
   CompoundTermTag codeTag;
 
@@ -91,13 +92,13 @@ public class InterpretedCodeCompiler
   int numberOfReserved = 1;
   
   /** cut position stack */
-  ArrayList cutPositionStack = new ArrayList();
+  List<Integer> cutPositionStack = new ArrayList<Integer>();
   /** clauses to compile */
-  List passedClauses;
+  List<Term> passedClauses;
 
 
   /** a constructor */
-  public InterpretedCodeCompiler(List clauses)
+  public InterpretedCodeCompiler(List<Term> clauses)
   {
     passedClauses = clauses;
   }
@@ -438,7 +439,7 @@ public class InterpretedCodeCompiler
     * @return instance of inerpreted code
     * @throw PrologException
     */
-  public static PrologCode compile(List clauses) throws PrologException
+  public static PrologCode compile(List<Term> clauses) throws PrologException
   {
     return (new InterpretedCodeCompiler(clauses)).compilePredicate();
   }
@@ -451,7 +452,7 @@ public class InterpretedCodeCompiler
     */
   PrologCode compilePredicate() throws PrologException
   {
-    List clauses = new ArrayList();
+    List<Term> clauses = new ArrayList<Term>();
     
     int i,n;
     n = passedClauses.size();
@@ -461,7 +462,7 @@ public class InterpretedCodeCompiler
     }
     else
     {
-      Iterator iclauses;
+      Iterator<Term> iclauses;
       // dereference all clauses, it will simplify analisys a bit
       for (iclauses = passedClauses.iterator();iclauses.hasNext();)
       {
@@ -498,7 +499,7 @@ public class InterpretedCodeCompiler
       n = clauses.size();
       if (n > 1) // if more then one clause
       {
-        List jumps = new ArrayList();
+        List<IJump> jumps = new ArrayList<IJump>();
         RetryInstruction prv = iTryMeElse(-1); 
         compileClause((Term)clauses.get(0)); 
         jumps.add(iJump(-1));
@@ -512,7 +513,7 @@ public class InterpretedCodeCompiler
         prv.retryPosition = currentCodePosition;
         iTrustMe(); 
         compileClause((Term)clauses.get(n-1)); 
-        for (Iterator j = jumps.iterator();j.hasNext();)
+        for (Iterator<IJump> j = jumps.iterator();j.hasNext();)
         {
           IJump jump = (IJump)j.next();
           jump.jumpPosition = currentCodePosition;

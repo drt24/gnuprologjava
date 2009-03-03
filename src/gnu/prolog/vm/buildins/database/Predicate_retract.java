@@ -31,6 +31,8 @@ import gnu.prolog.vm.PrologException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /** prolog code 
   */
@@ -49,8 +51,8 @@ public class Predicate_retract implements PrologCode
     {
       super(-1,-1);
     }
-    Iterator iclauses;
-    HashMap clauseMap;
+    Iterator<Term> iclauses;
+    Map<Term,Term> clauseMap;
     int startUndoPosition;
     Term clause;
     Predicate pred;
@@ -137,9 +139,9 @@ public class Predicate_retract implements PrologCode
       {
         PrologException.permissionError(modifyAtom,staticProcedureAtom,predTag.getPredicateIndicator());
       }
-      HashMap map = new HashMap();
-      ArrayList list = new ArrayList(p.getClauses().size());
-      for (Iterator ic = p.getClauses().iterator();ic.hasNext();)
+      Map<Term,Term> map = new HashMap<Term, Term>();
+      List<Term> list = new ArrayList<Term>(p.getClauses().size());
+      for (Iterator<Term> ic = p.getClauses().iterator();ic.hasNext();)
       {
         Term cl = (Term)ic.next();
         Term cp = (Term)cl.clone();

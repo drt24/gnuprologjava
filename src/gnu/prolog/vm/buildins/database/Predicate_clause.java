@@ -30,6 +30,7 @@ import gnu.prolog.vm.PrologException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /** prolog code 
   */
@@ -50,7 +51,7 @@ public class Predicate_clause implements PrologCode
     {
       super(-1,-1);
     }
-    ArrayList clauses;
+    List<Term> clauses;
     int  position;
     int  startUndoPosition;
     Term clause;
@@ -107,8 +108,8 @@ public class Predicate_clause implements PrologCode
       {
         PrologException.typeError(callableAtom, body);
       }
-      ArrayList clauses = new ArrayList();
-      for(Iterator ic = p.getClauses().iterator();ic.hasNext();)
+      List<Term> clauses = new ArrayList<Term>();
+      for(Iterator<Term> ic = p.getClauses().iterator();ic.hasNext();)
       {
         clauses.add((Term)((Term)ic.next()).clone());
       }

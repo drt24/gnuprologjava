@@ -16,103 +16,149 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+
 /** a prolog exception */
 public class PrologException extends Exception
 {
-  /** term of the exception */
-  Term term;
-  /** message of exception */
-  String msg;
+	private static final long serialVersionUID = 946127094875894543L;
 
+	/** term of the exception */
+	Term term;
+	/** message of exception */
+	String msg;
+	
+	/**
+	 * 
+	 */
+	protected PrologException()
+	{
+		super();
+	}
 
-  /** a constructor */
-  public PrologException(Term term)
-  {
-    this.term = term;
-  }
-  
-  public String getMessage()
-  {
-    if (msg == null)
-    {
-      msg = gnu.prolog.io.TermWriter.toString(term);
-    }
-    return msg;
-  }
+	/**
+	 * @param message
+	 * @param cause
+	 */
+	protected PrologException(String message, Throwable cause)
+	{
+		super(message, cause);
+	}
 
-  /** get term of this excepion */
-  public Term getTerm()
-  {
-    return term;
-  }
+	/**
+	 * @param message
+	 */
+	protected PrologException(String message)
+	{
+		super(message);
+	}
 
-  //public final static AtomTerm Atom = AtomTerm.get("");
-  public final static AtomTerm instantiationErrorAtom = AtomTerm.get("instantiation_error");
-  public final static AtomTerm systemErrorAtom = AtomTerm.get("system_error");
-  public final static AtomTerm errorAtom = AtomTerm.get("error");
-  //public final static CompoundTermTag Tag = CompoundTermTag.get("",);
-  public final static CompoundTermTag errorTag = CompoundTermTag.get("error",2);
-  public final static CompoundTermTag typeErrorTag = CompoundTermTag.get("type_error",2);
-  public final static CompoundTermTag existenceErrorTag = CompoundTermTag.get("existence_error",2);
-  public final static CompoundTermTag domainErrorTag = CompoundTermTag.get("domain_error",2);
-  public final static CompoundTermTag representationErrorTag = CompoundTermTag.get("representation_error",1);
-  public final static CompoundTermTag syntaxErrorTag = CompoundTermTag.get("syntax_error",1);
-  public final static CompoundTermTag permissionErrorTag = CompoundTermTag.get("permission_error",3);
-  
-  static PrologException getError(Term term)
-  {
-    return new PrologException(new CompoundTerm(errorTag,term,errorAtom));
-  }
+	/**
+	 * @param cause
+	 */
+	protected PrologException(Throwable cause)
+	{
+		super(cause);
+	}
 
-  public static void systemError() throws PrologException
-  {
-    throw getError(systemErrorAtom);
-  }
-  
-  public static void instantiationError() throws PrologException
-  {
-    throw getError(instantiationErrorAtom);
-  }
+	/** a constructor 
+	 * @param inner TODO*/
+	public PrologException(Term term, Throwable inner)
+	{
+		this(inner);
+		this.term = term;
+	}
 
-  public static void typeError(AtomTerm errorType, Term errorTerm) throws PrologException
-  {
-    throw getError(new CompoundTerm(typeErrorTag,errorType,errorTerm));
-  }
+	public String getMessage()
+	{
+		if (msg == null)
+		{
+			msg = gnu.prolog.io.TermWriter.toString(term);
+		}
+		return msg;
+	}
 
-  public static void existenceError(AtomTerm errorType, Term errorTerm) throws PrologException
-  {
-    throw getError(new CompoundTerm(existenceErrorTag,errorType,errorTerm));
-  }
+	/** get term of this excepion */
+	public Term getTerm()
+	{
+		return term;
+	}
 
-  public static void domainError(AtomTerm errorType, Term errorTerm) throws PrologException
-  {
-    throw getError(new CompoundTerm(domainErrorTag,errorType,errorTerm));
-  }
+	// public final static AtomTerm Atom = AtomTerm.get("");
+	public final static AtomTerm instantiationErrorAtom = AtomTerm.get("instantiation_error");
+	public final static AtomTerm systemErrorAtom = AtomTerm.get("system_error");
+	public final static AtomTerm errorAtom = AtomTerm.get("error");
+	// public final static CompoundTermTag Tag = CompoundTermTag.get("",);
+	public final static CompoundTermTag errorTag = CompoundTermTag.get("error", 2);
+	public final static CompoundTermTag typeErrorTag = CompoundTermTag.get("type_error", 2);
+	public final static CompoundTermTag existenceErrorTag = CompoundTermTag.get("existence_error", 2);
+	public final static CompoundTermTag domainErrorTag = CompoundTermTag.get("domain_error", 2);
+	public final static CompoundTermTag representationErrorTag = CompoundTermTag.get("representation_error", 1);
+	public final static CompoundTermTag syntaxErrorTag = CompoundTermTag.get("syntax_error", 1);
+	public final static CompoundTermTag permissionErrorTag = CompoundTermTag.get("permission_error", 3);
 
-  public static void representationError(Term errorTerm) throws PrologException
-  {
-    throw getError(new CompoundTerm(representationErrorTag,errorTerm));
-  }
+	static PrologException getError(Term term)
+	{
+		return getError(term, null);
+	}
 
-  public static void syntaxError(AtomTerm term) throws PrologException
-  {
-    throw getError(new CompoundTerm(syntaxErrorTag,term));
-  }
-  
-  public static void permissionError(AtomTerm operation,AtomTerm permissionType,Term culprit) throws PrologException
-  {
-    throw getError(new CompoundTerm(permissionErrorTag, operation, permissionType, culprit));
-  }
+	static PrologException getError(Term term, Throwable inner)
+	{
+		return new PrologException(new CompoundTerm(errorTag, term, errorAtom), inner);
+	}
 
+	public static void systemError() throws PrologException
+	{
+		systemError(null);
+	}
 
-  public static void syntaxError(gnu.prolog.io.ParseException ex) throws PrologException
-  {
-    syntaxError(AtomTerm.get("l"+ex.getLine()+"c"+ex.getColumn()));
-  }
+	public static void systemError(Throwable inner) throws PrologException
+	{
+		throw getError(systemErrorAtom, inner);
+	}
+
+	public static void instantiationError() throws PrologException
+	{
+		throw getError(instantiationErrorAtom);
+	}
+
+	public static void typeError(AtomTerm errorType, Term errorTerm) throws PrologException
+	{
+		throw getError(new CompoundTerm(typeErrorTag, errorType, errorTerm));
+	}
+
+	public static void existenceError(AtomTerm errorType, Term errorTerm) throws PrologException
+	{
+		throw getError(new CompoundTerm(existenceErrorTag, errorType, errorTerm));
+	}
+
+	public static void domainError(AtomTerm errorType, Term errorTerm) throws PrologException
+	{
+		throw getError(new CompoundTerm(domainErrorTag, errorType, errorTerm));
+	}
+
+	public static void representationError(Term errorTerm) throws PrologException
+	{
+		throw getError(new CompoundTerm(representationErrorTag, errorTerm));
+	}
+
+	public static void syntaxError(AtomTerm term) throws PrologException
+	{
+		throw getError(new CompoundTerm(syntaxErrorTag, term));
+	}
+
+	public static void permissionError(AtomTerm operation, AtomTerm permissionType, Term culprit) throws PrologException
+	{
+		throw getError(new CompoundTerm(permissionErrorTag, operation, permissionType, culprit));
+	}
+
+	public static void syntaxError(gnu.prolog.io.ParseException ex) throws PrologException
+	{
+		syntaxError(AtomTerm.get("l" + ex.getLine() + "c" + ex.getColumn()));
+	}
 
 }
-

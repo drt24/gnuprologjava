@@ -31,6 +31,7 @@ import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /** prolog code 
@@ -56,9 +57,9 @@ public class Predicate_read_term implements PrologCode, TermConstants
     ReadOptions options = new ReadOptions();
     options.operatorSet = interpreter.environment.getOperatorSet();
     
-    ArrayList singletons = new ArrayList();
-    ArrayList variableLists = new ArrayList();
-    ArrayList vnlists = new ArrayList();
+    List<Term> singletons = new ArrayList<Term>();
+    List<Term> variableLists = new ArrayList<Term>();
+    List<Term> vnlists = new ArrayList<Term>();
     
     // parse and unify options
     Term cur = optionsList;
@@ -117,7 +118,7 @@ public class Predicate_read_term implements PrologCode, TermConstants
         interpreter.undo(undoPos);
         return FAIL;
       }
-      Iterator i=singletons.iterator();
+      Iterator<Term> i=singletons.iterator();
       if (i.hasNext())
       {
         Term singletonsList = mapToList(options.singletons);
@@ -183,9 +184,9 @@ public class Predicate_read_term implements PrologCode, TermConstants
 
   }
 
-  private static Term mapToList(Map map)
+  private static Term mapToList(Map<String,Term> map)
   {
-    Iterator i = map.keySet().iterator();
+    Iterator<String> i = map.keySet().iterator();
     Term rc = emptyListAtom;
     while (i.hasNext())
     {

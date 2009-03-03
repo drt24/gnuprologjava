@@ -28,6 +28,7 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /** prolog code 
   */
@@ -123,7 +124,7 @@ public class Predicate_univ implements PrologCode
         PrologException.typeError(atomAtom,head);
       }
       AtomTerm functor = (AtomTerm)head;
-      ArrayList argList = new ArrayList();
+      List<Term> argList = new ArrayList<Term>();
       do
       {
         ct = (CompoundTerm)tail;

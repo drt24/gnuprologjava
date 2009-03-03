@@ -19,14 +19,19 @@ package gnu.prolog.vm;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermReader;
 import gnu.prolog.io.WriteOptions;
+import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.Reader;
 public class TextInputPrologStream extends PrologStream
 {
   TermReader termReader;
+  
+  RandomAccessFileReader fileReader;
 
   public TextInputPrologStream(OpenOptions options, Reader rd) throws PrologException
   {
@@ -34,7 +39,18 @@ public class TextInputPrologStream extends PrologStream
     termReader = new TermReader(new BufferedReader(rd));
   }
   
-  // byte io
+  /**
+	 * @param options
+	 * @param raf
+	 */
+	public TextInputPrologStream(OpenOptions options, RandomAccessFile raf)
+	{
+		super(options);
+		this.fileReader = new RandomAccessFileReader(raf);
+		termReader = new TermReader(this.fileReader);
+	}
+
+	// byte io
   public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
@@ -56,14 +72,60 @@ public class TextInputPrologStream extends PrologStream
   // repositioning
   public Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException
   {
-    checkExists();
+  	checkExists();
+  	if (fileReader != null)
+  	{
+  		try
+      {
+  			return new JavaObjectTerm(Long.valueOf(fileReader.getPosition()));
+      }
+  		catch(IOException ex)
+      {
+        PrologException.systemError(ex);
+        return null;
+      }
+  	}
     PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
     return null;
   }
-  public void setPosition(Term streamTerm, Interpreter interptreter, Term pos) throws PrologException
+  public void setPosition(Term streamTerm, Interpreter interptreter, Term position) throws PrologException
   {
     checkExists();
-    PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
+    if (fileReader != null)
+  	{
+    	try
+      {
+        if (reposition == falseAtom)
+        {
+          PrologException.permissionError(repositionAtom,streamAtom,getStreamTerm());
+        }
+        if (position instanceof VariableTerm)
+        {
+          PrologException.instantiationError();
+        }
+        else if (!(position instanceof JavaObjectTerm))
+        {
+          PrologException.domainError(TermConstants.streamPositionAtom, position);
+        }
+        JavaObjectTerm jt = (JavaObjectTerm)position;
+        if (!(jt.value  instanceof Long))
+        {
+          PrologException.domainError(TermConstants.streamPositionAtom, position);
+        }
+        long pos =  ((Long)jt.value).longValue();
+        if (pos > fileReader.size())
+        {
+          PrologException.domainError(TermConstants.streamPositionAtom, position);
+        }
+        fileReader.seek(pos);
+      }
+      catch(IOException ex)
+      {
+        PrologException.systemError(ex);
+      }
+      return;
+  	}
+    PrologException.permissionError(repositionAtom, streamAtom, streamTerm);
   }
 
   public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
@@ -97,7 +159,7 @@ public class TextInputPrologStream extends PrologStream
     }
     catch(IOException ex)
     {
-      PrologException.systemError();
+      PrologException.systemError(ex);
       return -1;
     }
   }
@@ -136,7 +198,7 @@ public class TextInputPrologStream extends PrologStream
     }
     catch(IOException ex)
     {
-      PrologException.systemError();
+      PrologException.systemError(ex);
       return -1;
     }
   }
@@ -210,7 +272,7 @@ public class TextInputPrologStream extends PrologStream
     {
       if (!force)
       {
-        PrologException.systemError();
+        PrologException.systemError(ex);
       }
     }
     super.close(force);
@@ -235,7 +297,7 @@ public class TextInputPrologStream extends PrologStream
     }
     catch(IOException ex)
     {
-      PrologException.systemError();
+      PrologException.systemError(ex);
     }
     return super.getEndOfStreamState();
   }

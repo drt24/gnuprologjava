@@ -28,7 +28,9 @@ import gnu.prolog.vm.PrologException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 /** prolog code 
   */
@@ -40,7 +42,7 @@ public class Predicate_bagof implements PrologCode
   {
     BagOfBacktrackInfo(){super(-1,-1);}
     int startUndoPosition;
-    ArrayList solutionList;
+    List<Term> solutionList;
     Term witness;
     Term instances;
   }
@@ -66,11 +68,11 @@ public class Predicate_bagof implements PrologCode
       Term pgoal = args[1];
       Term pinstances = args[2];
       Predicate_findall.checkList(pinstances);
-      HashSet wset = new HashSet();
+      Set<Term> wset = new HashSet<Term>();
       Term findallGoal = TermUtils.getFreeVariableSet(pgoal,ptemplate,wset);
       Term witness = TermUtils.getWitness(wset);
       CompoundTerm findallTemplate = new CompoundTerm(plusTag,witness,ptemplate);
-      ArrayList list = new ArrayList();
+      List<Term> list = new ArrayList<Term>();
       int rc = Predicate_findall.findall(interpreter, false, findallTemplate, findallGoal, list);
       if (rc == FAIL || list.size()==0)
       {
@@ -90,7 +92,7 @@ public class Predicate_bagof implements PrologCode
   public int nextSolution(Interpreter interpreter, BagOfBacktrackInfo bi)
          throws PrologException
   {
-    ArrayList curTList = new ArrayList();
+    List<Term> curTList = new ArrayList<Term>();
     int undoPos = interpreter.getUndoPosition();
     while (bi.solutionList.size() != 0)
     {
@@ -102,7 +104,7 @@ public class Predicate_bagof implements PrologCode
         throw new IllegalStateException("unexpected unify fail");
       }
       curTList.add(curInstance.args[1].dereference());
-      ListIterator isol = bi.solutionList.listIterator();
+      ListIterator<Term> isol = bi.solutionList.listIterator();
       while (isol.hasNext())
       {
         CompoundTerm ct = (CompoundTerm)isol.next();
@@ -139,7 +141,7 @@ public class Predicate_bagof implements PrologCode
     return FAIL;
   }
 
-  protected void processList(ArrayList curTList)
+  protected void processList(List<Term> curTList)
   {
   }
   

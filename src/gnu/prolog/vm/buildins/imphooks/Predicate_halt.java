@@ -24,6 +24,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.PrologHalt;
 
 /** prolog code 
   */
@@ -49,15 +50,16 @@ public class Predicate_halt implements PrologCode
       PrologException.typeError(integerAtom,tcode);
     }
     IntegerTerm code = (IntegerTerm)tcode;
-    try
-    {
-      System.exit(code.value);
-    }
-    catch(RuntimeException ex)
-    {
-      PrologException.systemError();
-    }
-    return FAIL; // fake return
+    throw new PrologHalt(code.value);
+//    try
+//    {
+//      System.exit(code.value);
+//    }
+//    catch(RuntimeException ex)
+//    {
+//      PrologException.systemError();
+//    }
+//    return FAIL; // fake return
   }
 
   /** this method is called when code is installed to the environment
