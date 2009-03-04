@@ -1,3 +1,8 @@
+0.2.0 2009-03-04
+   Various changes, bug fixes and additions.
+   It now conforms to the "vanilla" test suite (with a few minor changes to some tests).
+   All ISO Prolog predicates are supported. char_conversion is implemented but not used.
+   Added support for tracing/spying predicates
 0.1.0 2000-11-12 const
    Initial CVS release
 0.?.?
