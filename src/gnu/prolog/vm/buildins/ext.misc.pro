@@ -24,3 +24,7 @@
 % listing(+Pred)
 :-build_in(listing/1,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
 :-build_in(listing/0,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
+
+% Fail if member is not part of the list
+% member(?Elem, ?List)
+:-build_in(member/2,'gnu.prolog.vm.buildins.misc.Predicate_member'). 
