@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.test;
+import gnu.prolog.Version;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.io.OperatorSet;
 import gnu.prolog.io.ReadOptions;
@@ -41,7 +42,7 @@ public class CodeDumper
   {
     try
     {
-      System.out.println("GNU Prolog for Java  Interprted Code dumper (c) Constantine Plotnikov, 1997-1999.");
+      System.out.println("GNU Prolog for Java ("+Version.getVersion()+") Interpreted Code dumper (c) Constantine Plotnikov, 1997-1999.");
       if (args.length < 2)
       {
         System.out.println("usage: java gnu.prolog.test.CodeDumper <text to load> <predicate indicator>");

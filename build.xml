@@ -2,10 +2,16 @@
 <project name="gnuprolog" default="main" basedir=".">
 
 	<target name="init">
+		<loadproperties srcFile="src/gnu/prolog/version.properties">
+			<filterchain>
+				<deletecharacters chars=" \t" />
+			</filterchain>
+		</loadproperties>
+
 		<property name="Name" value="GNU Prolog for Java" />
 		<property name="name" value="gnuprolog" />
-		<property name="version" value="0.2.0" />
-		<property name="_version" value="0_2_0" />
+		<property name="version" value="${gnu.prolog.version.major}.${gnu.prolog.version.minor}.${gnu.prolog.version.revision}" />
+		<property name="_version" value="${gnu.prolog.version.major}_${gnu.prolog.version.minor}_${gnu.prolog.version.revision}" />
 
 		<property name="debug" value="on" />
 
@@ -76,7 +82,7 @@
 		<copy file="${manifest}" tofile="${classes}/${manifest}" filtering="on" />
 		<copy todir="${classes}" filtering="off">
 			<fileset dir="${src.dir}">
-				<include name="**/*.pro"/>
+				<include name="**/*.pro" />
 			</fileset>
 		</copy>
 		<jar jarfile="${build.dir}/${name}.jar" basedir="${classes}" excludes="${manifest}" manifest="${classes}/${manifest}" />

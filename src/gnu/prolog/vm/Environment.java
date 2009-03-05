@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm;
 
+import gnu.prolog.Version;
 import gnu.prolog.database.Module;
 import gnu.prolog.database.Predicate;
 import gnu.prolog.database.PredicateListener;
@@ -98,8 +99,7 @@ public class Environment implements PredicateListener
 	// The identifier string for this prolog engine
 	public final static AtomTerm dialectTerm = AtomTerm.get("gnuprologjava");
 	// the version
-	// TODO: use a version structure
-	public final static IntegerTerm versionTerm = IntegerTerm.get(1001);
+	public final static IntegerTerm versionTerm = IntegerTerm.get(Version.intEncoded());
 
 	public final static AtomTerm prologFlagAtom = AtomTerm.get("prolog_flag");
 	public final static AtomTerm modifyAtom = AtomTerm.get("modify");
