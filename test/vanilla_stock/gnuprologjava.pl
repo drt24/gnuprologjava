@@ -90,6 +90,3 @@ validate:-
    run_tests,
    end_log.
 validate.
-
-member(X, [X|_]).
-member(X, [_|Y]):-member(X,Y).	
