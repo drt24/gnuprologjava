@@ -489,6 +489,12 @@ public final class Interpreter
 				PrologException.systemError(rex);
 				throw rex; // fake
 			}
+			catch (StackOverflowError se)
+			{
+				// too much recursion
+				PrologException.systemError(se);
+				throw se; // fake
+			}
 		}
 		catch (PrologHalt ph)
 		{
