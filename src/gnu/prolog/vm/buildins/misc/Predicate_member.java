@@ -116,14 +116,9 @@ public class Predicate_member implements PrologCode
 				bi.list = tmp;
 			}
 			Term head = ((CompoundTerm) bi.list).args[0].dereference();
-			if (bi.listExpand)
+			if (!bi.listExpand)
 			{
 				bi.list = ((CompoundTerm) bi.list).args[1].dereference();
-			}
-			if (interpreter.unify(bi.item, head) == FAIL)
-			{
-				interpreter.undo(bi.startUndoPosition);
-				continue;
 			}
 			if (bi.list instanceof VariableTerm)
 			{
@@ -134,6 +129,11 @@ public class Predicate_member implements PrologCode
 			else if (!CompoundTerm.isListPair(bi.list) && !AtomTerm.emptyList.equals(bi.list))
 			{
 				return FAIL;
+			}
+			if (interpreter.unify(bi.item, head) == FAIL)
+			{
+				interpreter.undo(bi.startUndoPosition);
+				continue;
 			}
 			interpreter.pushBacktrackInfo(bi);
 			return SUCCESS;
