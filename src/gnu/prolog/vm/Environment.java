@@ -62,6 +62,42 @@ import java.util.Set;
  */
 public class Environment implements PredicateListener
 {
+	static InputStream defaultInputStream;
+	static OutputStream defaultOutputStream;
+	
+	/**
+	 * @return the defaultInputStream
+	 */
+	public static InputStream getDefaultInputStream()
+	{
+		return defaultInputStream==null?System.in:defaultInputStream;
+	}
+	
+	/**
+	 * @param defaultInputStream the defaultInputStream to set
+	 */
+	public static void setDefaultInputStream(InputStream defaultInputStream)
+	{
+		Environment.defaultInputStream = defaultInputStream;
+	}
+	
+	/**
+	 * @return the defaultOutputStream
+	 */
+	public static OutputStream getDefaultOutputStream()
+	{
+		return defaultOutputStream==null?System.out:defaultOutputStream;
+	}
+	
+	/**
+	 * @param defaultOutputStream the defaultOutputStream to set
+	 */
+	public static void setDefaultOutputStream(OutputStream defaultOutputStream)
+	{
+		Environment.defaultOutputStream = defaultOutputStream;
+	}
+	
+	
 	OperatorSet opSet = new OperatorSet();
 	/** current state of loaded database */
 	PrologTextLoaderState prologTextLoaderState = new PrologTextLoaderState();
@@ -489,8 +525,8 @@ public class Environment implements PredicateListener
 			outops.eofAction = PrologStream.resetAtom;
 			outops.reposition = PrologStream.falseAtom;
 			outops.type = PrologStream.textAtom;
-			userInput = new TextInputPrologStream(inops, new InputStreamReader(stdin == null ? System.in : stdin));
-			userOutput = new TextOutputPrologStream(outops, new OutputStreamWriter(stdout == null ? System.out : stdout));
+			userInput = new TextInputPrologStream(inops, new InputStreamReader(stdin == null ? getDefaultInputStream() : stdin));
+			userOutput = new TextOutputPrologStream(outops, new OutputStreamWriter(stdout == null ?getDefaultOutputStream() : stdout));
 			currentInput = userInput;
 			currentOutput = userOutput;
 			alias2stream.put(PrologStream.userOutputAtom, userOutput);
