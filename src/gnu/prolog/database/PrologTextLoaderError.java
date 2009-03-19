@@ -50,7 +50,7 @@ public class PrologTextLoaderError extends Exception
   public PrologTextLoaderError(PrologTextLoader loader,
                                gnu.prolog.io.ParseException ex)
   {
-    this(loader.getCurrentFile(), ex.getLine(), ex.getColumn(), "syntax error");
+    this(loader.getCurrentFile(), ex.getLine(), ex.getColumn(), "syntax error: "+ex.getMessage());
   }
 
   public String getFile()

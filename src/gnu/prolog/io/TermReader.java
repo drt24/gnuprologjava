@@ -48,6 +48,7 @@ public class TermReader extends FilterReader
     }
     catch(gnu.prolog.io.parser.gen.ParseException ex)
     {
+    	//ex.printStackTrace();
       throw new ParseException(ex);
     }
     catch(gnu.prolog.io.parser.gen.TokenMgrError ex)
