@@ -17,7 +17,7 @@
  * Boston, MA  02111-1307, USA. The text ol license can be also found 
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.buildins.misc;
+package gnu.prolog.vm.buildins.list;
 
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;

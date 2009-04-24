@@ -1,5 +1,6 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
+ * Copyright (C) 2009       Michiel Hendriks
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -17,7 +18,7 @@
  */
  
 %
-% Java extentions
+% Java extensions
 %
 
 % Call toString() on the object in a JavaObjectTerm

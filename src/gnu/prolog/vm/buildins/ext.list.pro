@@ -18,10 +18,19 @@
  */
  
 %
-% Miscellaneous extensions
+% List extensions
 %
 
-% List all perdicates with the given name
-% listing(+Pred)
-:-build_in(listing/1,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
-:-build_in(listing/0,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
+% Fail if member is not part of the list
+% member(?Elem, ?List)
+:-build_in(member/2,'gnu.prolog.vm.buildins.list.Predicate_member').
+
+% True if Term is bound to the empty list () or a term with functor `.' 
+% and arity 2 and the second argument is a list.
+% is_list(+Term)
+:-build_in(is_list/1,'gnu.prolog.vm.buildins.list.Predicate_is_list').
+
+% True if Int represents the number of elements of list List. Can be used to 
+% create a list holding only variables. 
+% length(?List, ?Int)
+:-build_in(length/2,'gnu.prolog.vm.buildins.list.Predicate_length').
