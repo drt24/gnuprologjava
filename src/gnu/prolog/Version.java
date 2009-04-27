@@ -67,9 +67,9 @@ public class Version
 	private static class VersionInternal
 	{
 
-		private static int major = 1;
-		private static int minor = 9;
-		private static int revision = 9;
+		private static int major;
+		private static int minor;
+		private static int revision;
 		private static String type = null;
 
 		static
