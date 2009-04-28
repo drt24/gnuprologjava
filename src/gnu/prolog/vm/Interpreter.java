@@ -35,7 +35,7 @@ public final class Interpreter
 {
 	final double FLOAT_EPSILON = 0.0000001d;
 	
-	/** environemt for this interpreter */
+	/** environment for this interpreter */
 	public Environment environment;
 
 	public Tracer tracer;

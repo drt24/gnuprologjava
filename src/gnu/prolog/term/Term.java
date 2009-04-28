@@ -33,7 +33,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
   public static final int ATOM        = 5;
   public static final int COMPOUND    = 6;
 
-  /** clone th term.
+  /** clone the term.
     * @return cloned term
     */
   public Object clone()
