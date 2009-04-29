@@ -25,3 +25,8 @@
 % listing(+Pred)
 :-build_in(listing/1,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
 :-build_in(listing/0,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
+
+%:-build_in(store/1,'gnu.prolog.vm.buildins.misc.Predicate_store').
+%:-build_in(store/2,'gnu.prolog.vm.buildins.misc.Predicate_store').
+%:-build_in(store_append/2,'gnu.prolog.vm.buildins.misc.Predicate_store_append').
+ 
