@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
+import java.util.Collection;
 import java.util.List;
 /** compound term.
   * @author Constantine Plotnilkov
@@ -57,6 +58,31 @@ public class CompoundTerm extends Term
     }
     return tlist;
   }
+  
+	public static boolean toCollection(Term term, Collection<Term> col)
+	{
+		// TODO check for proper compound.. list? ..
+		term = term.dereference();
+		if (term instanceof CompoundTerm)
+		{
+			CompoundTerm ct = (CompoundTerm) term;
+			for (int i = ct.tag.arity - 1; i >= 0; i--)
+			{
+				if (!toCollection(ct.args[i], col))
+				{
+					return false;
+				}
+			}
+		}
+		else
+		{
+			if (!AtomTerm.emptyList.equals(term))
+			{
+				col.add(term);
+			}
+		}
+		return true;
+	}
   
 
   /** get conjunction term

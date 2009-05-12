@@ -26,7 +26,40 @@
 :-build_in(listing/1,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
 :-build_in(listing/0,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
 
-%:-build_in(store/1,'gnu.prolog.vm.buildins.misc.Predicate_store').
-%:-build_in(store/2,'gnu.prolog.vm.buildins.misc.Predicate_store').
-%:-build_in(store_append/2,'gnu.prolog.vm.buildins.misc.Predicate_store_append').
- 
+% Retrieve the current stacktrace of evaluating predicates (excluding
+% the current predicate). Note: it will only contain the compound tags
+% of the executed predicates.
+% stacktrace(?List)
+:-build_in(stacktrace/1,'gnu.prolog.vm.buildins.misc.Predicate_stacktrace').
+
+%
+% Datastore predicates
+%
+
+% Store a set of terms in the data store. An optional ID can be provided.
+% When an ID is given it will overwrite the previous value in the datastore.
+% Always succeeds.
+% ds_store(+List)
+% ds_store(+Atom,+List)
+:-build_in(ds_store/1,'gnu.prolog.vm.buildins.datastore.Predicate_store').
+:-build_in(ds_store/2,'gnu.prolog.vm.buildins.datastore.Predicate_store').
+
+% Append a list of terms to the data store. Instead of overwriting the
+% previous list it will append data. Always succeeds.
+% ds_append(+Atom,+List)
+:-build_in(ds_append/2,'gnu.prolog.vm.buildins.datastore.Predicate_append').
+
+% Remove a previously stored set of terms with the given ID. Always succeeds,
+% even when the ID doesn't exist.
+% ds_remove(+Atom)
+:-build_in(ds_remove/1,'gnu.prolog.vm.buildins.datastore.Predicate_remove').
+
+% Get the list of stored values from the datastore. Fails if the datastore
+% entry was not found. 
+% ds_get(?List) -- the last added set
+% ds_get(?Atom,?List) -- if ?Atom is a variable it will use the last
+%		added set. If the previous stored entry has no id assigned it
+%		doesn't unify the term.
+:-build_in(ds_get/1,'gnu.prolog.vm.buildins.datastore.Predicate_get').
+:-build_in(ds_get/2,'gnu.prolog.vm.buildins.datastore.Predicate_get').
+
