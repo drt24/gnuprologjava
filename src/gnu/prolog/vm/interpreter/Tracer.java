@@ -22,6 +22,7 @@ package gnu.prolog.vm.interpreter;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologStream;
 
@@ -132,6 +133,11 @@ public class Tracer
 	protected PrologStream output;
 
 	protected Set<TracerEventListener> listeners;
+
+	protected static final int callStackGrow = 4096;
+	protected CompoundTermTag[] callStack = new CompoundTermTag[callStackGrow];
+	protected int callStackPointer = 0;
+	protected int callStackMax = callStackGrow;
 
 	/**
 	 * 
@@ -267,6 +273,13 @@ public class Tracer
 		tracePoints.clear();
 	}
 
+	public CompoundTermTag[] getCallStack()
+	{
+		CompoundTermTag[] res = new CompoundTermTag[callStackPointer];
+		System.arraycopy(callStack, 0, res, 0, callStackPointer);
+		return res;
+	}
+
 	/**
 	 * A trace event
 	 * 
@@ -277,6 +290,32 @@ public class Tracer
 	 */
 	public void traceEvent(TraceLevel level, Interpreter interpreter, CompoundTermTag tag, Term args[])
 	{
+		// update call stack
+		switch (level)
+		{
+			case CALL:
+			case REDO:
+				if (callStackPointer == callStackMax)
+				{
+					// increase stack
+					CompoundTermTag tmp[] = new CompoundTermTag[callStackMax + callStackGrow];
+					System.arraycopy(callStack, 0, tmp, 0, callStackPointer);
+					callStack = tmp;
+					callStackMax += callStackGrow;
+				}
+				callStack[callStackPointer++] = tag;
+				break;
+			case EXIT:
+			case FAIL:
+				if (callStackPointer >= 0)
+				{
+					callStack[--callStackPointer] = null;
+				}
+				// else invalid stack
+				break;
+			default:
+		}
+
 		if (!tracingActive)
 		{
 			return;

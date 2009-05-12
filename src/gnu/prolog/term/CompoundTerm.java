@@ -100,7 +100,7 @@ public class CompoundTerm extends Term
   /** get disjunction term
     * @param head head term
     * @param tail tail term
-    * @return ','(head, tail) term
+    * @return ';'(head, tail) term
     */
   public static CompoundTerm getDisjunction(Term head, Term tail)
   {
