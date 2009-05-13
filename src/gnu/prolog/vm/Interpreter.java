@@ -34,12 +34,12 @@ import gnu.prolog.vm.interpreter.Tracer;
 public final class Interpreter
 {
 	final double FLOAT_EPSILON = 0.0000001d;
-	
+
 	/** environment for this interpreter */
 	public Environment environment;
 
 	public Tracer tracer;
-	
+
 	protected PrologHalt haltExitCode;
 
 	/**
@@ -209,22 +209,22 @@ public final class Interpreter
 		undoData[undoData_amount] = undoDatum;
 		undoData_amount++;
 	}
-	
+
 	/**
 	 * The execution depth
 	 */
 	int execDepth = 1;
-	
+
 	public void increaseDepth()
 	{
 		++execDepth;
 	}
-	
+
 	public void decreaseDepth()
 	{
 		--execDepth;
 	}
-	
+
 	public int getExecutionDepth()
 	{
 		return execDepth;
@@ -312,7 +312,7 @@ public final class Interpreter
 		{
 			FloatTerm ct1 = (FloatTerm) t1;
 			FloatTerm ct2 = (FloatTerm) t2;
-			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON )
+			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON)
 			{
 				rc = PrologCode.FAIL;
 			}
@@ -393,7 +393,7 @@ public final class Interpreter
 		{
 			FloatTerm ct1 = (FloatTerm) t1;
 			FloatTerm ct2 = (FloatTerm) t2;
-			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON )
+			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON)
 			{
 				rc = PrologCode.FAIL;
 			}
@@ -470,19 +470,26 @@ public final class Interpreter
 				{
 					throw new IllegalStateException("The goal is already stopped");
 				}
-				int rc = gnu.prolog.vm.interpreter.Predicate_call.staticExecute(this, !goal.firstTime, goal.goal);
-				switch (rc)
+				try
 				{
-					case PrologCode.SUCCESS_LAST:
-					case PrologCode.FAIL:
-						goal.stopped = true;
-						currentGoal = null;
-						break;
-					case PrologCode.SUCCESS:
-						goal.firstTime = false;
-						break;
+					int rc = gnu.prolog.vm.interpreter.Predicate_call.staticExecute(this, !goal.firstTime, goal.goal);
+					switch (rc)
+					{
+						case PrologCode.SUCCESS_LAST:
+						case PrologCode.FAIL:
+							goal.stopped = true;
+							currentGoal = null;
+							break;
+						case PrologCode.SUCCESS:
+							goal.firstTime = false;
+							break;
+					}
+					return rc;
 				}
-				return rc;
+				finally
+				{
+					environment.getUserOutput().flushOutput(null);
+				}
 			}
 			catch (RuntimeException rex)
 			{
@@ -528,7 +535,7 @@ public final class Interpreter
 		backtrackInfoAmount = 0;
 		currentGoal = null;
 	}
-	
+
 	/**
 	 * @return The exit code when the prolog interpreter was halted
 	 */

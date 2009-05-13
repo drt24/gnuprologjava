@@ -22,7 +22,6 @@ package gnu.prolog.vm.buildins.datastore;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
-import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
@@ -69,11 +68,11 @@ public class Predicate_store implements PrologCode
 
 		if (idTerm == null)
 		{
-			// TODO get list
+			// TODO store list
 		}
 		else
 		{
-			// TODO get list and stuff
+			// TODO store list and stuff
 		}
 		return SUCCESS_LAST;
 	}
