@@ -60,12 +60,12 @@ public class Predicate_write_term implements PrologCode, TermConstants
       }
       if (!(cur instanceof CompoundTerm))
       {
-        PrologException.typeError(listAtom, optionsList);
+        PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       CompoundTerm ct = (CompoundTerm)cur;
       if (ct.tag != listTag)
       {
-        PrologException.typeError(listAtom, optionsList);
+        PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       Term head = ct.args[0].dereference();
       cur = ct.args[1].dereference();
@@ -81,29 +81,29 @@ public class Predicate_write_term implements PrologCode, TermConstants
       if (op.tag == quotedTag)
       {
         Term val = op.args[0].dereference();
-        if (val != trueAtom && val != falseAtom)
+        if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
         {
           PrologException.domainError(readOptionAtom, head);
         }
-        options.quoted = (val == trueAtom);
+        options.quoted = (val == TermConstants.trueAtom);
       }
       else if (op.tag == ignoreOpsTag)
       {
         Term val = op.args[0].dereference();
-        if (val != trueAtom && val != falseAtom)
+        if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
         {
           PrologException.domainError(readOptionAtom, head);
         }
-        options.ignoreOps = (val == trueAtom);
+        options.ignoreOps = (val == TermConstants.trueAtom);
       }
       else if (op.tag == numbervarsTag)
       {
         Term val = op.args[0].dereference();
-        if (val != trueAtom && val != falseAtom)
+        if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
         {
           PrologException.domainError(readOptionAtom, head);
         }
-        options.numbervars = (val == trueAtom);
+        options.numbervars = (val == TermConstants.trueAtom);
       }
       else 
       {

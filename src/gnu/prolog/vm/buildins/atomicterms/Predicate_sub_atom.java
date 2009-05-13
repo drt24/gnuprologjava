@@ -25,13 +25,12 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_sub_atom implements PrologCode
 {
-  static final AtomTerm atomAtom = AtomTerm.get("atom");
-  static final AtomTerm integerAtom = AtomTerm.get("integer");
   static final AtomTerm notLessThanZeroAtom = AtomTerm.get("not_less_than_zero");
   /** private backtrack info */
   private static class SubAtomBacktrackInfo extends BacktrackInfo
@@ -91,7 +90,7 @@ public class Predicate_sub_atom implements PrologCode
       }
       else if(! (tatom instanceof AtomTerm))
       {
-        PrologException.typeError(atomAtom, tatom);
+        PrologException.typeError(TermConstants.atomAtom, tatom);
       }
       bi.atom = (AtomTerm)tatom;
       bi.atomLen = bi.atom.value.length();
@@ -113,7 +112,7 @@ public class Predicate_sub_atom implements PrologCode
       }
       else
       {
-        PrologException.typeError(integerAtom, tbefore);
+        PrologException.typeError(TermConstants.integerAtom, tbefore);
       }
       if (tlength instanceof VariableTerm)
       {
@@ -135,7 +134,7 @@ public class Predicate_sub_atom implements PrologCode
       }
       else
       {
-        PrologException.typeError(integerAtom, tlength);
+        PrologException.typeError(TermConstants.integerAtom, tlength);
       }
       if (tafter instanceof VariableTerm)
       {
@@ -153,7 +152,7 @@ public class Predicate_sub_atom implements PrologCode
       }
       else
       {
-        PrologException.typeError(integerAtom, tafter);
+        PrologException.typeError(TermConstants.integerAtom, tafter);
       }
       
       if (tsub_atom instanceof VariableTerm)
@@ -185,7 +184,7 @@ public class Predicate_sub_atom implements PrologCode
       }
       else
       {
-        PrologException.typeError(atomAtom, tsub_atom);
+        PrologException.typeError(TermConstants.atomAtom, tsub_atom);
       }
       return nextSolution(interpreter, bi);
     }

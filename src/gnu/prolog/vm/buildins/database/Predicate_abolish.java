@@ -27,17 +27,13 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_abolish implements PrologCode
 {
-  static final AtomTerm predicateIndicatorAtom = AtomTerm.get("predicate_indicator");
-  static final AtomTerm integerAtom            = AtomTerm.get("integer"            );
-  static final AtomTerm atomAtom               = AtomTerm.get("atom"               );
-  static final AtomTerm notLessThenZeroAtom    = AtomTerm.get("not_less_then_zero" );
   static final AtomTerm modifyAtom             = AtomTerm.get("modify"             );
-  static final AtomTerm staticProcedureAtom    = AtomTerm.get("static_procedure"   );
   static final CompoundTermTag divideTag = CompoundTermTag.get("/",2);
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
@@ -55,12 +51,12 @@ public class Predicate_abolish implements PrologCode
     }
     if (!(tpi instanceof CompoundTerm))
     {
-      PrologException.typeError(predicateIndicatorAtom,tpi);
+      PrologException.typeError(TermConstants.predicateIndicatorAtom,tpi);
     }
     CompoundTerm pi = (CompoundTerm)tpi;
     if (pi.tag != divideTag)
     {
-      PrologException.typeError(predicateIndicatorAtom,pi);
+      PrologException.typeError(TermConstants.predicateIndicatorAtom,pi);
     }
     Term tn = (Term)pi.args[0].dereference();
     Term ta = (Term)pi.args[1].dereference();
@@ -70,7 +66,7 @@ public class Predicate_abolish implements PrologCode
     }
     else if (!(tn instanceof AtomTerm))
     {
-      PrologException.typeError(atomAtom,tn);
+      PrologException.typeError(TermConstants.atomAtom,tn);
     }
     AtomTerm n = (AtomTerm)tn;
     if (ta instanceof VariableTerm)
@@ -79,12 +75,12 @@ public class Predicate_abolish implements PrologCode
     }
     else if (!(ta instanceof IntegerTerm))
     {
-      PrologException.typeError(integerAtom,ta);
+      PrologException.typeError(TermConstants.integerAtom,ta);
     }
     IntegerTerm a = (IntegerTerm)ta;
     if (a.value < 0)
     {
-      PrologException.domainError(notLessThenZeroAtom,ta);
+      PrologException.domainError(TermConstants.notLessThenZeroAtom,ta);
     }
     CompoundTermTag tag = CompoundTermTag.get(n,a.value);
     Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
@@ -92,7 +88,7 @@ public class Predicate_abolish implements PrologCode
     {
       if (p.getType() != Predicate.USER_DEFINED || !p.isDynamic())
       {
-        PrologException.permissionError(modifyAtom,staticProcedureAtom,pi);
+        PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,pi);
       }
       interpreter.environment.getModule().removeDefinedPredicate(tag);
     }

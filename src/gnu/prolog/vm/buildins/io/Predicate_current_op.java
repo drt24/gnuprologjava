@@ -84,7 +84,7 @@ public class Predicate_current_op implements PrologCode, TermConstants
       // validate args
       if (!(op instanceof AtomTerm || op instanceof VariableTerm))
       {
-        PrologException.typeError(atomAtom, op);
+        PrologException.typeError(TermConstants.atomAtom, op);
       }
       if (!(specifier instanceof VariableTerm || specifier == xfxAtom ||
             specifier == xfyAtom || specifier == yfxAtom || 

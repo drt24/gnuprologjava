@@ -19,7 +19,6 @@
  */
 package gnu.prolog.vm.buildins.misc;
 
-import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
@@ -27,6 +26,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class Predicate_stacktrace implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		Term res = AtomTerm.emptyList;
+		Term res = TermConstants.emptyListAtom;
 		boolean skipfirst = true;
 		for (CompoundTermTag tag : interpreter.getTracer().getCallStack())
 		{

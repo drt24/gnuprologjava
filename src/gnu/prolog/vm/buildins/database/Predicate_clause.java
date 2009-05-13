@@ -27,6 +27,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,8 +39,6 @@ public class Predicate_clause implements PrologCode
 {
 
   static final AtomTerm accessAtom = AtomTerm.get("access");
-  static final AtomTerm callableAtom = AtomTerm.get("callable");
-  static final AtomTerm privateProcedureAtom = AtomTerm.get("private_procedure");
   static final CompoundTermTag clauseTag = CompoundTermTag.get(":-",2);
   static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
   static final CompoundTermTag disjunctionTag = CompoundTermTag.get(";",2);
@@ -91,7 +90,7 @@ public class Predicate_clause implements PrologCode
       }
       else
       {
-        PrologException.typeError(callableAtom, head);
+        PrologException.typeError(TermConstants.callableAtom, head);
       }
       Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
       if (p == null) // if predicate not found
@@ -102,11 +101,11 @@ public class Predicate_clause implements PrologCode
       //System.err.println("p dyn = "+p.isDynamic());
       if (p.getType() != Predicate.USER_DEFINED || !p.isDynamic())
       {
-        PrologException.permissionError(accessAtom, privateProcedureAtom, tag.getPredicateIndicator());
+        PrologException.permissionError(accessAtom, TermConstants.privateProcedureAtom, tag.getPredicateIndicator());
       }
       if (!isCallable(body))
       {
-        PrologException.typeError(callableAtom, body);
+        PrologException.typeError(TermConstants.callableAtom, body);
       }
       List<Term> clauses = new ArrayList<Term>();
       for(Iterator<Term> ic = p.getClauses().iterator();ic.hasNext();)

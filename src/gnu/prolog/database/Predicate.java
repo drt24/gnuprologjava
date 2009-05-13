@@ -21,6 +21,7 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,7 +237,6 @@ public class Predicate
   static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
   static final CompoundTermTag ifTag = CompoundTermTag.get("->",2);
   static final CompoundTermTag callTag = CompoundTermTag.get("call",1);
-  static final AtomTerm trueAtom = AtomTerm.get("true");
   
   public static Term prepareClause(Term clause)
   {
@@ -254,13 +254,13 @@ public class Predicate
       else
       {
         head = prepareHead(clause);
-        body = trueAtom;
+        body = TermConstants.trueAtom;
       }
     }
     else if(clause instanceof AtomTerm)
     {
       head = prepareHead(clause);
-      body = trueAtom;
+      body = TermConstants.trueAtom;
     }
     else 
     {

@@ -26,6 +26,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +35,7 @@ import java.util.List;
   */
 public class Predicate_univ implements PrologCode
 {
-  public final static AtomTerm nonEmptyListAtom = AtomTerm.get("non_empty_list");
-  public final static AtomTerm listAtom = AtomTerm.get("list");
-  public final static AtomTerm atomAtom = AtomTerm.get("atom");
-  public final static AtomTerm atomicAtom = AtomTerm.get("atomic");
   public final static Term termArrayType[] = new Term[0];
-  public final static CompoundTermTag listTag = CompoundTermTag.get(".",2);
 
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
@@ -60,7 +56,7 @@ public class Predicate_univ implements PrologCode
       {
         VariableTerm lvar = (VariableTerm)list;
         interpreter.addVariableUndo(lvar);
-        lvar.value = CompoundTerm.getList(term, AtomTerm.emptyList);
+        lvar.value = CompoundTerm.getList(term, TermConstants.emptyListAtom);
         return SUCCESS_LAST;
       }
       CompoundTerm ct = (CompoundTerm)list;
@@ -68,9 +64,9 @@ public class Predicate_univ implements PrologCode
       Term tail = ct.args[1].dereference();
       if (head instanceof CompoundTerm)
       {
-        PrologException.typeError(atomicAtom, head); 
+        PrologException.typeError(TermConstants.atomicAtom, head); 
       }
-      Term t = CompoundTerm.getList(term, AtomTerm.emptyList);
+      Term t = CompoundTerm.getList(term, TermConstants.emptyListAtom);
       int rc = interpreter.unify(t, list);
       return rc;
     }
@@ -80,7 +76,7 @@ public class Predicate_univ implements PrologCode
       CompoundTerm ct = (CompoundTerm)term;
       CompoundTermTag tag = ct.tag;
       AtomTerm functor = tag.functor;
-      Term tmp = AtomTerm.emptyList;
+      Term tmp = TermConstants.emptyListAtom;
       Term targs[] = ct.args;
       for (int i=tag.arity-1; i>=0; i--)
       {
@@ -98,14 +94,14 @@ public class Predicate_univ implements PrologCode
     {
       checkList(list, true);
       VariableTerm vt = (VariableTerm)term;
-      if (list == AtomTerm.emptyList)
+      if (list == TermConstants.emptyListAtom)
       {
-        PrologException.domainError(nonEmptyListAtom, list);
+        PrologException.domainError(TermConstants.nonEmptyListAtom, list);
       }
       CompoundTerm ct = (CompoundTerm)list;
-      if (ct.tag != listTag)
+      if (ct.tag != TermConstants.listTag)
       {
-        PrologException.typeError(listAtom, list);
+        PrologException.typeError(TermConstants.listAtom, list);
       }
       Term head = ct.args[0].dereference();
       Term tail = ct.args[1].dereference();
@@ -113,7 +109,7 @@ public class Predicate_univ implements PrologCode
       {
         PrologException.instantiationError();
       }
-      if (tail == AtomTerm.emptyList)
+      if (tail == TermConstants.emptyListAtom)
       {
         interpreter.addVariableUndo(vt);
         vt.value = head;
@@ -121,7 +117,7 @@ public class Predicate_univ implements PrologCode
       }
       if (!(head instanceof AtomTerm))
       {
-        PrologException.typeError(atomAtom,head);
+        PrologException.typeError(TermConstants.atomAtom,head);
       }
       AtomTerm functor = (AtomTerm)head;
       List<Term> argList = new ArrayList<Term>();
@@ -131,7 +127,7 @@ public class Predicate_univ implements PrologCode
         head = ct.args[0].dereference();
         tail = ct.args[1].dereference();
         argList.add(head);
-      } while ( tail != AtomTerm.emptyList);
+      } while ( tail != TermConstants.emptyListAtom);
       Term targs[] = (Term[])argList.toArray(termArrayType);
       interpreter.addVariableUndo(vt);
       vt.value = new CompoundTerm(functor, targs);
@@ -144,7 +140,7 @@ public class Predicate_univ implements PrologCode
   {
     Term exArg = list;
     
-    if (list == AtomTerm.emptyList)
+    if (list == TermConstants.emptyListAtom)
     {
       return;
     }
@@ -161,20 +157,20 @@ public class Predicate_univ implements PrologCode
     }
     if (!(list instanceof CompoundTerm))
     {
-      PrologException.typeError(listAtom, exArg);
+      PrologException.typeError(TermConstants.listAtom, exArg);
     }
     CompoundTerm ct = (CompoundTerm)list;
-    if (ct.tag != listTag)
+    if (ct.tag != TermConstants.listTag)
     {
-      PrologException.typeError(listAtom, exArg);
+      PrologException.typeError(TermConstants.listAtom, exArg);
     }
     Term head = ct.args[0].dereference();
     Term tail = ct.args[1].dereference();
-    if (tail == AtomTerm.emptyList)
+    if (tail == TermConstants.emptyListAtom)
     {
       if (head instanceof CompoundTerm)
       {
-        PrologException.typeError(atomicAtom, head);
+        PrologException.typeError(TermConstants.atomicAtom, head);
       }
       return;
     }
@@ -182,14 +178,14 @@ public class Predicate_univ implements PrologCode
     {
       if (!(head instanceof VariableTerm) && !(head instanceof AtomicTerm))
       {
-        PrologException.typeError(atomAtom, head);
+        PrologException.typeError(TermConstants.atomAtom, head);
       }
     }
     
     list = tail;
     while(true)
     {
-      if (list == AtomTerm.emptyList)
+      if (list == TermConstants.emptyListAtom)
       {
         return;
       }
@@ -206,12 +202,12 @@ public class Predicate_univ implements PrologCode
       }
       if (!(list instanceof CompoundTerm))
       {
-        PrologException.typeError(listAtom, exArg);
+        PrologException.typeError(TermConstants.listAtom, exArg);
       }
       ct = (CompoundTerm)list;
-      if (ct.tag != listTag)
+      if (ct.tag != TermConstants.listTag)
       {
-        PrologException.typeError(listAtom, exArg);
+        PrologException.typeError(TermConstants.listAtom, exArg);
       }
       //Term head = ct.args[1].dereference();
       list = ct.args[1].dereference();

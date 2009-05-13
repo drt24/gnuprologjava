@@ -18,7 +18,6 @@
 package gnu.prolog.vm.buildins.atomicterms;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
-import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -26,16 +25,13 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_atom_codes implements PrologCode
-{
-  static final AtomTerm listAtom = AtomTerm.get("list"); 
-  static final AtomTerm atomAtom = AtomTerm.get("atom"); 
-  static final AtomTerm characterCodeAtom = AtomTerm.get("character_code"); 
-  static final CompoundTermTag listTag = CompoundTermTag.get(".",2);
-  
+{ 
+ 
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -52,7 +48,7 @@ public class Predicate_atom_codes implements PrologCode
       VariableTerm va = (VariableTerm)ta;
       StringBuffer bu = new StringBuffer();
       Term cur = tl;
-      while (cur != AtomTerm.emptyList)
+      while (cur != TermConstants.emptyListAtom)
       {
         if (cur instanceof VariableTerm)
         {
@@ -60,12 +56,12 @@ public class Predicate_atom_codes implements PrologCode
         }
         if (!(cur instanceof CompoundTerm))
         {
-          PrologException.typeError(listAtom,tl);
+          PrologException.typeError(TermConstants.listAtom,tl);
         }
         CompoundTerm ct = (CompoundTerm)cur;
-        if (ct.tag != listTag)
+        if (ct.tag != TermConstants.listTag)
         {
-          PrologException.typeError(listAtom,tl);
+          PrologException.typeError(TermConstants.listAtom,tl);
         }
         Term head = ct.args[0].dereference();
         cur = ct.args[1].dereference();
@@ -75,12 +71,12 @@ public class Predicate_atom_codes implements PrologCode
         }
         if (!(head instanceof IntegerTerm))
         {
-          PrologException.representationError(characterCodeAtom); 
+          PrologException.representationError(TermConstants.characterCodeAtom); 
         }
         IntegerTerm e = (IntegerTerm)head;
         if (e.value < 0 || 0xffff < e.value )
         {
-          PrologException.representationError(characterCodeAtom); 
+          PrologException.representationError(TermConstants.characterCodeAtom); 
         }
         bu.append((char)e.value);
       }
@@ -91,7 +87,7 @@ public class Predicate_atom_codes implements PrologCode
     else if (ta instanceof AtomTerm)
     {
       AtomTerm a = (AtomTerm)ta;
-      Term list = AtomTerm.emptyList;
+      Term list = TermConstants.emptyListAtom;
       for(int i=a.value.length()-1;i>=0;i--)
       {
         list = CompoundTerm.getList(IntegerTerm.get(a.value.charAt(i)), list);
@@ -100,7 +96,7 @@ public class Predicate_atom_codes implements PrologCode
     }
     else
     {
-      PrologException.typeError(atomAtom,ta);
+      PrologException.typeError(TermConstants.atomAtom,ta);
     }
     return FAIL; // fake return
   }

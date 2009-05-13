@@ -67,7 +67,7 @@ public class Predicate_open implements PrologCode, TermConstants
     }
     if (!(tmode instanceof AtomTerm))
     {
-      PrologException.typeError(atomAtom, tmode);
+      PrologException.typeError(TermConstants.atomAtom, tmode);
     }
     if (tmode != PrologStream.readAtom &&
         tmode != PrologStream.writeAtom &&
@@ -84,7 +84,7 @@ public class Predicate_open implements PrologCode, TermConstants
     vstream = (VariableTerm)tstream;
     // parse options
     Term cur = optionsList;
-    while (cur != AtomTerm.emptyList)
+    while (cur != TermConstants.emptyListAtom)
     {
       if (cur instanceof VariableTerm)
       {
@@ -92,12 +92,12 @@ public class Predicate_open implements PrologCode, TermConstants
       }
       if (!(cur instanceof CompoundTerm))
       {
-        PrologException.typeError(listAtom, optionsList);
+        PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       CompoundTerm ct = (CompoundTerm)cur;
       if (ct.tag != listTag)
       {
-        PrologException.typeError(listAtom, optionsList);
+        PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       Term head = ct.args[0].dereference();
       cur = ct.args[1].dereference();
@@ -122,7 +122,7 @@ public class Predicate_open implements PrologCode, TermConstants
       else if (op.tag == PrologStream.repositionTag)
       {
         Term val = op.args[0].dereference();
-        if (val != PrologStream.trueAtom && val != PrologStream.falseAtom)
+        if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
         {
           PrologException.domainError(streamOptionAtom, op);
         }

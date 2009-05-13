@@ -24,14 +24,12 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_atom_length implements PrologCode
 {
-  static final AtomTerm atomAtom = AtomTerm.get("atom");
-  static final AtomTerm integerAtom = AtomTerm.get("integer");
-  static final AtomTerm notLessThenZeroAtom = AtomTerm.get("not_less_then_zero");
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -49,7 +47,7 @@ public class Predicate_atom_length implements PrologCode
     }
     if (! (tatom instanceof AtomTerm))
     {
-      PrologException.typeError(atomAtom,tatom);
+      PrologException.typeError(TermConstants.atomAtom,tatom);
     }
     AtomTerm atom = (AtomTerm)tatom;
     if ( tlength instanceof VariableTerm)
@@ -65,7 +63,7 @@ public class Predicate_atom_length implements PrologCode
       IntegerTerm ilength = (IntegerTerm)tlength;
       if (ilength.value < 0)
       {
-        PrologException.domainError(notLessThenZeroAtom, tlength);
+        PrologException.domainError(TermConstants.notLessThenZeroAtom, tlength);
       }
       if (ilength.value == atom.value.length())
       {
@@ -78,7 +76,7 @@ public class Predicate_atom_length implements PrologCode
     }
     else
     {
-      PrologException.typeError(integerAtom,tlength);
+      PrologException.typeError(TermConstants.integerAtom,tlength);
     }
     return FAIL; // fake return
   }

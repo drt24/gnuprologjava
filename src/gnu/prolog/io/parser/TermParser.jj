@@ -487,11 +487,11 @@ Term list_term(ReadOptions options):
   {
     if (rc == null)
     {
-      return AtomTerm.emptyList;
+      return TermConstants.emptyListAtom;
     }
     if (((CompoundTerm)t1).args[1] == null)
     {
-      ((CompoundTerm)t1).args[1] = AtomTerm.emptyList;
+      ((CompoundTerm)t1).args[1] = TermConstants.emptyListAtom;
     }
     return rc;
   }
@@ -607,7 +607,7 @@ Term char_code_list():
   {
     String val = TermParserUtils.convertQuotedString(token.image,'\"');
     int i,n = val.length();
-    Term rc = AtomTerm.emptyList;
+    Term rc = TermConstants.emptyListAtom;
     for (i=n-1; i>=0; i--)
     {
       rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);

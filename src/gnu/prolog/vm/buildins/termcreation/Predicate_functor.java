@@ -27,6 +27,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
@@ -34,10 +35,7 @@ public class Predicate_functor implements PrologCode
 {
   /** constant used in predicate */
   public static final IntegerTerm zero = IntegerTerm.get(0);
-  public static final AtomTerm atomicAtom          = AtomTerm.get("atomic"); 
-  public static final AtomTerm integerAtom         = AtomTerm.get("integer");
-  public static final AtomTerm atomAtom            = AtomTerm.get("atom");
-  public static final AtomTerm notLessThenZeroAtom = AtomTerm.get("not_less_then_zero");
+
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -98,18 +96,18 @@ public class Predicate_functor implements PrologCode
       }
       if (!(name instanceof AtomicTerm))
       {
-        PrologException.typeError(atomicAtom, name);
+        PrologException.typeError(TermConstants.atomicAtom, name);
       }
       if (!(arity instanceof IntegerTerm))
       {
-        PrologException.typeError(integerAtom, arity);
+        PrologException.typeError(TermConstants.integerAtom, arity);
       }
       IntegerTerm iarity = (IntegerTerm)arity;
       if (iarity.value > 0)
       {
         if (!(name instanceof AtomTerm))
         {
-          PrologException.typeError(atomAtom, name);
+          PrologException.typeError(TermConstants.atomAtom, name);
         }
         AtomTerm functor = (AtomTerm)name;
         int n = iarity.value;
@@ -128,7 +126,7 @@ public class Predicate_functor implements PrologCode
       }
       if (iarity.value < 0)
       {
-        PrologException.domainError(notLessThenZeroAtom, arity);
+        PrologException.domainError(TermConstants.notLessThenZeroAtom, arity);
       }
       rc = interpreter.unify(term,name);
       if (rc == FAIL)

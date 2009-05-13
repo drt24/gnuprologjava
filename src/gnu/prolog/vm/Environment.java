@@ -107,10 +107,6 @@ public class Environment implements PredicateListener
 	Map<CompoundTermTag,PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
 	// flag atmoms
 	public final static AtomTerm boundedAtom = AtomTerm.get("bounded");
-	public final static AtomTerm trueAtom = AtomTerm.get("true");
-	public final static AtomTerm falseAtom = AtomTerm.get("false");
-	public final static AtomTerm maxIntegerAtom = AtomTerm.get("max_integer");
-	public final static AtomTerm minIntegerAtom = AtomTerm.get("min_integer");
 	public final static AtomTerm integerRoundingFunctionAtom = AtomTerm.get("integer_rounding_function");
 	public final static AtomTerm downAtom = AtomTerm.get("down");
 	public final static AtomTerm towardZeroAtom = AtomTerm.get("toward_zero");
@@ -118,15 +114,12 @@ public class Environment implements PredicateListener
 	public final static AtomTerm onAtom = AtomTerm.get("on");
 	public final static AtomTerm offAtom = AtomTerm.get("off");
 	public final static AtomTerm debugAtom = AtomTerm.get("debug");
-	public final static AtomTerm maxArityAtom = AtomTerm.get("max_arity");
 	public final static AtomTerm unknownAtom = AtomTerm.get("unknown");
 	public final static AtomTerm errorAtom = AtomTerm.get("error");
-	public final static AtomTerm failAtom = AtomTerm.get("fail");
 	public final static AtomTerm warningAtom = AtomTerm.get("warning");
 	public final static AtomTerm doubleQuotesAtom = AtomTerm.get("double_quotes");
 	public final static AtomTerm charsAtom = AtomTerm.get("chars");
 	public final static AtomTerm codesAtom = AtomTerm.get("codes");
-	public final static AtomTerm atomAtom = AtomTerm.get("atom");
 	public final static AtomTerm dialectAtom = AtomTerm.get("dialect");
 	public final static AtomTerm versionAtom = AtomTerm.get("version");
 	// interger terms
@@ -139,7 +132,6 @@ public class Environment implements PredicateListener
 
 	public final static AtomTerm prologFlagAtom = AtomTerm.get("prolog_flag");
 	public final static AtomTerm modifyAtom = AtomTerm.get("modify");
-	public final static AtomTerm flagAtom = AtomTerm.get("flag");
 	public final static CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 	/** atom to flag */
 	Map<AtomTerm,Term> atom2flag = new HashMap<AtomTerm, Term>();
@@ -159,13 +151,13 @@ public class Environment implements PredicateListener
 				.get("/gnu/prolog/vm/buildins/buildins.pro") });
 		ensureLoaded(term);
 		// set flags for environemnt
-		setPrologFlag(boundedAtom, trueAtom, false);
-		setPrologFlag(maxIntegerAtom, maxIntegerTerm, false);
-		setPrologFlag(minIntegerAtom, minIntegerTerm, false);
+		setPrologFlag(boundedAtom, TermConstants.trueAtom, false);
+		setPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
+		setPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
 		setPrologFlag(integerRoundingFunctionAtom, downAtom, false);
 		setPrologFlag(charConversionAtom, offAtom, true);
 		setPrologFlag(debugAtom, offAtom, true);
-		setPrologFlag(maxArityAtom, maxIntegerTerm, false);
+		setPrologFlag(TermConstants.maxArityAtom, maxIntegerTerm, false);
 		setPrologFlag(unknownAtom, errorAtom, true);
 		setPrologFlag(doubleQuotesAtom, codesAtom, true);
 		setPrologFlag(dialectAtom, dialectTerm, false);
@@ -236,19 +228,19 @@ public class Environment implements PredicateListener
 		}
 		if (flag == boundedAtom)
 		{
-			if (newValue != trueAtom && newValue != falseAtom)
+			if (newValue != TermConstants.trueAtom && newValue != TermConstants.falseAtom)
 			{
 				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
-		else if (flag == maxIntegerAtom)
+		else if (flag == TermConstants.maxIntegerAtom)
 		{
 			if (!(newValue instanceof IntegerTerm))
 			{
 				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
-		else if (flag == minIntegerAtom)
+		else if (flag == TermConstants.minIntegerAtom)
 		{
 			if (!(newValue instanceof IntegerTerm))
 			{
@@ -276,7 +268,7 @@ public class Environment implements PredicateListener
 				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
-		else if (flag == maxArityAtom)
+		else if (flag == TermConstants.maxArityAtom)
 		{
 			if (!(newValue instanceof IntegerTerm))
 			{
@@ -285,21 +277,21 @@ public class Environment implements PredicateListener
 		}
 		else if (flag == unknownAtom)
 		{
-			if (newValue != errorAtom && newValue != failAtom && newValue != warningAtom)
+			if (newValue != errorAtom && newValue != TermConstants.failAtom && newValue != warningAtom)
 			{
 				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		else if (flag == doubleQuotesAtom)
 		{
-			if (newValue != charsAtom && newValue != codesAtom && newValue != atomAtom)
+			if (newValue != charsAtom && newValue != codesAtom && newValue != TermConstants.atomAtom)
 			{
 				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		if (!changableFlags.contains(flag))
 		{
-			PrologException.permissionError(modifyAtom, flagAtom, flag);
+			PrologException.permissionError(modifyAtom, TermConstants.flagAtom, flag);
 		}
 		atom2flag.put(flag, newValue);
 	}
@@ -517,13 +509,13 @@ public class Environment implements PredicateListener
 			inops.mode = PrologStream.readAtom;
 			inops.aliases.add(PrologStream.userInputAtom);
 			inops.eofAction = PrologStream.resetAtom;
-			inops.reposition = PrologStream.falseAtom;
+			inops.reposition = TermConstants.falseAtom;
 			inops.type = PrologStream.textAtom;
 			outops.filename = PrologStream.userOutputAtom;
 			outops.mode = PrologStream.appendAtom;
 			outops.aliases.add(PrologStream.userOutputAtom);
 			outops.eofAction = PrologStream.resetAtom;
-			outops.reposition = PrologStream.falseAtom;
+			outops.reposition = TermConstants.falseAtom;
 			outops.type = PrologStream.textAtom;
 			userInput = new TextInputPrologStream(inops, new InputStreamReader(stdin == null ? getDefaultInputStream() : stdin));
 			userOutput = new TextOutputPrologStream(outops, new OutputStreamWriter(stdout == null ?getDefaultOutputStream() : stdout));
@@ -644,11 +636,11 @@ public class Environment implements PredicateListener
 		}
 		else if (options.type == PrologStream.textAtom)
 		{
-			boolean randAccess = options.reposition == PrologStream.trueAtom;
-//			if (options.reposition == PrologStream.trueAtom)
+			boolean randAccess = options.reposition == TermConstants.trueAtom;
+//			if (options.reposition == PrologStream.TermConstants.trueAtom)
 //			{
 //				PrologException.permissionError(PrologStream.openAtom, PrologStream.sourceSinkAtom, new CompoundTerm(
-//						PrologStream.repositionTag, PrologStream.trueAtom));
+//						PrologStream.repositionTag, PrologStream.TermConstants.trueAtom));
 //			}
 			if (options.mode == PrologStream.readAtom)
 			{

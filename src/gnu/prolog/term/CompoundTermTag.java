@@ -38,8 +38,6 @@ final public class CompoundTermTag implements java.io.Serializable
 	private static final Map<AtomTerm,List<CompoundTermTag>> atom2tag = new WeakHashMap<AtomTerm, List<CompoundTermTag>>();
 
 	// some standard tags
-	/** list tag */
-	public final static CompoundTermTag list = get(".", 2);
 	/** comma tag */
 	public final static CompoundTermTag comma = get(",", 2);
 	/** clause tag */

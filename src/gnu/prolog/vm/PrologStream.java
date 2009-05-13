@@ -35,7 +35,7 @@ public abstract class PrologStream
     public AtomTerm mode;
     public AtomTerm type = PrologStream.textAtom;
     public AtomTerm eofAction = PrologStream.eofCodeAtom;
-    public AtomTerm reposition = PrologStream.falseAtom;
+    public AtomTerm reposition = TermConstants.falseAtom;
     public Set<AtomTerm>  aliases = new HashSet<AtomTerm>();
     public AtomTerm filename;
     public Environment environment;
@@ -52,8 +52,6 @@ public abstract class PrologStream
   public static final CompoundTermTag repositionTag=CompoundTermTag.get("reposition",1);
   public static final CompoundTermTag typeTag=CompoundTermTag.get("type",1);
   // atoms used for stream options
-  public static final AtomTerm falseAtom = AtomTerm.get("false");
-  public static final AtomTerm trueAtom = AtomTerm.get("true");
   public static final AtomTerm atAtom = AtomTerm.get("at");
   public static final AtomTerm pastAtom = AtomTerm.get("past");
   public static final AtomTerm notAtom = AtomTerm.get("not");
@@ -64,8 +62,6 @@ public abstract class PrologStream
   public static final AtomTerm resetAtom = AtomTerm.get("reset");
   public static final AtomTerm repositionAtom = AtomTerm.get("reposition");
   public static final AtomTerm streamAtom = AtomTerm.get("stream");
-  public static final AtomTerm textStreamAtom = AtomTerm.get("text_stream");
-  public static final AtomTerm binaryStreamAtom = AtomTerm.get("binary_stream");
   public static final AtomTerm readAtom = AtomTerm.get("read");
   public static final AtomTerm userInputAtom = AtomTerm.get("user_input");
   public static final AtomTerm userOutputAtom = AtomTerm.get("user_output");
@@ -75,10 +71,6 @@ public abstract class PrologStream
   public static final AtomTerm streamOrAliasAtom = AtomTerm.get("stream_or_alias");
   public static final AtomTerm openAtom = AtomTerm.get("open");
   public static final AtomTerm sourceSinkAtom = AtomTerm.get("source_sink");
-  public static final AtomTerm pastEndOfStreamAtom = AtomTerm.get("past_end_of_stream");
-  public static final AtomTerm listAtom = AtomTerm.get("list");
-  public static final AtomTerm atomAtom = AtomTerm.get("atom");
-  public static final AtomTerm variableAtom = AtomTerm.get("variable");
   public static final AtomTerm writeAtom = AtomTerm.get("write");
   public static final AtomTerm endOfFileAtom = AtomTerm.get("end_of_file");
 
@@ -132,7 +124,7 @@ public abstract class PrologStream
     {
       list.add(new CompoundTerm(aliasTag, (Term)i.next()));
     }
-    if (reposition == trueAtom)
+    if (reposition == TermConstants.trueAtom)
     {
       list.add(new CompoundTerm(positionTag, getPosition(streamTerm,null)));
     }

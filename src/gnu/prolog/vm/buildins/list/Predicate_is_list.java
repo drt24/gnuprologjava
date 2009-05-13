@@ -26,6 +26,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /**
  * 
@@ -47,7 +48,7 @@ public class Predicate_is_list implements PrologCode
 		Term lst = args[0];
 		while (lst != null)
 		{
-			if (AtomTerm.emptyList.equals(lst))
+			if (TermConstants.emptyListAtom.equals(lst))
 			{
 				return SUCCESS_LAST;
 			}

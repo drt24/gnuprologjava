@@ -54,19 +54,19 @@ public class TextInputPrologStream extends PrologStream
   public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
-    PrologException.permissionError(inputAtom, textStreamAtom, streamTerm);
+    PrologException.permissionError(inputAtom, TermConstants.textStreamAtom, streamTerm);
     return 0;
   }
   public int peekByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
-    PrologException.permissionError(inputAtom, textStreamAtom, streamTerm);
+    PrologException.permissionError(inputAtom, TermConstants.textStreamAtom, streamTerm);
     return 0;
   }
   public void putByte(Term streamTerm, Interpreter interptreter, int _byte) throws PrologException
   {
     checkExists();
-    PrologException.permissionError(outputAtom, textStreamAtom, streamTerm);
+    PrologException.permissionError(outputAtom, TermConstants.textStreamAtom, streamTerm);
   }
   
   // repositioning
@@ -85,7 +85,7 @@ public class TextInputPrologStream extends PrologStream
         return null;
       }
   	}
-    PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
+    PrologException.permissionError(repositionAtom, TermConstants.textStreamAtom, streamTerm);
     return null;
   }
   public void setPosition(Term streamTerm, Interpreter interptreter, Term position) throws PrologException
@@ -95,7 +95,7 @@ public class TextInputPrologStream extends PrologStream
   	{
     	try
       {
-        if (reposition == falseAtom)
+        if (reposition == TermConstants.falseAtom)
         {
           PrologException.permissionError(repositionAtom,streamAtom,getStreamTerm());
         }
@@ -137,9 +137,7 @@ public class TextInputPrologStream extends PrologStream
       {
         if (eofAction == errorAtom)
         {
-          PrologException.permissionError(inputAtom,
-                                          pastEndOfStreamAtom,
-                                          streamTerm);
+          PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
         }
         else if (eofAction == eofCodeAtom)
         {
@@ -173,9 +171,7 @@ public class TextInputPrologStream extends PrologStream
       {
         if (eofAction == errorAtom)
         {
-          PrologException.permissionError(inputAtom,
-                                          pastEndOfStreamAtom,
-                                          streamTerm);
+          PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
         }
         else if (eofAction == eofCodeAtom)
         {
@@ -224,13 +220,11 @@ public class TextInputPrologStream extends PrologStream
       {
         if (eofAction == errorAtom)
         {
-          PrologException.permissionError(inputAtom,
-                                          pastEndOfStreamAtom,
-                                          streamTerm);
+          PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
         }
         else if (eofAction == eofCodeAtom)
         {
-          PrologException.syntaxError(pastEndOfStreamAtom);
+          PrologException.syntaxError(TermConstants.pastEndOfStreamAtom);
         }
       }
       Term term = termReader.readTerm(options);

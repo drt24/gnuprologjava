@@ -71,12 +71,12 @@ public class Predicate_read_term implements PrologCode, TermConstants
       }
       if (!(cur instanceof CompoundTerm))
       {
-        PrologException.typeError(listAtom, optionsList);
+        PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       CompoundTerm ct = (CompoundTerm)cur;
       if (ct.tag != listTag)
       {
-        PrologException.typeError(listAtom, optionsList);
+        PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       Term head = ct.args[0].dereference();
       cur = ct.args[1].dereference();

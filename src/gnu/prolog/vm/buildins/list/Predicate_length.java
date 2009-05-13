@@ -57,7 +57,7 @@ public class Predicate_length implements PrologCode
 			Term lst = args[0];
 			while (lst != null)
 			{
-				if (AtomTerm.emptyList.equals(lst))
+				if (TermConstants.emptyListAtom.equals(lst))
 				{
 					break;
 				}

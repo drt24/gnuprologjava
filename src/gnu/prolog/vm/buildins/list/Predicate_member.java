@@ -28,6 +28,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /**
  * Does:
@@ -106,7 +107,7 @@ public class Predicate_member implements PrologCode
 	 */
 	protected int nextSolution(Interpreter interpreter, MemberBacktrackInfo bi) throws PrologException
 	{
-		while (!AtomTerm.emptyList.equals(bi.list))
+		while (!TermConstants.emptyListAtom.equals(bi.list))
 		{
 			if (bi.listExpand)
 			{
@@ -126,7 +127,7 @@ public class Predicate_member implements PrologCode
 				bi.list = new VariableTerm();
 				bi.listExpand = true;
 			}
-			else if (!CompoundTerm.isListPair(bi.list) && !AtomTerm.emptyList.equals(bi.list))
+			else if (!CompoundTerm.isListPair(bi.list) && !TermConstants.emptyListAtom.equals(bi.list))
 			{
 				return FAIL;
 			}

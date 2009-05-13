@@ -89,7 +89,7 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     if (!(topspec instanceof AtomTerm))
     {
-      PrologException.typeError(atomAtom, topspec);
+      PrologException.typeError(TermConstants.atomAtom, topspec);
     }
 
     if (topspec == xfxAtom)
@@ -152,12 +152,12 @@ public class Predicate_op implements PrologCode, TermConstants
         }
         if (!(cur instanceof CompoundTerm))
         {
-          PrologException.typeError(listAtom, tops);
+          PrologException.typeError(TermConstants.listAtom, tops);
         }
         CompoundTerm ct = (CompoundTerm)cur;
         if (ct.tag != listTag)
         {
-          PrologException.typeError(listAtom, tops);
+          PrologException.typeError(TermConstants.listAtom, tops);
         }
         Term head = ct.args[0].dereference();
         cur = ct.args[1].dereference();
@@ -167,7 +167,7 @@ public class Predicate_op implements PrologCode, TermConstants
         }
         if (!(head instanceof AtomTerm))
         {
-          PrologException.typeError(atomAtom, head);
+          PrologException.typeError(TermConstants.atomAtom, head);
         }
         validateOp(priority, opspec, (AtomTerm)head, opSet);
         ops.add((AtomTerm)head);
@@ -175,7 +175,7 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     else
     {
-      PrologException.typeError(listAtom, tops);
+      PrologException.typeError(TermConstants.listAtom, tops);
     }
     if (priority == 0) // if remove requested
     {

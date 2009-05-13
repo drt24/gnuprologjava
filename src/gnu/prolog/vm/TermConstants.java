@@ -95,6 +95,7 @@ public interface TermConstants
   // misc
   public static final AtomTerm trueAtom = AtomTerm.get("true");
   public static final AtomTerm falseAtom = AtomTerm.get("false");
+  public static final AtomTerm failAtom = AtomTerm.get("fail");
 
   // list constants
   public static final AtomTerm emptyListAtom = AtomTerm.get("[]");

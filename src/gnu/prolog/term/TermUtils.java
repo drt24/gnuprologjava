@@ -16,6 +16,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
+import gnu.prolog.vm.TermConstants;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -156,7 +158,7 @@ public class TermUtils
   /** get witness of variable set, now just list of variables */
   public static Term getWitness(Set<Term> set)
   {
-    Term rc = AtomTerm.emptyList;
+    Term rc = TermConstants.emptyListAtom;
     Iterator<Term> i = set.iterator();
     while (i.hasNext())
     {

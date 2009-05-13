@@ -28,6 +28,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,7 +39,6 @@ import java.util.Set;
 public class Predicate_current_predicate implements PrologCode
 {
   CompoundTermTag divideTag = CompoundTermTag.get("/",2);
-  AtomTerm predicateIndicatorAtom = AtomTerm.get("predicate_indicator"); 
 
   private class CurrentPredicateBacktrackInfo extends BacktrackInfo
   {
@@ -77,22 +77,22 @@ public class Predicate_current_predicate implements PrologCode
         CompoundTerm ct = (CompoundTerm)pi;
         if (ct.tag != divideTag)
         {
-          PrologException.typeError(predicateIndicatorAtom,pi);
+          PrologException.typeError(TermConstants.predicateIndicatorAtom,pi);
         }
         Term n = ct.args[0].dereference();
         Term a = ct.args[1].dereference();
         if (!(n instanceof VariableTerm || n instanceof AtomTerm))
         {
-          PrologException.typeError(predicateIndicatorAtom,pi);
+          PrologException.typeError(TermConstants.predicateIndicatorAtom,pi);
         }
         if (!(a instanceof VariableTerm || a instanceof IntegerTerm))
         {
-          PrologException.typeError(predicateIndicatorAtom,pi);
+          PrologException.typeError(TermConstants.predicateIndicatorAtom,pi);
         }
       }
       else
       {
-        PrologException.typeError(predicateIndicatorAtom,pi);
+        PrologException.typeError(TermConstants.predicateIndicatorAtom,pi);
       }
       Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.environment.getModule().getPredicateTags());
       CurrentPredicateBacktrackInfo bi = new CurrentPredicateBacktrackInfo();

@@ -24,6 +24,7 @@ import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,14 +47,8 @@ public class InterpretedCodeCompiler
   // constant used in analisys and comilation
   /** unify tag */
   public static final CompoundTermTag unifyTag = CompoundTermTag.get("=",2);
-  /** callable atom */
-  public static final AtomTerm callableAtom = AtomTerm.get("callable");
   /** cut "!" atom */
   public static final AtomTerm cutAtom = AtomTerm.get("!");
-  /** "true" atom */ 
-  public static final AtomTerm trueAtom = AtomTerm.get("true");
-  /** "false" atom " */
-  public static final AtomTerm failAtom = AtomTerm.get("fail");
   /** if tag */
   public static final CompoundTermTag ifTag          = CompoundTermTag.get("->",2);
   /** disjunction and if then else ';'('->'(...,...)...) tag */
@@ -169,7 +164,7 @@ public class InterpretedCodeCompiler
     }
     else
     {
-      PrologException.typeError(callableAtom,headTerm);
+      PrologException.typeError(TermConstants.callableAtom,headTerm);
     }
   }
 
@@ -190,11 +185,11 @@ public class InterpretedCodeCompiler
       {
         iCut(getCutPosition());
       }
-      else if (body == trueAtom) // true
+      else if (body == TermConstants.trueAtom) // true
       {
         iTrue();
       }
-      else if (body == failAtom) // false
+      else if (body == TermConstants.failAtom) // false
       {
         iFail();
       }
@@ -238,7 +233,7 @@ public class InterpretedCodeCompiler
       }
       else if (tag == ifTag)
       {
-        compileIfThenElse(ct.args[0],ct.args[1],failAtom);
+        compileIfThenElse(ct.args[0],ct.args[1],TermConstants.failAtom);
       }
       else if (tag == catchTag)
       {
@@ -292,7 +287,7 @@ public class InterpretedCodeCompiler
     }
     else // other type
     {
-      PrologException.typeError(callableAtom,body);
+      PrologException.typeError(TermConstants.callableAtom,body);
     }
   }
 

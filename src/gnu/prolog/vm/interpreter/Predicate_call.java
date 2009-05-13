@@ -27,6 +27,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,6 @@ public class Predicate_call implements PrologCode
 {
 	Environment environment;
 
-	/** callable atom */
-	public static final AtomTerm callableAtom = AtomTerm.get("callable");
 	/** if tag */
 	public static final CompoundTermTag ifTag = CompoundTermTag.get("->", 2);
 	/** disjunction and if then else ';'('->'(_,_)_) tag */
@@ -133,7 +132,7 @@ public class Predicate_call implements PrologCode
 			}
 			catch (IllegalArgumentException ex) // term not callable
 			{
-				PrologException.typeError(callableAtom, callTerm);
+				PrologException.typeError(TermConstants.callableAtom, callTerm);
 				return -1; // fake return
 			}
 			Term headArgs[] = (Term[]) argumentVariables.toArray(termArrayType);

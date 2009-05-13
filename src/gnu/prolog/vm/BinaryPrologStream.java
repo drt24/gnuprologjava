@@ -57,9 +57,7 @@ public class BinaryPrologStream extends PrologStream
       getEndOfStreamState();
       if (endOfStream == pastAtom)
       {
-        PrologException.permissionError(inputAtom,
-                                        pastEndOfStreamAtom,
-                                        streamTerm);
+        PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
       }
       else if (endOfStream == atAtom)
       {
@@ -93,9 +91,7 @@ public class BinaryPrologStream extends PrologStream
       getEndOfStreamState();
       if (endOfStream == pastAtom)
       {
-        PrologException.permissionError(inputAtom,
-                                        pastEndOfStreamAtom,
-                                        streamTerm);
+        PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
       }
       else if (endOfStream == atAtom)
       {
@@ -158,7 +154,7 @@ public class BinaryPrologStream extends PrologStream
   {
     try
     {
-      if (reposition == falseAtom)
+      if (reposition == TermConstants.falseAtom)
       {
         PrologException.permissionError(repositionAtom,streamAtom,getStreamTerm());
       }
@@ -190,31 +186,31 @@ public class BinaryPrologStream extends PrologStream
   
   public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
   {
-    PrologException.permissionError(inputAtom, binaryStreamAtom, streamTerm);
+    PrologException.permissionError(inputAtom, TermConstants.binaryStreamAtom, streamTerm);
     return -1;
   }
   public int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException
   {
-    PrologException.permissionError(inputAtom, binaryStreamAtom, streamTerm);
+    PrologException.permissionError(inputAtom, TermConstants.binaryStreamAtom, streamTerm);
     return -1;
   }
   public void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException
   {
-    PrologException.permissionError(outputAtom, binaryStreamAtom, streamTerm);
+    PrologException.permissionError(outputAtom, TermConstants.binaryStreamAtom, streamTerm);
   }
   public void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException
   {
-  	PrologException.permissionError(outputAtom, binaryStreamAtom, streamTerm);  	
+  	PrologException.permissionError(outputAtom, TermConstants.binaryStreamAtom, streamTerm);  	
   }
 
   public gnu.prolog.term.Term readTerm(Term streamTerm, gnu.prolog.vm.Interpreter i, gnu.prolog.io.ReadOptions o) throws PrologException
   {
-    PrologException.permissionError(inputAtom, binaryStreamAtom, streamTerm);
+    PrologException.permissionError(inputAtom, TermConstants.binaryStreamAtom, streamTerm);
     return null;
   }
   public void writeTerm(Term streamTerm, gnu.prolog.vm.Interpreter i, gnu.prolog.io.WriteOptions o, gnu.prolog.term.Term t)  throws PrologException
   {
-    PrologException.permissionError(outputAtom, binaryStreamAtom, streamTerm);
+    PrologException.permissionError(outputAtom, TermConstants.binaryStreamAtom, streamTerm);
   }
 
   public void flushOutput(Term streamTerm) throws PrologException

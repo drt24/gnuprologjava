@@ -16,6 +16,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
+import gnu.prolog.vm.TermConstants;
+
 import java.util.Collection;
 import java.util.List;
 /** compound term.
@@ -26,8 +28,6 @@ public class CompoundTerm extends Term
 {
 	private static final long serialVersionUID = -8207470525318790957L;
 	
-	/** tag for list */
-  public static final CompoundTermTag listTag = CompoundTermTag.get(".",2);
   /** tag for conjunction */
   public static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
   /** tag for disjunction */
@@ -40,7 +40,7 @@ public class CompoundTerm extends Term
     if (term instanceof CompoundTerm)
     {
       CompoundTerm ct = (CompoundTerm)term;
-      return ct.tag == listTag;
+      return ct.tag == TermConstants.listTag;
     }
     else
     {
@@ -51,7 +51,7 @@ public class CompoundTerm extends Term
   /** get prolog list by java list */
   public static Term getList(List<Term> list)
   {
-    Term tlist = AtomTerm.emptyList;
+    Term tlist = TermConstants.emptyListAtom;
     for (int i=list.size()-1;i>=0;i--)
     {
       tlist = getList((Term)list.get(i),tlist);
@@ -76,7 +76,7 @@ public class CompoundTerm extends Term
 		}
 		else
 		{
-			if (!AtomTerm.emptyList.equals(term))
+			if (!TermConstants.emptyListAtom.equals(term))
 			{
 				col.add(term);
 			}
@@ -115,7 +115,7 @@ public class CompoundTerm extends Term
     */
   public static CompoundTerm getList(Term head, Term tail)
   {
-    CompoundTerm rc = new CompoundTerm(listTag, head, tail);
+    CompoundTerm rc = new CompoundTerm(TermConstants.listTag, head, tail);
     return rc;
   }
   

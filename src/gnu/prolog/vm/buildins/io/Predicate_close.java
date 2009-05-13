@@ -43,7 +43,7 @@ public class Predicate_close implements PrologCode, TermConstants
          throws PrologException
   {
     Term cur = args[1];
-    Term force = falseAtom;
+    Term force = TermConstants.falseAtom;
     while (cur != emptyListAtom)
     {
       if (cur instanceof VariableTerm)
@@ -52,12 +52,12 @@ public class Predicate_close implements PrologCode, TermConstants
       }
       if (!(cur instanceof CompoundTerm))
       {
-        PrologException.typeError(listAtom, args[1]);
+        PrologException.typeError(TermConstants.listAtom, args[1]);
       }
       CompoundTerm ct = (CompoundTerm)cur;
       if (ct.tag != listTag)
       {
-        PrologException.typeError(listAtom, args[1]);
+        PrologException.typeError(TermConstants.listAtom, args[1]);
       }
       Term head = ct.args[0].dereference();
       cur = ct.args[1].dereference();
@@ -71,7 +71,7 @@ public class Predicate_close implements PrologCode, TermConstants
         PrologException.domainError(closeOptionAtom, head);
       }
       CompoundTerm e = (CompoundTerm)head;
-      if (e.tag != forceTag || (e.args[0] != trueAtom && e.args[0] != falseAtom))
+      if (e.tag != forceTag || (e.args[0] != TermConstants.trueAtom && e.args[0] != TermConstants.falseAtom))
       {
         PrologException.domainError(closeOptionAtom, head);
       }
@@ -87,7 +87,7 @@ public class Predicate_close implements PrologCode, TermConstants
     {
       return SUCCESS_LAST;
     }
-    stream.close(force == trueAtom);
+    stream.close(force == TermConstants.trueAtom);
     return SUCCESS_LAST;
   }
 

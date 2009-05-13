@@ -29,6 +29,7 @@ import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 
@@ -415,7 +416,7 @@ JAVACODE Term exp(ReadOptions options):
       rc = null;
     } else {
       t1 = exp(options);
-        t1 = createTerm(CompoundTermTag.list,t1,null);
+        t1 = createTerm(TermConstants.listTag,t1,null);
         rc = t1;
       label_1:
       while (true) {
@@ -426,7 +427,7 @@ JAVACODE Term exp(ReadOptions options):
         }
         comma();
         t2 = exp(options);
-           t2 = createTerm(CompoundTermTag.list,t2,null);
+           t2 = createTerm(TermConstants.listTag,t2,null);
            ((CompoundTerm)t1).args[1] = t2;
            t1 = t2;
       }
@@ -441,11 +442,11 @@ JAVACODE Term exp(ReadOptions options):
     close_list();
     if (rc == null)
     {
-      {if (true) return AtomTerm.emptyList;}
+      {if (true) return TermConstants.emptyListAtom;}
     }
     if (((CompoundTerm)t1).args[1] == null)
     {
-      ((CompoundTerm)t1).args[1] = AtomTerm.emptyList;
+      ((CompoundTerm)t1).args[1] = TermConstants.emptyListAtom;
     }
     {if (true) return rc;}
     throw new Error("Missing return statement in function");
@@ -543,7 +544,7 @@ JAVACODE Term exp(ReadOptions options):
     jj_consume_token(CHAR_CODE_LIST_TOKEN);
     String val = TermParserUtils.convertQuotedString(token.image,'\"');
     int i,n = val.length();
-    Term rc = AtomTerm.emptyList;
+    Term rc = TermConstants.emptyListAtom;
     for (i=n-1; i>=0; i--)
     {
       rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);

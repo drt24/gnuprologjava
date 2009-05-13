@@ -26,6 +26,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
@@ -36,10 +37,7 @@ public abstract class Predicate_assert implements PrologCode
   static final CompoundTermTag disjunctionTag = CompoundTermTag.get(";",2); 
   static final CompoundTermTag ifTag          = CompoundTermTag.get("->",2); 
   static final CompoundTermTag callTag        = CompoundTermTag.get("call",1); 
-  static final AtomTerm trueAtom = AtomTerm.get("true"); 
   static final AtomTerm modifyAtom = AtomTerm.get("modify"); 
-  static final AtomTerm staticProcedureAtom = AtomTerm.get("static_procedure"); 
-  static final AtomTerm callableAtom = AtomTerm.get("callable"); 
 
   /** assert a clause */
   protected abstract void assertPred(Predicate p, CompoundTerm clause);
@@ -72,17 +70,17 @@ public abstract class Predicate_assert implements PrologCode
       else
       {
         head = ct;
-        body = trueAtom;
+        body = TermConstants.trueAtom;
       }
     }
     else if (clause instanceof AtomTerm)
     {
       head = clause;
-      body = trueAtom;
+      body = TermConstants.trueAtom;
     }
     else 
     {
-      PrologException.typeError(callableAtom,clause);
+      PrologException.typeError(TermConstants.callableAtom,clause);
     }
     CompoundTermTag predTag = null;
     if (head instanceof VariableTerm)
@@ -99,7 +97,7 @@ public abstract class Predicate_assert implements PrologCode
     }
     else
     {
-      PrologException.typeError(callableAtom,head);
+      PrologException.typeError(TermConstants.callableAtom,head);
     }
     Predicate p = interpreter.environment.getModule().getDefinedPredicate(predTag);
     if (p == null)
@@ -112,12 +110,12 @@ public abstract class Predicate_assert implements PrologCode
     {
       if (!p.isDynamic())
       {
-        PrologException.permissionError(modifyAtom,staticProcedureAtom,predTag.getPredicateIndicator());
+        PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
       }
     }
     else
     {
-      PrologException.permissionError(modifyAtom,staticProcedureAtom,predTag.getPredicateIndicator());
+      PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
     }
     assertPred(p, (CompoundTerm)new CompoundTerm(clauseTag,head,body).clone());
     return SUCCESS_LAST;
@@ -165,7 +163,7 @@ public abstract class Predicate_assert implements PrologCode
     }
     else
     {
-      PrologException.typeError(callableAtom,term);
+      PrologException.typeError(TermConstants.callableAtom,term);
       return null;
     }
   }

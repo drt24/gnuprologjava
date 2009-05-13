@@ -18,7 +18,6 @@
 package gnu.prolog.vm.buildins.allsolutions;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
-import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
@@ -26,6 +25,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 import gnu.prolog.vm.interpreter.Predicate_call;
 
 import java.util.ArrayList;
@@ -35,8 +35,6 @@ import java.util.List;
   */
 public class Predicate_findall implements PrologCode
 {
-  static final AtomTerm listAtom = AtomTerm.get("list");
-  static final CompoundTermTag listTag = CompoundTermTag.get(".",2);
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -106,7 +104,7 @@ public class Predicate_findall implements PrologCode
   public static void checkList(Term list) throws PrologException
   {
     Term exArg = list;
-    while(list != AtomTerm.emptyList)
+    while(list != TermConstants.emptyListAtom)
     {
       if (list instanceof VariableTerm)
       {
@@ -114,12 +112,12 @@ public class Predicate_findall implements PrologCode
       }
       if (!(list instanceof CompoundTerm))
       {
-        PrologException.typeError(listAtom, exArg);
+        PrologException.typeError(TermConstants.listAtom, exArg);
       }
       CompoundTerm ct = (CompoundTerm)list;
-      if (ct.tag != listTag)
+      if (ct.tag != TermConstants.listTag)
       {
-        PrologException.typeError(listAtom, exArg);
+        PrologException.typeError(TermConstants.listAtom, exArg);
       }
       list = ct.args[1].dereference();
     }

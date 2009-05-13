@@ -137,7 +137,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
         }
         else if (ct.tag == PrologStream.repositionTag)
         {
-          if (!(ct.args[0] == trueAtom || ct.args[0] == falseAtom || 
+          if (!(ct.args[0] == TermConstants.trueAtom || ct.args[0] == TermConstants.falseAtom || 
                 ct.args[0] instanceof VariableTerm))
           {
             PrologException.domainError(streamPropertyAtom,property);
@@ -145,7 +145,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
         }
         else if (ct.tag == PrologStream.positionTag)
         {
-          if (!(ct.args[0] == trueAtom || ct.args[0] == falseAtom || 
+          if (!(ct.args[0] == TermConstants.trueAtom || ct.args[0] == TermConstants.falseAtom || 
                 ct.args[0] instanceof VariableTerm))
           {
             PrologException.domainError(streamPropertyAtom,property);

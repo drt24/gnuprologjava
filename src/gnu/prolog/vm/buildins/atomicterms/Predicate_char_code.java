@@ -24,16 +24,13 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_char_code implements PrologCode
 {
-  static final AtomTerm atomAtom = AtomTerm.get("atom");
-  static final AtomTerm integerAtom = AtomTerm.get("integer");
-  static final AtomTerm notLessThenZeroAtom = AtomTerm.get("not_less_then_zero");
-  static final AtomTerm characterCodeAtom = AtomTerm.get("character_code");
-  static final AtomTerm characterAtom = AtomTerm.get("character");
+  
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -54,12 +51,12 @@ public class Predicate_char_code implements PrologCode
       }
       else if (!(tcode instanceof IntegerTerm))
       {
-        PrologException.typeError(integerAtom, tcode);
+        PrologException.typeError(TermConstants.integerAtom, tcode);
       }
       IntegerTerm icode = (IntegerTerm)tcode;
       if (icode.value < 0 || 0xffff < icode.value )
       {
-        PrologException.representationError(characterCodeAtom);
+        PrologException.representationError(TermConstants.characterCodeAtom);
       }
       StringBuffer bu = new StringBuffer(1);
       bu.append((char)icode.value);
@@ -72,14 +69,14 @@ public class Predicate_char_code implements PrologCode
       AtomTerm achar = (AtomTerm)tchar;
       if (achar.value.length() != 1)
       {
-        PrologException.typeError(characterAtom,achar);
+        PrologException.typeError(TermConstants.characterAtom,achar);
       }
       IntegerTerm code = IntegerTerm.get((int)achar.value.charAt(0));
       return interpreter.unify(code,tcode);
     }
     else
     {
-      PrologException.typeError(characterAtom,tchar);
+      PrologException.typeError(TermConstants.characterAtom,tchar);
     }
     return FAIL; // fake return
   }

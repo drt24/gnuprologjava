@@ -25,17 +25,12 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_arg implements PrologCode
 {
-
-  public static final AtomTerm compoundAtom        = AtomTerm.get("compound");
-  public static final AtomTerm integerAtom         = AtomTerm.get("integer");
-  public static final AtomTerm notLessThenZeroAtom = AtomTerm.get("not_less_then_zero");
-
-
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -58,16 +53,16 @@ public class Predicate_arg implements PrologCode
     }
     if (!(n instanceof IntegerTerm))
     {
-      PrologException.typeError(integerAtom, n);
+      PrologException.typeError(TermConstants.integerAtom, n);
     }
     IntegerTerm in = (IntegerTerm)n;
     if (in.value < 0)
     {
-      PrologException.domainError(notLessThenZeroAtom, in);
+      PrologException.domainError(TermConstants.notLessThenZeroAtom, in);
     }
     if (!(term instanceof CompoundTerm))
     {
-      PrologException.typeError(compoundAtom, term);
+      PrologException.typeError(TermConstants.compoundAtom, term);
     }
     CompoundTerm ct = (CompoundTerm)term;
     if (ct.tag.arity < in.value)

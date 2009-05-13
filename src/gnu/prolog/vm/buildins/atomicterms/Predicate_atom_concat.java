@@ -24,12 +24,12 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_atom_concat implements PrologCode
 {
-  static final AtomTerm atomAtom = AtomTerm.get("atom");
   static final AtomTerm nullAtom = AtomTerm.get("");
   /** cutomized bactrackinfo */
   private static class AtomConcatBacktrackInfo extends BacktrackInfo
@@ -87,15 +87,15 @@ public class Predicate_atom_concat implements PrologCode
   
       if (!(t1 instanceof VariableTerm || t1 instanceof AtomTerm))
       {
-        PrologException.typeError(atomAtom,t1);
+        PrologException.typeError(TermConstants.atomAtom,t1);
       }
       if (!(t2 instanceof VariableTerm || t2 instanceof AtomTerm))
       {
-        PrologException.typeError(atomAtom,t2);
+        PrologException.typeError(TermConstants.atomAtom,t2);
       }
       if (!(t12 instanceof VariableTerm || t12 instanceof AtomTerm))
       {
-        PrologException.typeError(atomAtom,t12);
+        PrologException.typeError(TermConstants.atomAtom,t12);
       }
       if (t12 instanceof VariableTerm)
       {

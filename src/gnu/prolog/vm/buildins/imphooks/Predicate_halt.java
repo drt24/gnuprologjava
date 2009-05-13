@@ -25,12 +25,12 @@ import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologHalt;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_halt implements PrologCode
 {
-  AtomTerm integerAtom = AtomTerm.get("integer");
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -47,7 +47,7 @@ public class Predicate_halt implements PrologCode
     }
     if (!(tcode instanceof IntegerTerm))
     {
-      PrologException.typeError(integerAtom,tcode);
+      PrologException.typeError(TermConstants.integerAtom,tcode);
     }
     IntegerTerm code = (IntegerTerm)tcode;
     throw new PrologHalt(code.value);

@@ -27,6 +27,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,10 +41,7 @@ public class Predicate_retract implements PrologCode
 {
   
   static final CompoundTermTag clauseTag      = CompoundTermTag.get(":-",2); 
-  static final AtomTerm trueAtom = AtomTerm.get("true"); 
   static final AtomTerm modifyAtom = AtomTerm.get("modify"); 
-  static final AtomTerm staticProcedureAtom = AtomTerm.get("static_procedure"); 
-  static final AtomTerm callableAtom = AtomTerm.get("callable"); 
 
   private class RetractBacktrackInfo extends BacktrackInfo
   {
@@ -94,17 +92,17 @@ public class Predicate_retract implements PrologCode
         else
         {
           head = ct;
-          body = trueAtom;
+          body = TermConstants.trueAtom;
         }
       }
       else if (clause instanceof AtomTerm)
       {
         head = clause;
-        body = trueAtom;
+        body = TermConstants.trueAtom;
       }
       else 
       {
-        PrologException.typeError(callableAtom,clause);
+        PrologException.typeError(TermConstants.callableAtom,clause);
       }
       CompoundTermTag predTag = null;
       if (head instanceof VariableTerm)
@@ -121,7 +119,7 @@ public class Predicate_retract implements PrologCode
       }
       else
       {
-        PrologException.typeError(callableAtom,head);
+        PrologException.typeError(TermConstants.callableAtom,head);
       }
       Predicate p = interpreter.environment.getModule().getDefinedPredicate(predTag);
       if (p == null)
@@ -132,12 +130,12 @@ public class Predicate_retract implements PrologCode
       {
         if (!p.isDynamic())
         {
-          PrologException.permissionError(modifyAtom,staticProcedureAtom,predTag.getPredicateIndicator());
+          PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
         }
       }
       else
       {
-        PrologException.permissionError(modifyAtom,staticProcedureAtom,predTag.getPredicateIndicator());
+        PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
       }
       Map<Term,Term> map = new HashMap<Term, Term>();
       List<Term> list = new ArrayList<Term>(p.getClauses().size());

@@ -23,12 +23,12 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
 public class Predicate_set_prolog_flag implements PrologCode
 {
-  static final AtomTerm atomAtom = AtomTerm.get("atom");
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
     * @param backtrackMode true if predicate is called on backtracking and false otherwise
@@ -46,7 +46,7 @@ public class Predicate_set_prolog_flag implements PrologCode
     }
     if (!(flag instanceof AtomTerm))
     {
-      PrologException.typeError(atomAtom,flag);
+      PrologException.typeError(TermConstants.atomAtom,flag);
     }
     interpreter.environment.setPrologFlag((AtomTerm)flag, value);
     return SUCCESS_LAST;

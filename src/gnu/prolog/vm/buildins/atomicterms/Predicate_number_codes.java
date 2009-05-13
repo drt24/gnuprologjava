@@ -36,9 +36,6 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_number_codes implements PrologCode
 {
   static final AtomTerm numberExpectedAtom = AtomTerm.get("number_expected"); 
-  static final AtomTerm numberAtom         = AtomTerm.get("number"); 
-  static final AtomTerm characterCodeAtom  = AtomTerm.get("character_code"); 
-  static final AtomTerm characterCodeListAtom = AtomTerm.get("character_code_list"); 
 
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
@@ -55,7 +52,7 @@ public class Predicate_number_codes implements PrologCode
           number instanceof IntegerTerm || 
           number instanceof FloatTerm))
     {
-      PrologException.typeError(numberAtom, number);
+      PrologException.typeError(TermConstants.numberAtom, number);
     }
     
     String numStr = getNumberString(list, (number instanceof VariableTerm));
@@ -79,7 +76,7 @@ public class Predicate_number_codes implements PrologCode
     else
     {
       numStr = TermWriter.toString(number);
-      Term res = AtomTerm.emptyList;
+      Term res = TermConstants.emptyListAtom;
       for(int i=numStr.length()-1;i>=0;i--)
       {
         res = CompoundTerm.getList(IntegerTerm.get(numStr.charAt(i)), res);
@@ -93,7 +90,7 @@ public class Predicate_number_codes implements PrologCode
   {
     StringBuffer bu = new StringBuffer();
     Term cur = list;
-    while (cur != AtomTerm.emptyList )
+    while (cur != TermConstants.emptyListAtom )
     {
       if (cur instanceof VariableTerm)
       {
@@ -127,12 +124,12 @@ public class Predicate_number_codes implements PrologCode
       }
       if (!(head instanceof IntegerTerm))
       {
-        PrologException.representationError(characterCodeAtom);
+        PrologException.representationError(TermConstants.characterCodeAtom);
       }
       IntegerTerm ch = (IntegerTerm)head;
       if (ch.value < 0 || 0xffff < ch.value)
       {
-        PrologException.representationError(characterCodeAtom);
+        PrologException.representationError(TermConstants.characterCodeAtom);
       }
       bu.append((char)ch.value);
     }

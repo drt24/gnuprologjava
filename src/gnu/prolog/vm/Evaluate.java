@@ -57,29 +57,22 @@ public class Evaluate
   public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\",1);
 
   public final static CompoundTermTag evaluationError = CompoundTermTag.get("evaluation_error",1);
-  public final static AtomTerm numberAtom = AtomTerm.get("number");
-  public final static AtomTerm integerAtom = AtomTerm.get("integer");
   public final static AtomTerm floatAtom = AtomTerm.get("float");
-  public final static AtomTerm zeroDivizorAtom = AtomTerm.get("zero_divizor");
-  public final static AtomTerm intOverflowAtom = AtomTerm.get("int_overflow");
-  public final static AtomTerm floatOverflowAtom = AtomTerm.get("float_overflow");
-  public final static AtomTerm undefinedAtom = AtomTerm.get("undefined");
-  public final static AtomTerm evaluableAtom  = AtomTerm.get("evaluable");
   private static void zero_divizor() throws PrologException
   {
-    throw PrologException.getError(new CompoundTerm(evaluationError,zeroDivizorAtom));
+    throw PrologException.getError(new CompoundTerm(evaluationError,TermConstants.zeroDivizorAtom));
   }
   private static void int_overflow() throws PrologException
   {
-    throw PrologException.getError(new CompoundTerm(evaluationError,intOverflowAtom));
+    throw PrologException.getError(new CompoundTerm(evaluationError,TermConstants.intOverflowAtom));
   }
   private static void float_overflow() throws PrologException
   {
-    throw PrologException.getError(new CompoundTerm(evaluationError,floatOverflowAtom));
+    throw PrologException.getError(new CompoundTerm(evaluationError,TermConstants.floatOverflowAtom));
   }
   private static void undefined() throws PrologException
   {
-    throw PrologException.getError(new CompoundTerm(evaluationError,undefinedAtom));
+    throw PrologException.getError(new CompoundTerm(evaluationError,TermConstants.undefinedAtom));
   }
 
   public static Term evaluate(Term term) throws PrologException
@@ -260,11 +253,11 @@ public class Evaluate
         Term arg1 = args[1];
         if (!(arg0 instanceof IntegerTerm))
         {
-          PrologException.typeError(integerAtom,arg0);
+          PrologException.typeError(TermConstants.integerAtom,arg0);
         }
         if (!(arg1 instanceof IntegerTerm))
         {
-          PrologException.typeError(integerAtom,arg1);
+          PrologException.typeError(TermConstants.integerAtom,arg1);
         }
         IntegerTerm i0 = (IntegerTerm)arg0;
         IntegerTerm i1 = (IntegerTerm)arg1;
@@ -326,11 +319,11 @@ public class Evaluate
         Term arg1 = args[1];
         if (!(arg0 instanceof IntegerTerm))
         {
-          PrologException.typeError(integerAtom,arg0);
+          PrologException.typeError(TermConstants.integerAtom,arg0);
         }
         if (!(arg1 instanceof IntegerTerm))
         {
-          PrologException.typeError(integerAtom,arg1);
+          PrologException.typeError(TermConstants.integerAtom,arg1);
         }
         IntegerTerm i0 = (IntegerTerm)arg0;
         IntegerTerm i1 = (IntegerTerm)arg1;
@@ -347,11 +340,11 @@ public class Evaluate
         Term arg1 = args[1];
         if (!(arg0 instanceof IntegerTerm))
         {
-          PrologException.typeError(integerAtom,arg0);
+          PrologException.typeError(TermConstants.integerAtom,arg0);
         }
         if (!(arg1 instanceof IntegerTerm))
         {
-          PrologException.typeError(integerAtom,arg1);
+          PrologException.typeError(TermConstants.integerAtom,arg1);
         }
         IntegerTerm i0 = (IntegerTerm)arg0;
         IntegerTerm i1 = (IntegerTerm)arg1;
@@ -760,7 +753,7 @@ public class Evaluate
       }
       else // ***************************************
       {
-        PrologException.typeError(evaluableAtom, tag.getPredicateIndicator());
+        PrologException.typeError(TermConstants.evaluableAtom, tag.getPredicateIndicator());
       }
     }
     else
@@ -770,7 +763,7 @@ public class Evaluate
     		// because it is expected to be an expression
     		term = new CompoundTerm(CompoundTermTag.divide2, term, IntegerTerm.int_0);
     	}
-      PrologException.typeError(evaluableAtom, term);
+      PrologException.typeError(TermConstants.evaluableAtom, term);
     }
     return null; // fake return
   }

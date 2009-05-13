@@ -25,6 +25,7 @@ import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.TermConstants;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -42,7 +43,6 @@ public class TermWriter extends PrintWriter
 {
 	// static variables
 	private static final CompoundTermTag numbervarsTag = CompoundTermTag.get("$VAR", 1);
-	private static final CompoundTermTag listTag = CompoundTermTag.get(".", 2);
 	private static final CompoundTermTag curly1Tag = CompoundTermTag.get("{}", 1);
 	private static final OperatorSet defaultOperatorSet = new OperatorSet();
 	private static final WriteOptions defaultWrteOptions = new WriteOptions();
@@ -234,7 +234,7 @@ public class TermWriter extends PrintWriter
 		}
 		if (!options.ignoreOps)
 		{
-			if (term.tag == listTag) // if list term
+			if (term.tag == TermConstants.listTag) // if list term
 			{
 				print('[');
 				displayList(options, term);
@@ -341,11 +341,11 @@ public class TermWriter extends PrintWriter
 		{
 			tail = tail.dereference();
 		}
-		if (tail == AtomTerm.emptyList)
+		if (tail == TermConstants.emptyListAtom)
 		{
 			// do nothing
 		}
-		else if (tail instanceof CompoundTerm && ((CompoundTerm) tail).tag == listTag)
+		else if (tail instanceof CompoundTerm && ((CompoundTerm) tail).tag == TermConstants.listTag)
 
 		{
 			print(",");

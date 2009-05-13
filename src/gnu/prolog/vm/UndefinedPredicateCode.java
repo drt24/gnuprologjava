@@ -32,7 +32,6 @@ public class UndefinedPredicateCode implements PrologCode
 
   public final static AtomTerm unknownAtom = AtomTerm.get("unknown");
   public final static AtomTerm errorAtom = AtomTerm.get("error");
-  public final static AtomTerm failAtom = AtomTerm.get("fail");
   public final static AtomTerm warningAtom = AtomTerm.get("warning");
   public final static AtomTerm procedureAtom = AtomTerm.get("procedure");
   
@@ -59,7 +58,7 @@ public class UndefinedPredicateCode implements PrologCode
       }
       PrologException.existenceError(procedureAtom, predicateIndicator);
     }
-    else if (flg == failAtom)
+    else if (flg == TermConstants.failAtom)
     {
       return FAIL;
     }
