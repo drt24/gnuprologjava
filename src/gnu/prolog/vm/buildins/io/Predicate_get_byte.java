@@ -28,7 +28,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_get_byte implements PrologCode, TermConstants
+public class Predicate_get_byte implements PrologCode
 {
 
   /** this method is used for execution of code
@@ -52,12 +52,12 @@ public class Predicate_get_byte implements PrologCode, TermConstants
       b = ch.value;
       if (b < -1 || 255 < b)
       {
-        PrologException.typeError(inByteAtom, in_byte);
+        PrologException.typeError(TermConstants.inByteAtom, in_byte);
       }
     }
     else
     {
-      PrologException.typeError(inByteAtom, in_byte);
+      PrologException.typeError(TermConstants.inByteAtom, in_byte);
     }
     Term rc = IntegerTerm.get(stream.getByte(args[0],interpreter));
     return interpreter.unify(in_byte, rc);

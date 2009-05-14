@@ -26,7 +26,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_at_end_of_stream implements PrologCode, TermConstants
+public class Predicate_at_end_of_stream implements PrologCode
 {
 
   /** this method is used for execution of code

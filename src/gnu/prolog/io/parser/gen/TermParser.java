@@ -459,7 +459,7 @@ JAVACODE Term exp(ReadOptions options):
     close_curly();
     if (t == null)
     {
-      {if (true) return AtomTerm.emptyCurly;}
+      {if (true) return TermConstants.emptyCurlyAtom;}
     }
     else
     {

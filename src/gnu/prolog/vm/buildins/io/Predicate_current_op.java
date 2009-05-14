@@ -34,7 +34,7 @@ import java.util.List;
 
 /** prolog code 
   */
-public class Predicate_current_op implements PrologCode, TermConstants
+public class Predicate_current_op implements PrologCode
 {
 
   static final AtomTerm xfxAtom = AtomTerm.get("xfx");
@@ -91,7 +91,7 @@ public class Predicate_current_op implements PrologCode, TermConstants
             specifier == fxAtom  || specifier == fyAtom  ||
             specifier == xfAtom  || specifier == yfAtom))
       {
-        PrologException.domainError(operatorSpecifierAtom, specifier);
+        PrologException.domainError(TermConstants.operatorSpecifierAtom, specifier);
       }
       if (priority instanceof VariableTerm)
       {
@@ -101,12 +101,12 @@ public class Predicate_current_op implements PrologCode, TermConstants
         IntegerTerm tt = (IntegerTerm)priority;
         if (tt.value <= 0 || 1200 < tt.value)
         {
-          PrologException.domainError(operatorPriorityAtom, priority);
+          PrologException.domainError(TermConstants.operatorPriorityAtom, priority);
         }
       }
       else 
       {
-        PrologException.domainError(operatorPriorityAtom, priority);
+        PrologException.domainError(TermConstants.operatorPriorityAtom, priority);
       }
 
       // prepare and exec

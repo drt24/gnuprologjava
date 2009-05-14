@@ -33,10 +33,6 @@ public class AtomTerm extends AtomicTerm implements Serializable
 	
 	/** a map from string to atom */
 	private final static Map<String,AtomTerm> string2atom = new WeakHashMap<String,AtomTerm>();
-	/** empty curly atom */
-	public final static AtomTerm emptyCurly = get("{}");
-	/** cut atom */
-	public final static AtomTerm cut = get("!");
 
 	/**
 	 * get atom term

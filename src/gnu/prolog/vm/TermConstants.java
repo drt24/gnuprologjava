@@ -19,7 +19,7 @@ package gnu.prolog.vm;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTermTag;
 
-public interface TermConstants
+public final class TermConstants
 {
   // atoms used for errors
   // valid types 
@@ -96,6 +96,9 @@ public interface TermConstants
   public static final AtomTerm trueAtom = AtomTerm.get("true");
   public static final AtomTerm falseAtom = AtomTerm.get("false");
   public static final AtomTerm failAtom = AtomTerm.get("fail");
+  
+  public static final AtomTerm cutAtom = AtomTerm.get("!");
+	public final static AtomTerm emptyCurlyAtom = AtomTerm.get("{}");
 
   // list constants
   public static final AtomTerm emptyListAtom = AtomTerm.get("[]");

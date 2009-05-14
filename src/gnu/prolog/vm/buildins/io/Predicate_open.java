@@ -29,7 +29,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code for open/4
   */
-public class Predicate_open implements PrologCode, TermConstants
+public class Predicate_open implements PrologCode
 {
 
   /** this method is used for execution of code
@@ -57,7 +57,7 @@ public class Predicate_open implements PrologCode, TermConstants
     }
     if (!(tsource_sink instanceof AtomTerm))
     {
-      PrologException.domainError(sourceSinkAtom, tsource_sink);
+      PrologException.domainError(TermConstants.sourceSinkAtom, tsource_sink);
     }
     source_sink = (AtomTerm)tsource_sink;
     // check mode
@@ -73,13 +73,13 @@ public class Predicate_open implements PrologCode, TermConstants
         tmode != PrologStream.writeAtom &&
         tmode != PrologStream.appendAtom)
     {
-      PrologException.domainError(ioModeAtom, tmode);
+      PrologException.domainError(TermConstants.ioModeAtom, tmode);
     }
     mode = (AtomTerm)tmode;
     // check stream
     if (!(tstream instanceof VariableTerm))
     {
-      PrologException.typeError(variableAtom, tstream);
+      PrologException.typeError(TermConstants.variableAtom, tstream);
     }
     vstream = (VariableTerm)tstream;
     // parse options
@@ -95,7 +95,7 @@ public class Predicate_open implements PrologCode, TermConstants
         PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       CompoundTerm ct = (CompoundTerm)cur;
-      if (ct.tag != listTag)
+      if (ct.tag != TermConstants.listTag)
       {
         PrologException.typeError(TermConstants.listAtom, optionsList);
       }
@@ -107,7 +107,7 @@ public class Predicate_open implements PrologCode, TermConstants
       }
       if (!(head instanceof CompoundTerm))
       {
-        PrologException.domainError(streamOptionAtom, head);
+        PrologException.domainError(TermConstants.streamOptionAtom, head);
       }
       CompoundTerm op = (CompoundTerm)head;
       if (op.tag == PrologStream.typeTag)
@@ -115,7 +115,7 @@ public class Predicate_open implements PrologCode, TermConstants
         Term val = op.args[0].dereference();
         if (val != PrologStream.textAtom && val != PrologStream.binaryAtom)
         {
-          PrologException.domainError(streamOptionAtom, op);
+          PrologException.domainError(TermConstants.streamOptionAtom, op);
         }
         options.type = (AtomTerm)val;
       }
@@ -124,7 +124,7 @@ public class Predicate_open implements PrologCode, TermConstants
         Term val = op.args[0].dereference();
         if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
         {
-          PrologException.domainError(streamOptionAtom, op);
+          PrologException.domainError(TermConstants.streamOptionAtom, op);
         }
         options.reposition = (AtomTerm)val;
       }
@@ -133,7 +133,7 @@ public class Predicate_open implements PrologCode, TermConstants
         Term val = op.args[0].dereference();
         if (!(val instanceof AtomTerm))
         {
-          PrologException.domainError(streamOptionAtom, op);
+          PrologException.domainError(TermConstants.streamOptionAtom, op);
         }
         options.aliases.add((AtomTerm) val);
       }
@@ -144,13 +144,13 @@ public class Predicate_open implements PrologCode, TermConstants
             val != PrologStream.eofCodeAtom &&
             val != PrologStream.resetAtom)
         {
-          PrologException.domainError(streamOptionAtom, op);
+          PrologException.domainError(TermConstants.streamOptionAtom, op);
         }
         options.reposition = (AtomTerm)val;
       }
       else
       {
-        PrologException.domainError(streamOptionAtom, op);
+        PrologException.domainError(TermConstants.streamOptionAtom, op);
       }
     }
     options.filename=source_sink;

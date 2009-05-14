@@ -28,7 +28,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_put_char implements PrologCode, TermConstants
+public class Predicate_put_char implements PrologCode
 {
 
   /** this method is used for execution of code
@@ -56,12 +56,12 @@ public class Predicate_put_char implements PrologCode, TermConstants
       }
       else
       {
-        PrologException.typeError(characterAtom, outchar);
+        PrologException.typeError(TermConstants.characterAtom, outchar);
       }
     }
     else
     {
-      PrologException.typeError(characterAtom, outchar);
+      PrologException.typeError(TermConstants.characterAtom, outchar);
     }
     stream.putCode(args[0],interpreter,ch);
     return SUCCESS_LAST;

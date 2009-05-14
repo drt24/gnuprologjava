@@ -36,7 +36,7 @@ import java.util.Map;
 
 /** prolog code 
   */
-public class Predicate_read_term implements PrologCode, TermConstants
+public class Predicate_read_term implements PrologCode
 {
   final static CompoundTermTag variablesTag     = CompoundTermTag.get("variables",1);
   final static CompoundTermTag variableNamesTag = CompoundTermTag.get("variable_names",1);
@@ -63,7 +63,7 @@ public class Predicate_read_term implements PrologCode, TermConstants
     
     // parse and unify options
     Term cur = optionsList;
-    while (cur != emptyListAtom)
+    while (cur != TermConstants.emptyListAtom)
     {
       if (cur instanceof VariableTerm)
       {
@@ -74,7 +74,7 @@ public class Predicate_read_term implements PrologCode, TermConstants
         PrologException.typeError(TermConstants.listAtom, optionsList);
       }
       CompoundTerm ct = (CompoundTerm)cur;
-      if (ct.tag != listTag)
+      if (ct.tag != TermConstants.listTag)
       {
         PrologException.typeError(TermConstants.listAtom, optionsList);
       }
@@ -86,7 +86,7 @@ public class Predicate_read_term implements PrologCode, TermConstants
       }
       if (!(head instanceof CompoundTerm))
       {
-        PrologException.domainError(readOptionAtom, head);
+        PrologException.domainError(TermConstants.readOptionAtom, head);
       }
       CompoundTerm op = (CompoundTerm)head;
       if (op.tag == variablesTag)
@@ -103,7 +103,7 @@ public class Predicate_read_term implements PrologCode, TermConstants
       }
       else 
       {
-        PrologException.domainError(readOptionAtom, head);
+        PrologException.domainError(TermConstants.readOptionAtom, head);
       }
     }
     
@@ -187,7 +187,7 @@ public class Predicate_read_term implements PrologCode, TermConstants
   private static Term mapToList(Map<String,Term> map)
   {
     Iterator<String> i = map.keySet().iterator();
-    Term rc = emptyListAtom;
+    Term rc = TermConstants.emptyListAtom;
     while (i.hasNext())
     {
       String key = (String)i.next();

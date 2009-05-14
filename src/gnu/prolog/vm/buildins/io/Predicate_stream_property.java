@@ -35,7 +35,7 @@ import java.util.Map;
 
 /** prolog code 
   */
-public class Predicate_stream_property implements PrologCode, TermConstants
+public class Predicate_stream_property implements PrologCode
 {
 
   private class StreamPropertyBacktrackInfo extends BacktrackInfo
@@ -82,18 +82,18 @@ public class Predicate_stream_property implements PrologCode, TermConstants
           }
           else
           {
-            PrologException.domainError(streamAtom,stream);
+            PrologException.domainError(TermConstants.streamAtom,stream);
           }
         }
         else
         {
-          PrologException.domainError(streamAtom,stream);
+          PrologException.domainError(TermConstants.streamAtom,stream);
         }
       }
       Term property = args[1];
       if (property instanceof VariableTerm || 
-          property == inputAtom || 
-          property == outputAtom)
+          property == TermConstants.inputAtom || 
+          property == TermConstants.outputAtom)
       {
       }
       else if (property instanceof CompoundTerm)
@@ -104,7 +104,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
           if (!(ct.args[0] instanceof AtomTerm || 
                 ct.args[0] instanceof VariableTerm))
           {
-            PrologException.domainError(streamPropertyAtom,property);
+            PrologException.domainError(TermConstants.streamPropertyAtom,property);
           }
         }
         else if (ct.tag == PrologStream.aliasTag)
@@ -112,7 +112,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
           if (!(ct.args[0] instanceof AtomTerm || 
                 ct.args[0] instanceof VariableTerm))
           {
-            PrologException.domainError(streamPropertyAtom,property);
+            PrologException.domainError(TermConstants.streamPropertyAtom,property);
           }
         }
         else if (ct.tag == PrologStream.endOfStreamTag)
@@ -122,7 +122,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
                 ct.args[0] == PrologStream.notAtom || 
                 ct.args[0] instanceof VariableTerm))
           {
-            PrologException.domainError(streamPropertyAtom,property);
+            PrologException.domainError(TermConstants.streamPropertyAtom,property);
           }
         }
         else if (ct.tag == PrologStream.eofActionTag)
@@ -132,7 +132,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
                 ct.args[0] == PrologStream.resetAtom || 
                 ct.args[0] instanceof VariableTerm))
           {
-            PrologException.domainError(streamPropertyAtom,property);
+            PrologException.domainError(TermConstants.streamPropertyAtom,property);
           }
         }
         else if (ct.tag == PrologStream.repositionTag)
@@ -140,7 +140,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
           if (!(ct.args[0] == TermConstants.trueAtom || ct.args[0] == TermConstants.falseAtom || 
                 ct.args[0] instanceof VariableTerm))
           {
-            PrologException.domainError(streamPropertyAtom,property);
+            PrologException.domainError(TermConstants.streamPropertyAtom,property);
           }
         }
         else if (ct.tag == PrologStream.positionTag)
@@ -148,7 +148,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
           if (!(ct.args[0] == TermConstants.trueAtom || ct.args[0] == TermConstants.falseAtom || 
                 ct.args[0] instanceof VariableTerm))
           {
-            PrologException.domainError(streamPropertyAtom,property);
+            PrologException.domainError(TermConstants.streamPropertyAtom,property);
           }
         }
         else if (ct.tag == PrologStream.typeTag)
@@ -157,17 +157,17 @@ public class Predicate_stream_property implements PrologCode, TermConstants
                 ct.args[0] == PrologStream.binaryAtom || 
                 ct.args[0] instanceof VariableTerm))
           {
-            PrologException.domainError(streamPropertyAtom,property);
+            PrologException.domainError(TermConstants.streamPropertyAtom,property);
           }
         }
         else
         {
-          PrologException.domainError(streamPropertyAtom,property);
+          PrologException.domainError(TermConstants.streamPropertyAtom,property);
         }
       }
       else
       {
-        PrologException.domainError(streamPropertyAtom,property);
+        PrologException.domainError(TermConstants.streamPropertyAtom,property);
       }
       StreamPropertyBacktrackInfo bi = new StreamPropertyBacktrackInfo();
       bi.startUndoPosition = interpreter.getUndoPosition();

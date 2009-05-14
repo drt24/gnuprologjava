@@ -28,7 +28,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_current_output implements PrologCode, TermConstants
+public class Predicate_current_output implements PrologCode
 {
 
   /** this method is used for execution of code
@@ -49,12 +49,12 @@ public class Predicate_current_output implements PrologCode, TermConstants
       JavaObjectTerm jt = (JavaObjectTerm)stream;
       if (!(jt.value instanceof PrologStream))
       {
-        PrologException.domainError(streamAtom, stream);
+        PrologException.domainError(TermConstants.streamAtom, stream);
       }
     }
     else
     {
-      PrologException.domainError(streamAtom, stream);
+      PrologException.domainError(TermConstants.streamAtom, stream);
     }
     return interpreter.unify(stream, interpreter.environment.getCurrentOutput().getStreamTerm());
   }

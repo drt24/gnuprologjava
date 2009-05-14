@@ -29,7 +29,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_close implements PrologCode, TermConstants
+public class Predicate_close implements PrologCode
 {
 
   CompoundTermTag forceTag = CompoundTermTag.get("force",1);
@@ -44,7 +44,7 @@ public class Predicate_close implements PrologCode, TermConstants
   {
     Term cur = args[1];
     Term force = TermConstants.falseAtom;
-    while (cur != emptyListAtom)
+    while (cur != TermConstants.emptyListAtom)
     {
       if (cur instanceof VariableTerm)
       {
@@ -55,7 +55,7 @@ public class Predicate_close implements PrologCode, TermConstants
         PrologException.typeError(TermConstants.listAtom, args[1]);
       }
       CompoundTerm ct = (CompoundTerm)cur;
-      if (ct.tag != listTag)
+      if (ct.tag != TermConstants.listTag)
       {
         PrologException.typeError(TermConstants.listAtom, args[1]);
       }
@@ -68,12 +68,12 @@ public class Predicate_close implements PrologCode, TermConstants
       }
       if (!(head instanceof CompoundTerm))
       {
-        PrologException.domainError(closeOptionAtom, head);
+        PrologException.domainError(TermConstants.closeOptionAtom, head);
       }
       CompoundTerm e = (CompoundTerm)head;
       if (e.tag != forceTag || (e.args[0] != TermConstants.trueAtom && e.args[0] != TermConstants.falseAtom))
       {
-        PrologException.domainError(closeOptionAtom, head);
+        PrologException.domainError(TermConstants.closeOptionAtom, head);
       }
       force = e.args[0];
     }

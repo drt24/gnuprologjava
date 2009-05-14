@@ -25,7 +25,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_set_output implements PrologCode, TermConstants
+public class Predicate_set_output implements PrologCode
 {
 
   /** this method is used for execution of code
@@ -38,9 +38,9 @@ public class Predicate_set_output implements PrologCode, TermConstants
          throws PrologException
   {
     PrologStream stream = interpreter.environment.resolveStream(args[0]);
-    if (stream.getMode() != outputAtom)
+    if (stream.getMode() != TermConstants.outputAtom)
     {
-      PrologException.permissionError(outputAtom,streamAtom,args[0]);
+      PrologException.permissionError(TermConstants.outputAtom,TermConstants.streamAtom,args[0]);
     }
     interpreter.environment.setCurrentOutput(stream);
     return SUCCESS_LAST;

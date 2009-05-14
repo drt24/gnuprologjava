@@ -47,8 +47,6 @@ public class InterpretedCodeCompiler
   // constant used in analisys and comilation
   /** unify tag */
   public static final CompoundTermTag unifyTag = CompoundTermTag.get("=",2);
-  /** cut "!" atom */
-  public static final AtomTerm cutAtom = AtomTerm.get("!");
   /** if tag */
   public static final CompoundTermTag ifTag          = CompoundTermTag.get("->",2);
   /** disjunction and if then else ';'('->'(...,...)...) tag */
@@ -181,7 +179,7 @@ public class InterpretedCodeCompiler
     }
     else if (body instanceof AtomTerm)
     {
-      if (body == cutAtom) // cut
+      if (body == TermConstants.cutAtom) // cut
       {
         iCut(getCutPosition());
       }

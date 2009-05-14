@@ -28,7 +28,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_put_byte implements PrologCode, TermConstants
+public class Predicate_put_byte implements PrologCode
 {
 
   /** this method is used for execution of code
@@ -53,12 +53,12 @@ public class Predicate_put_byte implements PrologCode, TermConstants
       b = ch.value;
       if (b < 0 || 255 < b)
       {
-        PrologException.typeError(inByteAtom, in_byte);
+        PrologException.typeError(TermConstants.inByteAtom, in_byte);
       }
     }
     else
     {
-      PrologException.typeError(inByteAtom, in_byte);
+      PrologException.typeError(TermConstants.inByteAtom, in_byte);
     }
     stream.putByte(args[0],interpreter,b);
     return SUCCESS_LAST;

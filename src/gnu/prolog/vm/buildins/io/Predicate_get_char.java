@@ -28,7 +28,7 @@ import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */
-public class Predicate_get_char implements PrologCode, TermConstants
+public class Predicate_get_char implements PrologCode
 {
 
   /** this method is used for execution of code
@@ -56,12 +56,12 @@ public class Predicate_get_char implements PrologCode, TermConstants
       }
       else
       {
-        PrologException.typeError(inCharacterAtom, inchar);
+        PrologException.typeError(TermConstants.inCharacterAtom, inchar);
       }
     }
     else
     {
-      PrologException.typeError(inCharacterAtom, inchar);
+      PrologException.typeError(TermConstants.inCharacterAtom, inchar);
     }
     int inch = stream.getCode(args[0],interpreter);
     Term rc;

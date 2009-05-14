@@ -35,7 +35,7 @@ import java.util.Set;
 
 /** prolog code 
   */
-public class Predicate_op implements PrologCode, TermConstants
+public class Predicate_op implements PrologCode
 {
   static final AtomTerm xfxAtom = AtomTerm.get("xfx");
   static final AtomTerm xfyAtom = AtomTerm.get("xfy");
@@ -75,12 +75,12 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     if (!(tpriority instanceof IntegerTerm))
     {
-      PrologException.typeError(integerAtom, tpriority);
+      PrologException.typeError(TermConstants.integerAtom, tpriority);
     }
     priority = ((IntegerTerm)tpriority).value;
     if (priority < 0 || 1200 < priority)
     {
-      PrologException.domainError(operatorPriorityAtom, tpriority);
+      PrologException.domainError(TermConstants.operatorPriorityAtom, tpriority);
     }
     // specifier
     if (topspec instanceof VariableTerm)
@@ -129,10 +129,10 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     else
     {
-      PrologException.domainError(operatorSpecifierAtom, topspec);
+      PrologException.domainError(TermConstants.operatorSpecifierAtom, topspec);
     }
     // parse ops
-    if (tops == emptyListAtom)
+    if (tops == TermConstants.emptyListAtom)
     {
       // do nothing
     }
@@ -144,7 +144,7 @@ public class Predicate_op implements PrologCode, TermConstants
     else if (tops instanceof CompoundTerm)
     {
       Term cur = tops;
-      while (cur != emptyListAtom)
+      while (cur != TermConstants.emptyListAtom)
       {
         if (cur instanceof VariableTerm)
         {
@@ -155,7 +155,7 @@ public class Predicate_op implements PrologCode, TermConstants
           PrologException.typeError(TermConstants.listAtom, tops);
         }
         CompoundTerm ct = (CompoundTerm)cur;
-        if (ct.tag != listTag)
+        if (ct.tag != TermConstants.listTag)
         {
           PrologException.typeError(TermConstants.listAtom, tops);
         }
@@ -202,7 +202,7 @@ public class Predicate_op implements PrologCode, TermConstants
   {
     if (opAtom == commaAtom)
     {
-      PrologException.permissionError(modifyAtom,operatorAtom,opAtom);
+      PrologException.permissionError(TermConstants.modifyAtom,TermConstants.operatorAtom,opAtom);
     }
     switch (specifier)
     {
@@ -215,7 +215,7 @@ public class Predicate_op implements PrologCode, TermConstants
         Operator op = opSet.lookupXf(opAtom.value);
         if (op.specifier != Operator.YF && specifier != Operator.XF)
         {
-          PrologException.permissionError(createAtom,operatorAtom,opAtom);
+          PrologException.permissionError(TermConstants.createAtom,TermConstants.operatorAtom,opAtom);
         }
         break;
       }
@@ -226,7 +226,7 @@ public class Predicate_op implements PrologCode, TermConstants
         Operator op = opSet.lookupXf(opAtom.value);
         if (op.specifier == Operator.YF || specifier == Operator.XF)
         {
-          PrologException.permissionError(createAtom,operatorAtom,opAtom);
+          PrologException.permissionError(TermConstants.createAtom,TermConstants.operatorAtom,opAtom);
         }
         break;
       }
