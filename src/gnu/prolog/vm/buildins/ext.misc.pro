@@ -53,6 +53,7 @@
 % even when the ID doesn't exist.
 % ds_remove(+Atom)
 :-build_in(ds_remove/1,'gnu.prolog.vm.buildins.datastore.Predicate_remove').
+:-build_in(ds_remove/0,'gnu.prolog.vm.buildins.datastore.Predicate_remove').
 
 % Get the list of stored values from the datastore. Fails if the datastore
 % entry was not found. 

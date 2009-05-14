@@ -86,6 +86,7 @@ public class Version
 					minor = Integer.parseInt(prop.getProperty(base + ".version.minor", Integer.toString(minor)));
 					revision = Integer.parseInt(prop.getProperty(base + ".version.revision", Integer.toString(revision)));
 					type = prop.getProperty(base + ".version.type", type);
+					is.close();
 				}
 				catch (Exception e)
 				{

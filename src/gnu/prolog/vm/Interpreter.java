@@ -25,6 +25,9 @@ import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.interpreter.Tracer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This class represent interpreter, it should be used only from one thread If
  * you need to use interpreter from two threads, create new interpreter from
@@ -43,6 +46,13 @@ public final class Interpreter
 	protected PrologHalt haltExitCode;
 
 	/**
+	 * Used to store context information for the lifespan of a goal. The context
+	 * is cleared everytime a new goal is prepared. Can be used by predicates to
+	 * store information based on goals.
+	 */
+	protected Map<String, Object> context;
+
+	/**
 	 * this constructor should not be used by client programs
 	 */
 	Interpreter(Environment environment)
@@ -59,6 +69,7 @@ public final class Interpreter
 			e.printStackTrace();
 		}
 		tracer = new Tracer(outstream);
+		context = new HashMap<String, Object>();
 	}
 
 	/** get environment */
@@ -70,6 +81,16 @@ public final class Interpreter
 	public Tracer getTracer()
 	{
 		return tracer;
+	}
+
+	public Object putContext(String key, Object contextValue)
+	{
+		return context.put(key, contextValue);
+	}
+
+	public Object getContext(String key)
+	{
+		return context.get(key);
 	}
 
 	// backtrack menthods
@@ -448,6 +469,7 @@ public final class Interpreter
 		currentGoal = new Goal();
 		currentGoal.goal = term;
 		currentGoal.args = new Term[] { term };
+		context.clear();
 		return currentGoal;
 	}
 

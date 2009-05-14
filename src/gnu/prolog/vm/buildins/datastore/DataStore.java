@@ -20,33 +20,127 @@
 package gnu.prolog.vm.buildins.datastore;
 
 import gnu.prolog.term.AtomTerm;
-import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
  * @author Michiel Hendriks
  */
-public class DataStore extends HashMap<AtomTerm, List<Term>>
+public class DataStore implements Iterable<DataStore.Entry>
 {
-	private static final long serialVersionUID = 7091151829758276175L;
-
-	public DataStore()
+	public static class Entry
 	{
-		super();
+		protected AtomTerm key;
+		protected List<Term> value;
+
+		public Entry(AtomTerm inKey, List<Term> inValue)
+		{
+			key = inKey;
+			value = new ArrayList<Term>(inValue);
+		}
+
+		/**
+		 * @return the key
+		 */
+		public AtomTerm getKey()
+		{
+			return key;
+		}
+
+		/**
+		 * @return the value
+		 */
+		public List<Term> getValue()
+		{
+			return value;
+		}
 	}
 
-	public List<Term> put(AtomTerm key, Term value)
+	protected Map<String, Entry> keyLookup;
+
+	/**
+	 * The entries, stored in reversed order (first item is the last item added)
+	 */
+	protected LinkedList<Entry> entries;
+
+	/**
+	 * 
+	 */
+	public DataStore()
 	{
-		List<Term> valueList = null;
-		if (!CompoundTerm.isListPair(value))
+		keyLookup = new HashMap<String, Entry>();
+		entries = new LinkedList<Entry>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Iterable#iterator()
+	 */
+	public Iterator<Entry> iterator()
+	{
+		return entries.iterator();
+	}
+
+	/**
+	 * @return
+	 */
+	public Entry get()
+	{
+		return get(null);
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 */
+	public Entry get(AtomTerm key)
+	{
+		if (key == null)
 		{
-			return null;
+			return entries.getFirst();
 		}
-		
-		return super.put(key, valueList);
+		return keyLookup.get(key.value);
+	}
+
+	/**
+	 * @param values
+	 * @return
+	 */
+	public Entry put(List<Term> values)
+	{
+		return put(null, values);
+	}
+
+	/**
+	 * @param key
+	 * @param values
+	 * @return
+	 */
+	public Entry put(AtomTerm key, List<Term> values)
+	{
+		Entry entry = new Entry(key, values);
+		entries.addFirst(entry);
+		if (key != null)
+		{
+			return keyLookup.put(key.value, entry);
+		}
+		return null;
+	}
+
+	/**
+	 * @param key
+	 * @return
+	 */
+	public Entry remove(AtomTerm key)
+	{
+		return keyLookup.remove(key.value);
 	}
 }
