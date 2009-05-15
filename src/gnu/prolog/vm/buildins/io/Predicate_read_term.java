@@ -20,7 +20,6 @@ package gnu.prolog.vm.buildins.io;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
-import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.Environment;
@@ -40,11 +39,6 @@ import java.util.Map;
  */
 public class Predicate_read_term implements PrologCode
 {
-	final static CompoundTermTag variablesTag = CompoundTermTag.get("variables", 1);
-	final static CompoundTermTag variableNamesTag = CompoundTermTag.get("variable_names", 1);
-	final static CompoundTermTag singletonsTag = CompoundTermTag.get("singletons", 1);
-	final static CompoundTermTag unifyTag = CompoundTermTag.get("=", 2);
-
 	/**
 	 * this method is used for execution of code
 	 *
@@ -96,15 +90,15 @@ public class Predicate_read_term implements PrologCode
 				PrologException.domainError(TermConstants.readOptionAtom, head);
 			}
 			CompoundTerm op = (CompoundTerm) head;
-			if (op.tag == variablesTag)
+			if (op.tag == TermConstants.variablesTag)
 			{
 				variableLists.add(op.args[0]);
 			}
-			else if (op.tag == singletonsTag)
+			else if (op.tag == TermConstants.singletonsTag)
 			{
 				singletons.add(op.args[0]);
 			}
-			else if (op.tag == variableNamesTag)
+			else if (op.tag == TermConstants.variableNamesTag)
 			{
 				vnlists.add(op.args[0]);
 			}
@@ -202,7 +196,7 @@ public class Predicate_read_term implements PrologCode
 		{
 			String key = i.next();
 			Term val = map.get(key);
-			rc = CompoundTerm.getList(new CompoundTerm(unifyTag, AtomTerm.get(key), val), rc);
+			rc = CompoundTerm.getList(new CompoundTerm(TermConstants.unifyTag, AtomTerm.get(key), val), rc);
 		}
 		return rc;
 	}

@@ -10,6 +10,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /**
  * @author Michiel Hendriks
@@ -38,7 +39,7 @@ public class Predicate_java_classname implements PrologCode
 		}
 		else
 		{
-			PrologException.typeError(Predicate_java_to_string.javaObjectAtom, args[0]);
+			PrologException.typeError(TermConstants.javaObjectAtom, args[0]);
 		}
 		Term val = AtomTerm.get(obj != null ? obj.getClass().getName() : "null");
 		return interpreter.unify(args[1], val);

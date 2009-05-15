@@ -33,7 +33,6 @@ import gnu.prolog.vm.TermConstants;
  */
 public class Predicate_sub_atom implements PrologCode
 {
-	static final AtomTerm notLessThanZeroAtom = AtomTerm.get("not_less_than_zero");
 
 	/** private backtrack info */
 	private static class SubAtomBacktrackInfo extends BacktrackInfo
@@ -65,7 +64,7 @@ public class Predicate_sub_atom implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -117,7 +116,7 @@ public class Predicate_sub_atom implements PrologCode
 				bi.before = ((IntegerTerm) tbefore).value;
 				if (bi.before < 0)
 				{
-					PrologException.domainError(notLessThanZeroAtom, tbefore);
+					PrologException.domainError(TermConstants.notLessThanZeroAtom, tbefore);
 				}
 			}
 			else
@@ -135,7 +134,7 @@ public class Predicate_sub_atom implements PrologCode
 				bi.length = ((IntegerTerm) tlength).value;
 				if (bi.length < 0)
 				{
-					PrologException.domainError(notLessThanZeroAtom, tlength);
+					PrologException.domainError(TermConstants.notLessThanZeroAtom, tlength);
 				}
 				if (bi.length > bi.atomLen)
 				{
@@ -157,7 +156,7 @@ public class Predicate_sub_atom implements PrologCode
 				bi.after = ((IntegerTerm) tafter).value;
 				if (bi.after < 0)
 				{
-					PrologException.domainError(notLessThanZeroAtom, tafter);
+					PrologException.domainError(TermConstants.notLessThanZeroAtom, tafter);
 				}
 			}
 			else
@@ -263,7 +262,7 @@ public class Predicate_sub_atom implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -274,7 +273,7 @@ public class Predicate_sub_atom implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

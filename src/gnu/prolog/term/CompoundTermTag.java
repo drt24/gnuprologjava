@@ -26,7 +26,7 @@ import java.util.WeakHashMap;
 /**
  * A tag of compound term. A tag consists of functor and arity. All tags are
  * unique in one JVM.
- *
+ * 
  * @author Constatine Plotinikov
  * @version 0.0.1
  */
@@ -40,10 +40,6 @@ final public class CompoundTermTag implements java.io.Serializable
 	// some standard tags
 	/** comma tag */
 	public final static CompoundTermTag comma = get(",", 2);
-	/** clause tag */
-	public final static CompoundTermTag clause = get(":-", 2);
-	/** derective tag */
-	public final static CompoundTermTag directive = get(":-", 1);
 	/** '{}'/1 tag */
 	public final static CompoundTermTag curly1 = get("{}", 1);
 	/** '-'/2 tag */
@@ -59,7 +55,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * get compound term tag
-	 *
+	 * 
 	 * @param predicateIndicator
 	 *          a term which represent a predicate indicator of term
 	 * @return a tag that have specified by a term which represent a predicate
@@ -83,7 +79,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * check if term is predicate indicator
-	 *
+	 * 
 	 * @param term
 	 *          term to check
 	 * @return true if term is predicate indicator
@@ -105,7 +101,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * get compound term tag
-	 *
+	 * 
 	 * @param functor
 	 *          functor of tag
 	 * @param arity
@@ -119,7 +115,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * get compound term tag
-	 *
+	 * 
 	 * @param functor
 	 *          functor of tag
 	 * @param arity
@@ -166,7 +162,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * a constructor
-	 *
+	 * 
 	 * @param f
 	 *          functor of term
 	 * @param a
@@ -181,7 +177,7 @@ final public class CompoundTermTag implements java.io.Serializable
 	/**
 	 * Return an object to replace the object extracted from the stream. The
 	 * object will be used in the graph in place of the original.
-	 *
+	 * 
 	 * @return resloved object
 	 * @see java.io.Resolvable
 	 */
@@ -199,7 +195,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -214,7 +210,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

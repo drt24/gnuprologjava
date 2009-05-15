@@ -64,7 +64,7 @@ public class Predicate_arg implements PrologCode
 		IntegerTerm in = (IntegerTerm) n;
 		if (in.value < 0)
 		{
-			PrologException.domainError(TermConstants.notLessThenZeroAtom, in);
+			PrologException.domainError(TermConstants.notLessThanZeroAtom, in);
 		}
 		if (!(term instanceof CompoundTerm))
 		{

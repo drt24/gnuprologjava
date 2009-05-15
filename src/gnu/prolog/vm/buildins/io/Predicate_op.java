@@ -39,18 +39,11 @@ import java.util.Set;
  */
 public class Predicate_op implements PrologCode
 {
-	static final AtomTerm xfxAtom = AtomTerm.get("xfx");
-	static final AtomTerm xfyAtom = AtomTerm.get("xfy");
-	static final AtomTerm yfxAtom = AtomTerm.get("yfx");
-	static final AtomTerm fxAtom = AtomTerm.get("fx");
-	static final AtomTerm fyAtom = AtomTerm.get("fy");
-	static final AtomTerm xfAtom = AtomTerm.get("xf");
-	static final AtomTerm yfAtom = AtomTerm.get("yf");
 	static final AtomTerm commaAtom = AtomTerm.get(",");
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -99,37 +92,37 @@ public class Predicate_op implements PrologCode
 			PrologException.typeError(TermConstants.atomAtom, topspec);
 		}
 
-		if (topspec == xfxAtom)
+		if (topspec == TermConstants.xfxAtom)
 		{
 			opspec = Operator.XFX;
 			xfx = true;
 		}
-		else if (topspec == xfyAtom)
+		else if (topspec == TermConstants.xfyAtom)
 		{
 			opspec = Operator.XFY;
 			xfx = true;
 		}
-		else if (topspec == yfxAtom)
+		else if (topspec == TermConstants.yfxAtom)
 		{
 			opspec = Operator.YFX;
 			xfx = true;
 		}
-		else if (topspec == fxAtom)
+		else if (topspec == TermConstants.fxAtom)
 		{
 			opspec = Operator.FX;
 			fx = true;
 		}
-		else if (topspec == fyAtom)
+		else if (topspec == TermConstants.fyAtom)
 		{
 			opspec = Operator.FY;
 			fx = true;
 		}
-		else if (topspec == xfAtom)
+		else if (topspec == TermConstants.xfAtom)
 		{
 			opspec = Operator.XF;
 			xf = true;
 		}
-		else if (topspec == yfAtom)
+		else if (topspec == TermConstants.yfAtom)
 		{
 			opspec = Operator.YF;
 			xf = true;
@@ -244,7 +237,7 @@ public class Predicate_op implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -255,7 +248,7 @@ public class Predicate_op implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

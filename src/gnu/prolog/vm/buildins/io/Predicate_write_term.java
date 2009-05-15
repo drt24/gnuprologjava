@@ -19,7 +19,6 @@ package gnu.prolog.vm.buildins.io;
 
 import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.CompoundTerm;
-import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.Environment;
@@ -34,10 +33,6 @@ import gnu.prolog.vm.TermConstants;
  */
 public class Predicate_write_term implements PrologCode
 {
-	static final CompoundTermTag quotedTag = CompoundTermTag.get("quoted", 1);
-	static final CompoundTermTag ignoreOpsTag = CompoundTermTag.get("ignore_ops", 1);
-	static final CompoundTermTag numbervarsTag = CompoundTermTag.get("numbervars", 1);
-
 	/**
 	 * this method is used for execution of code
 	 *
@@ -85,7 +80,7 @@ public class Predicate_write_term implements PrologCode
 				PrologException.domainError(TermConstants.readOptionAtom, head);
 			}
 			CompoundTerm op = (CompoundTerm) head;
-			if (op.tag == quotedTag)
+			if (op.tag == TermConstants.quotedTag)
 			{
 				Term val = op.args[0].dereference();
 				if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
@@ -94,7 +89,7 @@ public class Predicate_write_term implements PrologCode
 				}
 				options.quoted = val == TermConstants.trueAtom;
 			}
-			else if (op.tag == ignoreOpsTag)
+			else if (op.tag == TermConstants.ignoreOpsTag)
 			{
 				Term val = op.args[0].dereference();
 				if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
@@ -103,7 +98,7 @@ public class Predicate_write_term implements PrologCode
 				}
 				options.ignoreOps = val == TermConstants.trueAtom;
 			}
-			else if (op.tag == numbervarsTag)
+			else if (op.tag == TermConstants.numbervarsTag)
 			{
 				Term val = op.args[0].dereference();
 				if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)

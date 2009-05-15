@@ -35,12 +35,11 @@ import gnu.prolog.vm.TermConstants;
  */
 public class Predicate_abolish implements PrologCode
 {
-	static final AtomTerm modifyAtom = AtomTerm.get("modify");
 	static final CompoundTermTag divideTag = CompoundTermTag.get("/", 2);
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -88,7 +87,7 @@ public class Predicate_abolish implements PrologCode
 		IntegerTerm a = (IntegerTerm) ta;
 		if (a.value < 0)
 		{
-			PrologException.domainError(TermConstants.notLessThenZeroAtom, ta);
+			PrologException.domainError(TermConstants.notLessThanZeroAtom, ta);
 		}
 		CompoundTermTag tag = CompoundTermTag.get(n, a.value);
 		Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
@@ -96,7 +95,7 @@ public class Predicate_abolish implements PrologCode
 		{
 			if (p.getType() != Predicate.USER_DEFINED || !p.isDynamic())
 			{
-				PrologException.permissionError(modifyAtom, TermConstants.staticProcedureAtom, pi);
+				PrologException.permissionError(TermConstants.modifyAtom, TermConstants.staticProcedureAtom, pi);
 			}
 			interpreter.environment.getModule().removeDefinedPredicate(tag);
 		}
@@ -106,7 +105,7 @@ public class Predicate_abolish implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -117,7 +116,7 @@ public class Predicate_abolish implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

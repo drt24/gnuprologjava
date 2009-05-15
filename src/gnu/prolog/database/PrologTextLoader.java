@@ -27,6 +27,7 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.TermConstants;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,17 +50,7 @@ public class PrologTextLoader
 	/** prolog text loader state */
 	protected PrologTextLoaderState prologTextLoaderState;
 
-	AtomTerm opFX = AtomTerm.get("fx");
-	AtomTerm opFY = AtomTerm.get("fy");
-	AtomTerm opXFX = AtomTerm.get("xfx");
-	AtomTerm opXFY = AtomTerm.get("xfy");
-	AtomTerm opYFX = AtomTerm.get("yfx");
-	AtomTerm opXF = AtomTerm.get("xf");
-	AtomTerm opYF = AtomTerm.get("yf");
-
 	// tags used in loader
-	CompoundTermTag directiveTag = CompoundTermTag.directive;
-	CompoundTermTag clauseTag = CompoundTermTag.clause;
 	CompoundTermTag includeTag = CompoundTermTag.get("include", 1);
 	CompoundTermTag multifileTag = CompoundTermTag.get("multifile", 1);
 	CompoundTermTag dynamicTag = CompoundTermTag.get("dynamic", 1);
@@ -151,7 +142,7 @@ public class PrologTextLoader
 			else if (term instanceof CompoundTerm)
 			{
 				CompoundTerm cterm = (CompoundTerm) term;
-				if (cterm.tag != directiveTag)
+				if (cterm.tag != TermConstants.directiveTag)
 				{
 					processClause(term);
 				}
@@ -329,31 +320,31 @@ public class PrologTextLoader
 		}
 
 		int spec = -1;
-		if (specifier == opFX)
+		if (specifier == TermConstants.fxAtom)
 		{
 			spec = Operator.FX;
 		}
-		else if (specifier == opFY)
+		else if (specifier == TermConstants.fyAtom)
 		{
 			spec = Operator.FY;
 		}
-		else if (specifier == opXFX)
+		else if (specifier == TermConstants.xfxAtom)
 		{
 			spec = Operator.XFX;
 		}
-		else if (specifier == opXFY)
+		else if (specifier == TermConstants.xfyAtom)
 		{
 			spec = Operator.XFY;
 		}
-		else if (specifier == opYFX)
+		else if (specifier == TermConstants.yfxAtom)
 		{
 			spec = Operator.YFX;
 		}
-		else if (specifier == opXF)
+		else if (specifier == TermConstants.xfAtom)
 		{
 			spec = Operator.XF;
 		}
-		else if (specifier == opYF)
+		else if (specifier == TermConstants.yfAtom)
 		{
 			spec = Operator.YF;
 		}

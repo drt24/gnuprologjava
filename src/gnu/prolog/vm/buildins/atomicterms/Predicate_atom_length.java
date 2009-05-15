@@ -70,7 +70,7 @@ public class Predicate_atom_length implements PrologCode
 			IntegerTerm ilength = (IntegerTerm) tlength;
 			if (ilength.value < 0)
 			{
-				PrologException.domainError(TermConstants.notLessThenZeroAtom, tlength);
+				PrologException.domainError(TermConstants.notLessThanZeroAtom, tlength);
 			}
 			if (ilength.value == atom.value.length())
 			{

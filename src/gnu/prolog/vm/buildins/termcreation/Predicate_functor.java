@@ -133,7 +133,7 @@ public class Predicate_functor implements PrologCode
 			}
 			if (iarity.value < 0)
 			{
-				PrologException.domainError(TermConstants.notLessThenZeroAtom, arity);
+				PrologException.domainError(TermConstants.notLessThanZeroAtom, arity);
 			}
 			rc = interpreter.unify(term, name);
 			if (rc == FAIL)

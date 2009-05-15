@@ -39,14 +39,6 @@ import java.util.List;
 public class Predicate_current_op implements PrologCode
 {
 
-	static final AtomTerm xfxAtom = AtomTerm.get("xfx");
-	static final AtomTerm xfyAtom = AtomTerm.get("xfy");
-	static final AtomTerm yfxAtom = AtomTerm.get("yfx");
-	static final AtomTerm fxAtom = AtomTerm.get("fx");
-	static final AtomTerm fyAtom = AtomTerm.get("fy");
-	static final AtomTerm xfAtom = AtomTerm.get("xf");
-	static final AtomTerm yfAtom = AtomTerm.get("yf");
-
 	private class CurrentOpBacktrackInfo extends BacktrackInfo
 	{
 		CurrentOpBacktrackInfo()
@@ -95,8 +87,8 @@ public class Predicate_current_op implements PrologCode
 			{
 				PrologException.typeError(TermConstants.atomAtom, op);
 			}
-			if (!(specifier instanceof VariableTerm || specifier == xfxAtom || specifier == xfyAtom || specifier == yfxAtom
-					|| specifier == fxAtom || specifier == fyAtom || specifier == xfAtom || specifier == yfAtom))
+			if (!(specifier instanceof VariableTerm || specifier == TermConstants.xfxAtom || specifier == TermConstants.xfyAtom || specifier == TermConstants.yfxAtom
+					|| specifier == TermConstants.fxAtom || specifier == TermConstants.fyAtom || specifier == TermConstants.xfAtom || specifier == TermConstants.yfAtom))
 			{
 				PrologException.domainError(TermConstants.operatorSpecifierAtom, specifier);
 			}
@@ -131,25 +123,25 @@ public class Predicate_current_op implements PrologCode
 				switch (o.specifier)
 				{
 					case Operator.FX:
-						a = fxAtom;
+						a = TermConstants.fxAtom;
 						break;
 					case Operator.FY:
-						a = fyAtom;
+						a = TermConstants.fyAtom;
 						break;
 					case Operator.XF:
-						a = xfAtom;
+						a = TermConstants.xfAtom;
 						break;
 					case Operator.YF:
-						a = yfAtom;
+						a = TermConstants.yfAtom;
 						break;
 					case Operator.XFX:
-						a = xfxAtom;
+						a = TermConstants.xfxAtom;
 						break;
 					case Operator.XFY:
-						a = xfyAtom;
+						a = TermConstants.xfyAtom;
 						break;
 					case Operator.YFX:
-						a = yfxAtom;
+						a = TermConstants.yfxAtom;
 						break;
 				}
 				specifiers.add(a);

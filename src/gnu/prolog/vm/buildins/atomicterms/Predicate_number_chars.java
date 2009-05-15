@@ -37,11 +37,9 @@ import gnu.prolog.vm.TermConstants;
  */
 public class Predicate_number_chars implements PrologCode
 {
-	static final AtomTerm numberExpectedAtom = AtomTerm.get("number_expected");
-
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -74,7 +72,7 @@ public class Predicate_number_chars implements PrologCode
 			}
 			if (!(res instanceof IntegerTerm || res instanceof FloatTerm))
 			{
-				PrologException.syntaxError(numberExpectedAtom);
+				PrologException.syntaxError(TermConstants.numberExpectedAtom);
 			}
 			return interpreter.unify(res, number);
 		}
@@ -143,7 +141,7 @@ public class Predicate_number_chars implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -154,7 +152,7 @@ public class Predicate_number_chars implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

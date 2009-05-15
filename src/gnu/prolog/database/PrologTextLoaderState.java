@@ -24,6 +24,7 @@ import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.TermConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -240,7 +241,7 @@ public class PrologTextLoaderState
 	{
 		Term head = term;
 		CompoundTermTag headTag;
-		if (term instanceof CompoundTerm && ((CompoundTerm) term).tag == CompoundTermTag.clause)
+		if (term instanceof CompoundTerm && ((CompoundTerm) term).tag == TermConstants.clauseTag)
 		{
 			head = ((CompoundTerm) term).args[0];
 		}
@@ -353,7 +354,7 @@ public class PrologTextLoaderState
 
 	/**
 	 * Resolve the input filename. Will add a .pl or .pro when needed.
-	 *
+	 * 
 	 * @param filename
 	 * @return
 	 */

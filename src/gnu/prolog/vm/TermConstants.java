@@ -44,7 +44,7 @@ public final class TermConstants
 	public static final AtomTerm flagValueAtom = AtomTerm.get("flag_value");
 	public static final AtomTerm ioModeAtom = AtomTerm.get("io_mode");
 	public static final AtomTerm nonEmptyListAtom = AtomTerm.get("non_empty_list");
-	public static final AtomTerm notLessThenZeroAtom = AtomTerm.get("not_less_then_zero");
+	public static final AtomTerm notLessThanZeroAtom = AtomTerm.get("not_less_then_zero");
 	public static final AtomTerm operatorPriorityAtom = AtomTerm.get("operator_priority");
 	public static final AtomTerm operatorSpecifierAtom = AtomTerm.get("operator_specifier");
 	public static final AtomTerm prologFlagAtom = AtomTerm.get("prolog_flag");
@@ -85,6 +85,7 @@ public final class TermConstants
 	public static final AtomTerm maxArityAtom = AtomTerm.get("max_arity");
 	public static final AtomTerm maxIntegerAtom = AtomTerm.get("max_integer");
 	public static final AtomTerm minIntegerAtom = AtomTerm.get("min_integer");
+	public static final AtomTerm numberExpectedAtom = AtomTerm.get("number_expected");
 
 	// evaluation errors
 	public static final AtomTerm floatOverflowAtom = AtomTerm.get("float_overflow");
@@ -112,5 +113,23 @@ public final class TermConstants
 	/** tag for conjunction */
 	public static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",", 2);
 	public static final CompoundTermTag clauseTag = CompoundTermTag.get(":-", 2);
+	public final static CompoundTermTag directiveTag = CompoundTermTag.get(":-", 1);
+	public final static CompoundTermTag unifyTag = CompoundTermTag.get("=", 2);
 	public static final CompoundTermTag callTag = CompoundTermTag.get("call", 1);
+
+	public static final AtomTerm xfxAtom = AtomTerm.get("xfx");
+	public static final AtomTerm xfyAtom = AtomTerm.get("xfy");
+	public static final AtomTerm yfxAtom = AtomTerm.get("yfx");
+	public static final AtomTerm fxAtom = AtomTerm.get("fx");
+	public static final AtomTerm fyAtom = AtomTerm.get("fy");
+	public static final AtomTerm xfAtom = AtomTerm.get("xf");
+	public static final AtomTerm yfAtom = AtomTerm.get("yf");
+
+	public static final CompoundTermTag quotedTag = CompoundTermTag.get("quoted", 1);
+	public static final CompoundTermTag ignoreOpsTag = CompoundTermTag.get("ignore_ops", 1);
+	public static final CompoundTermTag numbervarsTag = CompoundTermTag.get("numbervars", 1);
+	public final static CompoundTermTag variablesTag = CompoundTermTag.get("variables", 1);
+	public final static CompoundTermTag variableNamesTag = CompoundTermTag.get("variable_names", 1);
+	public final static CompoundTermTag singletonsTag = CompoundTermTag.get("singletons", 1);
+	public static final AtomTerm javaObjectAtom = AtomTerm.get("java_object");
 }
