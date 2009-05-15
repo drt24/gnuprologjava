@@ -28,13 +28,6 @@ public class CompoundTerm extends Term
 {
 	private static final long serialVersionUID = -8207470525318790957L;
 	
-  /** tag for conjunction */
-  public static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
-  /** tag for disjunction */
-  public static final CompoundTermTag disjunctionTag = CompoundTermTag.get(";",2);
-  /** tag for if */
-  public static final CompoundTermTag ifTag = CompoundTermTag.get("->",2);
-
   public static boolean isListPair(Term term)
   {
     if (term instanceof CompoundTerm)
@@ -92,7 +85,7 @@ public class CompoundTerm extends Term
     */
   public static CompoundTerm getConjunction(Term head, Term tail)
   {
-    CompoundTerm rc = new CompoundTerm(conjunctionTag, head, tail);
+    CompoundTerm rc = new CompoundTerm(TermConstants.conjunctionTag, head, tail);
     return rc;
   }
   
@@ -104,7 +97,7 @@ public class CompoundTerm extends Term
     */
   public static CompoundTerm getDisjunction(Term head, Term tail)
   {
-    CompoundTerm rc = new CompoundTerm(disjunctionTag, head, tail);
+    CompoundTerm rc = new CompoundTerm(TermConstants.disjunctionTag, head, tail);
     return rc;
   }
   

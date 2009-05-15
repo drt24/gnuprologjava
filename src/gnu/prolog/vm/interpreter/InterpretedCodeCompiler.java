@@ -47,20 +47,10 @@ public class InterpretedCodeCompiler
   // constant used in analisys and comilation
   /** unify tag */
   public static final CompoundTermTag unifyTag = CompoundTermTag.get("=",2);
-  /** if tag */
-  public static final CompoundTermTag ifTag          = CompoundTermTag.get("->",2);
-  /** disjunction and if then else ';'('->'(...,...)...) tag */
-  public static final CompoundTermTag disjunctionTag  = CompoundTermTag.get(";",2);
-  /** conjunction tag */
-  public static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
   /** throw tag */
   public static final CompoundTermTag throwTag       = CompoundTermTag.get("throw",1);
   /** catch tag */
   public static final CompoundTermTag catchTag       = CompoundTermTag.get("catch",3);
-  /** call tag */
-  public static final CompoundTermTag callTag        = CompoundTermTag.get("call",1);
-  /** cag for caluse */
-  public static final CompoundTermTag clauseTag      = CompoundTermTag.get(":-",2);
   /** array type constant for Instruction.class */
   public final static Instruction instructionArrayConstant[]  = new Instruction[0];
   /** array type constant ExceptionHandlerInfo.class */
@@ -175,7 +165,7 @@ public class InterpretedCodeCompiler
     if (body instanceof VariableTerm) // all variable are converted to call(Var)
     {
       compileTermCreation(body);
-      iCall(callTag); 
+      iCall(TermConstants.callTag); 
     }
     else if (body instanceof AtomTerm)
     {
@@ -200,15 +190,15 @@ public class InterpretedCodeCompiler
     {
       CompoundTerm ct = (CompoundTerm)body;
       CompoundTermTag tag = ct.tag;
-      if (tag == conjunctionTag)
+      if (tag == TermConstants.conjunctionTag)
       {
         compileBody(ct.args[0]);
         compileBody(ct.args[1]);
       }
-      else if (tag == disjunctionTag)
+      else if (tag == TermConstants.disjunctionTag)
       {
         if (ct.args[0] instanceof CompoundTerm  // if then else
-            && ((CompoundTerm)ct.args[0]).tag == ifTag)
+            && ((CompoundTerm)ct.args[0]).tag == TermConstants.ifTag)
         {
           CompoundTerm ct2 = (CompoundTerm)ct.args[0];
           compileIfThenElse(ct2.args[0],ct2.args[1],ct.args[1]);
@@ -229,7 +219,7 @@ public class InterpretedCodeCompiler
         compileTermCreation(ct.args[0]);
         iThrow();
       }
-      else if (tag == ifTag)
+      else if (tag == TermConstants.ifTag)
       {
         compileIfThenElse(ct.args[0],ct.args[1],TermConstants.failAtom);
       }
@@ -240,7 +230,7 @@ public class InterpretedCodeCompiler
         // compile body
         eh.startPosition = currentCodePosition;
         compileTermCreation(ct.args[0]);
-        iCall(callTag);
+        iCall(TermConstants.callTag);
         eh.endPosition = currentCodePosition;
         IJump jumpOut = iJump(-1);
         // compile handler
@@ -257,7 +247,7 @@ public class InterpretedCodeCompiler
         iCut(handlerCutPos);
         // compile handler body
         compileTermCreation(ct.args[2]);
-        iCall(callTag);
+        iCall(TermConstants.callTag);
         IJump jump = iJump(-1);
         ITrustMe trustMe = iTrustMe();
         tryMeElse.retryPosition = trustMe.codePosition;
@@ -326,15 +316,15 @@ public class InterpretedCodeCompiler
     {
       CompoundTerm ct = (CompoundTerm)body;
       CompoundTermTag tag = ct.tag;
-      if (tag == conjunctionTag)
+      if (tag == TermConstants.conjunctionTag)
       {
         rc += getReservedEnvironemt(ct.args[0]);
         rc += getReservedEnvironemt(ct.args[1]);
       }
-      else if (tag == disjunctionTag)
+      else if (tag == TermConstants.disjunctionTag)
       {
         if (ct.args[0] instanceof CompoundTerm  // if then else
-            && ((CompoundTerm)ct.args[0]).tag == ifTag)
+            && ((CompoundTerm)ct.args[0]).tag == TermConstants.ifTag)
         {
           CompoundTerm ct2 = (CompoundTerm)ct.args[0];
           rc += 1;
@@ -348,7 +338,7 @@ public class InterpretedCodeCompiler
           rc += getReservedEnvironemt(ct.args[1]);
         }
       }
-      else if (tag == ifTag)
+      else if (tag == TermConstants.ifTag)
       {
         rc += 1;
         rc += getReservedEnvironemt(ct.args[0]);
@@ -417,7 +407,7 @@ public class InterpretedCodeCompiler
     if (clause instanceof CompoundTerm)
     {
       CompoundTerm ct = (CompoundTerm)clause;
-      if (ct.tag == clauseTag)
+      if (ct.tag == TermConstants.clauseTag)
       {
         compileHead(ct.args[0]);
         compileBody(ct.args[1]);
@@ -469,7 +459,7 @@ public class InterpretedCodeCompiler
         if (term instanceof CompoundTerm)
         {
           CompoundTerm ct = (CompoundTerm)term;
-          if (ct.tag == clauseTag)
+          if (ct.tag == TermConstants.clauseTag)
           {
             numberOfReserved += getReservedEnvironemt(ct.args[1]);
           }

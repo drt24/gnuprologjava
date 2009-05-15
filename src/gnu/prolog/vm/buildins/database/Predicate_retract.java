@@ -39,10 +39,6 @@ import java.util.Map;
   */
 public class Predicate_retract implements PrologCode
 {
-  
-  static final CompoundTermTag clauseTag      = CompoundTermTag.get(":-",2); 
-  static final AtomTerm modifyAtom = AtomTerm.get("modify"); 
-
   private class RetractBacktrackInfo extends BacktrackInfo
   {
     RetractBacktrackInfo()
@@ -84,7 +80,7 @@ public class Predicate_retract implements PrologCode
       else if (clause instanceof CompoundTerm)
       {
         CompoundTerm ct = (CompoundTerm)clause;
-        if (ct.tag == clauseTag )
+        if (ct.tag == TermConstants.clauseTag )
         {
           head = ct.args[0].dereference();
           body = ct.args[1].dereference();
@@ -130,12 +126,12 @@ public class Predicate_retract implements PrologCode
       {
         if (!p.isDynamic())
         {
-          PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
+          PrologException.permissionError(TermConstants.modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
         }
       }
       else
       {
-        PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
+        PrologException.permissionError(TermConstants.modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
       }
       Map<Term,Term> map = new HashMap<Term, Term>();
       List<Term> list = new ArrayList<Term>(p.getClauses().size());
@@ -150,7 +146,7 @@ public class Predicate_retract implements PrologCode
       bi.iclauses = list.iterator();
       bi.clauseMap = map;
       bi.startUndoPosition = interpreter.getUndoPosition();
-      bi.clause = new CompoundTerm(clauseTag, head, body);
+      bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
       bi.pred = p;
       return nextSolution(interpreter,bi);
     }

@@ -103,4 +103,13 @@ public final class TermConstants
   // list constants
   public static final AtomTerm emptyListAtom = AtomTerm.get("[]");
   public static final CompoundTermTag listTag = CompoundTermTag.get(".",2);
+  
+	/** tag for if */
+	public static final CompoundTermTag ifTag = CompoundTermTag.get("->",2);
+	/** tag for disjunction */
+	public static final CompoundTermTag disjunctionTag = CompoundTermTag.get(";",2);
+	/** tag for conjunction */
+	public static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
+	public static final CompoundTermTag clauseTag      = CompoundTermTag.get(":-",2);
+	public static final CompoundTermTag callTag        = CompoundTermTag.get("call",1);
 }

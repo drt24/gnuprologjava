@@ -39,10 +39,6 @@ public class Predicate_clause implements PrologCode
 {
 
   static final AtomTerm accessAtom = AtomTerm.get("access");
-  static final CompoundTermTag clauseTag = CompoundTermTag.get(":-",2);
-  static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2);
-  static final CompoundTermTag disjunctionTag = CompoundTermTag.get(";",2);
-  static final CompoundTermTag ifTag = CompoundTermTag.get("->",2);
 
   private class ClauseBacktrackInfo extends BacktrackInfo
   {
@@ -122,7 +118,7 @@ public class Predicate_clause implements PrologCode
         bi.startUndoPosition = interpreter.getUndoPosition();
         bi.position = 0;
         bi.clauses = clauses;
-        bi.clause = new CompoundTerm(clauseTag, head, body);
+        bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
         return nextSolution(interpreter, bi);
       }
 
@@ -152,9 +148,9 @@ public class Predicate_clause implements PrologCode
     else if (body instanceof CompoundTerm)
     {
       CompoundTerm ct = (CompoundTerm)body;
-      if (ct.tag == conjunctionTag ||
-          ct.tag == disjunctionTag ||
-          ct.tag == ifTag)
+      if (ct.tag == TermConstants.conjunctionTag ||
+          ct.tag == TermConstants.disjunctionTag ||
+          ct.tag == TermConstants.ifTag)
       {
         return isCallable(ct.args[0].dereference()) && 
                isCallable(ct.args[1].dereference());

@@ -32,13 +32,6 @@ import gnu.prolog.vm.TermConstants;
   */
 public abstract class Predicate_assert implements PrologCode
 {
-  static final CompoundTermTag clauseTag      = CompoundTermTag.get(":-",2); 
-  static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",",2); 
-  static final CompoundTermTag disjunctionTag = CompoundTermTag.get(";",2); 
-  static final CompoundTermTag ifTag          = CompoundTermTag.get("->",2); 
-  static final CompoundTermTag callTag        = CompoundTermTag.get("call",1); 
-  static final AtomTerm modifyAtom = AtomTerm.get("modify"); 
-
   /** assert a clause */
   protected abstract void assertPred(Predicate p, CompoundTerm clause);
 
@@ -61,7 +54,7 @@ public abstract class Predicate_assert implements PrologCode
     else if (clause instanceof CompoundTerm)
     {
       CompoundTerm ct = (CompoundTerm)clause;
-      if (ct.tag == clauseTag )
+      if (ct.tag == TermConstants.clauseTag )
       {
         head = ct.args[0].dereference();
         body = ct.args[1].dereference();
@@ -110,14 +103,14 @@ public abstract class Predicate_assert implements PrologCode
     {
       if (!p.isDynamic())
       {
-        PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
+        PrologException.permissionError(TermConstants.modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
       }
     }
     else
     {
-      PrologException.permissionError(modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
+      PrologException.permissionError(TermConstants.modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
     }
-    assertPred(p, (CompoundTerm)new CompoundTerm(clauseTag,head,body).clone());
+    assertPred(p, (CompoundTerm)new CompoundTerm(TermConstants.clauseTag,head,body).clone());
     return SUCCESS_LAST;
   }
 
@@ -142,7 +135,7 @@ public abstract class Predicate_assert implements PrologCode
   {
     if (body instanceof VariableTerm)
     {
-      return new CompoundTerm(callTag,body);
+      return new CompoundTerm(TermConstants.callTag,body);
     }
     else if (body instanceof AtomTerm)
     {
@@ -151,9 +144,9 @@ public abstract class Predicate_assert implements PrologCode
     else if (body instanceof CompoundTerm)
     {
       CompoundTerm ct = (CompoundTerm)body;
-      if (ct.tag == conjunctionTag ||
-          ct.tag == disjunctionTag ||
-          ct.tag == ifTag)
+      if (ct.tag == TermConstants.conjunctionTag ||
+          ct.tag == TermConstants.disjunctionTag ||
+          ct.tag == TermConstants.ifTag)
       {
         return new CompoundTerm(ct.tag, 
                                 prepareBody(ct.args[0].dereference(),term),

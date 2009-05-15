@@ -39,14 +39,6 @@ public class Predicate_call implements PrologCode
 {
 	Environment environment;
 
-	/** if tag */
-	public static final CompoundTermTag ifTag = CompoundTermTag.get("->", 2);
-	/** disjunction and if then else ';'('->'(_,_)_) tag */
-	public static final CompoundTermTag disjunctionTag = CompoundTermTag.get(";", 2);
-	/** conjunction tag */
-	public static final CompoundTermTag conjunctionTag = CompoundTermTag.get(",", 2);
-	/** clause tag */
-	public static final CompoundTermTag clauseTag = CompoundTermTag.get(":-", 2);
 	/** head functor, it is completly unimportant what it is */
 	public static final AtomTerm headFunctor = AtomTerm.get("$$$call$$$");
 	/** term arry constant */
@@ -137,7 +129,7 @@ public class Predicate_call implements PrologCode
 			}
 			Term headArgs[] = (Term[]) argumentVariables.toArray(termArrayType);
 			Term head = new CompoundTerm(headFunctor, headArgs);
-			Term clause = new CompoundTerm(clauseTag, head, body);
+			Term clause = new CompoundTerm(TermConstants.clauseTag, head, body);
 			args = (Term[]) arguments.toArray(termArrayType);
 			List<Term> clauses = new ArrayList<Term>(1);
 			clauses.add(clause);
@@ -194,7 +186,7 @@ public class Predicate_call implements PrologCode
 		else if (term instanceof CompoundTerm)
 		{
 			CompoundTerm ct = (CompoundTerm) term;
-			if (ct.tag == ifTag || ct.tag == conjunctionTag || ct.tag == disjunctionTag)
+			if (ct.tag == TermConstants.ifTag || ct.tag == TermConstants.conjunctionTag || ct.tag == TermConstants.disjunctionTag)
 			{
 				return new CompoundTerm(ct.tag, getClause(ct.args[0].dereference(), argumentVariables, arguments), getClause(
 						ct.args[1].dereference(), argumentVariables, arguments));
