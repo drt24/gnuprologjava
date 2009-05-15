@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
@@ -353,20 +353,29 @@ public class PrologTextLoaderState
 
 	/**
 	 * Resolve the input filename. Will add a .pl or .pro when needed.
-	 * 
+	 *
 	 * @param filename
 	 * @return
 	 */
 	File resolveInputFile(String filename)
 	{
 		File fl = new File(filename);
-		if (fl.exists()) return fl;
+		if (fl.exists())
+		{
+			return fl;
+		}
 		if (!(filename.endsWith(".pl") || filename.endsWith(".pro")))
 		{
 			fl = new File(filename + ".pro");
-			if (fl.exists()) return fl;
+			if (fl.exists())
+			{
+				return fl;
+			}
 			fl = new File(filename + ".pl");
-			if (fl.exists()) return fl;
+			if (fl.exists())
+			{
+				return fl;
+			}
 		}
 		return new File(filename);
 	}
@@ -382,7 +391,7 @@ public class PrologTextLoaderState
 			CompoundTerm ct = (CompoundTerm) term;
 			if (ct.tag == fileTag)
 			{
-				if ((ct.args[0] instanceof AtomTerm))
+				if (ct.args[0] instanceof AtomTerm)
 				{
 					return resolveInputFile(getInputName(ct.args[0])).toString();
 				}

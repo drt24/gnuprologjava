@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
@@ -32,7 +32,7 @@ import java.util.Set;
 
 /**
  * Predicate in database
- * 
+ *
  * @author Contantine A Plotnikov
  */
 public class Predicate
@@ -89,7 +89,7 @@ public class Predicate
 
 	/**
 	 * get type of predicate
-	 * 
+	 *
 	 * @return type of predicate
 	 */
 	public int getType()
@@ -99,7 +99,7 @@ public class Predicate
 
 	/**
 	 * set type of predicate
-	 * 
+	 *
 	 * @param type
 	 *          type of predicate
 	 * @throws IllegalStateException
@@ -116,7 +116,7 @@ public class Predicate
 
 	/**
 	 * Get name of Java class that defines this predicate.
-	 * 
+	 *
 	 * @return true if predicate is external, false otherwise.
 	 */
 	public String getJavaClassName()
@@ -168,7 +168,7 @@ public class Predicate
 	/**
 	 * Add clause for predicate at the end. This method simply add clause to
 	 * predicate. No modification to term is done. It even is not copied.
-	 * 
+	 *
 	 * @param clause
 	 *          a clause to add
 	 */
@@ -186,7 +186,7 @@ public class Predicate
 	/**
 	 * Add clause for predicate at the heginning. This method simply add clause to
 	 * predicate. No modification to term is done. It even is not copied.
-	 * 
+	 *
 	 * @param clause
 	 *          a clause to add
 	 */
@@ -211,7 +211,7 @@ public class Predicate
 	/**
 	 * Remove clause for predicate. This method remove first clause which is
 	 * identical to clause.
-	 * 
+	 *
 	 * @param clause
 	 *          a clause to remove
 	 */
@@ -223,7 +223,7 @@ public class Predicate
 
 	/**
 	 * Check if properties of predicate could be changed at this moment
-	 * 
+	 *
 	 * @return true if properties of predicate could be changed at this moment
 	 */
 	public boolean arePropertiesLocked()
@@ -233,7 +233,7 @@ public class Predicate
 
 	/**
 	 * Check if predicate is dynamic.
-	 * 
+	 *
 	 * @return true if predicate is dynamic, false otherwise.
 	 */
 	public boolean isDynamic()
@@ -244,7 +244,7 @@ public class Predicate
 	/**
 	 * set "dynamic" property of predicate to true. This method should be called
 	 * first time before any clause was added.
-	 * 
+	 *
 	 * @param new value of "dynamic" property of predicate
 	 * @throws IllegalStateException
 	 *           if there were clauses added to predicate and dynamic flag was not
@@ -256,7 +256,7 @@ public class Predicate
 		{
 			throw new IllegalStateException("only user defined predicate may be declared dynamic");
 		}
-		if (this.dynamicFlag)
+		if (dynamicFlag)
 		{
 			// ignore if flag already set
 			return;
@@ -265,7 +265,7 @@ public class Predicate
 		{
 			throw new IllegalStateException("dynamic property of predicate could not be changed");
 		}
-		this.dynamicFlag = true;
+		dynamicFlag = true;
 	}
 
 	public static Term prepareClause(Term clause)

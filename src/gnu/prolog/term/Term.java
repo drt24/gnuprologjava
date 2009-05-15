@@ -12,14 +12,14 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
 
 /**
  * base class for all terms.
- * 
+ *
  * @author Constantine Plotniokov
  * @version 0.0.1
  */
@@ -37,9 +37,10 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * clone the term.
-	 * 
+	 *
 	 * @return cloned term
 	 */
+	@Override
 	public Object clone()
 	{
 		TermCloneContext context = new TermCloneContext();
@@ -48,7 +49,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * clone the object using clone context
-	 * 
+	 *
 	 * @param context
 	 *          clone context
 	 * @return cloned term
@@ -57,7 +58,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * dereference term.
-	 * 
+	 *
 	 * @return dereferenced term
 	 */
 	public Term dereference()
@@ -67,7 +68,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * get type of term
-	 * 
+	 *
 	 * @return type of term
 	 */
 	public int getTermType()

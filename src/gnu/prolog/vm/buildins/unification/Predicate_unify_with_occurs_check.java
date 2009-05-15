@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.unification;
@@ -38,7 +38,7 @@ public class Predicate_unify_with_occurs_check implements PrologCode
 {
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -56,8 +56,8 @@ public class Predicate_unify_with_occurs_check implements PrologCode
 		int rc = SUCCESS_LAST;
 		unify_loop: while (stack.size() > 0)
 		{
-			Term t1 = (Term) stack.remove(stack.size() - 1);
-			Term t2 = (Term) stack.remove(stack.size() - 1);
+			Term t1 = stack.remove(stack.size() - 1);
+			Term t2 = stack.remove(stack.size() - 1);
 			if (t1 == t2)
 			{
 			}
@@ -146,7 +146,7 @@ public class Predicate_unify_with_occurs_check implements PrologCode
 
 	/**
 	 * preform occur check on variable
-	 * 
+	 *
 	 * @return true if term does not contains variable
 	 */
 	public static boolean occurCheck(VariableTerm variable, Term term)
@@ -173,7 +173,7 @@ public class Predicate_unify_with_occurs_check implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -184,7 +184,7 @@ public class Predicate_unify_with_occurs_check implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

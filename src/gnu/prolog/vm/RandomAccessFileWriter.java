@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -24,7 +24,7 @@ import java.io.RandomAccessFile;
 import java.io.Writer;
 
 /**
- * 
+ *
  * @author Michiel Hendriks
  */
 public class RandomAccessFileWriter extends Writer
@@ -52,7 +52,7 @@ public class RandomAccessFileWriter extends Writer
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.io.Reader#close()
 	 */
 	@Override
@@ -63,7 +63,7 @@ public class RandomAccessFileWriter extends Writer
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.io.Writer#flush()
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class RandomAccessFileWriter extends Writer
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.io.Writer#write(char[], int, int)
 	 */
 	@Override

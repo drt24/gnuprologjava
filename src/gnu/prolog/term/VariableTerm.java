@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 /** variable term.
@@ -31,7 +31,7 @@ public class VariableTerm extends Term
 
 	/**
 	 * a constructor
-	 * 
+	 *
 	 * @param name
 	 *          name of term
 	 */
@@ -40,11 +40,12 @@ public class VariableTerm extends Term
 
 	/**
 	 * clone the object using clone context
-	 * 
+	 *
 	 * @param context
 	 *          clone context
 	 * @return cloned term
 	 */
+	@Override
 	public Term clone(TermCloneContext context)
 	{
 		if (value == null)
@@ -65,9 +66,10 @@ public class VariableTerm extends Term
 
 	/**
 	 * dereference term.
-	 * 
+	 *
 	 * @return dereferenced term
 	 */
+	@Override
 	public Term dereference()
 	{
 		VariableTerm variable = this;
@@ -94,9 +96,10 @@ public class VariableTerm extends Term
 
 	/**
 	 * get type of term
-	 * 
+	 *
 	 * @return type of term
 	 */
+	@Override
 	public int getTermType()
 	{
 		return VARIABLE;

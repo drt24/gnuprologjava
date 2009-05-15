@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -26,7 +26,7 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 
 /**
- * 
+ *
  * @author Michiel Hendriks
  */
 public class RandomAccessFileReader extends Reader
@@ -49,6 +49,7 @@ public class RandomAccessFileReader extends Reader
 	{
 		rd = new InputStreamReader(new InputStream()
 		{
+			@Override
 			public int read() throws IOException
 			{
 				return raf.read();
@@ -69,7 +70,7 @@ public class RandomAccessFileReader extends Reader
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.io.Reader#close()
 	 */
 	@Override
@@ -81,7 +82,7 @@ public class RandomAccessFileReader extends Reader
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.io.Reader#read(char[], int, int)
 	 */
 	@Override

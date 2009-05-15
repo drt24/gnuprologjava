@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
@@ -40,7 +40,7 @@ public class Predicate_write_term implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -92,7 +92,7 @@ public class Predicate_write_term implements PrologCode
 				{
 					PrologException.domainError(TermConstants.readOptionAtom, head);
 				}
-				options.quoted = (val == TermConstants.trueAtom);
+				options.quoted = val == TermConstants.trueAtom;
 			}
 			else if (op.tag == ignoreOpsTag)
 			{
@@ -101,7 +101,7 @@ public class Predicate_write_term implements PrologCode
 				{
 					PrologException.domainError(TermConstants.readOptionAtom, head);
 				}
-				options.ignoreOps = (val == TermConstants.trueAtom);
+				options.ignoreOps = val == TermConstants.trueAtom;
 			}
 			else if (op.tag == numbervarsTag)
 			{
@@ -110,7 +110,7 @@ public class Predicate_write_term implements PrologCode
 				{
 					PrologException.domainError(TermConstants.readOptionAtom, head);
 				}
-				options.numbervars = (val == TermConstants.trueAtom);
+				options.numbervars = val == TermConstants.trueAtom;
 			}
 			else
 			{
@@ -124,7 +124,7 @@ public class Predicate_write_term implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -135,7 +135,7 @@ public class Predicate_write_term implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

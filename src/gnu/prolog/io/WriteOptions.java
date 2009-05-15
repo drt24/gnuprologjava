@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * ISO Prolog write options (Section 7.10.4)
- * 
+ *
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
@@ -73,6 +73,7 @@ public class WriteOptions implements Cloneable
 	 */
 	public boolean javaObjectsToString;
 
+	@Override
 	public Object clone()
 	{
 		try

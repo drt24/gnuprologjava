@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -32,7 +32,7 @@ public class BinaryPrologStream extends PrologStream
 	public BinaryPrologStream(AtomTerm fileAtom, AtomTerm mode, OpenOptions options) throws PrologException
 	{
 		super(options);
-		String of = (mode == readAtom) ? "r" : "rw";
+		String of = mode == readAtom ? "r" : "rw";
 		try
 		{
 			file = new RandomAccessFile(fileAtom.value, of);
@@ -50,6 +50,7 @@ public class BinaryPrologStream extends PrologStream
 		}
 	}
 
+	@Override
 	public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
@@ -84,6 +85,7 @@ public class BinaryPrologStream extends PrologStream
 		return -1; // fake return
 	}
 
+	@Override
 	public int peekByte(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
@@ -121,6 +123,7 @@ public class BinaryPrologStream extends PrologStream
 		return -1; // fake
 	}
 
+	@Override
 	public void putByte(Term streamTerm, Interpreter interptreter, int _byte) throws PrologException
 	{
 		checkExists();
@@ -141,6 +144,7 @@ public class BinaryPrologStream extends PrologStream
 		}
 	}
 
+	@Override
 	public Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		try
@@ -154,6 +158,7 @@ public class BinaryPrologStream extends PrologStream
 		return null; // fake
 	}
 
+	@Override
 	public void setPosition(Term streamTerm, Interpreter interptreter, Term position) throws PrologException
 	{
 		try
@@ -188,28 +193,33 @@ public class BinaryPrologStream extends PrologStream
 		}
 	}
 
+	@Override
 	public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		PrologException.permissionError(inputAtom, TermConstants.binaryStreamAtom, streamTerm);
 		return -1;
 	}
 
+	@Override
 	public int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		PrologException.permissionError(inputAtom, TermConstants.binaryStreamAtom, streamTerm);
 		return -1;
 	}
 
+	@Override
 	public void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException
 	{
 		PrologException.permissionError(outputAtom, TermConstants.binaryStreamAtom, streamTerm);
 	}
 
+	@Override
 	public void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException
 	{
 		PrologException.permissionError(outputAtom, TermConstants.binaryStreamAtom, streamTerm);
 	}
 
+	@Override
 	public gnu.prolog.term.Term readTerm(Term streamTerm, gnu.prolog.vm.Interpreter i, gnu.prolog.io.ReadOptions o)
 			throws PrologException
 	{
@@ -217,12 +227,14 @@ public class BinaryPrologStream extends PrologStream
 		return null;
 	}
 
+	@Override
 	public void writeTerm(Term streamTerm, gnu.prolog.vm.Interpreter i, gnu.prolog.io.WriteOptions o,
 			gnu.prolog.term.Term t) throws PrologException
 	{
 		PrologException.permissionError(outputAtom, TermConstants.binaryStreamAtom, streamTerm);
 	}
 
+	@Override
 	public void flushOutput(Term streamTerm) throws PrologException
 	{
 		if (mode == inputAtom)
@@ -236,6 +248,7 @@ public class BinaryPrologStream extends PrologStream
 		}
 	}
 
+	@Override
 	public void close(boolean force) throws PrologException
 	{
 		try
@@ -252,6 +265,7 @@ public class BinaryPrologStream extends PrologStream
 		super.close(force);
 	}
 
+	@Override
 	public Term getEndOfStreamState() throws PrologException
 	{
 		try

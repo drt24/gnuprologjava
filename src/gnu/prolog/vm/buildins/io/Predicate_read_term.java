@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
@@ -47,7 +47,7 @@ public class Predicate_read_term implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -131,7 +131,7 @@ public class Predicate_read_term implements PrologCode
 				Term singletonsList = mapToList(options.singletons);
 				while (i.hasNext())
 				{
-					Term t = (Term) i.next();
+					Term t = i.next();
 					t = t.dereference();
 					rc = interpreter.simple_unify(t, singletonsList);
 					if (rc == FAIL)
@@ -147,7 +147,7 @@ public class Predicate_read_term implements PrologCode
 				Term vnlist = mapToList(options.variableNames);
 				while (i.hasNext())
 				{
-					Term t = (Term) i.next();
+					Term t = i.next();
 					t = t.dereference();
 					rc = interpreter.simple_unify(t, vnlist);
 					if (rc == FAIL)
@@ -163,7 +163,7 @@ public class Predicate_read_term implements PrologCode
 				Term vnlist = CompoundTerm.getList(options.variables);
 				while (i.hasNext())
 				{
-					Term t = (Term) i.next();
+					Term t = i.next();
 					t = t.dereference();
 					rc = interpreter.simple_unify(t, vnlist);
 					if (rc == FAIL)
@@ -185,7 +185,7 @@ public class Predicate_read_term implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -200,8 +200,8 @@ public class Predicate_read_term implements PrologCode
 		Term rc = TermConstants.emptyListAtom;
 		while (i.hasNext())
 		{
-			String key = (String) i.next();
-			Term val = (Term) map.get(key);
+			String key = i.next();
+			Term val = map.get(key);
 			rc = CompoundTerm.getList(new CompoundTerm(unifyTag, AtomTerm.get(key), val), rc);
 		}
 		return rc;
@@ -209,7 +209,7 @@ public class Predicate_read_term implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

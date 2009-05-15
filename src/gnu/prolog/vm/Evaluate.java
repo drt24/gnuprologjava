@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -357,7 +357,7 @@ public class Evaluate
 				{
 					zero_divizor();
 				}
-				int res = i0.value - ((int) Math.floor((double) i0.value / i1.value)) * i1.value;
+				int res = i0.value - (int) Math.floor((double) i0.value / i1.value) * i1.value;
 				return IntegerTerm.get(res);
 			}
 			else if (tag == neg1) // ***************************************
@@ -478,7 +478,7 @@ public class Evaluate
 				if (arg0 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
-					return new FloatTerm((double) i0.value);
+					return new FloatTerm(i0.value);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
@@ -776,7 +776,7 @@ public class Evaluate
 
 	/**
 	 * Test the term for an interget term
-	 * 
+	 *
 	 * @param t1
 	 */
 	protected static void typeTestInt(Term term) throws PrologException

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 
@@ -72,7 +72,7 @@ public final class ReaderCharStream implements CharStream
 				System.arraycopy(bufcolumn, 0, newbufcolumn, bufsize - tokenBegin, bufpos);
 				bufcolumn = newbufcolumn;
 
-				maxNextCharInd = (bufpos += (bufsize - tokenBegin));
+				maxNextCharInd = bufpos += bufsize - tokenBegin;
 			}
 			else
 			{
@@ -85,7 +85,7 @@ public final class ReaderCharStream implements CharStream
 				System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
 				bufcolumn = newbufcolumn;
 
-				maxNextCharInd = (bufpos -= tokenBegin);
+				maxNextCharInd = bufpos -= tokenBegin;
 			}
 		}
 		catch (Throwable t)
@@ -109,12 +109,27 @@ public final class ReaderCharStream implements CharStream
 					bufpos = maxNextCharInd = 0;
 					available = tokenBegin;
 				}
-				else if (tokenBegin < 0) bufpos = maxNextCharInd = 0;
-				else ExpandBuff(false);
+				else if (tokenBegin < 0)
+				{
+					bufpos = maxNextCharInd = 0;
+				}
+				else
+				{
+					ExpandBuff(false);
+				}
 			}
-			else if (available > tokenBegin) available = bufsize;
-			else if ((tokenBegin - available) < 2048) ExpandBuff(true);
-			else available = tokenBegin;
+			else if (available > tokenBegin)
+			{
+				available = bufsize;
+			}
+			else if (tokenBegin - available < 2048)
+			{
+				ExpandBuff(true);
+			}
+			else
+			{
+				available = tokenBegin;
+			}
 		}
 
 		int i;
@@ -125,14 +140,20 @@ public final class ReaderCharStream implements CharStream
 				reader.close();
 				throw new java.io.IOException();
 			}
-			else maxNextCharInd += i;
+			else
+			{
+				maxNextCharInd += i;
+			}
 			return;
 		}
 		catch (java.io.IOException e)
 		{
 			--bufpos;
 			backup(0);
-			if (tokenBegin == -1) tokenBegin = bufpos;
+			if (tokenBegin == -1)
+			{
+				tokenBegin = bufpos;
+			}
 			throw e;
 		}
 	}
@@ -153,7 +174,7 @@ public final class ReaderCharStream implements CharStream
 		if (prevCharIsLF)
 		{
 			prevCharIsLF = false;
-			line += (column = 1);
+			line += column = 1;
 		}
 		else if (prevCharIsCR)
 		{
@@ -162,7 +183,10 @@ public final class ReaderCharStream implements CharStream
 			{
 				prevCharIsLF = true;
 			}
-			else line += (column = 1);
+			else
+			{
+				line += column = 1;
+			}
 		}
 
 		switch (c)
@@ -174,7 +198,7 @@ public final class ReaderCharStream implements CharStream
 				prevCharIsLF = true;
 				break;
 			case '\t':
-				column += (9 - (column & 07));
+				column += 9 - (column & 07);
 				break;
 			default:
 				break;
@@ -189,15 +213,18 @@ public final class ReaderCharStream implements CharStream
 		if (inBuf > 0)
 		{
 			--inBuf;
-			return buffer[(bufpos == bufsize - 1) ? (bufpos = 0) : ++bufpos];
+			return buffer[bufpos == bufsize - 1 ? (bufpos = 0) : ++bufpos];
 		}
 
-		if (++bufpos >= maxNextCharInd) FillBuff();
+		if (++bufpos >= maxNextCharInd)
+		{
+			FillBuff();
+		}
 
 		char c = buffer[bufpos];
 
 		UpdateLineColumn(c);
-		return (c);
+		return c;
 	}
 
 	/**
@@ -205,6 +232,7 @@ public final class ReaderCharStream implements CharStream
 	 * @see #getEndColumn
 	 */
 
+	@Deprecated
 	public final int getColumn()
 	{
 		return bufcolumn[bufpos];
@@ -215,6 +243,7 @@ public final class ReaderCharStream implements CharStream
 	 * @see #getEndLine
 	 */
 
+	@Deprecated
 	public final int getLine()
 	{
 		return bufline[bufpos];
@@ -244,7 +273,10 @@ public final class ReaderCharStream implements CharStream
 	{
 
 		inBuf += amount;
-		if ((bufpos -= amount) < 0) bufpos += bufsize;
+		if ((bufpos -= amount) < 0)
+		{
+			bufpos += bufsize;
+		}
 	}
 
 	public ReaderCharStream(java.io.Reader dstream, int startline, int startcolumn, int buffersize)
@@ -310,15 +342,24 @@ public final class ReaderCharStream implements CharStream
 
 	public final String GetImage()
 	{
-		if (bufpos >= tokenBegin) return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
-		else return new String(buffer, tokenBegin, bufsize - tokenBegin) + new String(buffer, 0, bufpos + 1);
+		if (bufpos >= tokenBegin)
+		{
+			return new String(buffer, tokenBegin, bufpos - tokenBegin + 1);
+		}
+		else
+		{
+			return new String(buffer, tokenBegin, bufsize - tokenBegin) + new String(buffer, 0, bufpos + 1);
+		}
 	}
 
 	public final char[] GetSuffix(int len)
 	{
 		char[] ret = new char[len];
 
-		if ((bufpos + 1) >= len) System.arraycopy(buffer, bufpos - len + 1, ret, 0, len);
+		if (bufpos + 1 >= len)
+		{
+			System.arraycopy(buffer, bufpos - len + 1, ret, 0, len);
+		}
 		else
 		{
 			System.arraycopy(buffer, bufsize - (len - bufpos - 1), ret, 0, len - bufpos - 1);

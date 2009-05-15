@@ -12,14 +12,14 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
 
 /**
  * 32bit Integer term.
- * 
+ *
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
@@ -48,7 +48,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get integer term equal to val
-	 * 
+	 *
 	 * @param val
 	 *          value of integer term
 	 * @return new integer term
@@ -154,7 +154,7 @@ public class IntegerTerm extends AtomicTerm
 											int i = 2;
 											while (str.charAt(i) != '\\')
 											{
-												val = (val * 16 + Character.digit(str.charAt(i), 16));
+												val = val * 16 + Character.digit(str.charAt(i), 16);
 												i++;
 											}
 											break chars;
@@ -186,7 +186,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get integer term using string value
-	 * 
+	 *
 	 * @param str
 	 *          value of integer term
 	 * @return new integer term
@@ -199,7 +199,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get integer term using string value
-	 * 
+	 *
 	 * @param str
 	 *          value of integer term
 	 * @return new integer term
@@ -212,7 +212,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * a constructor
-	 * 
+	 *
 	 * @param val
 	 *          value of term
 	 */
@@ -226,9 +226,10 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get type of term
-	 * 
+	 *
 	 * @return type of term
 	 */
+	@Override
 	public int getTermType()
 	{
 		return INTEGER;

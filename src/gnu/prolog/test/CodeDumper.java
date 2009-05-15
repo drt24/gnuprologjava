@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.test;
@@ -35,7 +35,6 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
-import java.util.Iterator;
 
 public class CodeDumper
 {
@@ -56,9 +55,9 @@ public class CodeDumper
 			env.ensureLoaded(AtomTerm.get(textToLoad));
 			Interpreter interpreter = env.createInterpreter();
 			env.runIntialization(interpreter);
-			for (Iterator ierr = env.getLoadingErrors().iterator(); ierr.hasNext();)
+			for (Object element : env.getLoadingErrors())
 			{
-				PrologTextLoaderError err = (PrologTextLoaderError) ierr.next();
+				PrologTextLoaderError err = (PrologTextLoaderError) element;
 				System.err.println(err);
 				// err.printStackTrace();
 			}

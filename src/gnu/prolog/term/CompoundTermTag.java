@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
@@ -26,7 +26,7 @@ import java.util.WeakHashMap;
 /**
  * A tag of compound term. A tag consists of functor and arity. All tags are
  * unique in one JVM.
- * 
+ *
  * @author Constatine Plotinikov
  * @version 0.0.1
  */
@@ -59,7 +59,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * get compound term tag
-	 * 
+	 *
 	 * @param predicateIndicator
 	 *          a term which represent a predicate indicator of term
 	 * @return a tag that have specified by a term which represent a predicate
@@ -83,7 +83,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * check if term is predicate indicator
-	 * 
+	 *
 	 * @param term
 	 *          term to check
 	 * @return true if term is predicate indicator
@@ -105,7 +105,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * get compound term tag
-	 * 
+	 *
 	 * @param functor
 	 *          functor of tag
 	 * @param arity
@@ -119,7 +119,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * get compound term tag
-	 * 
+	 *
 	 * @param functor
 	 *          functor of tag
 	 * @param arity
@@ -137,7 +137,7 @@ final public class CompoundTermTag implements java.io.Serializable
 				Iterator<CompoundTermTag> e = ctgs.iterator();
 				while (e.hasNext())
 				{
-					tg = (CompoundTermTag) e.next();
+					tg = e.next();
 					if (tg.arity == arity)
 					{
 						return tg;
@@ -166,7 +166,7 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/**
 	 * a constructor
-	 * 
+	 *
 	 * @param f
 	 *          functor of term
 	 * @param a
@@ -181,7 +181,7 @@ final public class CompoundTermTag implements java.io.Serializable
 	/**
 	 * Return an object to replace the object extracted from the stream. The
 	 * object will be used in the graph in place of the original.
-	 * 
+	 *
 	 * @return resloved object
 	 * @see java.io.Resolvable
 	 */
@@ -191,6 +191,7 @@ final public class CompoundTermTag implements java.io.Serializable
 	}
 
 	/** convert tag to string */
+	@Override
 	public String toString()
 	{
 		return functor.value + "/" + arity;
@@ -198,35 +199,55 @@ final public class CompoundTermTag implements java.io.Serializable
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + arity;
-		result = prime * result + ((functor == null) ? 0 : functor.hashCode());
+		result = prime * result + (functor == null ? 0 : functor.hashCode());
 		return result;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
 		CompoundTermTag other = (CompoundTermTag) obj;
-		if (arity != other.arity) return false;
+		if (arity != other.arity)
+		{
+			return false;
+		}
 		if (functor == null)
 		{
-			if (other.functor != null) return false;
+			if (other.functor != null)
+			{
+				return false;
+			}
 		}
-		else if (!functor.equals(other.functor)) return false;
+		else if (!functor.equals(other.functor))
+		{
+			return false;
+		}
 		return true;
 	}
 }

@@ -17,8 +17,11 @@ public class Version
 		{
 			return String.format("%d.%d.%d", VersionInternal.major, VersionInternal.minor, VersionInternal.revision);
 		}
-		else return String.format("%d.%d.%d %s", VersionInternal.major, VersionInternal.minor, VersionInternal.revision,
-				VersionInternal.type);
+		else
+		{
+			return String.format("%d.%d.%d %s", VersionInternal.major, VersionInternal.minor, VersionInternal.revision,
+					VersionInternal.type);
+		}
 	}
 
 	/**

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.database;
@@ -31,7 +31,6 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,7 +57,7 @@ public class Predicate_clause implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -113,9 +112,9 @@ public class Predicate_clause implements PrologCode
 				PrologException.typeError(TermConstants.callableAtom, body);
 			}
 			List<Term> clauses = new ArrayList<Term>();
-			for (Iterator<Term> ic = p.getClauses().iterator(); ic.hasNext();)
+			for (Term term : p.getClauses())
 			{
-				clauses.add((Term) ((Term) ic.next()).clone());
+				clauses.add((Term) (term).clone());
 			}
 			if (clauses.size() == 0)
 			{
@@ -138,7 +137,7 @@ public class Predicate_clause implements PrologCode
 	{
 		while (bi.position < bi.clauses.size())
 		{
-			int rc = interpreter.unify((Term) bi.clauses.get(bi.position++), bi.clause);
+			int rc = interpreter.unify(bi.clauses.get(bi.position++), bi.clause);
 			if (rc == SUCCESS_LAST)
 			{
 				interpreter.pushBacktrackInfo(bi);
@@ -174,7 +173,7 @@ public class Predicate_clause implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -185,7 +184,7 @@ public class Predicate_clause implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

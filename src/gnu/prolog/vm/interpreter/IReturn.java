@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
@@ -25,18 +25,20 @@ public class IReturn extends Instruction
 {
 	/**
 	 * execute call instruction within specified sate
-	 * 
+	 *
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instrcuction
 	 * @throw PrologException if code is throwng prolog exception
 	 */
+	@Override
 	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		return ExecutionState.RETURN;
 	}
 
 	/** convert instruction to string */
+	@Override
 	public String toString()
 	{
 		return codePosition + ": return";

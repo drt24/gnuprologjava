@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
@@ -225,14 +225,14 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		Iterator<CompoundTermTag> j = callTags.iterator();
 		for (i = 0; j.hasNext(); i++)
 		{
-			CompoundTermTag tag = (CompoundTermTag) j.next();
+			CompoundTermTag tag = j.next();
 			tags[i] = tag;
 			tag2idx.put(tag, new Integer(i));
 		}
 		j = createCompoundTermTags.iterator();
 		for (; j.hasNext(); i++)
 		{
-			CompoundTermTag tag = (CompoundTermTag) j.next();
+			CompoundTermTag tag = j.next();
 			tags[i] = tag;
 			tag2idx.put(tag, new Integer(i));
 		}
@@ -240,7 +240,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		Iterator<AtomicTerm> j2 = constantSet.iterator();
 		for (i = 0; j2.hasNext(); i++)
 		{
-			AtomicTerm term = (AtomicTerm) j2.next();
+			AtomicTerm term = j2.next();
 			constants[i] = term;
 			constant2idx.put(term, new Integer(i));
 		}
@@ -257,136 +257,136 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			if (isrc[i] instanceof IAllocate)
 			{
 				IAllocate ii = (IAllocate) isrc[i];
-				instructions[bytes++] = (byte) (IALLOCATE);
-				instructions[bytes++] = (byte) ((ii.environmentSize >> 8) & 255);
-				instructions[bytes++] = (byte) ((ii.environmentSize) & 255);
-				instructions[bytes++] = (byte) ((ii.reserved >> 8) & 255);
-				instructions[bytes++] = (byte) ((ii.reserved) & 255);
+				instructions[bytes++] = (byte) IALLOCATE;
+				instructions[bytes++] = (byte) (ii.environmentSize >> 8 & 255);
+				instructions[bytes++] = (byte) (ii.environmentSize & 255);
+				instructions[bytes++] = (byte) (ii.reserved >> 8 & 255);
+				instructions[bytes++] = (byte) (ii.reserved & 255);
 			}
 			else if (isrc[i] instanceof ICall)
 			{
 				ICall ii = (ICall) isrc[i];
-				int idx = ((Integer) tag2idx.get(ii.tag)).intValue();
-				instructions[bytes++] = (byte) (ICALL);
-				instructions[bytes++] = (byte) ((idx >> 8) & 255);
-				instructions[bytes++] = (byte) ((idx) & 255);
+				int idx = (tag2idx.get(ii.tag)).intValue();
+				instructions[bytes++] = (byte) ICALL;
+				instructions[bytes++] = (byte) (idx >> 8 & 255);
+				instructions[bytes++] = (byte) (idx & 255);
 			}
 			else if (isrc[i] instanceof ICreateCompoundTerm)
 			{
 				ICreateCompoundTerm ii = (ICreateCompoundTerm) isrc[i];
-				int idx = ((Integer) tag2idx.get(ii.tag)).intValue();
-				instructions[bytes++] = (byte) (ICREATE_COMPOUND);
-				instructions[bytes++] = (byte) ((idx >> 8) & 255);
-				instructions[bytes++] = (byte) ((idx) & 255);
+				int idx = (tag2idx.get(ii.tag)).intValue();
+				instructions[bytes++] = (byte) ICREATE_COMPOUND;
+				instructions[bytes++] = (byte) (idx >> 8 & 255);
+				instructions[bytes++] = (byte) (idx & 255);
 			}
 			else if (isrc[i] instanceof ICreateVariable)
 			{
 				ICreateVariable ii = (ICreateVariable) isrc[i];
-				instructions[bytes++] = (byte) (ICREATE_VARIABLE);
+				instructions[bytes++] = (byte) ICREATE_VARIABLE;
 			}
 			else if (isrc[i] instanceof ICut)
 			{
 				ICut ii = (ICut) isrc[i];
-				instructions[bytes++] = (byte) (ICUT);
-				instructions[bytes++] = (byte) ((ii.environmentIndex >> 8) & 255);
-				instructions[bytes++] = (byte) ((ii.environmentIndex) & 255);
+				instructions[bytes++] = (byte) ICUT;
+				instructions[bytes++] = (byte) (ii.environmentIndex >> 8 & 255);
+				instructions[bytes++] = (byte) (ii.environmentIndex & 255);
 			}
 			else if (isrc[i] instanceof IDup)
 			{
 				IDup ii = (IDup) isrc[i];
-				instructions[bytes++] = (byte) (IDUP);
+				instructions[bytes++] = (byte) IDUP;
 			}
 			else if (isrc[i] instanceof IFail)
 			{
 				IFail ii = (IFail) isrc[i];
-				instructions[bytes++] = (byte) (IFAIL);
+				instructions[bytes++] = (byte) IFAIL;
 			}
 			else if (isrc[i] instanceof IJump)
 			{
 				IJump ii = (IJump) isrc[i];
-				instructions[bytes++] = (byte) (IJUMP);
-				instructions[bytes++] = (byte) ((ipos[ii.jumpPosition] >> 8) & 255);
-				instructions[bytes++] = (byte) ((ipos[ii.jumpPosition]) & 255);
+				instructions[bytes++] = (byte) IJUMP;
+				instructions[bytes++] = (byte) (ipos[ii.jumpPosition] >> 8 & 255);
+				instructions[bytes++] = (byte) (ipos[ii.jumpPosition] & 255);
 			}
 			else if (isrc[i] instanceof IPop)
 			{
 				IPop ii = (IPop) isrc[i];
-				instructions[bytes++] = (byte) (IPOP);
+				instructions[bytes++] = (byte) IPOP;
 			}
 			else if (isrc[i] instanceof IPushArgument)
 			{
 				IPushArgument ii = (IPushArgument) isrc[i];
-				instructions[bytes++] = (byte) (IPUSH_ARGUMENT);
-				instructions[bytes++] = (byte) ((ii.argumentPosition >> 8) & 255);
-				instructions[bytes++] = (byte) ((ii.argumentPosition) & 255);
+				instructions[bytes++] = (byte) IPUSH_ARGUMENT;
+				instructions[bytes++] = (byte) (ii.argumentPosition >> 8 & 255);
+				instructions[bytes++] = (byte) (ii.argumentPosition & 255);
 			}
 			else if (isrc[i] instanceof IPushConstant)
 			{
 				IPushConstant ii = (IPushConstant) isrc[i];
-				int idx = ((Integer) constant2idx.get(ii.term)).intValue();
-				instructions[bytes++] = (byte) (IPUSH_CONSTANT);
-				instructions[bytes++] = (byte) ((idx >> 8) & 255);
-				instructions[bytes++] = (byte) ((idx) & 255);
+				int idx = (constant2idx.get(ii.term)).intValue();
+				instructions[bytes++] = (byte) IPUSH_CONSTANT;
+				instructions[bytes++] = (byte) (idx >> 8 & 255);
+				instructions[bytes++] = (byte) (idx & 255);
 			}
 			else if (isrc[i] instanceof IPushEnvironment)
 			{
 				IPushEnvironment ii = (IPushEnvironment) isrc[i];
-				instructions[bytes++] = (byte) (IPUSH_ENVIRONMENT);
-				instructions[bytes++] = (byte) ((ii.environmentPosition >> 8) & 255);
-				instructions[bytes++] = (byte) ((ii.environmentPosition) & 255);
+				instructions[bytes++] = (byte) IPUSH_ENVIRONMENT;
+				instructions[bytes++] = (byte) (ii.environmentPosition >> 8 & 255);
+				instructions[bytes++] = (byte) (ii.environmentPosition & 255);
 			}
 			else if (isrc[i] instanceof IRetryMeElse)
 			{
 				IRetryMeElse ii = (IRetryMeElse) isrc[i];
-				instructions[bytes++] = (byte) (IRETRY_ME_ELSE);
-				instructions[bytes++] = (byte) ((ipos[ii.retryPosition] >> 8) & 255);
-				instructions[bytes++] = (byte) ((ipos[ii.retryPosition]) & 255);
+				instructions[bytes++] = (byte) IRETRY_ME_ELSE;
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 8 & 255);
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] & 255);
 			}
 			else if (isrc[i] instanceof IReturn)
 			{
 				IReturn ii = (IReturn) isrc[i];
-				instructions[bytes++] = (byte) (IRETURN);
+				instructions[bytes++] = (byte) IRETURN;
 			}
 			else if (isrc[i] instanceof ISaveCut)
 			{
 				ISaveCut ii = (ISaveCut) isrc[i];
-				instructions[bytes++] = (byte) (ISAVE_CUT);
-				instructions[bytes++] = (byte) ((ii.environmentIndex >> 8) & 255);
-				instructions[bytes++] = (byte) ((ii.environmentIndex) & 255);
+				instructions[bytes++] = (byte) ISAVE_CUT;
+				instructions[bytes++] = (byte) (ii.environmentIndex >> 8 & 255);
+				instructions[bytes++] = (byte) (ii.environmentIndex & 255);
 			}
 			else if (isrc[i] instanceof IStoreEnvironment)
 			{
 				IStoreEnvironment ii = (IStoreEnvironment) isrc[i];
-				instructions[bytes++] = (byte) (ISTORE_ENVIRONMENT);
-				instructions[bytes++] = (byte) ((ii.environmentIndex >> 8) & 255);
-				instructions[bytes++] = (byte) ((ii.environmentIndex) & 255);
+				instructions[bytes++] = (byte) ISTORE_ENVIRONMENT;
+				instructions[bytes++] = (byte) (ii.environmentIndex >> 8 & 255);
+				instructions[bytes++] = (byte) (ii.environmentIndex & 255);
 			}
 			else if (isrc[i] instanceof IThrow)
 			{
 				IThrow ii = (IThrow) isrc[i];
-				instructions[bytes++] = (byte) (ITHROW);
+				instructions[bytes++] = (byte) ITHROW;
 			}
 			else if (isrc[i] instanceof ITrue)
 			{
 				ITrue ii = (ITrue) isrc[i];
-				instructions[bytes++] = (byte) (ITRUE);
+				instructions[bytes++] = (byte) ITRUE;
 			}
 			else if (isrc[i] instanceof ITrustMe)
 			{
 				ITrustMe ii = (ITrustMe) isrc[i];
-				instructions[bytes++] = (byte) (ITRUST_ME);
+				instructions[bytes++] = (byte) ITRUST_ME;
 			}
 			else if (isrc[i] instanceof ITryMeElse)
 			{
 				ITryMeElse ii = (ITryMeElse) isrc[i];
-				instructions[bytes++] = (byte) (ITRY_ME_ELSE);
-				instructions[bytes++] = (byte) ((ipos[ii.retryPosition] >> 8) & 255);
-				instructions[bytes++] = (byte) ((ipos[ii.retryPosition]) & 255);
+				instructions[bytes++] = (byte) ITRY_ME_ELSE;
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 8 & 255);
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] & 255);
 			}
 			else if (isrc[i] instanceof IUnify)
 			{
 				IUnify ii = (IUnify) isrc[i];
-				instructions[bytes++] = (byte) (IUNIFY);
+				instructions[bytes++] = (byte) IUNIFY;
 			}
 		}
 		// System.out.print("ssz = "+isrc.length+" sz = "+instructions.length+" code = ");
@@ -400,7 +400,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -464,7 +464,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 						}
 					}
 
-					int instr = (instructions[currentPosition] & 255);
+					int instr = instructions[currentPosition] & 255;
 					// System.err.println("code = "+codeTag+" bmode = "+backtrackMode+" instr = "+getIntruction(currentPosition));
 					switch (instr)
 					{
@@ -806,7 +806,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -820,7 +820,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -833,13 +833,14 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	}
 
 	/** convert code to string */
+	@Override
 	public String toString()
 	{
 		int currentPosition = 0;
 		String rc = "interpreted code\n";
 		while (currentPosition < instructions.length)
 		{
-			int instr = (instructions[currentPosition] & 255);
+			int instr = instructions[currentPosition] & 255;
 			switch (instr)
 			{
 				case IALLOCATE:
@@ -1005,7 +1006,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	public String getIntruction(int currentPosition)
 	{
 		String rc = "";
-		int instr = (instructions[currentPosition] & 255);
+		int instr = instructions[currentPosition] & 255;
 		switch (instr)
 		{
 			case IALLOCATE:

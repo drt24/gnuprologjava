@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gnu.prolog.vm.buildins.java;
 
@@ -13,19 +13,19 @@ import gnu.prolog.vm.PrologException;
 
 /**
  * @author Michiel Hendriks
- * 
+ *
  */
 public class Predicate_java_classname implements PrologCode
 {
 	/**
-	 * 
+	 *
 	 */
 	public Predicate_java_classname()
 	{}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
 	 * gnu.prolog.term.Term[])
 	 */
@@ -46,7 +46,7 @@ public class Predicate_java_classname implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
@@ -54,7 +54,7 @@ public class Predicate_java_classname implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)

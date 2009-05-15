@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
@@ -23,7 +23,7 @@ import java.util.WeakHashMap;
 
 /**
  * Atom term. The object of this class represent prolog atom.
- * 
+ *
  * @author Constantin Plotnikov
  * @version 0.0.1
  */
@@ -36,7 +36,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * get atom term
-	 * 
+	 *
 	 * @param s
 	 *          string reprentation of atom.
 	 */
@@ -44,7 +44,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 	{
 		synchronized (string2atom)
 		{
-			AtomTerm atom = (AtomTerm) string2atom.get(s);
+			AtomTerm atom = string2atom.get(s);
 			if (atom == null)
 			{
 				atom = new AtomTerm(s);
@@ -58,7 +58,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * get atom term
-	 * 
+	 *
 	 * @param s
 	 *          string reprentation of atom.
 	 */
@@ -75,7 +75,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 	/**
 	 * Return an object to replace the object extracted from the stream. The
 	 * object will be used in the graph in place of the original.
-	 * 
+	 *
 	 * @return resloved object
 	 * @see java.io.Resolvable
 	 */
@@ -89,7 +89,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * a constructor.
-	 * 
+	 *
 	 * @param value
 	 *          value of atom
 	 */
@@ -100,9 +100,10 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * get type of term
-	 * 
+	 *
 	 * @return type of term
 	 */
+	@Override
 	public int getTermType()
 	{
 		return ATOM;
@@ -110,33 +111,50 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + (value == null ? 0 : value.hashCode());
 		return result;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj)
 	{
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
 		AtomTerm other = (AtomTerm) obj;
 		if (value == null)
 		{
-			if (other.value != null) return false;
+			if (other.value != null)
+			{
+				return false;
+			}
 		}
-		else if (!value.equals(other.value)) return false;
+		else if (!value.equals(other.value))
+		{
+			return false;
+		}
 		return true;
 	}
 }

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.gui;
@@ -24,6 +24,10 @@ import javax.swing.JTextArea;
 public class Runner extends JFrame
 {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4536135999079155652L;
 	JButton prepareButton = new JButton("Prepare");
 	JButton executeButton = new JButton("Execute");
 	JButton stopButton = new JButton("Stop");

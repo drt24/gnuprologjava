@@ -14,12 +14,11 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.list;
 
-import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
@@ -34,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ *
  * @author Michiel Hendriks
  */
 public class Predicate_length implements PrologCode
@@ -44,7 +43,7 @@ public class Predicate_length implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
 	 * gnu.prolog.term.Term[])
 	 */
@@ -61,7 +60,7 @@ public class Predicate_length implements PrologCode
 				{
 					break;
 				}
-				if (!(CompoundTerm.isListPair(lst)))
+				if (!CompoundTerm.isListPair(lst))
 				{
 					return FAIL;
 				}
@@ -99,7 +98,7 @@ public class Predicate_length implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
@@ -107,7 +106,7 @@ public class Predicate_length implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)

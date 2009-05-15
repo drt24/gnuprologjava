@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io.parser.gen;
@@ -176,18 +176,24 @@ public final class TermParser implements TermParserConstants
 		Term t;
 		try
 		{
-			switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+			switch (jj_ntk == -1 ? jj_ntk() : jj_ntk)
 			{
 				case 0:
 					jj_consume_token(0);
 					{
-						if (true) return null;
+						if (true)
+						{
+							return null;
+						}
 					}
 					break;
 				case END_TOKEN:
 					jj_consume_token(END_TOKEN);
 					{
-						if (true) return null;
+						if (true)
+						{
+							return null;
+						}
 					}
 					break;
 				default:
@@ -195,7 +201,10 @@ public final class TermParser implements TermParserConstants
 					t = term(options, options.operatorSet.getMaxLevel());
 					end();
 					{
-						if (true) return t;
+						if (true)
+						{
+							return t;
+						}
 					}
 			}
 		}
@@ -203,7 +212,10 @@ public final class TermParser implements TermParserConstants
 		{
 			skipToDot();
 			{
-				if (true) throw ex;
+				if (true)
+				{
+					throw ex;
+				}
 			}
 		}
 		throw new Error("Missing return statement in function");
@@ -226,14 +238,20 @@ public final class TermParser implements TermParserConstants
 			t = term(options, options.operatorSet.getMaxLevel());
 			jj_consume_token(0);
 			{
-				if (true) return t;
+				if (true)
+				{
+					return t;
+				}
 			}
 		}
 		catch (ParseException ex)
 		{
 			skipToEof();
 			{
-				if (true) throw ex;
+				if (true)
+				{
+					throw ex;
+				}
 			}
 		}
 		throw new Error("Missing return statement in function");
@@ -256,7 +274,7 @@ public final class TermParser implements TermParserConstants
 		{
 			t = simpleTerm(options);
 		}
-		else if (jj_2_1(2147483647) && (priority == 1201 && is1201Separator(2)))
+		else if (jj_2_1(2147483647) && priority == 1201 && is1201Separator(2))
 		{
 			t = name();
 		}
@@ -265,7 +283,10 @@ public final class TermParser implements TermParserConstants
 			t = operatorTerm(options, p);
 		}
 		{
-			if (true) return t;
+			if (true)
+			{
+				return t;
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -302,7 +323,10 @@ public final class TermParser implements TermParserConstants
 		jj_consume_token(NAME_TOKEN);
 		NameToken tk = (NameToken) token;
 		{
-			if (true) return tk.fxOp.tag;
+			if (true)
+			{
+				return tk.fxOp.tag;
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -312,23 +336,29 @@ public final class TermParser implements TermParserConstants
 	{
 		CompoundTermTag f;
 		Term t;
-		if (jj_2_2(2147483647) && (priority >= 1000))
+		if (jj_2_2(2147483647) && priority >= 1000)
 		{
 			comma();
 			f = CompoundTermTag.comma;
 			{
-				if (true) return f;
+				if (true)
+				{
+					return f;
+				}
 			}
 		}
 		else
 		{
-			switch ((jj_ntk == -1) ? jj_ntk() : jj_ntk)
+			switch (jj_ntk == -1 ? jj_ntk() : jj_ntk)
 			{
 				case NAME_TOKEN:
 					jj_consume_token(NAME_TOKEN);
 					NameToken tk = (NameToken) token;
 					{
-						if (true) return tk.xfOp.tag;
+						if (true)
+						{
+							return tk.xfOp.tag;
+						}
 					}
 					break;
 				default:
@@ -392,12 +422,12 @@ public final class TermParser implements TermParserConstants
 						if (tk.kind == INTEGER_TOKEN)
 						{
 							jj_consume_token(INTEGER_TOKEN);
-							t1 = createTerm(CompoundTermTag.minus2, t1, IntegerTerm.get(-(IntegerTerm.get(tk.image).value)));
+							t1 = createTerm(CompoundTermTag.minus2, t1, IntegerTerm.get(-IntegerTerm.get(tk.image).value));
 						}
 						else
 						{
 							jj_consume_token(FLOAT_NUMBER_TOKEN);
-							t1 = createTerm(CompoundTermTag.minus2, t1, new FloatTerm(-(new FloatTerm(tk.image).value)));
+							t1 = createTerm(CompoundTermTag.minus2, t1, new FloatTerm(-new FloatTerm(tk.image).value));
 						}
 					}
 					else if (testYFX(options, p))
@@ -425,7 +455,7 @@ public final class TermParser implements TermParserConstants
 	final public Term simpleTerm(ReadOptions options) throws ParseException
 	{
 		Term t;
-		if (jj_2_3(2147483647) && (getToken(2).kind == TermParserConstants.OPEN_TOKEN && getToken(2).specialToken == null))
+		if (jj_2_3(2147483647) && getToken(2).kind == TermParserConstants.OPEN_TOKEN && getToken(2).specialToken == null)
 		{
 			t = compound(options);
 		}
@@ -469,7 +499,10 @@ public final class TermParser implements TermParserConstants
 			throw new ParseException();
 		}
 		{
-			if (true) return t;
+			if (true)
+			{
+				return t;
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -520,7 +553,10 @@ public final class TermParser implements TermParserConstants
 		if (rc == null)
 		{
 			{
-				if (true) return TermConstants.emptyListAtom;
+				if (true)
+				{
+					return TermConstants.emptyListAtom;
+				}
 			}
 		}
 		if (((CompoundTerm) t1).args[1] == null)
@@ -528,7 +564,10 @@ public final class TermParser implements TermParserConstants
 			((CompoundTerm) t1).args[1] = TermConstants.emptyListAtom;
 		}
 		{
-			if (true) return rc;
+			if (true)
+			{
+				return rc;
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -542,13 +581,19 @@ public final class TermParser implements TermParserConstants
 		if (t == null)
 		{
 			{
-				if (true) return TermConstants.emptyCurlyAtom;
+				if (true)
+				{
+					return TermConstants.emptyCurlyAtom;
+				}
 			}
 		}
 		else
 		{
 			{
-				if (true) return createTerm(CompoundTermTag.curly1, t);
+				if (true)
+				{
+					return createTerm(CompoundTermTag.curly1, t);
+				}
 			}
 		}
 		throw new Error("Missing return statement in function");
@@ -586,7 +631,10 @@ public final class TermParser implements TermParserConstants
 			rc.args[i] = (Term) args.get(i);
 		}
 		{
-			if (true) return rc;
+			if (true)
+			{
+				return rc;
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -597,7 +645,10 @@ public final class TermParser implements TermParserConstants
 	{
 		jj_consume_token(NAME_TOKEN);
 		{
-			if (true) return AtomTerm.get(((NameToken) token).getValue());
+			if (true)
+			{
+				return AtomTerm.get(((NameToken) token).getValue());
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -621,7 +672,10 @@ public final class TermParser implements TermParserConstants
 			options.singletons.remove(token.image);
 		}
 		{
-			if (true) return var;
+			if (true)
+			{
+				return var;
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -630,7 +684,10 @@ public final class TermParser implements TermParserConstants
 	{
 		jj_consume_token(INTEGER_TOKEN);
 		{
-			if (true) return IntegerTerm.get(token.image);
+			if (true)
+			{
+				return IntegerTerm.get(token.image);
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -639,7 +696,10 @@ public final class TermParser implements TermParserConstants
 	{
 		jj_consume_token(FLOAT_NUMBER_TOKEN);
 		{
-			if (true) return new FloatTerm(token.image);
+			if (true)
+			{
+				return new FloatTerm(token.image);
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -655,7 +715,10 @@ public final class TermParser implements TermParserConstants
 			rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);
 		}
 		{
-			if (true) return rc;
+			if (true)
+			{
+				return rc;
+			}
 		}
 		throw new Error("Missing return statement in function");
 	}
@@ -847,99 +910,183 @@ public final class TermParser implements TermParserConstants
 
 	final private boolean jj_3_12()
 	{
-		if (jj_scan_token(HEAD_TAIL_SEPARATOR_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(HEAD_TAIL_SEPARATOR_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_11()
 	{
-		if (jj_scan_token(COMMA_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(COMMA_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_13()
 	{
-		if (jj_scan_token(CLOSE_LIST_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(CLOSE_LIST_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_1()
 	{
-		if (jj_scan_token(NAME_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(NAME_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_10()
 	{
-		if (jj_scan_token(OPEN_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(OPEN_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_9()
 	{
-		if (jj_scan_token(CHAR_CODE_LIST_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(CHAR_CODE_LIST_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_8()
 	{
-		if (jj_scan_token(OPEN_CURLY_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(OPEN_CURLY_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_14()
 	{
-		if (jj_scan_token(COMMA_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(COMMA_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_7()
 	{
-		if (jj_scan_token(OPEN_LIST_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(OPEN_LIST_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_6()
 	{
-		if (jj_scan_token(FLOAT_NUMBER_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(FLOAT_NUMBER_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_5()
 	{
-		if (jj_scan_token(INTEGER_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(INTEGER_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_4()
 	{
-		if (jj_scan_token(VARIABLE_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(VARIABLE_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_3()
 	{
-		if (jj_scan_token(NAME_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(NAME_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
 	final private boolean jj_3_2()
 	{
-		if (jj_scan_token(COMMA_TOKEN)) return true;
-		if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+		if (jj_scan_token(COMMA_TOKEN))
+		{
+			return true;
+		}
+		if (jj_la == 0 && jj_scanpos == jj_lastpos)
+		{
+			return false;
+		}
 		return false;
 	}
 
@@ -966,9 +1113,13 @@ public final class TermParser implements TermParserConstants
 		jj_ntk = -1;
 		jj_gen = 0;
 		for (int i = 0; i < 2; i++)
+		{
 			jj_la1[i] = -1;
+		}
 		for (int i = 0; i < jj_2_rtns.length; i++)
+		{
 			jj_2_rtns[i] = new JJTermParserCalls();
+		}
 	}
 
 	public void ReInit(CharStream stream)
@@ -978,9 +1129,13 @@ public final class TermParser implements TermParserConstants
 		jj_ntk = -1;
 		jj_gen = 0;
 		for (int i = 0; i < 2; i++)
+		{
 			jj_la1[i] = -1;
+		}
 		for (int i = 0; i < jj_2_rtns.length; i++)
+		{
 			jj_2_rtns[i] = new JJTermParserCalls();
+		}
 	}
 
 	public TermParser(TermParserTokenManager tm)
@@ -990,9 +1145,13 @@ public final class TermParser implements TermParserConstants
 		jj_ntk = -1;
 		jj_gen = 0;
 		for (int i = 0; i < 2; i++)
+		{
 			jj_la1[i] = -1;
+		}
 		for (int i = 0; i < jj_2_rtns.length; i++)
+		{
 			jj_2_rtns[i] = new JJTermParserCalls();
+		}
 	}
 
 	public void ReInit(TermParserTokenManager tm)
@@ -1002,16 +1161,26 @@ public final class TermParser implements TermParserConstants
 		jj_ntk = -1;
 		jj_gen = 0;
 		for (int i = 0; i < 2; i++)
+		{
 			jj_la1[i] = -1;
+		}
 		for (int i = 0; i < jj_2_rtns.length; i++)
+		{
 			jj_2_rtns[i] = new JJTermParserCalls();
+		}
 	}
 
 	final private Token jj_consume_token(int kind) throws ParseException
 	{
 		Token oldToken;
-		if ((oldToken = token).next != null) token = token.next;
-		else token = token.next = token_source.getNextToken();
+		if ((oldToken = token).next != null)
+		{
+			token = token.next;
+		}
+		else
+		{
+			token = token.next = token_source.getNextToken();
+		}
 		jj_ntk = -1;
 		if (token.kind == kind)
 		{
@@ -1019,12 +1188,14 @@ public final class TermParser implements TermParserConstants
 			if (++jj_gc > 100)
 			{
 				jj_gc = 0;
-				for (int i = 0; i < jj_2_rtns.length; i++)
+				for (JJTermParserCalls c : jj_2_rtns)
 				{
-					JJTermParserCalls c = jj_2_rtns[i];
 					while (c != null)
 					{
-						if (c.gen < jj_gen) c.first = null;
+						if (c.gen < jj_gen)
+						{
+							c.first = null;
+						}
 						c = c.next;
 					}
 				}
@@ -1063,15 +1234,24 @@ public final class TermParser implements TermParserConstants
 				i++;
 				tok = tok.next;
 			}
-			if (tok != null) jj_add_error_token(kind, i);
+			if (tok != null)
+			{
+				jj_add_error_token(kind, i);
+			}
 		}
-		return (jj_scanpos.kind != kind);
+		return jj_scanpos.kind != kind;
 	}
 
 	final public Token getNextToken()
 	{
-		if (token.next != null) token = token.next;
-		else token = token.next = token_source.getNextToken();
+		if (token.next != null)
+		{
+			token = token.next;
+		}
+		else
+		{
+			token = token.next = token_source.getNextToken();
+		}
 		jj_ntk = -1;
 		jj_gen++;
 		return token;
@@ -1082,16 +1262,28 @@ public final class TermParser implements TermParserConstants
 		Token t = lookingAhead ? jj_scanpos : token;
 		for (int i = 0; i < index; i++)
 		{
-			if (t.next != null) t = t.next;
-			else t = t.next = token_source.getNextToken();
+			if (t.next != null)
+			{
+				t = t.next;
+			}
+			else
+			{
+				t = t.next = token_source.getNextToken();
+			}
 		}
 		return t;
 	}
 
 	final private int jj_ntk()
 	{
-		if ((jj_nt = token.next) == null) return (jj_ntk = (token.next = token_source.getNextToken()).kind);
-		else return (jj_ntk = jj_nt.kind);
+		if ((jj_nt = token.next) == null)
+		{
+			return jj_ntk = (token.next = token_source.getNextToken()).kind;
+		}
+		else
+		{
+			return jj_ntk = jj_nt.kind;
+		}
 	}
 
 	private java.util.Vector jj_expentries = new java.util.Vector();
@@ -1102,7 +1294,10 @@ public final class TermParser implements TermParserConstants
 
 	private void jj_add_error_token(int kind, int pos)
 	{
-		if (pos >= 100) return;
+		if (pos >= 100)
+		{
+			return;
+		}
 		if (pos == jj_endpos + 1)
 		{
 			jj_lasttokens[jj_endpos++] = kind;
@@ -1117,7 +1312,7 @@ public final class TermParser implements TermParserConstants
 			boolean exists = false;
 			for (java.util.Enumeration enum_ = jj_expentries.elements(); enum_.hasMoreElements();)
 			{
-				int[] oldentry = (int[]) (enum_.nextElement());
+				int[] oldentry = (int[]) enum_.nextElement();
 				if (oldentry.length == jj_expentry.length)
 				{
 					exists = true;
@@ -1129,11 +1324,20 @@ public final class TermParser implements TermParserConstants
 							break;
 						}
 					}
-					if (exists) break;
+					if (exists)
+					{
+						break;
+					}
 				}
 			}
-			if (!exists) jj_expentries.addElement(jj_expentry);
-			if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+			if (!exists)
+			{
+				jj_expentries.addElement(jj_expentry);
+			}
+			if (pos != 0)
+			{
+				jj_lasttokens[(jj_endpos = pos) - 1] = kind;
+			}
 		}
 	}
 
@@ -1156,15 +1360,15 @@ public final class TermParser implements TermParserConstants
 			{
 				for (int j = 0; j < 32; j++)
 				{
-					if ((jj_la1_0[i] & (1 << j)) != 0)
+					if ((jj_la1_0[i] & 1 << j) != 0)
 					{
 						la1tokens[j] = true;
 					}
-					if ((jj_la1_1[i] & (1 << j)) != 0)
+					if ((jj_la1_1[i] & 1 << j) != 0)
 					{
 						la1tokens[32 + j] = true;
 					}
-					if ((jj_la1_2[i] & (1 << j)) != 0)
+					if ((jj_la1_2[i] & 1 << j) != 0)
 					{
 						la1tokens[64 + j] = true;
 					}

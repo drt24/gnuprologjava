@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
@@ -27,7 +27,7 @@ import java.util.Map.Entry;
 
 /**
  * A conversion map, used by char_conversion and current_char_conversion
- * 
+ *
  * @author Michiel Hendriks
  */
 public class CharConversionTable
@@ -49,7 +49,7 @@ public class CharConversionTable
 
 	/**
 	 * Set the conversion of a character
-	 * 
+	 *
 	 * @param from
 	 * @param to
 	 */
@@ -67,7 +67,7 @@ public class CharConversionTable
 
 	/**
 	 * Convert a character.
-	 * 
+	 *
 	 * @param input
 	 * @return
 	 */
@@ -82,7 +82,7 @@ public class CharConversionTable
 
 	/**
 	 * Returns the set of characters which are converted to this character
-	 * 
+	 *
 	 * @param from
 	 * @return
 	 */

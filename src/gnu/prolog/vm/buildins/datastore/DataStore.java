@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.datastore;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
+ *
  * @author Michiel Hendriks
  */
 public class DataStore implements Iterable<DataStore.Entry>
@@ -71,7 +71,7 @@ public class DataStore implements Iterable<DataStore.Entry>
 	protected LinkedList<Entry> entries;
 
 	/**
-	 * 
+	 *
 	 */
 	public DataStore()
 	{
@@ -81,7 +81,7 @@ public class DataStore implements Iterable<DataStore.Entry>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Iterable#iterator()
 	 */
 	public Iterator<Entry> iterator()

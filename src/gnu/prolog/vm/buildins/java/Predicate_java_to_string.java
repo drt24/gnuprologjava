@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package gnu.prolog.vm.buildins.java;
 
@@ -13,21 +13,21 @@ import gnu.prolog.vm.PrologException;
 
 /**
  * @author Michiel Hendriks
- * 
+ *
  */
 public class Predicate_java_to_string implements PrologCode
 {
 	public static final AtomTerm javaObjectAtom = AtomTerm.get("java_object");
 
 	/**
-	 * 
+	 *
 	 */
 	public Predicate_java_to_string()
 	{}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
 	 * gnu.prolog.term.Term[])
 	 */
@@ -48,7 +48,7 @@ public class Predicate_java_to_string implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
@@ -56,7 +56,7 @@ public class Predicate_java_to_string implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)

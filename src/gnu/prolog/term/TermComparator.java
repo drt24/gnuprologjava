@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
@@ -45,7 +45,7 @@ public class TermComparator implements Comparator<Term>
 	 * <p>
 	 * Finally, the implementer must ensure that compare(x, y) == 0 implies that
 	 * sgn(compare(x, z)) == sgn(compare(y, z)), for all z.
-	 * 
+	 *
 	 * @return a negative integer, zero, or a positive integer as the first
 	 *         argument is less than, equal to, or greater than the second.
 	 * @exception ClassCastException
@@ -55,8 +55,8 @@ public class TermComparator implements Comparator<Term>
 	 */
 	public int compare(Term o1, Term o2)
 	{
-		Term t1 = ((Term) o1).dereference();
-		Term t2 = ((Term) o2).dereference();
+		Term t1 = (o1).dereference();
+		Term t2 = (o2).dereference();
 		if (t1 == t2)
 		{
 			return 0;
@@ -71,13 +71,13 @@ public class TermComparator implements Comparator<Term>
 		{
 			case Term.VARIABLE:
 			case Term.JAVA_OBJECT:
-				Integer i1 = (Integer) orderMap.get(t1);
+				Integer i1 = orderMap.get(t1);
 				if (i1 == null)
 				{
 					i1 = new Integer(currentIdx++);
 					orderMap.put(t1, i1);
 				}
-				Integer i2 = (Integer) orderMap.get(t2);
+				Integer i2 = orderMap.get(t2);
 				if (i2 == null)
 				{
 					i2 = new Integer(currentIdx++);

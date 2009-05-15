@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
@@ -31,19 +31,19 @@ public class TermCloneContext
 
 	/**
 	 * get cloned term if it is alrady added to context
-	 * 
+	 *
 	 * @param term
 	 *          source term
 	 * @return cloned term or null if it was not added
 	 */
 	public Term getTerm(Term term)
 	{
-		return (Term) term2clone.get(term);
+		return term2clone.get(term);
 	}
 
 	/**
 	 * put cloned term to context
-	 * 
+	 *
 	 * @param term
 	 *          source term
 	 * @param cloned

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.database;
@@ -40,7 +40,7 @@ public class Predicate_abolish implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -66,8 +66,8 @@ public class Predicate_abolish implements PrologCode
 		{
 			PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
 		}
-		Term tn = (Term) pi.args[0].dereference();
-		Term ta = (Term) pi.args[1].dereference();
+		Term tn = pi.args[0].dereference();
+		Term ta = pi.args[1].dereference();
 		if (tn instanceof VariableTerm)
 		{
 			PrologException.instantiationError();
@@ -106,7 +106,7 @@ public class Predicate_abolish implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -117,7 +117,7 @@ public class Predicate_abolish implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

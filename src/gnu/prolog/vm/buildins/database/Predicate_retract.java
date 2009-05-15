@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.database;
@@ -57,7 +57,7 @@ public class Predicate_retract implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -144,9 +144,9 @@ public class Predicate_retract implements PrologCode
 			}
 			Map<Term, Term> map = new HashMap<Term, Term>();
 			List<Term> list = new ArrayList<Term>(p.getClauses().size());
-			for (Iterator<Term> ic = p.getClauses().iterator(); ic.hasNext();)
+			for (Term term : p.getClauses())
 			{
-				Term cl = (Term) ic.next();
+				Term cl = term;
 				Term cp = (Term) cl.clone();
 				map.put(cp, cl);
 				list.add(cp);
@@ -165,11 +165,11 @@ public class Predicate_retract implements PrologCode
 	{
 		while (bi.iclauses.hasNext())
 		{
-			Term term = (Term) bi.iclauses.next();
+			Term term = bi.iclauses.next();
 			int rc = interpreter.unify(bi.clause, term);
 			if (rc == SUCCESS_LAST)
 			{
-				bi.pred.removeClause((Term) bi.clauseMap.get(term));
+				bi.pred.removeClause(bi.clauseMap.get(term));
 				interpreter.pushBacktrackInfo(bi);
 				return SUCCESS;
 			}
@@ -180,7 +180,7 @@ public class Predicate_retract implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -191,7 +191,7 @@ public class Predicate_retract implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
@@ -22,7 +22,6 @@ package gnu.prolog.vm.interpreter;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
-import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologStream;
 
@@ -35,13 +34,13 @@ import java.util.Map.Entry;
 
 /**
  * @author Michiel Hendriks
- * 
+ *
  */
 public class Tracer
 {
 	/**
 	 * Different trace levels
-	 * 
+	 *
 	 * @author Michiel Hendriks
 	 */
 	public enum TraceLevel
@@ -81,7 +80,7 @@ public class Tracer
 
 		/**
 		 * Convert a string to an enum set
-		 * 
+		 *
 		 * @param lvl
 		 * @return
 		 */
@@ -140,7 +139,7 @@ public class Tracer
 	protected int callStackMax = callStackGrow;
 
 	/**
-	 * 
+	 *
 	 */
 	public Tracer(PrologStream stdout)
 	{
@@ -161,7 +160,7 @@ public class Tracer
 
 	/**
 	 * Enable/disable tracing
-	 * 
+	 *
 	 * @param tracingActive
 	 */
 	public void setActive(boolean tracingActive)
@@ -189,7 +188,7 @@ public class Tracer
 
 	/**
 	 * Set a trace point
-	 * 
+	 *
 	 * @param pred
 	 * @param level
 	 */
@@ -223,7 +222,7 @@ public class Tracer
 
 	/**
 	 * Remove a trace point
-	 * 
+	 *
 	 * @param pred
 	 */
 	public void removeTrace(CompoundTermTag pred)
@@ -234,7 +233,7 @@ public class Tracer
 
 	/**
 	 * Remove a given level
-	 * 
+	 *
 	 * @param pred
 	 * @param level
 	 */
@@ -282,7 +281,7 @@ public class Tracer
 
 	/**
 	 * A trace event
-	 * 
+	 *
 	 * @param level
 	 * @param interpreter
 	 * @param tag
@@ -348,7 +347,7 @@ public class Tracer
 
 	/**
 	 * Notify the listeners
-	 * 
+	 *
 	 * @param level
 	 * @param interpreter
 	 * @param tag

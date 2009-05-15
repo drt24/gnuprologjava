@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
@@ -29,7 +29,7 @@ import java.util.Set;
 
 /**
  * Module in database
- * 
+ *
  * @author Contantine A Plotnikov
  */
 public class Module
@@ -42,7 +42,7 @@ public class Module
 
 	/**
 	 * create new predicate defined in this module
-	 * 
+	 *
 	 * @param tag
 	 *          tag of this predicate
 	 * @return created predicate
@@ -63,14 +63,14 @@ public class Module
 
 	/**
 	 * get predicate defined in this module
-	 * 
+	 *
 	 * @param tag
 	 *          tag of this predicate
 	 * @return predicate defined in this module or null if predicate is not found
 	 */
 	public synchronized Predicate getDefinedPredicate(CompoundTermTag tag)
 	{
-		Predicate p = (Predicate) tag2predicate.get(tag);
+		Predicate p = tag2predicate.get(tag);
 		if (p == null)
 		{
 			return null;
@@ -110,7 +110,7 @@ public class Module
 		Iterator<PredicateListener> i = new ArrayList<PredicateListener>(predicateListeners).iterator();
 		while (i.hasNext())
 		{
-			PredicateListener listener = (PredicateListener) i.next();
+			PredicateListener listener = i.next();
 			listener.predicateUpdated(evt);
 		}
 	}

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * compound term.
- * 
+ *
  * @author Constantine Plotnilkov
  * @version 0.0.1
  */
@@ -51,7 +51,7 @@ public class CompoundTerm extends Term
 		Term tlist = TermConstants.emptyListAtom;
 		for (int i = list.size() - 1; i >= 0; i--)
 		{
-			tlist = getList((Term) list.get(i), tlist);
+			tlist = getList(list.get(i), tlist);
 		}
 		return tlist;
 	}
@@ -83,7 +83,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get conjunction term
-	 * 
+	 *
 	 * @param head
 	 *          head term
 	 * @param tail
@@ -98,7 +98,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get disjunction term
-	 * 
+	 *
 	 * @param head
 	 *          head term
 	 * @param tail
@@ -113,7 +113,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get list pair
-	 * 
+	 *
 	 * @param head
 	 *          head term
 	 * @param tail
@@ -128,7 +128,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get term with specified term tag and arguments.
-	 * 
+	 *
 	 * @param tg
 	 *          tag of new term
 	 * @param arg1
@@ -141,7 +141,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get term with specified term tag and arguments.
-	 * 
+	 *
 	 * @param tg
 	 *          tag of new term
 	 * @param arg1
@@ -156,7 +156,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get term with specified term tag and arguments.
-	 * 
+	 *
 	 * @param tg
 	 *          tag of new term
 	 * @param arg1
@@ -173,7 +173,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get term with specified functor and arity
-	 * 
+	 *
 	 * @param functor
 	 *          a functor of new term
 	 * @param arity
@@ -187,7 +187,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get term with specified functor and arity
-	 * 
+	 *
 	 * @param functor
 	 *          a functor of new term
 	 * @param arity
@@ -201,7 +201,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get term with specified term functor and arguments.
-	 * 
+	 *
 	 * @param functor
 	 *          a functor of new term
 	 * @param args
@@ -216,7 +216,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get term with specified term functor and arguments.
-	 * 
+	 *
 	 * @param functor
 	 *          a functor of new term
 	 * @param args
@@ -236,7 +236,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * a contructor
-	 * 
+	 *
 	 * @param tag
 	 *          tag of term
 	 */
@@ -248,7 +248,7 @@ public class CompoundTerm extends Term
 
 	/**
 	 * a constructor
-	 * 
+	 *
 	 * @param tag
 	 *          tag of term
 	 * @param args
@@ -262,11 +262,12 @@ public class CompoundTerm extends Term
 
 	/**
 	 * clone the object using clone context
-	 * 
+	 *
 	 * @param context
 	 *          clone context
 	 * @return cloned term
 	 */
+	@Override
 	public Term clone(TermCloneContext context)
 	{
 		CompoundTerm term = (CompoundTerm) context.getTerm(this);
@@ -287,9 +288,10 @@ public class CompoundTerm extends Term
 
 	/**
 	 * get type of term
-	 * 
+	 *
 	 * @return type of term
 	 */
+	@Override
 	public int getTermType()
 	{
 		return COMPOUND;

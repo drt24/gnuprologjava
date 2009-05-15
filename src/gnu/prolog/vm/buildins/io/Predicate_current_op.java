@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
@@ -67,7 +67,7 @@ public class Predicate_current_op implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -124,7 +124,7 @@ public class Predicate_current_op implements PrologCode
 			Iterator<Operator> i = interpreter.environment.getOperatorSet().getOperators().iterator();
 			while (i.hasNext())
 			{
-				Operator o = (Operator) i.next();
+				Operator o = i.next();
 				ops.add(o.tag.functor);
 				priorities.add(IntegerTerm.get(o.priority));
 				AtomTerm a = null;
@@ -172,9 +172,9 @@ public class Predicate_current_op implements PrologCode
 		{
 			while (bi.ops.hasNext())
 			{
-				Term op = ((Term) bi.ops.next());
-				Term specifier = ((Term) bi.specifiers.next());
-				Term priority = ((Term) bi.priorities.next());
+				Term op = bi.ops.next();
+				Term specifier = bi.specifiers.next();
+				Term priority = bi.priorities.next();
 				if (interpreter.simple_unify(op, bi.op) == SUCCESS_LAST
 						&& interpreter.simple_unify(specifier, bi.specifier) == SUCCESS_LAST
 						&& interpreter.simple_unify(priority, bi.priority) == SUCCESS_LAST)
@@ -196,7 +196,7 @@ public class Predicate_current_op implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -207,7 +207,7 @@ public class Predicate_current_op implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

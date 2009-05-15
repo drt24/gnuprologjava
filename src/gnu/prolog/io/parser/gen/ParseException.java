@@ -5,12 +5,17 @@ package gnu.prolog.io.parser.gen;
  * This exception is thrown when parse errors are encountered. You can
  * explicitly create objects of this exception type by calling the method
  * generateParseException in the generated parser.
- * 
+ *
  * You can modify this class to customize your error reporting mechanisms so
  * long as you retain the public fields.
  */
 public class ParseException extends Exception
 {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -8554505194284455954L;
 
 	/**
 	 * This constructor is used by the method "generateParseException" in the
@@ -88,6 +93,7 @@ public class ParseException extends Exception
 	 * printing of the final stack trace, and hence the correct error message gets
 	 * displayed.
 	 */
+	@Override
 	public String getMessage()
 	{
 		if (!specialConstructor)
@@ -96,17 +102,17 @@ public class ParseException extends Exception
 		}
 		String expected = "";
 		int maxSize = 0;
-		for (int i = 0; i < expectedTokenSequences.length; i++)
+		for (int[] expectedTokenSequence : expectedTokenSequences)
 		{
-			if (maxSize < expectedTokenSequences[i].length)
+			if (maxSize < expectedTokenSequence.length)
 			{
-				maxSize = expectedTokenSequences[i].length;
+				maxSize = expectedTokenSequence.length;
 			}
-			for (int j = 0; j < expectedTokenSequences[i].length; j++)
+			for (int j = 0; j < expectedTokenSequence.length; j++)
 			{
-				expected += tokenImage[expectedTokenSequences[i][j]] + " ";
+				expected += tokenImage[expectedTokenSequence[j]] + " ";
 			}
-			if (expectedTokenSequences[i][expectedTokenSequences[i].length - 1] != 0)
+			if (expectedTokenSequence[expectedTokenSequence.length - 1] != 0)
 			{
 				expected += "...";
 			}
@@ -116,7 +122,10 @@ public class ParseException extends Exception
 		Token tok = currentToken.next;
 		for (int i = 0; i < maxSize; i++)
 		{
-			if (i != 0) retval += " ";
+			if (i != 0)
+			{
+				retval += " ";
+			}
 			if (tok.kind == 0)
 			{
 				retval += tokenImage[0];

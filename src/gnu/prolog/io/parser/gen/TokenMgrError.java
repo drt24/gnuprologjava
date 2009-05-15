@@ -8,6 +8,11 @@ public class TokenMgrError extends Error
 	 */
 
 	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5317453263514109784L;
+
+	/**
 	 * Lexical error occured.
 	 */
 	static final int LEXICAL_ERROR = 0;
@@ -99,20 +104,21 @@ public class TokenMgrError extends Error
 	private static final String LexicalError(boolean EOFSeen, int lexState, int errorLine, int errorColumn,
 			String errorAfter, char curChar)
 	{
-		return ("Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: "
-				+ (EOFSeen ? "<EOF> " : ("\"" + addEscapes(String.valueOf(curChar)) + "\"") + " (" + (int) curChar + "), ")
-				+ "after : \"" + addEscapes(errorAfter) + "\"");
+		return "Lexical error at line " + errorLine + ", column " + errorColumn + ".  Encountered: "
+				+ (EOFSeen ? "<EOF> " : "\"" + addEscapes(String.valueOf(curChar)) + "\"" + " (" + (int) curChar + "), ")
+				+ "after : \"" + addEscapes(errorAfter) + "\"";
 	}
 
 	/**
 	 * You can also modify the body of this method to customize your error
 	 * messages. For example, cases like LOOP_DETECTED and INVALID_LEXICAL_STATE
 	 * are not of end-users concern, so you can return something like :
-	 * 
+	 *
 	 * "Internal Error : Please file a bug report .... "
-	 * 
+	 *
 	 * from this method for such cases in the release version of your parser.
 	 */
+	@Override
 	public String getMessage()
 	{
 		return super.getMessage();

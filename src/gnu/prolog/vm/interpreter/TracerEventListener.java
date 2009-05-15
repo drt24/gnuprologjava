@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
 
 /**
  * Listens for TracerEvents.
- * 
+ *
  * @author Michiel Hendriks
  */
 public interface TracerEventListener
 {
 	/**
 	 * Called in case a tracer event was accepted by the tracer.
-	 * 
+	 *
 	 * @param event
 	 */
 	void tracerEvent(TracerEvent event);

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
@@ -43,7 +43,7 @@ public class TermUtils
 			{
 				return false;
 			}
-			Term s = (Term) map.get(term1);
+			Term s = map.get(term1);
 			if (s != null)
 			{
 				return s == term2;
@@ -147,7 +147,7 @@ public class TermUtils
 
 	/**
 	 * get free variables of term1 with respect to term2
-	 * 
+	 *
 	 * @return term1 w/o existential specifiers
 	 */
 	public static Term getFreeVariableSet(Term term1, Term term2, Set<Term> set)
@@ -167,7 +167,7 @@ public class TermUtils
 		Iterator<Term> i = set.iterator();
 		while (i.hasNext())
 		{
-			rc = CompoundTerm.getList((Term) i.next(), rc);
+			rc = CompoundTerm.getList(i.next(), rc);
 		}
 		return rc;
 	}

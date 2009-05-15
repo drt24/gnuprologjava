@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
@@ -92,7 +92,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile creation of term
-	 * 
+	 *
 	 * @param term
 	 *          term to create
 	 * @throw PrologException.systemError() if term cannot be compiled
@@ -110,9 +110,9 @@ public class InterpretedCodeCompiler
 		else if (term instanceof CompoundTerm)
 		{
 			CompoundTerm ct = (CompoundTerm) term;
-			for (int j = 0; j < ct.args.length; j++)
+			for (Term arg : ct.args)
 			{
-				compileTermCreation(ct.args[j]);
+				compileTermCreation(arg);
 			}
 			iCreateCompoundTerm(ct.tag);
 		}
@@ -125,7 +125,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile head of clause
-	 * 
+	 *
 	 * @param term
 	 *          term to compile
 	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
@@ -162,7 +162,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile body of clause
-	 * 
+	 *
 	 * @param term
 	 *          term to compile
 	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
@@ -291,7 +291,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile is then else construct
-	 * 
+	 *
 	 * @param ifTerm
 	 *          term for if
 	 * @param thenTerm
@@ -321,7 +321,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * get reserved environment size for body term
-	 * 
+	 *
 	 * @param term
 	 *          term to analize
 	 * @return amount of allocated environement
@@ -373,7 +373,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * get all variables from term and populate variableToEnvironmentIndex map
-	 * 
+	 *
 	 * @param term
 	 *          to analize
 	 * @param currentEnvPositon
@@ -404,7 +404,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * recursively dereference term
-	 * 
+	 *
 	 * @param term
 	 *          to be recursively dereferenced
 	 * @return recursively dereferenced term
@@ -445,7 +445,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile set of clauses to interpreted code
-	 * 
+	 *
 	 * @param passedClauses
 	 *          clauses passed to compiler
 	 * @return instance of inerpreted code
@@ -453,12 +453,12 @@ public class InterpretedCodeCompiler
 	 */
 	public static PrologCode compile(List<Term> clauses) throws PrologException
 	{
-		return (new InterpretedCodeCompiler(clauses)).compilePredicate();
+		return new InterpretedCodeCompiler(clauses).compilePredicate();
 	}
 
 	/**
 	 * compile set of clauses to interpreted code
-	 * 
+	 *
 	 * @param passedClauses
 	 *          clauses passed to compiler
 	 * @return instance of inerpreted code
@@ -480,14 +480,14 @@ public class InterpretedCodeCompiler
 			// dereference all clauses, it will simplify analisys a bit
 			for (iclauses = passedClauses.iterator(); iclauses.hasNext();)
 			{
-				clauses.add(rdereferenced((Term) iclauses.next()));
+				clauses.add(rdereferenced(iclauses.next()));
 			}
 			// get number of reserved variables
 			numberOfReserved = 1; // init number of reserved variable, 1 is reserved
 														// for cut
 			for (iclauses = clauses.iterator(); iclauses.hasNext();)
 			{
-				Term term = (Term) iclauses.next();
+				Term term = iclauses.next();
 				if (term instanceof CompoundTerm)
 				{
 					CompoundTerm ct = (CompoundTerm) term;
@@ -501,7 +501,7 @@ public class InterpretedCodeCompiler
 			int environmentSize = numberOfReserved;
 			for (iclauses = clauses.iterator(); iclauses.hasNext();)
 			{
-				environmentSize = getAllVariables((Term) iclauses.next(), environmentSize);
+				environmentSize = getAllVariables(iclauses.next(), environmentSize);
 			}
 
 			// compile predicate
@@ -516,35 +516,35 @@ public class InterpretedCodeCompiler
 			{
 				List<IJump> jumps = new ArrayList<IJump>();
 				RetryInstruction prv = iTryMeElse(-1);
-				compileClause((Term) clauses.get(0));
+				compileClause(clauses.get(0));
 				jumps.add(iJump(-1));
 				for (i = 1; i < n - 1; i++)
 				{
 					prv.retryPosition = currentCodePosition;
 					prv = iRetryMeElse(-1);
-					compileClause((Term) clauses.get(i));
+					compileClause(clauses.get(i));
 					jumps.add(iJump(-1));
 				}
 				prv.retryPosition = currentCodePosition;
 				iTrustMe();
-				compileClause((Term) clauses.get(n - 1));
-				for (Iterator<IJump> j = jumps.iterator(); j.hasNext();)
+				compileClause(clauses.get(n - 1));
+				for (IJump jump2 : jumps)
 				{
-					IJump jump = (IJump) j.next();
+					IJump jump = jump2;
 					jump.jumpPosition = currentCodePosition;
 				}
 			}
 			else
 			// there is just one clause
 			{
-				compileClause((Term) clauses.get(0));
+				compileClause(clauses.get(0));
 			}
 			iReturn();
 			popCutPosition();
 		}
 		// predicate compilation finished, construct InterpretedCode
-		Instruction instr[] = (Instruction[]) code.toArray(instructionArrayConstant);
-		ExceptionHandlerInfo ehs[] = (ExceptionHandlerInfo[]) exceptionHandlers.toArray(exceptionHandlerArrayConstant);
+		Instruction instr[] = code.toArray(instructionArrayConstant);
+		ExceptionHandlerInfo ehs[] = exceptionHandlers.toArray(exceptionHandlerArrayConstant);
 		return new InterpretedByteCode(codeTag, instr, ehs);
 		// return new InterpretedCode(codeTag, instr, ehs);
 	}
@@ -552,7 +552,7 @@ public class InterpretedCodeCompiler
 	/** get index of variable in environment */
 	int getEnvironmentIndex(VariableTerm term)
 	{
-		return ((Integer) variableToEnvironmentIndex.get(term)).intValue();
+		return (variableToEnvironmentIndex.get(term)).intValue();
 	}
 
 	/** push cut position */
@@ -564,13 +564,13 @@ public class InterpretedCodeCompiler
 	/** pop cut position */
 	int popCutPosition()
 	{
-		return ((Integer) cutPositionStack.remove(cutPositionStack.size() - 1)).intValue();
+		return (cutPositionStack.remove(cutPositionStack.size() - 1)).intValue();
 	}
 
 	/** get current cut position */
 	int getCutPosition()
 	{
-		return ((Integer) cutPositionStack.get(cutPositionStack.size() - 1)).intValue();
+		return (cutPositionStack.get(cutPositionStack.size() - 1)).intValue();
 	}
 
 	// instructions

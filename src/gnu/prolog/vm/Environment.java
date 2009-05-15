@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -188,7 +188,7 @@ public class Environment implements PredicateListener
 		Iterator<Term> iterator = getModule().getInitialization().iterator();
 		while (iterator.hasNext())
 		{
-			Term term = (Term) iterator.next();
+			Term term = iterator.next();
 			try
 			{
 				Interpreter.Goal goal = interpreter.prepareGoal(term);
@@ -207,7 +207,7 @@ public class Environment implements PredicateListener
 	/** get flag for this environemnt */
 	public synchronized Term getPrologFlag(AtomTerm term)
 	{
-		return (Term) atom2flag.get(term);
+		return atom2flag.get(term);
 	}
 
 	/** get flag for this environemnt */
@@ -222,7 +222,7 @@ public class Environment implements PredicateListener
 
 	public synchronized void setPrologFlag(AtomTerm flag, Term newValue) throws PrologException
 	{
-		Term value = (Term) atom2flag.get(flag);
+		Term value = atom2flag.get(flag);
 		if (value == null)
 		{
 			PrologException.domainError(prologFlagAtom, flag);
@@ -383,7 +383,7 @@ public class Environment implements PredicateListener
 	/** get prolog code */
 	public synchronized PrologCode getPrologCode(CompoundTermTag tag) throws PrologException
 	{
-		PrologCode code = (PrologCode) tag2code.get(tag);
+		PrologCode code = tag2code.get(tag);
 		if (code == null)
 		{
 			code = loadPrologCode(tag);
@@ -441,8 +441,8 @@ public class Environment implements PredicateListener
 			ListIterator<PrologCodeListenerRef> i = list.listIterator();
 			while (i.hasNext())
 			{
-				PrologCodeListenerRef ref = (PrologCodeListenerRef) i.next();
-				PrologCodeListener lst = (PrologCodeListener) ref.get();
+				PrologCodeListenerRef ref = i.next();
+				PrologCodeListener lst = ref.get();
 				if (lst == null)
 				{
 					i.remove();
@@ -472,8 +472,8 @@ public class Environment implements PredicateListener
 			ListIterator<PrologCodeListenerRef> i = list.listIterator();
 			while (i.hasNext())
 			{
-				PrologCodeListenerRef ref = (PrologCodeListenerRef) i.next();
-				PrologCodeListener lst = (PrologCodeListener) ref.get();
+				PrologCodeListenerRef ref = i.next();
+				PrologCodeListener lst = ref.get();
 				if (lst == null)
 				{
 					i.remove();
@@ -572,7 +572,7 @@ public class Environment implements PredicateListener
 		Iterator<PrologStream> srt = openStreams.iterator();
 		while (srt.hasNext())
 		{
-			PrologStream stream = (PrologStream) srt.next();
+			PrologStream stream = srt.next();
 			List<Term> list = new ArrayList<Term>();
 			stream.getProperties(list);
 			map.put(stream, list);
@@ -589,7 +589,7 @@ public class Environment implements PredicateListener
 		}
 		else if (stream_or_alias instanceof AtomTerm)
 		{
-			PrologStream stream = (PrologStream) alias2stream.get(stream_or_alias);
+			PrologStream stream = alias2stream.get(stream_or_alias);
 			if (stream == null)
 			{
 				PrologException.existenceError(PrologStream.streamAtom, stream_or_alias);
@@ -624,7 +624,7 @@ public class Environment implements PredicateListener
 		Iterator<AtomTerm> ia = options.aliases.iterator();
 		while (ia.hasNext())
 		{
-			AtomTerm a = (AtomTerm) ia.next();
+			AtomTerm a = ia.next();
 			if (alias2stream.get(a) != null)
 			{
 				PrologException.permissionError(PrologStream.openAtom, PrologStream.sourceSinkAtom, new CompoundTerm(
@@ -649,7 +649,7 @@ public class Environment implements PredicateListener
 			// }
 			if (options.mode == PrologStream.readAtom)
 			{
-				if (!(new File(source_sink.value)).exists())
+				if (!new File(source_sink.value).exists())
 				{
 					PrologException.existenceError(PrologStream.sourceSinkAtom, source_sink);
 				}
@@ -673,7 +673,7 @@ public class Environment implements PredicateListener
 			}
 			else
 			{
-				boolean append = (options.mode == PrologStream.appendAtom);
+				boolean append = options.mode == PrologStream.appendAtom;
 				try
 				{
 					if (randAccess)
@@ -697,7 +697,7 @@ public class Environment implements PredicateListener
 		ia = options.aliases.iterator();
 		while (ia.hasNext())
 		{
-			AtomTerm a = (AtomTerm) ia.next();
+			AtomTerm a = ia.next();
 			alias2stream.put(a, stream);
 		}
 		openStreams.add(stream);

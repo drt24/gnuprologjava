@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -48,11 +48,12 @@ public class TextInputPrologStream extends PrologStream
 	public TextInputPrologStream(OpenOptions options, RandomAccessFile raf)
 	{
 		super(options);
-		this.fileReader = new RandomAccessFileReader(raf);
-		termReader = new TermReader(this.fileReader);
+		fileReader = new RandomAccessFileReader(raf);
+		termReader = new TermReader(fileReader);
 	}
 
 	// byte io
+	@Override
 	public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
@@ -60,6 +61,7 @@ public class TextInputPrologStream extends PrologStream
 		return 0;
 	}
 
+	@Override
 	public int peekByte(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
@@ -67,6 +69,7 @@ public class TextInputPrologStream extends PrologStream
 		return 0;
 	}
 
+	@Override
 	public void putByte(Term streamTerm, Interpreter interptreter, int _byte) throws PrologException
 	{
 		checkExists();
@@ -74,6 +77,7 @@ public class TextInputPrologStream extends PrologStream
 	}
 
 	// repositioning
+	@Override
 	public Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
@@ -93,6 +97,7 @@ public class TextInputPrologStream extends PrologStream
 		return null;
 	}
 
+	@Override
 	public void setPosition(Term streamTerm, Interpreter interptreter, Term position) throws PrologException
 	{
 		checkExists();
@@ -133,6 +138,7 @@ public class TextInputPrologStream extends PrologStream
 		PrologException.permissionError(repositionAtom, streamAtom, streamTerm);
 	}
 
+	@Override
 	public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
@@ -167,6 +173,7 @@ public class TextInputPrologStream extends PrologStream
 		}
 	}
 
+	@Override
 	public int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
@@ -204,18 +211,21 @@ public class TextInputPrologStream extends PrologStream
 		}
 	}
 
+	@Override
 	public void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException
 	{
 		checkExists();
 		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
+	@Override
 	public void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException
 	{
 		checkExists();
 		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
+	@Override
 	public Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException
 	{
 		checkExists();
@@ -248,6 +258,7 @@ public class TextInputPrologStream extends PrologStream
 
 	}
 
+	@Override
 	public void writeTerm(Term streamTerm, Interpreter interptreter, WriteOptions options, Term term)
 			throws PrologException
 	{
@@ -255,12 +266,14 @@ public class TextInputPrologStream extends PrologStream
 		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
+	@Override
 	public void flushOutput(Term streamTerm) throws PrologException
 	{
 		checkExists();
 		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
+	@Override
 	public void close(boolean force) throws PrologException
 	{
 		checkExists();
@@ -279,6 +292,7 @@ public class TextInputPrologStream extends PrologStream
 
 	}
 
+	@Override
 	public Term getEndOfStreamState() throws PrologException
 	{
 		try

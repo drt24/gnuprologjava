@@ -12,14 +12,13 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
 
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
-import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
@@ -64,6 +63,7 @@ public class Predicate_call implements PrologCode
 		/** environment */
 		Environment environment;
 
+		@Override
 		protected void finalize() throws Throwable
 		{
 			super.finalize();
@@ -76,7 +76,7 @@ public class Predicate_call implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -93,7 +93,7 @@ public class Predicate_call implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 * 
+	 *
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -127,10 +127,10 @@ public class Predicate_call implements PrologCode
 				PrologException.typeError(TermConstants.callableAtom, callTerm);
 				return -1; // fake return
 			}
-			Term headArgs[] = (Term[]) argumentVariables.toArray(termArrayType);
+			Term headArgs[] = argumentVariables.toArray(termArrayType);
 			Term head = new CompoundTerm(headFunctor, headArgs);
 			Term clause = new CompoundTerm(TermConstants.clauseTag, head, body);
-			args = (Term[]) arguments.toArray(termArrayType);
+			args = arguments.toArray(termArrayType);
 			List<Term> clauses = new ArrayList<Term>(1);
 			clauses.add(clause);
 			code = InterpretedCodeCompiler.compile(clauses);
@@ -181,7 +181,7 @@ public class Predicate_call implements PrologCode
 				arguments.add(term);
 				return var1;
 			}
-			return (Term) argumentVariables.get(arguments.indexOf(term));
+			return argumentVariables.get(arguments.indexOf(term));
 		}
 		else if (term instanceof CompoundTerm)
 		{
@@ -204,7 +204,7 @@ public class Predicate_call implements PrologCode
 				}
 				else
 				{
-					newArgs[i] = (Term) argumentVariables.get(arguments.indexOf(arg));
+					newArgs[i] = argumentVariables.get(arguments.indexOf(arg));
 				}
 			}
 			return new CompoundTerm(ct.tag, newArgs);
@@ -218,7 +218,7 @@ public class Predicate_call implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -229,7 +229,7 @@ public class Predicate_call implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 * 
+	 *
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

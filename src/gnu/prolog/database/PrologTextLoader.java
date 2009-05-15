@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
@@ -88,7 +88,7 @@ public class PrologTextLoader
 	public PrologTextLoader(PrologTextLoaderState prologTextLoaderState, Term root)
 	{
 		this(prologTextLoaderState);
-		this.rootFile = prologTextLoaderState.getInputName(root);
+		rootFile = prologTextLoaderState.getInputName(root);
 		currentFile = rootFile;
 		try
 		{
@@ -109,13 +109,19 @@ public class PrologTextLoader
 
 	public int getCurrentLine()
 	{
-		if (currentReader == null) return 0;
+		if (currentReader == null)
+		{
+			return 0;
+		}
 		return currentReader.getCurrentLine();
 	}
 
 	public int getCurrentColumn()
 	{
-		if (currentReader == null) return 0;
+		if (currentReader == null)
+		{
+			return 0;
+		}
 		return currentReader.getCurrentColumn();
 	}
 
@@ -323,13 +329,34 @@ public class PrologTextLoader
 		}
 
 		int spec = -1;
-		if (specifier == opFX) spec = Operator.FX;
-		else if (specifier == opFY) spec = Operator.FY;
-		else if (specifier == opXFX) spec = Operator.XFX;
-		else if (specifier == opXFY) spec = Operator.XFY;
-		else if (specifier == opYFX) spec = Operator.YFX;
-		else if (specifier == opXF) spec = Operator.XF;
-		else if (specifier == opYF) spec = Operator.YF;
+		if (specifier == opFX)
+		{
+			spec = Operator.FX;
+		}
+		else if (specifier == opFY)
+		{
+			spec = Operator.FY;
+		}
+		else if (specifier == opXFX)
+		{
+			spec = Operator.XFX;
+		}
+		else if (specifier == opXFY)
+		{
+			spec = Operator.XFY;
+		}
+		else if (specifier == opYFX)
+		{
+			spec = Operator.YFX;
+		}
+		else if (specifier == opXF)
+		{
+			spec = Operator.XF;
+		}
+		else if (specifier == opYF)
+		{
+			spec = Operator.YF;
+		}
 		else
 		{
 			logError("invalid operator specifier");
@@ -412,8 +439,8 @@ public class PrologTextLoader
 			{
 				logError("error during closing file: " + ex.getMessage());
 			}
-			currentFile = (String) fileStack.pop();
-			currentReader = (TermReader) readerStack.pop();
+			currentFile = fileStack.pop();
+			currentReader = readerStack.pop();
 		}
 		else
 		{

@@ -3,6 +3,11 @@ package gnu.prolog.io.parser.gen;
 
 public class ParseError extends Exception
 {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -5853051436115418335L;
+
 	public ParseError()
 	{}
 

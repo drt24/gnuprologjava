@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -33,7 +33,7 @@ public class PrologException extends Exception
 	String msg;
 
 	/**
-	 * 
+	 *
 	 */
 	protected PrologException()
 	{
@@ -67,7 +67,7 @@ public class PrologException extends Exception
 
 	/**
 	 * a constructor
-	 * 
+	 *
 	 * @param inner
 	 *          TODO
 	 */
@@ -77,6 +77,7 @@ public class PrologException extends Exception
 		this.term = term;
 	}
 
+	@Override
 	public String getMessage()
 	{
 		if (msg == null)

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text ol license can be also found 
+ * Boston, MA  02111-1307, USA. The text ol license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
@@ -26,7 +26,6 @@ import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -120,9 +119,9 @@ public abstract class PrologStream
 		list.add(new CompoundTerm(filenameTag, filename));
 		// list.add(new CompoundTerm(modeTag, mode));
 		list.add(mode);
-		for (Iterator<AtomTerm> i = aliases.iterator(); i.hasNext();)
+		for (AtomTerm atomTerm : aliases)
 		{
-			list.add(new CompoundTerm(aliasTag, (Term) i.next()));
+			list.add(new CompoundTerm(aliasTag, atomTerm));
 		}
 		if (reposition == TermConstants.trueAtom)
 		{
