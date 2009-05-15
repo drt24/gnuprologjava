@@ -16,18 +16,19 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.database;
+
 import gnu.prolog.database.Predicate;
 import gnu.prolog.term.CompoundTerm;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_assertz extends Predicate_assert
 {
-  /** assert a clause */
-  protected void assertPred(Predicate p, CompoundTerm clause)
-  {
-    p.addClauseLast(clause);
-  }
+	/** assert a clause */
+	protected void assertPred(Predicate p, CompoundTerm clause)
+	{
+		p.addClauseLast(clause);
+	}
 
 }
-

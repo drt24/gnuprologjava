@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.allsolutions;
+
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
@@ -32,136 +33,144 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_bagof implements PrologCode
 {
-  static final CompoundTermTag plusTag = CompoundTermTag.get("+",2);
+	static final CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 
-  private class BagOfBacktrackInfo extends BacktrackInfo
-  {
-    BagOfBacktrackInfo(){super(-1,-1);}
-    int startUndoPosition;
-    List<Term> solutionList;
-    Term witness;
-    Term instances;
-  }
+	private class BagOfBacktrackInfo extends BacktrackInfo
+	{
+		BagOfBacktrackInfo()
+		{
+			super(-1, -1);
+		}
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    if (backtrackMode)
-    {
-      BagOfBacktrackInfo bi = (BagOfBacktrackInfo)interpreter.popBacktrackInfo();
-      interpreter.undo(bi.startUndoPosition);
-      return nextSolution(interpreter, bi);
-    }
-    else
-    {
-      Term ptemplate = args[0];
-      Term pgoal = args[1];
-      Term pinstances = args[2];
-      Predicate_findall.checkList(pinstances);
-      Set<Term> wset = new HashSet<Term>();
-      Term findallGoal = TermUtils.getFreeVariableSet(pgoal,ptemplate,wset);
-      Term witness = TermUtils.getWitness(wset);
-      CompoundTerm findallTemplate = new CompoundTerm(plusTag,witness,ptemplate);
-      List<Term> list = new ArrayList<Term>();
-      int rc = Predicate_findall.findall(interpreter, false, findallTemplate, findallGoal, list);
-      if (rc == FAIL || list.size()==0)
-      {
-        return FAIL;
-      }
-      BagOfBacktrackInfo bi = new BagOfBacktrackInfo();
-      bi.startUndoPosition = interpreter.getUndoPosition();
-      bi.solutionList = list;
-      bi.witness = witness;
-      bi.instances = pinstances;
-      return nextSolution(interpreter, bi);
-    }
+		int startUndoPosition;
+		List<Term> solutionList;
+		Term witness;
+		Term instances;
+	}
 
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		if (backtrackMode)
+		{
+			BagOfBacktrackInfo bi = (BagOfBacktrackInfo) interpreter.popBacktrackInfo();
+			interpreter.undo(bi.startUndoPosition);
+			return nextSolution(interpreter, bi);
+		}
+		else
+		{
+			Term ptemplate = args[0];
+			Term pgoal = args[1];
+			Term pinstances = args[2];
+			Predicate_findall.checkList(pinstances);
+			Set<Term> wset = new HashSet<Term>();
+			Term findallGoal = TermUtils.getFreeVariableSet(pgoal, ptemplate, wset);
+			Term witness = TermUtils.getWitness(wset);
+			CompoundTerm findallTemplate = new CompoundTerm(plusTag, witness, ptemplate);
+			List<Term> list = new ArrayList<Term>();
+			int rc = Predicate_findall.findall(interpreter, false, findallTemplate, findallGoal, list);
+			if (rc == FAIL || list.size() == 0)
+			{
+				return FAIL;
+			}
+			BagOfBacktrackInfo bi = new BagOfBacktrackInfo();
+			bi.startUndoPosition = interpreter.getUndoPosition();
+			bi.solutionList = list;
+			bi.witness = witness;
+			bi.instances = pinstances;
+			return nextSolution(interpreter, bi);
+		}
 
+	}
 
-  public int nextSolution(Interpreter interpreter, BagOfBacktrackInfo bi)
-         throws PrologException
-  {
-    List<Term> curTList = new ArrayList<Term>();
-    int undoPos = interpreter.getUndoPosition();
-    while (bi.solutionList.size() != 0)
-    {
-      CompoundTerm curInstance = (CompoundTerm)((Term)bi.solutionList.remove(0)).dereference();
-      Term curWitness = curInstance.args[0].dereference();
-      int rc = interpreter.simple_unify(bi.witness, curWitness);
-      if (rc == FAIL)
-      {
-        throw new IllegalStateException("unexpected unify fail");
-      }
-      curTList.add(curInstance.args[1].dereference());
-      ListIterator<Term> isol = bi.solutionList.listIterator();
-      while (isol.hasNext())
-      {
-        CompoundTerm ct = (CompoundTerm)isol.next();
-        Term w = ct.args[0].dereference();
-        if (TermUtils.isVariant(curWitness,w))
-        {
-          rc = interpreter.simple_unify(bi.witness, w);
-          if (rc == FAIL)
-          {
-            throw new IllegalStateException("unexpected unify fail");
-          }
-          curTList.add(ct.args[1].dereference());
-          isol.remove();
-        }
-      }
-      processList(curTList);
-      rc = interpreter.unify(CompoundTerm.getList(curTList),
-                             bi.instances.dereference());
-      if (rc == SUCCESS_LAST)
-      {
-        if (bi.solutionList.size() != 0)
-        {
-          interpreter.pushBacktrackInfo(bi);
-          return SUCCESS;
-        }
-        else
-        {
-          return SUCCESS_LAST;
-        }
-      }
-      interpreter.undo(undoPos);
-      curTList.clear();
-    }
-    return FAIL;
-  }
+	public int nextSolution(Interpreter interpreter, BagOfBacktrackInfo bi) throws PrologException
+	{
+		List<Term> curTList = new ArrayList<Term>();
+		int undoPos = interpreter.getUndoPosition();
+		while (bi.solutionList.size() != 0)
+		{
+			CompoundTerm curInstance = (CompoundTerm) ((Term) bi.solutionList.remove(0)).dereference();
+			Term curWitness = curInstance.args[0].dereference();
+			int rc = interpreter.simple_unify(bi.witness, curWitness);
+			if (rc == FAIL)
+			{
+				throw new IllegalStateException("unexpected unify fail");
+			}
+			curTList.add(curInstance.args[1].dereference());
+			ListIterator<Term> isol = bi.solutionList.listIterator();
+			while (isol.hasNext())
+			{
+				CompoundTerm ct = (CompoundTerm) isol.next();
+				Term w = ct.args[0].dereference();
+				if (TermUtils.isVariant(curWitness, w))
+				{
+					rc = interpreter.simple_unify(bi.witness, w);
+					if (rc == FAIL)
+					{
+						throw new IllegalStateException("unexpected unify fail");
+					}
+					curTList.add(ct.args[1].dereference());
+					isol.remove();
+				}
+			}
+			processList(curTList);
+			rc = interpreter.unify(CompoundTerm.getList(curTList), bi.instances.dereference());
+			if (rc == SUCCESS_LAST)
+			{
+				if (bi.solutionList.size() != 0)
+				{
+					interpreter.pushBacktrackInfo(bi);
+					return SUCCESS;
+				}
+				else
+				{
+					return SUCCESS_LAST;
+				}
+			}
+			interpreter.undo(undoPos);
+			curTList.clear();
+		}
+		return FAIL;
+	}
 
-  protected void processList(List<Term> curTList)
-  {
-  }
-  
+	protected void processList(List<Term> curTList)
+	{}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-
-

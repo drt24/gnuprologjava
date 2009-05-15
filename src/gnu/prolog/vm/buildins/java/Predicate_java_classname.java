@@ -21,8 +21,7 @@ public class Predicate_java_classname implements PrologCode
 	 * 
 	 */
 	public Predicate_java_classname()
-	{
-	}
+	{}
 
 	/*
 	 * (non-Javadoc)
@@ -51,8 +50,7 @@ public class Predicate_java_classname implements PrologCode
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
-	{
-	}
+	{}
 
 	/*
 	 * (non-Javadoc)
@@ -60,7 +58,6 @@ public class Predicate_java_classname implements PrologCode
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)
-	{
-	}
+	{}
 
 }

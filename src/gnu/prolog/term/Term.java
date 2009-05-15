@@ -17,52 +17,62 @@
  */
 package gnu.prolog.term;
 
-/** base class for all terms.
-  * @author Constantine Plotniokov
-  * @version 0.0.1
-  */
+/**
+ * base class for all terms.
+ * 
+ * @author Constantine Plotniokov
+ * @version 0.0.1
+ */
 public abstract class Term implements java.io.Serializable, Cloneable
 {
 	private static final long serialVersionUID = -5388107925239494079L;
-	
+
 	public static final int UNKNOWN = -1;
-  public static final int VARIABLE    = 1;
-  public static final int JAVA_OBJECT = 2;
-  public static final int FLOAT       = 3;
-  public static final int INTEGER     = 4;
-  public static final int ATOM        = 5;
-  public static final int COMPOUND    = 6;
+	public static final int VARIABLE = 1;
+	public static final int JAVA_OBJECT = 2;
+	public static final int FLOAT = 3;
+	public static final int INTEGER = 4;
+	public static final int ATOM = 5;
+	public static final int COMPOUND = 6;
 
-  /** clone the term.
-    * @return cloned term
-    */
-  public Object clone()
-  {
-    TermCloneContext context = new TermCloneContext();
-    return clone(context);
-  }
+	/**
+	 * clone the term.
+	 * 
+	 * @return cloned term
+	 */
+	public Object clone()
+	{
+		TermCloneContext context = new TermCloneContext();
+		return clone(context);
+	}
 
-  /** clone the object using clone context
-    * @param context clone context
-    * @return cloned term
-    */
-  public abstract Term clone(TermCloneContext context);
+	/**
+	 * clone the object using clone context
+	 * 
+	 * @param context
+	 *          clone context
+	 * @return cloned term
+	 */
+	public abstract Term clone(TermCloneContext context);
 
-  /** dereference term.
-    * @return dereferenced term
-    */
-  public Term dereference()
-  {
-    return this;
-  }
+	/**
+	 * dereference term.
+	 * 
+	 * @return dereferenced term
+	 */
+	public Term dereference()
+	{
+		return this;
+	}
 
-  /** get type of term 
-    * @return type of term
-    */
-  public int getTermType()
-  {
-    return UNKNOWN;
-  }
+	/**
+	 * get type of term
+	 * 
+	 * @return type of term
+	 */
+	public int getTermType()
+	{
+		return UNKNOWN;
+	}
 
 }
-

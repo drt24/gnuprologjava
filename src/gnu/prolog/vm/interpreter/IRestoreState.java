@@ -16,38 +16,46 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
-/** Restore current state from BacktrackInfo stored in environment 
-  */
+
+/**
+ * Restore current state from BacktrackInfo stored in environment
+ */
 public class IRestoreState extends Instruction
 {
-  /** environemt index where state was saved
-    */
-  public int environmentIndex;  
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    JavaObjectTerm term = (JavaObjectTerm)state.environment[environmentIndex];
-    BacktrackInfo rbi = (BacktrackInfo)term.value;
-    BacktrackInfo cbi;
-    do
-    {
-      cbi = state.popBacktrackInfo();
-    } while ( cbi != rbi );
-    cbi.undo(state.interpreter);
-    return ExecutionState.NEXT;
-  }
+	/**
+	 * environemt index where state was saved
+	 */
+	public int environmentIndex;
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": restore_state "+environmentIndex;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		JavaObjectTerm term = (JavaObjectTerm) state.environment[environmentIndex];
+		BacktrackInfo rbi = (BacktrackInfo) term.value;
+		BacktrackInfo cbi;
+		do
+		{
+			cbi = state.popBacktrackInfo();
+		} while (cbi != rbi);
+		cbi.undo(state.interpreter);
+		return ExecutionState.NEXT;
+	}
+
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": restore_state " + environmentIndex;
+	}
 
 }

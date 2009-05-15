@@ -23,8 +23,7 @@ public class Predicate_java_to_string implements PrologCode
 	 * 
 	 */
 	public Predicate_java_to_string()
-	{
-	}
+	{}
 
 	/*
 	 * (non-Javadoc)
@@ -43,7 +42,7 @@ public class Predicate_java_to_string implements PrologCode
 		{
 			PrologException.typeError(javaObjectAtom, args[0]);
 		}
-		Term val = AtomTerm.get(obj!=null?obj.toString():"null");
+		Term val = AtomTerm.get(obj != null ? obj.toString() : "null");
 		return interpreter.unify(args[1], val);
 	}
 
@@ -53,8 +52,7 @@ public class Predicate_java_to_string implements PrologCode
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
-	{
-	}
+	{}
 
 	/*
 	 * (non-Javadoc)
@@ -62,7 +60,6 @@ public class Predicate_java_to_string implements PrologCode
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)
-	{
-	}
+	{}
 
 }

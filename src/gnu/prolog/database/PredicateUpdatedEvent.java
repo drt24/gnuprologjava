@@ -16,28 +16,31 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
+
 import gnu.prolog.term.CompoundTermTag;
+
 /** event notifying about event with predicates */
 public class PredicateUpdatedEvent extends java.util.EventObject
 {
 	private static final long serialVersionUID = -7290433520091984961L;
-	
-	CompoundTermTag tag;
-  PredicateUpdatedEvent(Module module, CompoundTermTag tag)
-  {
-    super(module);
-    this.tag = tag;
-  }
 
-  /** get tag of changed predicate */
-  public CompoundTermTag getTag()
-  {
-    return tag;
-  }
-  
-  /** get module of changed predicate */
-  public Module getModule()
-  {
-    return (Module)getSource();
-  }
+	CompoundTermTag tag;
+
+	PredicateUpdatedEvent(Module module, CompoundTermTag tag)
+	{
+		super(module);
+		this.tag = tag;
+	}
+
+	/** get tag of changed predicate */
+	public CompoundTermTag getTag()
+	{
+		return tag;
+	}
+
+	/** get module of changed predicate */
+	public Module getModule()
+	{
+		return (Module) getSource();
+	}
 }

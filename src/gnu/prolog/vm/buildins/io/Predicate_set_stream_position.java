@@ -16,46 +16,57 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
+
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologStream;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_set_stream_position implements PrologCode
 {
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    PrologStream stream = interpreter.environment.resolveStream(args[0]);
-    stream.setPosition(args[0],interpreter, args[1]);
-    return SUCCESS_LAST;
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		stream.setPosition(args[0], interpreter, args[1]);
+		return SUCCESS_LAST;
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

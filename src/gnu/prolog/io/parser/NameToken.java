@@ -23,108 +23,104 @@ import gnu.prolog.io.parser.gen.Token;
 
 public class NameToken extends Token
 {
-  public Operator fxOp; // prefix operator
-  public Operator xfOp; // postfix of infix operator
-  public String   value; // converted value
+	public Operator fxOp; // prefix operator
+	public Operator xfOp; // postfix of infix operator
+	public String value; // converted value
 
-  public String getValue()
-  {
-    if (value == null)
-    {
-      if (image.charAt(0) == '\'' ) // if quoted string
-      {
-        value = TermParserUtils.convertQuotedString(image,'\'');
-      }
-      else
-      {
-        value = image;
-      }
-    }
-    return value;
-  }
+	public String getValue()
+	{
+		if (value == null)
+		{
+			if (image.charAt(0) == '\'') // if quoted string
+			{
+				value = TermParserUtils.convertQuotedString(image, '\'');
+			}
+			else
+			{
+				value = image;
+			}
+		}
+		return value;
+	}
 
-  public final boolean isOperator(OperatorSet set)
-  {
-    getValue();
-    if (fxOp == null)
-    {
-      fxOp = set.lookupFx(value);
-    }
-    if (xfOp == null)
-    {
-      xfOp = set.lookupXf(value);
-    }
-    return fxOp != Operator.nonOperator || fxOp != Operator.nonOperator;
-  }
+	public final boolean isOperator(OperatorSet set)
+	{
+		getValue();
+		if (fxOp == null)
+		{
+			fxOp = set.lookupFx(value);
+		}
+		if (xfOp == null)
+		{
+			xfOp = set.lookupXf(value);
+		}
+		return fxOp != Operator.nonOperator || fxOp != Operator.nonOperator;
+	}
 
-  public final boolean isNonOperator(OperatorSet set)
-  {
-    return !isOperator(set);
-  }
+	public final boolean isNonOperator(OperatorSet set)
+	{
+		return !isOperator(set);
+	}
 
-  public final boolean isOperator(OperatorSet set, int priority, int specifier)
-  {
-    getValue();
-    switch(specifier)
-    {
-    case Operator.FX:
-    case Operator.FY:
-      if (fxOp == null)
-      {
-        fxOp = set.lookupFx(value);
-      }
-      return fxOp != null &&
-             fxOp.priority == priority &&
-             fxOp.specifier == specifier;
-    case Operator.XFX:
-    case Operator.XFY:
-    case Operator.YFX:
-    case Operator.XF:
-    case Operator.YF:
-      if (xfOp == null)
-      {
-        xfOp = set.lookupXf(value);
-      }
-      return xfOp != null &&
-             xfOp.priority == priority &&
-             xfOp.specifier == specifier;
-    default:
-      throw new RuntimeException("invalid specifier");
-    }
-  }
+	public final boolean isOperator(OperatorSet set, int priority, int specifier)
+	{
+		getValue();
+		switch (specifier)
+		{
+			case Operator.FX:
+			case Operator.FY:
+				if (fxOp == null)
+				{
+					fxOp = set.lookupFx(value);
+				}
+				return fxOp != null && fxOp.priority == priority && fxOp.specifier == specifier;
+			case Operator.XFX:
+			case Operator.XFY:
+			case Operator.YFX:
+			case Operator.XF:
+			case Operator.YF:
+				if (xfOp == null)
+				{
+					xfOp = set.lookupXf(value);
+				}
+				return xfOp != null && xfOp.priority == priority && xfOp.specifier == specifier;
+			default:
+				throw new RuntimeException("invalid specifier");
+		}
+	}
 
-  public final boolean isFxOperator (OperatorSet set, int priority)
-  {
-    return isOperator(set, priority,Operator.FX);
-  }
+	public final boolean isFxOperator(OperatorSet set, int priority)
+	{
+		return isOperator(set, priority, Operator.FX);
+	}
 
-  public final boolean isFyOperator (OperatorSet set, int priority)
-  {
-    return isOperator(set, priority,Operator.FY);
-  }
+	public final boolean isFyOperator(OperatorSet set, int priority)
+	{
+		return isOperator(set, priority, Operator.FY);
+	}
 
-  public final boolean isXfxOperator(OperatorSet set, int priority)
-  {
-    return isOperator(set, priority,Operator.XFX);
-  }
+	public final boolean isXfxOperator(OperatorSet set, int priority)
+	{
+		return isOperator(set, priority, Operator.XFX);
+	}
 
-  public final boolean isXfyOperator(OperatorSet set, int priority)
-  {
-    return isOperator(set, priority,Operator.XFY);
-  }
+	public final boolean isXfyOperator(OperatorSet set, int priority)
+	{
+		return isOperator(set, priority, Operator.XFY);
+	}
 
-  public final boolean isYfxOperator(OperatorSet set, int priority)
-  {
-    return isOperator(set, priority,Operator.YFX);
-  }
+	public final boolean isYfxOperator(OperatorSet set, int priority)
+	{
+		return isOperator(set, priority, Operator.YFX);
+	}
 
-  public final boolean isXfOperator (OperatorSet set, int priority)
-  {
-    return isOperator(set, priority,Operator.XF);
-  }
+	public final boolean isXfOperator(OperatorSet set, int priority)
+	{
+		return isOperator(set, priority, Operator.XF);
+	}
 
-  public final boolean isYfOperator (OperatorSet set, int priority)
-  {
-    return isOperator(set, priority,Operator.YF);
-  }
+	public final boolean isYfOperator(OperatorSet set, int priority)
+	{
+		return isOperator(set, priority, Operator.YF);
+	}
 }

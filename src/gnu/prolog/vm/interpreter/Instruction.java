@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.PrologException;
@@ -23,16 +24,17 @@ import gnu.prolog.vm.PrologException;
 /** base call for instruction */
 public abstract class Instruction
 {
-  /** code postion of instruction */
-  public int codePosition;
-  /** execute instruction */
-  public abstract int execute(ExecutionState state, BacktrackInfo bi) throws PrologException;
-  /** install instruction to environment */
-  public void install(Environment env)
-  {
-  }
-  /** uninstall instruction from environment */
-  public void uninstall(Environment env)
-  {
-  }
+	/** code postion of instruction */
+	public int codePosition;
+
+	/** execute instruction */
+	public abstract int execute(ExecutionState state, BacktrackInfo bi) throws PrologException;
+
+	/** install instruction to environment */
+	public void install(Environment env)
+	{}
+
+	/** uninstall instruction from environment */
+	public void uninstall(Environment env)
+	{}
 }

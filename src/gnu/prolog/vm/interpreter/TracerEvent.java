@@ -33,7 +33,7 @@ import java.util.EventObject;
 public class TracerEvent extends EventObject
 {
 	private static final long serialVersionUID = -3951954998561990757L;
-	
+
 	protected TraceLevel level;
 	protected CompoundTermTag tag;
 	protected Term[] args;

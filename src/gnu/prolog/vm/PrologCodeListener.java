@@ -16,10 +16,12 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-/** listener for changes in prolog code
-  */
+
+/**
+ * listener for changes in prolog code
+ */
 public interface PrologCodeListener extends java.util.EventListener
 {
-  /** this method is called when prolog code was updated */
-  public void prologCodeUpdated(PrologCodeUpdatedEvent evt);
+	/** this method is called when prolog code was updated */
+	public void prologCodeUpdated(PrologCodeUpdatedEvent evt);
 }

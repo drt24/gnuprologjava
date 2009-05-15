@@ -16,16 +16,19 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.vm.BacktrackInfo;
-/** retry backtrack info. 
-  * this backtrack info is used only by try_me_else, retry_me_else and trust_me
-  * instructions. It does not contains additional information.
-  */
+
+/**
+ * retry backtrack info. this backtrack info is used only by try_me_else,
+ * retry_me_else and trust_me instructions. It does not contains additional
+ * information.
+ */
 public class RetryBacktrackInfo extends BacktrackInfo
 {
-  /** a costructor */
-  public RetryBacktrackInfo(int undoPosition, int codePositon)
-  {
-    super(undoPosition, codePositon);
-  }
+	/** a costructor */
+	public RetryBacktrackInfo(int undoPosition, int codePositon)
+	{
+		super(undoPosition, codePositon);
+	}
 }

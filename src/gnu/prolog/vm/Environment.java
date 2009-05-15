@@ -64,47 +64,48 @@ public class Environment implements PredicateListener
 {
 	static InputStream defaultInputStream;
 	static OutputStream defaultOutputStream;
-	
+
 	/**
 	 * @return the defaultInputStream
 	 */
 	public static InputStream getDefaultInputStream()
 	{
-		return defaultInputStream==null?System.in:defaultInputStream;
+		return defaultInputStream == null ? System.in : defaultInputStream;
 	}
-	
+
 	/**
-	 * @param defaultInputStream the defaultInputStream to set
+	 * @param defaultInputStream
+	 *          the defaultInputStream to set
 	 */
 	public static void setDefaultInputStream(InputStream defaultInputStream)
 	{
 		Environment.defaultInputStream = defaultInputStream;
 	}
-	
+
 	/**
 	 * @return the defaultOutputStream
 	 */
 	public static OutputStream getDefaultOutputStream()
 	{
-		return defaultOutputStream==null?System.out:defaultOutputStream;
+		return defaultOutputStream == null ? System.out : defaultOutputStream;
 	}
-	
+
 	/**
-	 * @param defaultOutputStream the defaultOutputStream to set
+	 * @param defaultOutputStream
+	 *          the defaultOutputStream to set
 	 */
 	public static void setDefaultOutputStream(OutputStream defaultOutputStream)
 	{
 		Environment.defaultOutputStream = defaultOutputStream;
 	}
-	
-	
+
 	OperatorSet opSet = new OperatorSet();
 	/** current state of loaded database */
 	PrologTextLoaderState prologTextLoaderState = new PrologTextLoaderState();
 	/** predicate which used instead of real code when predicate is not defined */
 	PrologCode undefinedPredicate;
 	/** PredicateTag to code mapping */
-	Map<CompoundTermTag,PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
+	Map<CompoundTermTag, PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
 	// flag atmoms
 	public final static AtomTerm boundedAtom = AtomTerm.get("bounded");
 	public final static AtomTerm integerRoundingFunctionAtom = AtomTerm.get("integer_rounding_function");
@@ -134,7 +135,7 @@ public class Environment implements PredicateListener
 	public final static AtomTerm modifyAtom = AtomTerm.get("modify");
 	public final static CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 	/** atom to flag */
-	Map<AtomTerm,Term> atom2flag = new HashMap<AtomTerm, Term>();
+	Map<AtomTerm, Term> atom2flag = new HashMap<AtomTerm, Term>();
 	Set<AtomTerm> changableFlags = new HashSet<AtomTerm>();
 	boolean initalizationRun = false;
 
@@ -162,7 +163,7 @@ public class Environment implements PredicateListener
 		setPrologFlag(doubleQuotesAtom, codesAtom, true);
 		setPrologFlag(dialectAtom, dialectTerm, false);
 		setPrologFlag(versionAtom, versionTerm, false);
-		initStreams(stdin,stdout);
+		initStreams(stdin, stdout);
 	}
 
 	/** true if the environment was already initialized */
@@ -391,7 +392,7 @@ public class Environment implements PredicateListener
 		return code;
 	}
 
-	Map<CompoundTermTag,List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
+	Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
 	ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
 
 	private void pollPrologCodeListeners()
@@ -406,7 +407,8 @@ public class Environment implements PredicateListener
 
 	private static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
 	{
-		PrologCodeListenerRef(ReferenceQueue<? super PrologCodeListener> queue, PrologCodeListener listener, CompoundTermTag tag)
+		PrologCodeListenerRef(ReferenceQueue<? super PrologCodeListener> queue, PrologCodeListener listener,
+				CompoundTermTag tag)
 		{
 			super(listener, queue);
 			this.tag = tag;
@@ -433,7 +435,7 @@ public class Environment implements PredicateListener
 	public synchronized void removePrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
 		pollPrologCodeListeners();
-		List<PrologCodeListenerRef> list =  tag2listeners.get(tag);
+		List<PrologCodeListenerRef> list = tag2listeners.get(tag);
 		if (list != null)
 		{
 			ListIterator<PrologCodeListenerRef> i = list.listIterator();
@@ -463,7 +465,7 @@ public class Environment implements PredicateListener
 			return;
 		}
 		CompoundTermTag tag = evt.getTag();
-		List<PrologCodeListenerRef> list =  tag2listeners.get(tag);
+		List<PrologCodeListenerRef> list = tag2listeners.get(tag);
 		if (list != null)
 		{
 			PrologCodeUpdatedEvent uevt = new PrologCodeUpdatedEvent(this, tag);
@@ -492,7 +494,7 @@ public class Environment implements PredicateListener
 	PrologStream currentOutput;
 
 	List<PrologStream> openStreams = new ArrayList<PrologStream>();
-	Map<AtomTerm,PrologStream> alias2stream = new HashMap<AtomTerm, PrologStream>();
+	Map<AtomTerm, PrologStream> alias2stream = new HashMap<AtomTerm, PrologStream>();
 
 	public OperatorSet getOperatorSet()
 	{
@@ -517,8 +519,10 @@ public class Environment implements PredicateListener
 			outops.eofAction = PrologStream.resetAtom;
 			outops.reposition = TermConstants.falseAtom;
 			outops.type = PrologStream.textAtom;
-			userInput = new TextInputPrologStream(inops, new InputStreamReader(stdin == null ? getDefaultInputStream() : stdin));
-			userOutput = new TextOutputPrologStream(outops, new OutputStreamWriter(stdout == null ?getDefaultOutputStream() : stdout));
+			userInput = new TextInputPrologStream(inops, new InputStreamReader(stdin == null ? getDefaultInputStream()
+					: stdin));
+			userOutput = new TextOutputPrologStream(outops, new OutputStreamWriter(stdout == null ? getDefaultOutputStream()
+					: stdout));
 			currentInput = userInput;
 			currentOutput = userOutput;
 			alias2stream.put(PrologStream.userOutputAtom, userOutput);
@@ -562,9 +566,9 @@ public class Environment implements PredicateListener
 		currentOutput = stream;
 	}
 
-	public synchronized Map<PrologStream,List<Term>> getStreamProperties() throws PrologException
+	public synchronized Map<PrologStream, List<Term>> getStreamProperties() throws PrologException
 	{
-		Map<PrologStream,List<Term>> map = new HashMap<PrologStream, List<Term>>();
+		Map<PrologStream, List<Term>> map = new HashMap<PrologStream, List<Term>>();
 		Iterator<PrologStream> srt = openStreams.iterator();
 		while (srt.hasNext())
 		{
@@ -637,11 +641,12 @@ public class Environment implements PredicateListener
 		else if (options.type == PrologStream.textAtom)
 		{
 			boolean randAccess = options.reposition == TermConstants.trueAtom;
-//			if (options.reposition == PrologStream.TermConstants.trueAtom)
-//			{
-//				PrologException.permissionError(PrologStream.openAtom, PrologStream.sourceSinkAtom, new CompoundTerm(
-//						PrologStream.repositionTag, PrologStream.TermConstants.trueAtom));
-//			}
+			// if (options.reposition == PrologStream.TermConstants.trueAtom)
+			// {
+			// PrologException.permissionError(PrologStream.openAtom,
+			// PrologStream.sourceSinkAtom, new CompoundTerm(
+			// PrologStream.repositionTag, PrologStream.TermConstants.trueAtom));
+			// }
 			if (options.mode == PrologStream.readAtom)
 			{
 				if (!(new File(source_sink.value)).exists())
@@ -652,10 +657,11 @@ public class Environment implements PredicateListener
 				{
 					if (randAccess)
 					{
-						RandomAccessFile raf = new RandomAccessFile(source_sink.value ,"r");
+						RandomAccessFile raf = new RandomAccessFile(source_sink.value, "r");
 						stream = new TextInputPrologStream(options, raf);
 					}
-					else {
+					else
+					{
 						Reader rd = new FileReader(source_sink.value);
 						stream = new TextInputPrologStream(options, rd);
 					}
@@ -672,10 +678,11 @@ public class Environment implements PredicateListener
 				{
 					if (randAccess)
 					{
-						RandomAccessFile raf = new RandomAccessFile(source_sink.value ,"rw");
+						RandomAccessFile raf = new RandomAccessFile(source_sink.value, "rw");
 						stream = new TextOutputPrologStream(options, raf);
 					}
-					else {
+					else
+					{
 						Writer wr = new FileWriter(source_sink.value, append);
 						stream = new TextOutputPrologStream(options, wr);
 					}
@@ -736,10 +743,11 @@ public class Environment implements PredicateListener
 				close(stream);
 			}
 			catch (PrologException e)
-			{}
+			{
+			}
 		}
 	}
-	
+
 	/**
 	 * @return the convTable
 	 */

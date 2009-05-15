@@ -16,35 +16,43 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.AtomicTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
-/** push constant term 
-  */
+
+/**
+ * push constant term
+ */
 public class IPushConstant extends Instruction
 {
-  /** term to push */
-  public AtomicTerm term;
-  /** a constructor */
-  public IPushConstant(AtomicTerm term)
-  {
-    this.term = term; 
-  }
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    state.pushPushDown(term);
-    return ExecutionState.NEXT;
-  }
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": push_constant "+gnu.prolog.io.TermWriter.toString(term);
-  }
+	/** term to push */
+	public AtomicTerm term;
 
+	/** a constructor */
+	public IPushConstant(AtomicTerm term)
+	{
+		this.term = term;
+	}
+
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		state.pushPushDown(term);
+		return ExecutionState.NEXT;
+	}
+
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": push_constant " + gnu.prolog.io.TermWriter.toString(term);
+	}
 
 }

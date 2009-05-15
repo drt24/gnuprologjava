@@ -61,7 +61,7 @@ public class PrologTextLoaderState
 	{
 		return module;
 	}
-	
+
 	/**
 	 * @return the convTable
 	 */

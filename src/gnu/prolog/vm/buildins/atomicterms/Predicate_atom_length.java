@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.atomicterms;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
@@ -26,76 +27,86 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_atom_length implements PrologCode
 {
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    Term tatom = args[0];
-    Term tlength = args[1];
-    if (tatom instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    if (! (tatom instanceof AtomTerm))
-    {
-      PrologException.typeError(TermConstants.atomAtom,tatom);
-    }
-    AtomTerm atom = (AtomTerm)tatom;
-    if ( tlength instanceof VariableTerm)
-    {
-      IntegerTerm ilength = IntegerTerm.get(atom.value.length());
-      VariableTerm vlength = (VariableTerm)tlength;
-      interpreter.addVariableUndo(vlength);
-      vlength.value = ilength;
-      return SUCCESS_LAST;
-    }
-    else if ( tlength instanceof IntegerTerm)
-    {
-      IntegerTerm ilength = (IntegerTerm)tlength;
-      if (ilength.value < 0)
-      {
-        PrologException.domainError(TermConstants.notLessThenZeroAtom, tlength);
-      }
-      if (ilength.value == atom.value.length())
-      {
-        return SUCCESS_LAST;
-      }
-      else
-      {
-        return FAIL;
-      }
-    }
-    else
-    {
-      PrologException.typeError(TermConstants.integerAtom,tlength);
-    }
-    return FAIL; // fake return
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		Term tatom = args[0];
+		Term tlength = args[1];
+		if (tatom instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		if (!(tatom instanceof AtomTerm))
+		{
+			PrologException.typeError(TermConstants.atomAtom, tatom);
+		}
+		AtomTerm atom = (AtomTerm) tatom;
+		if (tlength instanceof VariableTerm)
+		{
+			IntegerTerm ilength = IntegerTerm.get(atom.value.length());
+			VariableTerm vlength = (VariableTerm) tlength;
+			interpreter.addVariableUndo(vlength);
+			vlength.value = ilength;
+			return SUCCESS_LAST;
+		}
+		else if (tlength instanceof IntegerTerm)
+		{
+			IntegerTerm ilength = (IntegerTerm) tlength;
+			if (ilength.value < 0)
+			{
+				PrologException.domainError(TermConstants.notLessThenZeroAtom, tlength);
+			}
+			if (ilength.value == atom.value.length())
+			{
+				return SUCCESS_LAST;
+			}
+			else
+			{
+				return FAIL;
+			}
+		}
+		else
+		{
+			PrologException.typeError(TermConstants.integerAtom, tlength);
+		}
+		return FAIL; // fake return
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

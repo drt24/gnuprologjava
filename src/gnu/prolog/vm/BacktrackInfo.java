@@ -20,25 +20,27 @@ package gnu.prolog.vm;
 /** back track information base class */
 public class BacktrackInfo
 {
-  /** a constructor */
-  public BacktrackInfo(int undoPosition, int codePosition) 
-  {
-    this.undoPosition = undoPosition;
-    this.codePosition = codePosition;
-  }
-  
-  /** undo changes up to creation of this backtrack info */
-  public void undo(Interpreter i)
-  {
-    i.undo(undoPosition);
-  }
-  
-  /** A pointer to code position. This pointer is interpreted by function 
-    * that created backtrack information.
-    */
-  public int codePosition;
-  
-  /** A position in undo stack. all actions will be undone up to this position. 
-    */
-  public int undoPosition;
+	/** a constructor */
+	public BacktrackInfo(int undoPosition, int codePosition)
+	{
+		this.undoPosition = undoPosition;
+		this.codePosition = codePosition;
+	}
+
+	/** undo changes up to creation of this backtrack info */
+	public void undo(Interpreter i)
+	{
+		i.undo(undoPosition);
+	}
+
+	/**
+	 * A pointer to code position. This pointer is interpreted by function that
+	 * created backtrack information.
+	 */
+	public int codePosition;
+
+	/**
+	 * A position in undo stack. all actions will be undone up to this position.
+	 */
+	public int undoPosition;
 }

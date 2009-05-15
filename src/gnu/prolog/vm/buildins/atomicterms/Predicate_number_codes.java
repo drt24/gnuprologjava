@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.atomicterms;
+
 import gnu.prolog.io.ParseException;
 import gnu.prolog.io.TermReader;
 import gnu.prolog.io.TermWriter;
@@ -31,126 +32,134 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_number_codes implements PrologCode
 {
-  static final AtomTerm numberExpectedAtom = AtomTerm.get("number_expected"); 
+	static final AtomTerm numberExpectedAtom = AtomTerm.get("number_expected");
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    Term number = args[0];
-    Term list = args[1];
-    if (!(number instanceof VariableTerm || 
-          number instanceof IntegerTerm || 
-          number instanceof FloatTerm))
-    {
-      PrologException.typeError(TermConstants.numberAtom, number);
-    }
-    
-    String numStr = getNumberString(list, (number instanceof VariableTerm));
-    if (numStr != null)
-    {
-      Term res = null;
-      try
-      {
-        res = TermReader.stringToTerm(numStr);
-      }
-      catch(ParseException ex)
-      {
-        PrologException.syntaxError(ex);
-      }
-      if (!(res instanceof IntegerTerm || res instanceof FloatTerm))
-      {
-        PrologException.syntaxError(numberExpectedAtom);
-      }
-      return interpreter.unify(res, number);
-    }
-    else
-    {
-      numStr = TermWriter.toString(number);
-      Term res = TermConstants.emptyListAtom;
-      for(int i=numStr.length()-1;i>=0;i--)
-      {
-        res = CompoundTerm.getList(IntegerTerm.get(numStr.charAt(i)), res);
-      }
-      return interpreter.unify(list,res);
-    }
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		Term number = args[0];
+		Term list = args[1];
+		if (!(number instanceof VariableTerm || number instanceof IntegerTerm || number instanceof FloatTerm))
+		{
+			PrologException.typeError(TermConstants.numberAtom, number);
+		}
 
-  /** returns null if illegal chracter sequenca */
-  private static String getNumberString(Term list, boolean numberIsVariable) throws PrologException
-  {
-    StringBuffer bu = new StringBuffer();
-    Term cur = list;
-    while (cur != TermConstants.emptyListAtom )
-    {
-      if (cur instanceof VariableTerm)
-      {
-        if (numberIsVariable)
-        {
-          PrologException.instantiationError();
-        }
-        else
-        {
-          return null;
-        }
-      }
-      if (!CompoundTerm.isListPair(cur))
-      {
-        //PrologException.domainError(characterCodeListAtom,list);
-        PrologException.typeError(TermConstants.listAtom, cur);
-      }
-      CompoundTerm ct = (CompoundTerm)cur;
-      Term head = ct.args[0].dereference();
-      cur = ct.args[1].dereference();
-      if (head instanceof VariableTerm)
-      {
-        if (numberIsVariable)
-        {
-          PrologException.instantiationError();
-        }
-        else
-        {
-          return null;
-        }
-      }
-      if (!(head instanceof IntegerTerm))
-      {
-        PrologException.representationError(TermConstants.characterCodeAtom);
-      }
-      IntegerTerm ch = (IntegerTerm)head;
-      if (ch.value < 0 || 0xffff < ch.value)
-      {
-        PrologException.representationError(TermConstants.characterCodeAtom);
-      }
-      bu.append((char)ch.value);
-    }
-    return bu.toString();
-  }
+		String numStr = getNumberString(list, (number instanceof VariableTerm));
+		if (numStr != null)
+		{
+			Term res = null;
+			try
+			{
+				res = TermReader.stringToTerm(numStr);
+			}
+			catch (ParseException ex)
+			{
+				PrologException.syntaxError(ex);
+			}
+			if (!(res instanceof IntegerTerm || res instanceof FloatTerm))
+			{
+				PrologException.syntaxError(numberExpectedAtom);
+			}
+			return interpreter.unify(res, number);
+		}
+		else
+		{
+			numStr = TermWriter.toString(number);
+			Term res = TermConstants.emptyListAtom;
+			for (int i = numStr.length() - 1; i >= 0; i--)
+			{
+				res = CompoundTerm.getList(IntegerTerm.get(numStr.charAt(i)), res);
+			}
+			return interpreter.unify(list, res);
+		}
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/** returns null if illegal chracter sequenca */
+	private static String getNumberString(Term list, boolean numberIsVariable) throws PrologException
+	{
+		StringBuffer bu = new StringBuffer();
+		Term cur = list;
+		while (cur != TermConstants.emptyListAtom)
+		{
+			if (cur instanceof VariableTerm)
+			{
+				if (numberIsVariable)
+				{
+					PrologException.instantiationError();
+				}
+				else
+				{
+					return null;
+				}
+			}
+			if (!CompoundTerm.isListPair(cur))
+			{
+				// PrologException.domainError(characterCodeListAtom,list);
+				PrologException.typeError(TermConstants.listAtom, cur);
+			}
+			CompoundTerm ct = (CompoundTerm) cur;
+			Term head = ct.args[0].dereference();
+			cur = ct.args[1].dereference();
+			if (head instanceof VariableTerm)
+			{
+				if (numberIsVariable)
+				{
+					PrologException.instantiationError();
+				}
+				else
+				{
+					return null;
+				}
+			}
+			if (!(head instanceof IntegerTerm))
+			{
+				PrologException.representationError(TermConstants.characterCodeAtom);
+			}
+			IntegerTerm ch = (IntegerTerm) head;
+			if (ch.value < 0 || 0xffff < ch.value)
+			{
+				PrologException.representationError(TermConstants.characterCodeAtom);
+			}
+			bu.append((char) ch.value);
+		}
+		return bu.toString();
+	}
 
-  }
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	}
+
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

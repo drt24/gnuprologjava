@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.termcreation;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.IntegerTerm;
@@ -27,77 +28,87 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_arg implements PrologCode
 {
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    Term n = args[0];
-    Term term = args[1];
-    Term arg = args[2];
-    if (n instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    if (term instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    if (!(n instanceof IntegerTerm))
-    {
-      PrologException.typeError(TermConstants.integerAtom, n);
-    }
-    IntegerTerm in = (IntegerTerm)n;
-    if (in.value < 0)
-    {
-      PrologException.domainError(TermConstants.notLessThenZeroAtom, in);
-    }
-    if (!(term instanceof CompoundTerm))
-    {
-      PrologException.typeError(TermConstants.compoundAtom, term);
-    }
-    CompoundTerm ct = (CompoundTerm)term;
-    if (ct.tag.arity < in.value)
-    {
-      return FAIL;
-    }
-    if (in.value == 0)
-    {
-      return FAIL;
-    }
-    int undoPos = interpreter.getUndoPosition();
-    int rc = interpreter.unify(ct.args[in.value-1],arg);
-    if (rc == FAIL)
-    {
-      interpreter.undo(undoPos);
-      return FAIL;
-    }
-    return SUCCESS_LAST;
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		Term n = args[0];
+		Term term = args[1];
+		Term arg = args[2];
+		if (n instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		if (term instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		if (!(n instanceof IntegerTerm))
+		{
+			PrologException.typeError(TermConstants.integerAtom, n);
+		}
+		IntegerTerm in = (IntegerTerm) n;
+		if (in.value < 0)
+		{
+			PrologException.domainError(TermConstants.notLessThenZeroAtom, in);
+		}
+		if (!(term instanceof CompoundTerm))
+		{
+			PrologException.typeError(TermConstants.compoundAtom, term);
+		}
+		CompoundTerm ct = (CompoundTerm) term;
+		if (ct.tag.arity < in.value)
+		{
+			return FAIL;
+		}
+		if (in.value == 0)
+		{
+			return FAIL;
+		}
+		int undoPos = interpreter.getUndoPosition();
+		int rc = interpreter.unify(ct.args[in.value - 1], arg);
+		if (rc == FAIL)
+		{
+			interpreter.undo(undoPos);
+			return FAIL;
+		}
+		return SUCCESS_LAST;
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

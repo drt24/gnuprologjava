@@ -16,7 +16,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
+
 interface UndoData
 {
-  public void undo();
+	public void undo();
 }

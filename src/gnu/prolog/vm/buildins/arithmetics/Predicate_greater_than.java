@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.arithmetics;
+
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
@@ -25,64 +26,74 @@ import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_greater_than implements PrologCode
 {
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    Term arg0 = Evaluate.evaluate(args[0]);
-    Term arg1 = Evaluate.evaluate(args[1]);
-    if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
-    {
-      IntegerTerm i0 = (IntegerTerm)arg0;
-      IntegerTerm i1 = (IntegerTerm)arg1;
-      return i0.value>i1.value? SUCCESS_LAST : FAIL;
-    }
-    else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
-    {
-      FloatTerm f0 = (FloatTerm)arg0;
-      IntegerTerm i1 = (IntegerTerm)arg1;
-      return f0.value>i1.value? SUCCESS_LAST : FAIL;
-    }
-    else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
-    {
-      IntegerTerm i0 = (IntegerTerm)arg0;
-      FloatTerm f1 = (FloatTerm)arg1;
-      return i0.value>f1.value? SUCCESS_LAST : FAIL;
-    }
-    else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
-    {
-      FloatTerm f0 = (FloatTerm)arg0;
-      FloatTerm f1 = (FloatTerm)arg1;
-      return f0.value>f1.value? SUCCESS_LAST : FAIL;
-    }
-    return FAIL;
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		Term arg0 = Evaluate.evaluate(args[0]);
+		Term arg1 = Evaluate.evaluate(args[1]);
+		if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+		{
+			IntegerTerm i0 = (IntegerTerm) arg0;
+			IntegerTerm i1 = (IntegerTerm) arg1;
+			return i0.value > i1.value ? SUCCESS_LAST : FAIL;
+		}
+		else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
+		{
+			FloatTerm f0 = (FloatTerm) arg0;
+			IntegerTerm i1 = (IntegerTerm) arg1;
+			return f0.value > i1.value ? SUCCESS_LAST : FAIL;
+		}
+		else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
+		{
+			IntegerTerm i0 = (IntegerTerm) arg0;
+			FloatTerm f1 = (FloatTerm) arg1;
+			return i0.value > f1.value ? SUCCESS_LAST : FAIL;
+		}
+		else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
+		{
+			FloatTerm f0 = (FloatTerm) arg0;
+			FloatTerm f1 = (FloatTerm) arg1;
+			return f0.value > f1.value ? SUCCESS_LAST : FAIL;
+		}
+		return FAIL;
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

@@ -16,47 +16,51 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
-/** call instruction.
-  */
+/**
+ * call instruction.
+ */
 public class IUnify extends Instruction
 {
-  /** a constructor */
-  public IUnify()
-  {
-  }
+	/** a constructor */
+	public IUnify()
+	{}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": unify";
-  }
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": unify";
+	}
 
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    Term arg2 = state.popPushDown().dereference();
-    Term arg1 = state.popPushDown().dereference();
-    int rc = state.interpreter.unify(arg1, arg2);
-    switch (rc)
-    {
-    case PrologCode.SUCCESS_LAST:
-      rc = ExecutionState.NEXT; /* proceed to next instruction */
-      //System.err.println("success last: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
-      break;
-    case PrologCode.FAIL:
-      rc = ExecutionState.BACKTRACK; /* backtrack */
-      //System.err.println("fail: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
-      break;
-    }
-    return rc;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		Term arg2 = state.popPushDown().dereference();
+		Term arg1 = state.popPushDown().dereference();
+		int rc = state.interpreter.unify(arg1, arg2);
+		switch (rc)
+		{
+			case PrologCode.SUCCESS_LAST:
+				rc = ExecutionState.NEXT; /* proceed to next instruction */
+				// System.err.println("success last: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
+				break;
+			case PrologCode.FAIL:
+				rc = ExecutionState.BACKTRACK; /* backtrack */
+				// System.err.println("fail: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
+				break;
+		}
+		return rc;
+	}
 }

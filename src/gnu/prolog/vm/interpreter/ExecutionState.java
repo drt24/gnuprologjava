@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
@@ -24,106 +25,106 @@ import gnu.prolog.vm.PrologCode;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /** execution state class */
 public class ExecutionState
 {
-  /** instruction return code indicating need for backtracking */
-  public final static int BACKTRACK = -1;
-  /** instruction return code indicating success. backtrack 
-    * information may or not be created 
-    */
-  public final static int NEXT = 0;
-  
-  /** instruction return code indicating success.
-    * jump to position in instruction pointer needed
-    */
-  public final static int JUMP = 1;
+	/** instruction return code indicating need for backtracking */
+	public final static int BACKTRACK = -1;
+	/**
+	 * instruction return code indicating success. backtrack information may or
+	 * not be created
+	 */
+	public final static int NEXT = 0;
 
-  /** instruction return code indicating success.
-    * return from function needed.
-    */
-  public final static int RETURN = 2;
+	/**
+	 * instruction return code indicating success. jump to position in instruction
+	 * pointer needed
+	 */
+	public final static int JUMP = 1;
 
-  
-  /** current interpreter */
-  public Interpreter interpreter;
-  /** current backtrack info, only active on backtracking */
-  public BacktrackInfo startBacktrackInfo;
-  /** current environment */
-  public Term environment[];
-  /** pushdown stack, used for unification and calls */
-  public List<Term> pushdown = new ArrayList<Term>();
-  /** current position */
-  public int jumpPosition;
-  /** arguments */ 
-  public Term args[];
+	/**
+	 * instruction return code indicating success. return from function needed.
+	 */
+	public final static int RETURN = 2;
 
-  /** pop backtrack infor from stack */
-  public BacktrackInfo popBacktrackInfo()
-  {
-    return interpreter.popBacktrackInfo();
-  }
-  
-  /** peek backtrack info w/o poping it */
-  public BacktrackInfo peekBacktrackInfo()
-  {
-    return interpreter.peekBacktrackInfo();
-  }
+	/** current interpreter */
+	public Interpreter interpreter;
+	/** current backtrack info, only active on backtracking */
+	public BacktrackInfo startBacktrackInfo;
+	/** current environment */
+	public Term environment[];
+	/** pushdown stack, used for unification and calls */
+	public List<Term> pushdown = new ArrayList<Term>();
+	/** current position */
+	public int jumpPosition;
+	/** arguments */
+	public Term args[];
 
-  /** push backteack info to stack */
-  public void pushBacktrackInfo(BacktrackInfo cbi)
-  {
-    interpreter.pushBacktrackInfo(cbi);
-  }
-  
-  /** get BacktrackInfo for call instruction. */
-  public CallBacktrackInfo getCallBacktrackInfo(int codePosition,Term args[],PrologCode code,CompoundTermTag tag)
-  {
-    return new CallBacktrackInfo(interpreter.getUndoPosition(),codePosition,args,code,tag);
-  }
+	/** pop backtrack infor from stack */
+	public BacktrackInfo popBacktrackInfo()
+	{
+		return interpreter.popBacktrackInfo();
+	}
 
-  /** get BacktrackInfo for try family instructions. */
-  public RetryBacktrackInfo getRetryBacktrackInfo(int retryPosition)
-  {
-    return new RetryBacktrackInfo(interpreter.getUndoPosition(),retryPosition);
-  }
+	/** peek backtrack info w/o poping it */
+	public BacktrackInfo peekBacktrackInfo()
+	{
+		return interpreter.peekBacktrackInfo();
+	}
 
-  /** pop term from pushdown stack */
-  public Term popPushDown()
-  {
-    return (Term)pushdown.remove(pushdown.size()-1);
-  }
-   
-  /** push term to pushdown stack */
-  public void pushPushDown(Term term)
-  {
-    pushdown.add(term);
-  }
+	/** push backteack info to stack */
+	public void pushBacktrackInfo(BacktrackInfo cbi)
+	{
+		interpreter.pushBacktrackInfo(cbi);
+	}
 
-   
-  /** get term from environment */
-  public Term getEnvironment(int environmentIndex)
-  {
-    return environment[environmentIndex];
-  }
-  
-  /** put term to environment */
-  public void putEnvironment(int environmentIndex, Term term)
-  {
-    environment[environmentIndex] = term;
-  }
+	/** get BacktrackInfo for call instruction. */
+	public CallBacktrackInfo getCallBacktrackInfo(int codePosition, Term args[], PrologCode code, CompoundTermTag tag)
+	{
+		return new CallBacktrackInfo(interpreter.getUndoPosition(), codePosition, args, code, tag);
+	}
 
+	/** get BacktrackInfo for try family instructions. */
+	public RetryBacktrackInfo getRetryBacktrackInfo(int retryPosition)
+	{
+		return new RetryBacktrackInfo(interpreter.getUndoPosition(), retryPosition);
+	}
 
-  /** get leave backtrack info */
-  public LeaveBacktrackInfo getLeaveBacktrackInfo()
-  {
-    return new LeaveBacktrackInfo(interpreter.getUndoPosition(),this);
-  }
-  
-  /** get enter backtrack info */
-  public EnterBacktrackInfo getEnterBacktrackInfo()
-  {
-    return new EnterBacktrackInfo(interpreter.getUndoPosition());
-  }
+	/** pop term from pushdown stack */
+	public Term popPushDown()
+	{
+		return (Term) pushdown.remove(pushdown.size() - 1);
+	}
+
+	/** push term to pushdown stack */
+	public void pushPushDown(Term term)
+	{
+		pushdown.add(term);
+	}
+
+	/** get term from environment */
+	public Term getEnvironment(int environmentIndex)
+	{
+		return environment[environmentIndex];
+	}
+
+	/** put term to environment */
+	public void putEnvironment(int environmentIndex, Term term)
+	{
+		environment[environmentIndex] = term;
+	}
+
+	/** get leave backtrack info */
+	public LeaveBacktrackInfo getLeaveBacktrackInfo()
+	{
+		return new LeaveBacktrackInfo(interpreter.getUndoPosition(), this);
+	}
+
+	/** get enter backtrack info */
+	public EnterBacktrackInfo getEnterBacktrackInfo()
+	{
+		return new EnterBacktrackInfo(interpreter.getUndoPosition());
+	}
 
 }

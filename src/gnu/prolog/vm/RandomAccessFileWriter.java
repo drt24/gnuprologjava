@@ -44,7 +44,7 @@ public class RandomAccessFileWriter extends Writer
 	{
 		raf.seek(pos);
 	}
-	
+
 	public long getPosition() throws IOException
 	{
 		return raf.getFilePointer();

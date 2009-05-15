@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
+
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -26,58 +27,68 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_get_byte implements PrologCode
 {
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    PrologStream stream = interpreter.environment.resolveStream(args[0]);
-    Term in_byte = args[1];
-    int b = 0;
-    if (in_byte instanceof VariableTerm)
-    {
-    }
-    else if (in_byte instanceof IntegerTerm)
-    {
-      IntegerTerm ch = (IntegerTerm)in_byte;
-      b = ch.value;
-      if (b < -1 || 255 < b)
-      {
-        PrologException.typeError(TermConstants.inByteAtom, in_byte);
-      }
-    }
-    else
-    {
-      PrologException.typeError(TermConstants.inByteAtom, in_byte);
-    }
-    Term rc = IntegerTerm.get(stream.getByte(args[0],interpreter));
-    return interpreter.unify(in_byte, rc);
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		Term in_byte = args[1];
+		int b = 0;
+		if (in_byte instanceof VariableTerm)
+		{
+		}
+		else if (in_byte instanceof IntegerTerm)
+		{
+			IntegerTerm ch = (IntegerTerm) in_byte;
+			b = ch.value;
+			if (b < -1 || 255 < b)
+			{
+				PrologException.typeError(TermConstants.inByteAtom, in_byte);
+			}
+		}
+		else
+		{
+			PrologException.typeError(TermConstants.inByteAtom, in_byte);
+		}
+		Term rc = IntegerTerm.get(stream.getByte(args[0], interpreter));
+		return interpreter.unify(in_byte, rc);
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

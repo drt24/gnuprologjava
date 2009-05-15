@@ -17,59 +17,52 @@
  */
 package gnu.prolog.database;
 
-
 public class PrologTextLoaderError extends Exception
 {
 	private static final long serialVersionUID = 4388822484504978038L;
-	
+
 	String file;
-  int    line;
-  int    column;
-  //String message;
+	int line;
+	int column;
 
-  public PrologTextLoaderError(String file,
-                               int    line,
-                               int    column,
-                               String message)
-  {
-    super(message);
-    this.file    = file   ;
-    this.line    = line   ;
-    this.column  = column ;
-    //this.message = message;
-  }
+	// String message;
 
+	public PrologTextLoaderError(String file, int line, int column, String message)
+	{
+		super(message);
+		this.file = file;
+		this.line = line;
+		this.column = column;
+		// this.message = message;
+	}
 
-  public PrologTextLoaderError(PrologTextLoader loader,
-                               String message)
-  {
-    this(loader.getCurrentFile(), loader.getCurrentLine(), loader.getCurrentColumn(), message);
-  }
+	public PrologTextLoaderError(PrologTextLoader loader, String message)
+	{
+		this(loader.getCurrentFile(), loader.getCurrentLine(), loader.getCurrentColumn(), message);
+	}
 
+	public PrologTextLoaderError(PrologTextLoader loader, gnu.prolog.io.ParseException ex)
+	{
+		this(loader.getCurrentFile(), ex.getLine(), ex.getColumn(), "syntax error: " + ex.getMessage());
+	}
 
-  public PrologTextLoaderError(PrologTextLoader loader,
-                               gnu.prolog.io.ParseException ex)
-  {
-    this(loader.getCurrentFile(), ex.getLine(), ex.getColumn(), "syntax error: "+ex.getMessage());
-  }
+	public String getFile()
+	{
+		return file;
+	}
 
-  public String getFile()
-  {
-    return file;
-  }
+	public int getLine()
+	{
+		return line;
+	}
 
-  public int getLine()
-  {
-    return line;
-  }
+	public int getColumn()
+	{
+		return column;
+	}
 
-  public int getColumn()
-  {
-    return column;
-  }
-
-  public String toString()
-  {
-    return file+":"+line+":"+column+": "+getMessage();
-  }
+	public String toString()
+	{
+		return file + ":" + line + ":" + column + ": " + getMessage();
+	}
 }

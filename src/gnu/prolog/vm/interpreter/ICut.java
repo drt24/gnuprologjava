@@ -16,43 +16,48 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
+
 /** cut instruction */
-public class ICut extends Instruction 
+public class ICut extends Instruction
 {
-  /** index in environemt where cut position is kept, cut position is kept as
-    * JavaObjectTerm containing BacktrackInfo until which all should be be 
-    * popped 
-    */
-  public int environmentIndex;
-  /** a constructor */
-  public ICut(int environmentIndex)
-  {
-    this.environmentIndex = environmentIndex;
-  }
+	/**
+	 * index in environemt where cut position is kept, cut position is kept as
+	 * JavaObjectTerm containing BacktrackInfo until which all should be be popped
+	 */
+	public int environmentIndex;
 
+	/** a constructor */
+	public ICut(int environmentIndex)
+	{
+		this.environmentIndex = environmentIndex;
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": cut "+environmentIndex;
-  }
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": cut " + environmentIndex;
+	}
 
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    JavaObjectTerm term = (JavaObjectTerm)state.getEnvironment(environmentIndex);
-    BacktrackInfo cutparent = (BacktrackInfo)term.value;
-    while (state.peekBacktrackInfo() != cutparent )
-    {
-      state.popBacktrackInfo();
-    }
-    return ExecutionState.NEXT;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		JavaObjectTerm term = (JavaObjectTerm) state.getEnvironment(environmentIndex);
+		BacktrackInfo cutparent = (BacktrackInfo) term.value;
+		while (state.peekBacktrackInfo() != cutparent)
+		{
+			state.popBacktrackInfo();
+		}
+		return ExecutionState.NEXT;
+	}
 }

@@ -16,17 +16,19 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.vm.BacktrackInfo;
 
-/** this backtrack info is created upon entering in predicate, it is used 
-  * to detect fails and it is a normal cut parent.
-  */
+/**
+ * this backtrack info is created upon entering in predicate, it is used to
+ * detect fails and it is a normal cut parent.
+ */
 public class EnterBacktrackInfo extends BacktrackInfo
 {
-  /** a constructor */
-  public EnterBacktrackInfo(int undoPosition)
-  {
-    super(undoPosition, -1);
-  }
+	/** a constructor */
+	public EnterBacktrackInfo(int undoPosition)
+	{
+		super(undoPosition, -1);
+	}
 
 }

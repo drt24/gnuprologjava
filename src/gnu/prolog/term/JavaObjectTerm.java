@@ -27,7 +27,7 @@ package gnu.prolog.term;
 public class JavaObjectTerm extends AtomicTerm
 {
 	private static final long serialVersionUID = 6283774008823926111L;
-	
+
 	/** value of the term */
 	// TODO make this transient?
 	public final Object value;

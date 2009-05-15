@@ -16,37 +16,38 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.allsolutions;
+
 import gnu.prolog.term.Term;
 import gnu.prolog.term.TermComparator;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-/** prolog code 
-  */
+
+/**
+ * prolog code
+ */
 public class Predicate_setof extends Predicate_bagof
 {
 
-  protected void processList(List<Term> curTList)
-  {
-    TermComparator tc = new TermComparator();
-    Collections.sort(curTList, tc);
-    // remove duplicates
-    ListIterator<Term> i = curTList.listIterator();
-    if (!i.hasNext())
-    {
-      return;
-    }
-    Term cur = i.next();
-    while (i.hasNext())
-    {
-      if (tc.compare(cur, i.next())==0)
-      {
-        i.remove();
-      }
-    }
-  }
+	protected void processList(List<Term> curTList)
+	{
+		TermComparator tc = new TermComparator();
+		Collections.sort(curTList, tc);
+		// remove duplicates
+		ListIterator<Term> i = curTList.listIterator();
+		if (!i.hasNext())
+		{
+			return;
+		}
+		Term cur = i.next();
+		while (i.hasNext())
+		{
+			if (tc.compare(cur, i.next()) == 0)
+			{
+				i.remove();
+			}
+		}
+	}
 
 }
-
-

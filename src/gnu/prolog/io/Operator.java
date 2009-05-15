@@ -22,63 +22,57 @@ import gnu.prolog.term.CompoundTermTag;
 final public class Operator
 {
 
-  // 6.3.4 Operator notation
-  //                     Specifier    Class     Associativity
-  public final static int  FX = 0; // prefix    non-associative
-  public final static int  FY = 1; // prefix    right-associative
-  public final static int XFX = 2; // infix     non-associative
-  public final static int XFY = 3; // infix     right-associative
-  public final static int YFX = 4; // infix     left-associative
-  public final static int XF  = 5; // postfix   non-associative
-  public final static int YF  = 6; // postfix   left-associative
-  public final static int NONE = -1; // non opearator
+	// 6.3.4 Operator notation
+	// Specifier Class Associativity
+	public final static int FX = 0; // prefix non-associative
+	public final static int FY = 1; // prefix right-associative
+	public final static int XFX = 2; // infix non-associative
+	public final static int XFY = 3; // infix right-associative
+	public final static int YFX = 4; // infix left-associative
+	public final static int XF = 5; // postfix non-associative
+	public final static int YF = 6; // postfix left-associative
+	public final static int NONE = -1; // non opearator
 
-  public final static int MAX_PRIORITY = 1200;
-  public final static int MIN_PRIORITY = 1;
+	public final static int MAX_PRIORITY = 1200;
+	public final static int MIN_PRIORITY = 1;
 
-  public static final Operator nonOperator = new Operator("",NONE,-1);
+	public static final Operator nonOperator = new Operator("", NONE, -1);
 
-  public final String name;
-  public final int specifier;
-  public final int priority;
-  public final CompoundTermTag tag;
+	public final String name;
+	public final int specifier;
+	public final int priority;
+	public final CompoundTermTag tag;
 
+	Operator(String name, int specifier, int priority)
+	{
+		this.name = name;
+		this.specifier = specifier;
+		this.priority = priority;
+		switch (specifier)
+		{
+			case FX:
+			case FY:
+			case XF:
+			case YF:
+				tag = CompoundTermTag.get(name, 1);
+				break;
+			case XFX:
+			case XFY:
+			case YFX:
+				tag = CompoundTermTag.get(name, 2);
+				break;
+			case NONE:
+				tag = null;
+				break;
+			default:
+				tag = null;
+				throw new IllegalArgumentException("invalid specifier = " + specifier);
+		}
+	}
 
-  Operator(String name, int specifier, int priority)
-  {
-    this.name      = name;
-    this.specifier = specifier;
-    this.priority  = priority;
-    switch (specifier)
-    {
-    case  FX:
-    case  FY:
-    case XF :
-    case YF :
-      tag = CompoundTermTag.get(name,1);
-      break;
-    case XFX:
-    case XFY:
-    case YFX:
-      tag = CompoundTermTag.get(name,2);
-      break;
-    case NONE:
-      tag = null;
-      break;
-    default:
-      tag = null;
-      throw new IllegalArgumentException("invalid specifier = "+specifier);
-    }
-  }
-
-
-  public String toString()
-  {
-    String specifiers[] =
-      {"NONE","FX","FY","XFX","XFY","YFX","XF","YF"};
-    return "Opearator[name='"+name+
-                   "';specifier='"+specifiers[specifier+1]+
-                    ";priority="+priority+"]";
-  }
+	public String toString()
+	{
+		String specifiers[] = { "NONE", "FX", "FY", "XFX", "XFY", "YFX", "XF", "YF" };
+		return "Opearator[name='" + name + "';specifier='" + specifiers[specifier + 1] + ";priority=" + priority + "]";
+	}
 }
-

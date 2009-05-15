@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
+
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -26,54 +27,64 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_current_input implements PrologCode
 {
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    Term stream = args[0];
-    if (stream instanceof VariableTerm)
-    {
-    }
-    else if (stream instanceof JavaObjectTerm)
-    {
-      JavaObjectTerm jt = (JavaObjectTerm)stream;
-      if (!(jt.value instanceof PrologStream))
-      {
-        PrologException.domainError(TermConstants.streamAtom, stream);
-      }
-    }
-    else
-    {
-      PrologException.domainError(TermConstants.streamAtom, stream);
-    }
-    return interpreter.unify(stream, interpreter.environment.getCurrentInput().getStreamTerm());
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		Term stream = args[0];
+		if (stream instanceof VariableTerm)
+		{
+		}
+		else if (stream instanceof JavaObjectTerm)
+		{
+			JavaObjectTerm jt = (JavaObjectTerm) stream;
+			if (!(jt.value instanceof PrologStream))
+			{
+				PrologException.domainError(TermConstants.streamAtom, stream);
+			}
+		}
+		else
+		{
+			PrologException.domainError(TermConstants.streamAtom, stream);
+		}
+		return interpreter.unify(stream, interpreter.environment.getCurrentInput().getStreamTerm());
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

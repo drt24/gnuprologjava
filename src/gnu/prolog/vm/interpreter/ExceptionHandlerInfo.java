@@ -16,22 +16,23 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-/** this class contains information about exception handling.
-  * Exception handling is modeled after Java exceptions
-  */
-public class ExceptionHandlerInfo 
+
+/**
+ * this class contains information about exception handling. Exception handling
+ * is modeled after Java exceptions
+ */
+public class ExceptionHandlerInfo
 {
-  /** start position of code segment */
-  int startPosition;
-  /** end position of code segment */
-  int endPosition;
-  /** position where to go for exception handling */
-  int handlerPosition;
+	/** start position of code segment */
+	int startPosition;
+	/** end position of code segment */
+	int endPosition;
+	/** position where to go for exception handling */
+	int handlerPosition;
 
-  /** convert handler to string */
-  public String toString()
-  {
-    return "from "+startPosition+" to "+endPosition+" go to "+handlerPosition;
-  }
+	/** convert handler to string */
+	public String toString()
+	{
+		return "from " + startPosition + " to " + endPosition + " go to " + handlerPosition;
+	}
 }
-

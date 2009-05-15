@@ -27,13 +27,13 @@ import gnu.prolog.vm.PrologException;
 
 /**
  * Enable tracing
+ * 
  * @author Michiel Hendriks
  */
 public class Predicate_trace implements PrologCode
 {
 	public Predicate_trace()
-	{
-	}
+	{}
 
 	/*
 	 * (non-Javadoc)
@@ -53,8 +53,7 @@ public class Predicate_trace implements PrologCode
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
-	{
-	}
+	{}
 
 	/*
 	 * (non-Javadoc)
@@ -62,6 +61,5 @@ public class Predicate_trace implements PrologCode
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)
-	{
-	}
+	{}
 }

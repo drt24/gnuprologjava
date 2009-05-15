@@ -44,7 +44,7 @@ public class RandomAccessFileReader extends Reader
 		raf = randomaccess;
 		createReader();
 	}
-	
+
 	private void createReader()
 	{
 		rd = new InputStreamReader(new InputStream()
@@ -55,13 +55,13 @@ public class RandomAccessFileReader extends Reader
 			}
 		});
 	}
-	
+
 	public void seek(long pos) throws IOException
 	{
 		raf.seek(pos);
 		createReader();
 	}
-	
+
 	public long getPosition() throws IOException
 	{
 		return raf.getFilePointer();

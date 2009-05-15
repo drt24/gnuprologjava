@@ -26,103 +26,99 @@ import java.io.StringReader;
 
 public class TermReader extends FilterReader
 {
-  private static OperatorSet defaultOperatorSet = new OperatorSet();
-  TermParser parser;
+	private static OperatorSet defaultOperatorSet = new OperatorSet();
+	TermParser parser;
 
-  public TermReader(Reader r, int line, int col)
-  {
-    super(r);
-    parser = new TermParser(r, line,col);
-  }
+	public TermReader(Reader r, int line, int col)
+	{
+		super(r);
+		parser = new TermParser(r, line, col);
+	}
 
-  public TermReader(Reader r)
-  {
-    this(r, 1, 1);
-  }
+	public TermReader(Reader r)
+	{
+		this(r, 1, 1);
+	}
 
-  public Term readTerm(ReadOptions options) throws ParseException
-  {
-    try
-    {
-      return parser.readTerm(options);
-    }
-    catch(gnu.prolog.io.parser.gen.ParseException ex)
-    {
-    	//ex.printStackTrace();
-      throw new ParseException(ex);
-    }
-    catch(gnu.prolog.io.parser.gen.TokenMgrError ex)
-    {
-      throw new ParseException(ex);
-    }
-  }
+	public Term readTerm(ReadOptions options) throws ParseException
+	{
+		try
+		{
+			return parser.readTerm(options);
+		}
+		catch (gnu.prolog.io.parser.gen.ParseException ex)
+		{
+			// ex.printStackTrace();
+			throw new ParseException(ex);
+		}
+		catch (gnu.prolog.io.parser.gen.TokenMgrError ex)
+		{
+			throw new ParseException(ex);
+		}
+	}
 
-  public static Term stringToTerm(ReadOptions options, String str) throws ParseException
-  {
-    StringReader srd = new StringReader(str);
-    TermReader trd = new TermReader(srd);
-    return trd.readTermEof(options);
-  }
-  
-  public static Term stringToTerm(String str) throws ParseException
-  {
-    StringReader srd = new StringReader(str);
-    TermReader trd = new TermReader(srd);
-    return trd.readTermEof();
-  }
+	public static Term stringToTerm(ReadOptions options, String str) throws ParseException
+	{
+		StringReader srd = new StringReader(str);
+		TermReader trd = new TermReader(srd);
+		return trd.readTermEof(options);
+	}
 
-  public Term readTermEof(ReadOptions options) throws ParseException
-  {
-    try
-    {
-      return parser.readTermEof(options);
-    }
-    catch(gnu.prolog.io.parser.gen.ParseException ex)
-    {
-      throw new ParseException(ex);
-    }
-    catch(gnu.prolog.io.parser.gen.TokenMgrError ex)
-    {
-      throw new ParseException(ex);
-    }
-  }
+	public static Term stringToTerm(String str) throws ParseException
+	{
+		StringReader srd = new StringReader(str);
+		TermReader trd = new TermReader(srd);
+		return trd.readTermEof();
+	}
 
+	public Term readTermEof(ReadOptions options) throws ParseException
+	{
+		try
+		{
+			return parser.readTermEof(options);
+		}
+		catch (gnu.prolog.io.parser.gen.ParseException ex)
+		{
+			throw new ParseException(ex);
+		}
+		catch (gnu.prolog.io.parser.gen.TokenMgrError ex)
+		{
+			throw new ParseException(ex);
+		}
+	}
 
+	public Term readTerm(OperatorSet set) throws ParseException
+	{
+		ReadOptions options = new ReadOptions();
+		options.operatorSet = set;
+		return readTerm(options);
+	}
 
-  public Term readTerm(OperatorSet set) throws ParseException
-  {
-    ReadOptions options = new ReadOptions();
-    options.operatorSet = set;
-    return readTerm(options);
-  }
+	public Term readTermEof(OperatorSet set) throws ParseException
+	{
+		ReadOptions options = new ReadOptions();
+		options.operatorSet = set;
+		return readTermEof(options);
+	}
 
-  public Term readTermEof(OperatorSet set) throws ParseException
-  {
-    ReadOptions options = new ReadOptions();
-    options.operatorSet = set;
-    return readTermEof(options);
-  }
+	public Term readTerm() throws ParseException
+	{
+		return readTerm(defaultOperatorSet);
+	}
 
-  public Term readTerm() throws ParseException
-  {
-    return readTerm(defaultOperatorSet);
-  }
+	public Term readTermEof() throws ParseException
+	{
+		return readTermEof(defaultOperatorSet);
+	}
 
-  public Term readTermEof() throws ParseException
-  {
-    return readTermEof(defaultOperatorSet);
-  }
+	public int getCurrentLine()
+	{
+		return parser.getCurrentLine();
+	}
 
-  public int getCurrentLine()
-  {
-    return parser.getCurrentLine();
-  }
-
-  public int getCurrentColumn()
-  {
-    return parser.getCurrentColumn();
-  }
+	public int getCurrentColumn()
+	{
+		return parser.getCurrentColumn();
+	}
 
 }
-
-

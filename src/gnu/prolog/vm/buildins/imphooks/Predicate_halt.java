@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.imphooks;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
@@ -27,56 +28,66 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologHalt;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_halt implements PrologCode
 {
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    Term tcode = args[0];
-    if (tcode instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    if (!(tcode instanceof IntegerTerm))
-    {
-      PrologException.typeError(TermConstants.integerAtom,tcode);
-    }
-    IntegerTerm code = (IntegerTerm)tcode;
-    throw new PrologHalt(code.value);
-//    try
-//    {
-//      System.exit(code.value);
-//    }
-//    catch(RuntimeException ex)
-//    {
-//      PrologException.systemError();
-//    }
-//    return FAIL; // fake return
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		Term tcode = args[0];
+		if (tcode instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		if (!(tcode instanceof IntegerTerm))
+		{
+			PrologException.typeError(TermConstants.integerAtom, tcode);
+		}
+		IntegerTerm code = (IntegerTerm) tcode;
+		throw new PrologHalt(code.value);
+		// try
+		// {
+		// System.exit(code.value);
+		// }
+		// catch(RuntimeException ex)
+		// {
+		// PrologException.systemError();
+		// }
+		// return FAIL; // fake return
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

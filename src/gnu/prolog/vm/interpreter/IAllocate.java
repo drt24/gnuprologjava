@@ -16,46 +16,52 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
+
 /** allocate environment instruction */
 public class IAllocate extends Instruction
 {
-  /** size of environment */
-  public int environmentSize;
-  /** reserved fields, fields are reserved for saved choice points and
-    * arguments, reserved fields are included in environment size 
-    * but they are not initilized with unbound variables
-    */
-  public int reserved;
+	/** size of environment */
+	public int environmentSize;
+	/**
+	 * reserved fields, fields are reserved for saved choice points and arguments,
+	 * reserved fields are included in environment size but they are not
+	 * initilized with unbound variables
+	 */
+	public int reserved;
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": allocate "+environmentSize+", "+reserved;
-  }
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": allocate " + environmentSize + ", " + reserved;
+	}
 
-  public IAllocate(int environmentSize, int reserved)
-  {
-    this.environmentSize = environmentSize;
-    this.reserved = reserved;
-  }
+	public IAllocate(int environmentSize, int reserved)
+	{
+		this.environmentSize = environmentSize;
+		this.reserved = reserved;
+	}
 
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    Term env[] = new Term[environmentSize];
-    for (int i=reserved; i<environmentSize; i++)
-    {
-      env[i]= new VariableTerm();
-    }
-    state.environment = env;
-    return ExecutionState.NEXT;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		Term env[] = new Term[environmentSize];
+		for (int i = reserved; i < environmentSize; i++)
+		{
+			env[i] = new VariableTerm();
+		}
+		state.environment = env;
+		return ExecutionState.NEXT;
+	}
 }

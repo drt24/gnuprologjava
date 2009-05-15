@@ -22,31 +22,31 @@ public class ParseException extends java.io.IOException
 	private static final long serialVersionUID = -7824584186874732911L;
 
 	ParseException(gnu.prolog.io.parser.gen.ParseException ex)
-  {
-    super(ex.getMessage());
-    line = ex.currentToken.next.beginLine;
-    column = ex.currentToken.next.beginColumn;
-    //line = ex.currentToken.endLine;
-    //column = ex.currentToken.endColumn;
-  }
-  
-  ParseException(gnu.prolog.io.parser.gen.TokenMgrError ex)
-  {
-    super(ex.getMessage());
-  }
+	{
+		super(ex.getMessage());
+		line = ex.currentToken.next.beginLine;
+		column = ex.currentToken.next.beginColumn;
+		// line = ex.currentToken.endLine;
+		// column = ex.currentToken.endColumn;
+	}
 
-  int    line;
-  int    column;
-  String expectedTokens[];
+	ParseException(gnu.prolog.io.parser.gen.TokenMgrError ex)
+	{
+		super(ex.getMessage());
+	}
 
-  public int getLine()
-  {
-    return line;
-  }
+	int line;
+	int column;
+	String expectedTokens[];
 
-  public int getColumn()
-  {
-    return column;
-  }
+	public int getLine()
+	{
+		return line;
+	}
+
+	public int getColumn()
+	{
+		return column;
+	}
 
 }

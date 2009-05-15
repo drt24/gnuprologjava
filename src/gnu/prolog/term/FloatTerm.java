@@ -16,49 +16,59 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-/** floating point number term
-  * @author Constantine Plotnikov
-  * @version 0.0.1
-  */
+
+/**
+ * floating point number term
+ * 
+ * @author Constantine Plotnikov
+ * @version 0.0.1
+ */
 public class FloatTerm extends AtomicTerm
 {
 	private static final long serialVersionUID = -5988244457397590539L;
 
+	/**
+	 * get floating point number term
+	 * 
+	 * @param str
+	 *          string reppresentation of float number
+	 * @retuns new floating point number term
+	 * @throw IllegalArgumentException when str is not valid string
+	 */
+	public FloatTerm(String str)
+	{
+		try
+		{
+			value = new Double(str).doubleValue();
+		}
+		catch (NumberFormatException ex)
+		{
+			throw new IllegalArgumentException("argument should be floating point number");
+		}
+	}
 
-	/** get floating point number term
-    * @param str string reppresentation of float number
-    * @retuns new floating point number term
-    * @throw IllegalArgumentException when str is not valid string
-    */
-  public FloatTerm(String str)
-  {
-    try
-    {
-      value = new Double(str).doubleValue();
-    }
-    catch(NumberFormatException ex)
-    {
-      throw new IllegalArgumentException("argument should be floating point number");
-    }
-  }
+	/**
+	 * a constructor
+	 * 
+	 * @param val
+	 *          double value
+	 */
+	public FloatTerm(double val)
+	{
+		value = val;
+	}
 
-  /** a constructor
-    * @param val double value
-    */
-  public FloatTerm(double val) {value = val;}
+	/** value of term */
+	public final double value;
 
-  /** value of term */
-  public final double value;
-
-
-  /** get type of term 
-    * @return type of term
-    */
-  public int getTermType()
-  {
-    return FLOAT;
-  }
-
+	/**
+	 * get type of term
+	 * 
+	 * @return type of term
+	 */
+	public int getTermType()
+	{
+		return FLOAT;
+	}
 
 }
-

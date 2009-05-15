@@ -16,25 +16,27 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
 
-/** this backtrack info is put to stack upon exit from 
-  * from user defined predicate in return instruction.
-  * As result it is BacktrackInfo that is passed to user defined predicate as 
-  * parameter, no other backtrack info will be passed as parameter to user defined 
-  * predicate on redo.
-  */
+/**
+ * this backtrack info is put to stack upon exit from from user defined
+ * predicate in return instruction. As result it is BacktrackInfo that is passed
+ * to user defined predicate as parameter, no other backtrack info will be
+ * passed as parameter to user defined predicate on redo.
+ */
 public class LeaveByteCodeBacktrackInfo extends BacktrackInfo
 {
-  /** execution state */
-  public BacktrackInfo startBacktrackInfo;
-  public Term environment[];
-  /** a constructor */
-  public LeaveByteCodeBacktrackInfo(Term environment[], BacktrackInfo startBacktrackInfo)
-  {
-    super(-1, -1);
-    this.environment = environment;
-    this.startBacktrackInfo = startBacktrackInfo;
-  }
+	/** execution state */
+	public BacktrackInfo startBacktrackInfo;
+	public Term environment[];
+
+	/** a constructor */
+	public LeaveByteCodeBacktrackInfo(Term environment[], BacktrackInfo startBacktrackInfo)
+	{
+		super(-1, -1);
+		this.environment = environment;
+		this.startBacktrackInfo = startBacktrackInfo;
+	}
 }

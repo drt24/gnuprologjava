@@ -16,44 +16,50 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
-/** create compound term 
-  */
+
+/**
+ * create compound term
+ */
 public class ICreateCompoundTerm extends Instruction
 {
-  /** position of term in environment */
-  public CompoundTermTag tag;
-  /** a constructor */
-  public ICreateCompoundTerm(CompoundTermTag tag)
-  {
-    this.tag = tag; 
-  }
+	/** position of term in environment */
+	public CompoundTermTag tag;
 
+	/** a constructor */
+	public ICreateCompoundTerm(CompoundTermTag tag)
+	{
+		this.tag = tag;
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": create_struct "+tag.functor.value+"/"+tag.arity;
-  }
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": create_struct " + tag.functor.value + "/" + tag.arity;
+	}
 
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    int arity = tag.arity;
-    Term args[] = new Term[arity];
-    for (int i=arity-1;i>=0;i--)
-    {
-      args[i]=state.popPushDown().dereference();
-    }
-    state.pushPushDown(new CompoundTerm(tag,args));
-    return ExecutionState.NEXT;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		int arity = tag.arity;
+		Term args[] = new Term[arity];
+		for (int i = arity - 1; i >= 0; i--)
+		{
+			args[i] = state.popPushDown().dereference();
+		}
+		state.pushPushDown(new CompoundTerm(tag, args));
+		return ExecutionState.NEXT;
+	}
 }

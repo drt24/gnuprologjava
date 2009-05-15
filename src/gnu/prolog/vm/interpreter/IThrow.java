@@ -16,32 +16,37 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
+
 /** throw instruction */
 public class IThrow extends Instruction
 {
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo backtrackInfo) throws PrologException
-  {
-    Term term = state.popPushDown();
-    if (term instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    throw new PrologException(term, null);
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo backtrackInfo) throws PrologException
+	{
+		Term term = state.popPushDown();
+		if (term instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		throw new PrologException(term, null);
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": throw";
-  }
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": throw";
+	}
 
 }

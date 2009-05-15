@@ -53,7 +53,7 @@ public class Predicate_length implements PrologCode
 		if (CompoundTerm.isListPair(args[0]))
 		{
 			int length = 0;
-			
+
 			Term lst = args[0];
 			while (lst != null)
 			{
@@ -73,7 +73,7 @@ public class Predicate_length implements PrologCode
 				++length;
 				lst = ct.args[1];
 			}
-			
+
 			return interpreter.unify(args[1], IntegerTerm.get(length));
 		}
 		else if (args[0] instanceof VariableTerm)

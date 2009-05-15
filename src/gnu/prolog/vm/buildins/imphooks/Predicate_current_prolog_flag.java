@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.imphooks;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
@@ -27,97 +28,111 @@ import gnu.prolog.vm.PrologException;
 import java.util.Iterator;
 import java.util.Map;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_current_prolog_flag implements PrologCode
 {
-   private class CurrentPrologFlagBacktrackInfo extends BacktrackInfo
-   {
-     CurrentPrologFlagBacktrackInfo(){super(-1,-1);}
-     Map<AtomTerm, Term> map;
-     Iterator<AtomTerm> keys; 
-     int startUndoPosition;
-     Term flag;
-     Term value;
-   }
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    if (backtrackMode)
-    {
-      CurrentPrologFlagBacktrackInfo bi = 
-        (CurrentPrologFlagBacktrackInfo)interpreter.popBacktrackInfo();
-      interpreter.undo(bi.startUndoPosition);
-      return nextSolution(interpreter,bi);
-    }
-    else
-    {
-      Term flag = args[0];
-      Term value = args[1];
-      if (flag instanceof AtomTerm)
-      {
-        Term val = interpreter.environment.getPrologFlag((AtomTerm)flag);
-        if (val == null)
-        {
-          return FAIL;
-        }
-        return interpreter.unify(value, val.dereference());
-      }
-      CurrentPrologFlagBacktrackInfo bi = new CurrentPrologFlagBacktrackInfo();
-      bi.map = interpreter.environment.getPrologFlags();
-      bi.keys = bi.map.keySet().iterator();
-      bi.startUndoPosition = interpreter.getUndoPosition();
-      bi.flag = flag;
-      bi.value = value;
-      return nextSolution(interpreter,bi);
-    }
-  }
+	private class CurrentPrologFlagBacktrackInfo extends BacktrackInfo
+	{
+		CurrentPrologFlagBacktrackInfo()
+		{
+			super(-1, -1);
+		}
 
-  private int nextSolution(Interpreter interpreter, 
-                           CurrentPrologFlagBacktrackInfo bi) throws PrologException
-  {
-    while (bi.keys.hasNext())
-    {
-      AtomTerm f = (AtomTerm)bi.keys.next();
-      Term v = (Term)bi.map.get(f);
-      int rc = interpreter.simple_unify(f,bi.flag);
-      if (rc == FAIL)
-      {
-        interpreter.undo(bi.startUndoPosition);
-        continue;
-      }
-      rc = interpreter.simple_unify(v,bi.value);
-      if (rc == FAIL)
-      {
-        interpreter.undo(bi.startUndoPosition);
-        continue;
-      }
-      interpreter.pushBacktrackInfo(bi);
-      return SUCCESS;
-    }
-    return FAIL;
-  }
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+		Map<AtomTerm, Term> map;
+		Iterator<AtomTerm> keys;
+		int startUndoPosition;
+		Term flag;
+		Term value;
+	}
 
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		if (backtrackMode)
+		{
+			CurrentPrologFlagBacktrackInfo bi = (CurrentPrologFlagBacktrackInfo) interpreter.popBacktrackInfo();
+			interpreter.undo(bi.startUndoPosition);
+			return nextSolution(interpreter, bi);
+		}
+		else
+		{
+			Term flag = args[0];
+			Term value = args[1];
+			if (flag instanceof AtomTerm)
+			{
+				Term val = interpreter.environment.getPrologFlag((AtomTerm) flag);
+				if (val == null)
+				{
+					return FAIL;
+				}
+				return interpreter.unify(value, val.dereference());
+			}
+			CurrentPrologFlagBacktrackInfo bi = new CurrentPrologFlagBacktrackInfo();
+			bi.map = interpreter.environment.getPrologFlags();
+			bi.keys = bi.map.keySet().iterator();
+			bi.startUndoPosition = interpreter.getUndoPosition();
+			bi.flag = flag;
+			bi.value = value;
+			return nextSolution(interpreter, bi);
+		}
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	private int nextSolution(Interpreter interpreter, CurrentPrologFlagBacktrackInfo bi) throws PrologException
+	{
+		while (bi.keys.hasNext())
+		{
+			AtomTerm f = (AtomTerm) bi.keys.next();
+			Term v = (Term) bi.map.get(f);
+			int rc = interpreter.simple_unify(f, bi.flag);
+			if (rc == FAIL)
+			{
+				interpreter.undo(bi.startUndoPosition);
+				continue;
+			}
+			rc = interpreter.simple_unify(v, bi.value);
+			if (rc == FAIL)
+			{
+				interpreter.undo(bi.startUndoPosition);
+				continue;
+			}
+			interpreter.pushBacktrackInfo(bi);
+			return SUCCESS;
+		}
+		return FAIL;
+	}
+
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
+
+	}
+
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

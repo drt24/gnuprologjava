@@ -16,37 +16,41 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
-/** Save current state as BacktrackInfo in environment 
-  */
+
+/**
+ * Save current state as BacktrackInfo in environment
+ */
 public class ISaveState extends Instruction
 {
-  /** environemt index where state was saved
-    */
-  public int environmentIndex;  
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    JavaObjectTerm term = new JavaObjectTerm(state.peekBacktrackInfo());
-    state.environment[environmentIndex] = term;
-    return ExecutionState.NEXT;
-    
-  }
+	/**
+	 * environemt index where state was saved
+	 */
+	public int environmentIndex;
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": save_state "+environmentIndex;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		JavaObjectTerm term = new JavaObjectTerm(state.peekBacktrackInfo());
+		state.environment[environmentIndex] = term;
+		return ExecutionState.NEXT;
 
+	}
+
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": save_state " + environmentIndex;
+	}
 
 }
-
-
-

@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
@@ -24,24 +25,24 @@ import gnu.prolog.vm.PrologCode;
 /** call backtrack info */
 public class CallBacktrackInfo extends BacktrackInfo
 {
-  /** argument list save for call */
-  public Term args[];
-  /** code at moment of first call. 
-    * It is saved in order to shield code from predicate changes. as result on backtracking
-    * exactly same code will be used. 
-    */
-  public PrologCode code;
-  
-  public CompoundTermTag tag;
+	/** argument list save for call */
+	public Term args[];
+	/**
+	 * code at moment of first call. It is saved in order to shield code from
+	 * predicate changes. as result on backtracking exactly same code will be
+	 * used.
+	 */
+	public PrologCode code;
 
+	public CompoundTermTag tag;
 
-  /** a constructor */
-  public CallBacktrackInfo(int undoPosition, int codePosition, Term args[], PrologCode code, CompoundTermTag tag) 
-  {
-    super(undoPosition, codePosition);
-    this.args = args;
-    this.code = code;
-    this.tag = tag;
-  }
+	/** a constructor */
+	public CallBacktrackInfo(int undoPosition, int codePosition, Term args[], PrologCode code, CompoundTermTag tag)
+	{
+		super(undoPosition, codePosition);
+		this.args = args;
+		this.code = code;
+		this.tag = tag;
+	}
 
 }

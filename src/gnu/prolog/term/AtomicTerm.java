@@ -16,23 +16,25 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-/** base class for all constant terms
-  * @author Constantine Plotnikov
-  * @version 0.0.1
-  */
+
+/**
+ * base class for all constant terms
+ * 
+ * @author Constantine Plotnikov
+ * @version 0.0.1
+ */
 public abstract class AtomicTerm extends Term
 {
 	private static final long serialVersionUID = -3966209611457278787L;
 
 	public Term clone(TermCloneContext context)
-  {
-    return this;
-  }
+	{
+		return this;
+	}
 
-  public Object clone()
-  {
-    return this;
-  }
+	public Object clone()
+	{
+		return this;
+	}
 
 }
-

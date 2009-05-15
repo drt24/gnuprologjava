@@ -16,8 +16,9 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
+
 /** listenr to changes with predicates in this module */
 public interface PredicateListener extends java.util.EventListener
 {
-  public void predicateUpdated(PredicateUpdatedEvent evt);
+	public void predicateUpdated(PredicateUpdatedEvent evt);
 }

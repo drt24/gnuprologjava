@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
+
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 
@@ -26,94 +27,102 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** Module in database
-  * @author Contantine A Plotnikov
-  */
+/**
+ * Module in database
+ * 
+ * @author Contantine A Plotnikov
+ */
 public class Module
 {
-  /** map from tag to predicates */
-  Map<CompoundTermTag,Predicate> tag2predicate = new HashMap<CompoundTermTag, Predicate>();
+	/** map from tag to predicates */
+	Map<CompoundTermTag, Predicate> tag2predicate = new HashMap<CompoundTermTag, Predicate>();
 
-  /** initialization */
-  List<Term> initialization = new ArrayList<Term>();
-  /** create new predicate defined in this module
-    * @param tag tag of this predicate
-    * @return created predicate
-    * @throws IllegalStateException when predicate already exists
-    */
-  public synchronized Predicate createDefinedPredicate(CompoundTermTag tag)
-  {
-    if (tag2predicate.containsKey(tag))
-    {
-      throw new IllegalStateException("A predicate already exists.");
-    }
-    Predicate p = new Predicate(this, tag);
-    tag2predicate.put(tag,p);
-    predicateUpdated(tag);
-    return p;
-  }
+	/** initialization */
+	List<Term> initialization = new ArrayList<Term>();
 
-  /** get predicate defined in this module
-    * @param tag tag of this predicate
-    * @return predicate defined in this module or null if predicate is not found
-    */
-  public synchronized Predicate getDefinedPredicate(CompoundTermTag tag)
-  {
-    Predicate p = (Predicate)tag2predicate.get(tag);
-    if (p == null)
-    {
-      return null;
-    }
-    return p;
-  }
+	/**
+	 * create new predicate defined in this module
+	 * 
+	 * @param tag
+	 *          tag of this predicate
+	 * @return created predicate
+	 * @throws IllegalStateException
+	 *           when predicate already exists
+	 */
+	public synchronized Predicate createDefinedPredicate(CompoundTermTag tag)
+	{
+		if (tag2predicate.containsKey(tag))
+		{
+			throw new IllegalStateException("A predicate already exists.");
+		}
+		Predicate p = new Predicate(this, tag);
+		tag2predicate.put(tag, p);
+		predicateUpdated(tag);
+		return p;
+	}
 
-  public synchronized void removeDefinedPredicate(CompoundTermTag tag)
-  {
-    tag2predicate.remove(tag);
-    predicateUpdated(tag);
-  }
+	/**
+	 * get predicate defined in this module
+	 * 
+	 * @param tag
+	 *          tag of this predicate
+	 * @return predicate defined in this module or null if predicate is not found
+	 */
+	public synchronized Predicate getDefinedPredicate(CompoundTermTag tag)
+	{
+		Predicate p = (Predicate) tag2predicate.get(tag);
+		if (p == null)
+		{
+			return null;
+		}
+		return p;
+	}
 
-  /** add term to initialization list */
-  public synchronized void addInitialization(Term term)
-  {
-    initialization.add(term);
-  }
+	public synchronized void removeDefinedPredicate(CompoundTermTag tag)
+	{
+		tag2predicate.remove(tag);
+		predicateUpdated(tag);
+	}
 
-  /** get initaliztion */
-  public synchronized List<Term> getInitialization()
-  {
-    return initialization;
-  }
+	/** add term to initialization list */
+	public synchronized void addInitialization(Term term)
+	{
+		initialization.add(term);
+	}
 
-  /** get predicate tags */
-  public synchronized Set<CompoundTermTag> getPredicateTags()
-  {
-    return tag2predicate.keySet();
-  }
+	/** get initaliztion */
+	public synchronized List<Term> getInitialization()
+	{
+		return initialization;
+	}
 
-  List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
-  
-  public synchronized void predicateUpdated(CompoundTermTag tag)
-  {
-    PredicateUpdatedEvent evt = new PredicateUpdatedEvent(this,tag);
-    Iterator<PredicateListener> i = new ArrayList<PredicateListener>(predicateListeners).iterator();
-    while (i.hasNext())
-    {
-      PredicateListener listener = (PredicateListener)i.next();
-      listener.predicateUpdated(evt);
-    }
-  }
+	/** get predicate tags */
+	public synchronized Set<CompoundTermTag> getPredicateTags()
+	{
+		return tag2predicate.keySet();
+	}
 
-  public synchronized void addPredicateListener(PredicateListener listener)
-  {
-    predicateListeners.add(listener);
-  }
+	List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
 
-  public synchronized void removePredicateListener(PredicateListener listener)
-  {
-    predicateListeners.add(listener);
-  }
+	public synchronized void predicateUpdated(CompoundTermTag tag)
+	{
+		PredicateUpdatedEvent evt = new PredicateUpdatedEvent(this, tag);
+		Iterator<PredicateListener> i = new ArrayList<PredicateListener>(predicateListeners).iterator();
+		while (i.hasNext())
+		{
+			PredicateListener listener = (PredicateListener) i.next();
+			listener.predicateUpdated(evt);
+		}
+	}
+
+	public synchronized void addPredicateListener(PredicateListener listener)
+	{
+		predicateListeners.add(listener);
+	}
+
+	public synchronized void removePredicateListener(PredicateListener listener)
+	{
+		predicateListeners.add(listener);
+	}
 
 }
-
-

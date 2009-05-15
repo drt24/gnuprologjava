@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.test;
+
 import gnu.prolog.Version;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.io.OperatorSet;
@@ -38,42 +39,43 @@ import java.util.Iterator;
 
 public class CodeDumper
 {
-  public static void main (String args[]) 
-  {
-    try
-    {
-      System.out.println("GNU Prolog for Java ("+Version.getVersion()+") Interpreted Code dumper (c) Constantine Plotnikov, 1997-1999.");
-      if (args.length < 2)
-      {
-        System.out.println("usage: java gnu.prolog.test.CodeDumper <text to load> <predicate indicator>");
-        System.out.println("example: java gnu.prolog.test.CodeDumper append.pro append/3");
-      }
-      String textToLoad = args[0];
-      String goalToRun = args[1];
-      Environment env = new Environment();
-      env.ensureLoaded(AtomTerm.get(textToLoad));
-      Interpreter interpreter = env.createInterpreter();
-      env.runIntialization(interpreter);
-      for (Iterator ierr = env.getLoadingErrors().iterator();ierr.hasNext();)
-      {
-        PrologTextLoaderError err = (PrologTextLoaderError)ierr.next();
-        System.err.println(err);
-        //err.printStackTrace();
-      }
-      LineNumberReader kin = new LineNumberReader(new InputStreamReader(System.in));
-      StringReader rd = new StringReader(goalToRun);
-      TermReader trd = new TermReader(rd);
-      TermWriter out = new TermWriter(new OutputStreamWriter(System.out));
-      ReadOptions rd_ops = new ReadOptions();
-      rd_ops.operatorSet = new OperatorSet();
-      WriteOptions wr_ops = new WriteOptions();
-      Term goalTerm = trd.readTermEof(rd_ops);
-      PrologCode code = env.getPrologCode(CompoundTermTag.get(goalTerm));
-      System.out.println(code);
-    }
-    catch(Exception ex)
-    {
-      ex.printStackTrace();
-    }
-  }
+	public static void main(String args[])
+	{
+		try
+		{
+			System.out.println("GNU Prolog for Java (" + Version.getVersion()
+					+ ") Interpreted Code dumper (c) Constantine Plotnikov, 1997-1999.");
+			if (args.length < 2)
+			{
+				System.out.println("usage: java gnu.prolog.test.CodeDumper <text to load> <predicate indicator>");
+				System.out.println("example: java gnu.prolog.test.CodeDumper append.pro append/3");
+			}
+			String textToLoad = args[0];
+			String goalToRun = args[1];
+			Environment env = new Environment();
+			env.ensureLoaded(AtomTerm.get(textToLoad));
+			Interpreter interpreter = env.createInterpreter();
+			env.runIntialization(interpreter);
+			for (Iterator ierr = env.getLoadingErrors().iterator(); ierr.hasNext();)
+			{
+				PrologTextLoaderError err = (PrologTextLoaderError) ierr.next();
+				System.err.println(err);
+				// err.printStackTrace();
+			}
+			LineNumberReader kin = new LineNumberReader(new InputStreamReader(System.in));
+			StringReader rd = new StringReader(goalToRun);
+			TermReader trd = new TermReader(rd);
+			TermWriter out = new TermWriter(new OutputStreamWriter(System.out));
+			ReadOptions rd_ops = new ReadOptions();
+			rd_ops.operatorSet = new OperatorSet();
+			WriteOptions wr_ops = new WriteOptions();
+			Term goalTerm = trd.readTermEof(rd_ops);
+			PrologCode code = env.getPrologCode(CompoundTermTag.get(goalTerm));
+			System.out.println(code);
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 }

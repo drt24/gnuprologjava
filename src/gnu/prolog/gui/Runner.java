@@ -16,23 +16,23 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.gui;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 public class Runner extends JFrame
 {
-  
-  
-  JButton   prepareButton = new JButton("Prepare");
-  JButton   executeButton = new JButton("Execute");
-  JButton   stopButton = new JButton("Stop");
-  JTextArea goalTextArea = new JTextArea();
-  JTextArea resultTextArea = new JTextArea();
 
-  public Runner()
-  {
-    super("PVM Test Runner");
+	JButton prepareButton = new JButton("Prepare");
+	JButton executeButton = new JButton("Execute");
+	JButton stopButton = new JButton("Stop");
+	JTextArea goalTextArea = new JTextArea();
+	JTextArea resultTextArea = new JTextArea();
 
-  }
+	public Runner()
+	{
+		super("PVM Test Runner");
+
+	}
 }

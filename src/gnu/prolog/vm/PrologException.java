@@ -31,7 +31,7 @@ public class PrologException extends Exception
 	Term term;
 	/** message of exception */
 	String msg;
-	
+
 	/**
 	 * 
 	 */
@@ -65,8 +65,12 @@ public class PrologException extends Exception
 		super(cause);
 	}
 
-	/** a constructor 
-	 * @param inner TODO*/
+	/**
+	 * a constructor
+	 * 
+	 * @param inner
+	 *          TODO
+	 */
 	public PrologException(Term term, Throwable inner)
 	{
 		this(inner);

@@ -186,7 +186,8 @@ public class Predicate_call implements PrologCode
 		else if (term instanceof CompoundTerm)
 		{
 			CompoundTerm ct = (CompoundTerm) term;
-			if (ct.tag == TermConstants.ifTag || ct.tag == TermConstants.conjunctionTag || ct.tag == TermConstants.disjunctionTag)
+			if (ct.tag == TermConstants.ifTag || ct.tag == TermConstants.conjunctionTag
+					|| ct.tag == TermConstants.disjunctionTag)
 			{
 				return new CompoundTerm(ct.tag, getClause(ct.args[0].dereference(), argumentVariables, arguments), getClause(
 						ct.args[1].dereference(), argumentVariables, arguments));
@@ -198,7 +199,7 @@ public class Predicate_call implements PrologCode
 				if (!arguments.contains(arg))
 				{
 					newArgs[i] = new VariableTerm();
-					argumentVariables.add((VariableTerm)newArgs[i]);
+					argumentVariables.add((VariableTerm) newArgs[i]);
 					arguments.add(arg);
 				}
 				else

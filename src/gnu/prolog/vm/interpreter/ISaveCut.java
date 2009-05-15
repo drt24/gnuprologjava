@@ -16,39 +16,44 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
-/** save latest choice point as cut position instruction */
-public class ISaveCut extends Instruction 
-{
-  /** index in environemt where cut position is kept, cut position is kept as
-    * JavaObjectTerm containing BacktrackInfo until which all should be be 
-    * popped 
-    */
-  public int environmentIndex;
-  /** a constructor */
-  public ISaveCut(int environmentIndex)
-  {
-    this.environmentIndex = environmentIndex;
-  }
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    state.putEnvironment(environmentIndex,
-                         new JavaObjectTerm(state.peekBacktrackInfo()));
-    return ExecutionState.NEXT;
-  }
-  
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": save_cut "+environmentIndex;
-  }
+/** save latest choice point as cut position instruction */
+public class ISaveCut extends Instruction
+{
+	/**
+	 * index in environemt where cut position is kept, cut position is kept as
+	 * JavaObjectTerm containing BacktrackInfo until which all should be be popped
+	 */
+	public int environmentIndex;
+
+	/** a constructor */
+	public ISaveCut(int environmentIndex)
+	{
+		this.environmentIndex = environmentIndex;
+	}
+
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		state.putEnvironment(environmentIndex, new JavaObjectTerm(state.peekBacktrackInfo()));
+		return ExecutionState.NEXT;
+	}
+
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": save_cut " + environmentIndex;
+	}
 
 }

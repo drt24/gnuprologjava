@@ -16,25 +16,30 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
+
 import gnu.prolog.term.Term;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-/** this class contains representation of ISO prolog read options.
-  * @author Constantine Plotnikov
-  * @versiom 0.0.1
-  */
+
+/**
+ * this class contains representation of ISO prolog read options.
+ * 
+ * @author Constantine Plotnikov
+ * @versiom 0.0.1
+ */
 public class ReadOptions
 {
-  /** 'variables' ISO Prolog options */
-  public final List<Term> variables = new ArrayList<Term>();
-  /** 'variable_names' ISO Prolog options */
-  public final Map<String,Term> variableNames = new HashMap<String, Term>();
-  /** operator set */
-  public OperatorSet operatorSet;
-  /* 'sigletons'  ISO Prolog options
-   *  it is not used currently. */
-  public final Map<String,Term> singletons = new HashMap<String, Term>();
+	/** 'variables' ISO Prolog options */
+	public final List<Term> variables = new ArrayList<Term>();
+	/** 'variable_names' ISO Prolog options */
+	public final Map<String, Term> variableNames = new HashMap<String, Term>();
+	/** operator set */
+	public OperatorSet operatorSet;
+	/*
+	 * 'sigletons' ISO Prolog options it is not used currently.
+	 */
+	public final Map<String, Term> singletons = new HashMap<String, Term>();
 }

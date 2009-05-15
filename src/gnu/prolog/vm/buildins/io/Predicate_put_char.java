@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -26,62 +27,72 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_put_char implements PrologCode
 {
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    PrologStream stream = interpreter.environment.resolveStream(args[0]);
-    Term outchar = args[1];
-    char ch = 0;
-    if (outchar instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    else if (outchar instanceof AtomTerm)
-    {
-      AtomTerm ach = (AtomTerm)outchar;
-      if (ach.value.length() == 1)
-      {
-        ch = ach.value.charAt(0);
-      }
-      else
-      {
-        PrologException.typeError(TermConstants.characterAtom, outchar);
-      }
-    }
-    else
-    {
-      PrologException.typeError(TermConstants.characterAtom, outchar);
-    }
-    stream.putCode(args[0],interpreter,ch);
-    return SUCCESS_LAST;
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		Term outchar = args[1];
+		char ch = 0;
+		if (outchar instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		else if (outchar instanceof AtomTerm)
+		{
+			AtomTerm ach = (AtomTerm) outchar;
+			if (ach.value.length() == 1)
+			{
+				ch = ach.value.charAt(0);
+			}
+			else
+			{
+				PrologException.typeError(TermConstants.characterAtom, outchar);
+			}
+		}
+		else
+		{
+			PrologException.typeError(TermConstants.characterAtom, outchar);
+		}
+		stream.putCode(args[0], interpreter, ch);
+		return SUCCESS_LAST;
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.database;
+
 import gnu.prolog.database.Predicate;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
@@ -35,154 +36,166 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_retract implements PrologCode
 {
-  private class RetractBacktrackInfo extends BacktrackInfo
-  {
-    RetractBacktrackInfo()
-    {
-      super(-1,-1);
-    }
-    Iterator<Term> iclauses;
-    Map<Term,Term> clauseMap;
-    int startUndoPosition;
-    Term clause;
-    Predicate pred;
-  }
+	private class RetractBacktrackInfo extends BacktrackInfo
+	{
+		RetractBacktrackInfo()
+		{
+			super(-1, -1);
+		}
 
+		Iterator<Term> iclauses;
+		Map<Term, Term> clauseMap;
+		int startUndoPosition;
+		Term clause;
+		Predicate pred;
+	}
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    if (backtrackMode)
-    {
-      RetractBacktrackInfo bi = (RetractBacktrackInfo)interpreter.popBacktrackInfo();
-      interpreter.undo(bi.startUndoPosition);
-      return nextSolution(interpreter,bi);
-    }
-    else
-    {
-      Term clause = args[0];
-      Term head = null;
-      Term body = null;
-      if (clause instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      else if (clause instanceof CompoundTerm)
-      {
-        CompoundTerm ct = (CompoundTerm)clause;
-        if (ct.tag == TermConstants.clauseTag )
-        {
-          head = ct.args[0].dereference();
-          body = ct.args[1].dereference();
-        }
-        else
-        {
-          head = ct;
-          body = TermConstants.trueAtom;
-        }
-      }
-      else if (clause instanceof AtomTerm)
-      {
-        head = clause;
-        body = TermConstants.trueAtom;
-      }
-      else 
-      {
-        PrologException.typeError(TermConstants.callableAtom,clause);
-      }
-      CompoundTermTag predTag = null;
-      if (head instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      else if (head instanceof CompoundTerm)
-      {
-        predTag = ((CompoundTerm)head).tag;
-      }
-      else if (head instanceof AtomTerm)
-      {
-        predTag = CompoundTermTag.get((AtomTerm)head,0);
-      }
-      else
-      {
-        PrologException.typeError(TermConstants.callableAtom,head);
-      }
-      Predicate p = interpreter.environment.getModule().getDefinedPredicate(predTag);
-      if (p == null)
-      {
-        return FAIL;
-      }
-      else if (p.getType() == Predicate.USER_DEFINED)
-      {
-        if (!p.isDynamic())
-        {
-          PrologException.permissionError(TermConstants.modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
-        }
-      }
-      else
-      {
-        PrologException.permissionError(TermConstants.modifyAtom,TermConstants.staticProcedureAtom,predTag.getPredicateIndicator());
-      }
-      Map<Term,Term> map = new HashMap<Term, Term>();
-      List<Term> list = new ArrayList<Term>(p.getClauses().size());
-      for (Iterator<Term> ic = p.getClauses().iterator();ic.hasNext();)
-      {
-        Term cl = (Term)ic.next();
-        Term cp = (Term)cl.clone();
-        map.put(cp, cl);
-        list.add(cp);
-      }
-      RetractBacktrackInfo bi = new RetractBacktrackInfo();
-      bi.iclauses = list.iterator();
-      bi.clauseMap = map;
-      bi.startUndoPosition = interpreter.getUndoPosition();
-      bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
-      bi.pred = p;
-      return nextSolution(interpreter,bi);
-    }
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		if (backtrackMode)
+		{
+			RetractBacktrackInfo bi = (RetractBacktrackInfo) interpreter.popBacktrackInfo();
+			interpreter.undo(bi.startUndoPosition);
+			return nextSolution(interpreter, bi);
+		}
+		else
+		{
+			Term clause = args[0];
+			Term head = null;
+			Term body = null;
+			if (clause instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			else if (clause instanceof CompoundTerm)
+			{
+				CompoundTerm ct = (CompoundTerm) clause;
+				if (ct.tag == TermConstants.clauseTag)
+				{
+					head = ct.args[0].dereference();
+					body = ct.args[1].dereference();
+				}
+				else
+				{
+					head = ct;
+					body = TermConstants.trueAtom;
+				}
+			}
+			else if (clause instanceof AtomTerm)
+			{
+				head = clause;
+				body = TermConstants.trueAtom;
+			}
+			else
+			{
+				PrologException.typeError(TermConstants.callableAtom, clause);
+			}
+			CompoundTermTag predTag = null;
+			if (head instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			else if (head instanceof CompoundTerm)
+			{
+				predTag = ((CompoundTerm) head).tag;
+			}
+			else if (head instanceof AtomTerm)
+			{
+				predTag = CompoundTermTag.get((AtomTerm) head, 0);
+			}
+			else
+			{
+				PrologException.typeError(TermConstants.callableAtom, head);
+			}
+			Predicate p = interpreter.environment.getModule().getDefinedPredicate(predTag);
+			if (p == null)
+			{
+				return FAIL;
+			}
+			else if (p.getType() == Predicate.USER_DEFINED)
+			{
+				if (!p.isDynamic())
+				{
+					PrologException.permissionError(TermConstants.modifyAtom, TermConstants.staticProcedureAtom, predTag
+							.getPredicateIndicator());
+				}
+			}
+			else
+			{
+				PrologException.permissionError(TermConstants.modifyAtom, TermConstants.staticProcedureAtom, predTag
+						.getPredicateIndicator());
+			}
+			Map<Term, Term> map = new HashMap<Term, Term>();
+			List<Term> list = new ArrayList<Term>(p.getClauses().size());
+			for (Iterator<Term> ic = p.getClauses().iterator(); ic.hasNext();)
+			{
+				Term cl = (Term) ic.next();
+				Term cp = (Term) cl.clone();
+				map.put(cp, cl);
+				list.add(cp);
+			}
+			RetractBacktrackInfo bi = new RetractBacktrackInfo();
+			bi.iclauses = list.iterator();
+			bi.clauseMap = map;
+			bi.startUndoPosition = interpreter.getUndoPosition();
+			bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
+			bi.pred = p;
+			return nextSolution(interpreter, bi);
+		}
+	}
 
-  private static int nextSolution(Interpreter interpreter, RetractBacktrackInfo bi) throws PrologException
-  {
-    while (bi.iclauses.hasNext())
-    {
-      Term term = (Term)bi.iclauses.next();
-      int rc = interpreter.unify(bi.clause,term);
-      if (rc == SUCCESS_LAST)
-      {
-        bi.pred.removeClause((Term)bi.clauseMap.get(term));
-        interpreter.pushBacktrackInfo(bi);
-        return SUCCESS;
-      }
-    }
-    return FAIL;
-  }
+	private static int nextSolution(Interpreter interpreter, RetractBacktrackInfo bi) throws PrologException
+	{
+		while (bi.iclauses.hasNext())
+		{
+			Term term = (Term) bi.iclauses.next();
+			int rc = interpreter.unify(bi.clause, term);
+			if (rc == SUCCESS_LAST)
+			{
+				bi.pred.removeClause((Term) bi.clauseMap.get(term));
+				interpreter.pushBacktrackInfo(bi);
+				return SUCCESS;
+			}
+		}
+		return FAIL;
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

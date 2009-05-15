@@ -16,9 +16,9 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 /** variable term.
-  * @author Constantine Plotnikov
-  * @version 0.0.1
-  */
+ * @author Constantine Plotnikov
+ * @version 0.0.1
+ */
 package gnu.prolog.term;
 
 public class VariableTerm extends Term
@@ -26,75 +26,80 @@ public class VariableTerm extends Term
 	private static final long serialVersionUID = -8440602532721728373L;
 
 	/** create new unnamed variable term */
-  public VariableTerm() 
-  {
-  }
-  /** a constructor
-    * @param name name of term
-    */
-  /** value of variable term */
-  public Term value = null;
+	public VariableTerm()
+	{}
 
-  /** clone the object using clone context
-    * @param context clone context
-    * @return cloned term
-    */
-  public Term clone(TermCloneContext context)
-  {
-    if (value == null)
-    {
-      VariableTerm term = (VariableTerm)context.getTerm(this);
-      if (term == null)
-      {
-        term = new VariableTerm();
-        context.putTerm(this, term);
-      }
-      return term;
-    }
-    else
-    {
-      return value.clone(context);
-    }
-  }
+	/**
+	 * a constructor
+	 * 
+	 * @param name
+	 *          name of term
+	 */
+	/** value of variable term */
+	public Term value = null;
 
-  /** dereference term.
-    * @return dereferenced term
-    */
-  public Term dereference()
-  {
-    VariableTerm variable = this;
-    do
-    {
-      Term val = variable.value;
-      if( val == null )
-      {
-        return variable;
-      }
-      else if (!(val instanceof VariableTerm))
-      {
-        return val.dereference();
-      }
-      else
-      {
-        variable = (VariableTerm)val;
-      }
-    } while ( true );
-    /*
-    if(value == null)
-    {
-      return this;
-    }
-    return value.dereference();
-    */
-  }
+	/**
+	 * clone the object using clone context
+	 * 
+	 * @param context
+	 *          clone context
+	 * @return cloned term
+	 */
+	public Term clone(TermCloneContext context)
+	{
+		if (value == null)
+		{
+			VariableTerm term = (VariableTerm) context.getTerm(this);
+			if (term == null)
+			{
+				term = new VariableTerm();
+				context.putTerm(this, term);
+			}
+			return term;
+		}
+		else
+		{
+			return value.clone(context);
+		}
+	}
 
-  /** get type of term 
-    * @return type of term
-    */
-  public int getTermType()
-  {
-    return VARIABLE;
-  }
+	/**
+	 * dereference term.
+	 * 
+	 * @return dereferenced term
+	 */
+	public Term dereference()
+	{
+		VariableTerm variable = this;
+		do
+		{
+			Term val = variable.value;
+			if (val == null)
+			{
+				return variable;
+			}
+			else if (!(val instanceof VariableTerm))
+			{
+				return val.dereference();
+			}
+			else
+			{
+				variable = (VariableTerm) val;
+			}
+		} while (true);
+		/*
+		 * if(value == null) { return this; } return value.dereference();
+		 */
+	}
+
+	/**
+	 * get type of term
+	 * 
+	 * @return type of term
+	 */
+	public int getTermType()
+	{
+		return VARIABLE;
+	}
 
 }
-

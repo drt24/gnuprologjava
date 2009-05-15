@@ -16,69 +16,73 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
+
 import gnu.prolog.term.Term;
 
 import java.util.Map;
-/** ISO Prolog write options (Section 7.10.4)
-  * @author Constantine Plotnikov
-  * @version 0.0.1
-  */
+
+/**
+ * ISO Prolog write options (Section 7.10.4)
+ * 
+ * @author Constantine Plotnikov
+ * @version 0.0.1
+ */
 public class WriteOptions implements Cloneable
 {
-  /** Iff this option is true, each atom and functor
-    * is quoted if it would be necessary fro to be
-    * input by read_term/3
-    */
-  public boolean quoted;
-  /** Iff this option is true each coumpound term is
-    * output in functional notation. Neither operator
-    * notationnor list notation is used when this write
-    * option is in force.
-    */
-  public boolean ignoreOps;
-  /** display terms of form '$VAR'(N) as ('A'+ N%26)+""+(N/26).
-    * this option requires that ignoreOps = flase by ISO Standard
-    * checking this condition is left for user.
-    */
-  public boolean numbervars;
+	/**
+	 * Iff this option is true, each atom and functor is quoted if it would be
+	 * necessary fro to be input by read_term/3
+	 */
+	public boolean quoted;
+	/**
+	 * Iff this option is true each coumpound term is output in functional
+	 * notation. Neither operator notationnor list notation is used when this
+	 * write option is in force.
+	 */
+	public boolean ignoreOps;
+	/**
+	 * display terms of form '$VAR'(N) as ('A'+ N%26)+""+(N/26). this option
+	 * requires that ignoreOps = flase by ISO Standard checking this condition is
+	 * left for user.
+	 */
+	public boolean numbervars;
 
-  /** Current operator set to use in write term.
-    * User need to set this variable if ignore ops is true.
-    */
-  public OperatorSet operatorSet;
+	/**
+	 * Current operator set to use in write term. User need to set this variable
+	 * if ignore ops is true.
+	 */
+	public OperatorSet operatorSet;
 
-  /** Number of used variables. This variable is used solely by
-    * Term Writer
-    */
-  int numberOfVariables;
+	/**
+	 * Number of used variables. This variable is used solely by Term Writer
+	 */
+	int numberOfVariables;
 
-  /** Map from variables to names. This variable is used solely by
-    * Term Writer.
-    */
-  Map<Term,String> variable2name;
-  
-  /**
-   * Include JavaObjects in the output
-   */
-  public boolean javaObjects = true;
-  
-  /**
-   * Use .toString() in the output 
-   */
-  public boolean javaObjectsToString;
+	/**
+	 * Map from variables to names. This variable is used solely by Term Writer.
+	 */
+	Map<Term, String> variable2name;
 
+	/**
+	 * Include JavaObjects in the output
+	 */
+	public boolean javaObjects = true;
 
-  public Object clone()
-  {
-    try
-    {
-      return super.clone();
-    }
-    catch(CloneNotSupportedException ex)
-    {
-      throw new RuntimeException("CloneNotSupportedException");
-    }
+	/**
+	 * Use .toString() in the output
+	 */
+	public boolean javaObjectsToString;
 
-  }
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException ex)
+		{
+			throw new RuntimeException("CloneNotSupportedException");
+		}
+
+	}
 }
-

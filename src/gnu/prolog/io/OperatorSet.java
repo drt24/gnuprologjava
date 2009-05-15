@@ -28,231 +28,232 @@ import java.util.Set;
 
 final public class OperatorSet
 {
-  static class OperatorLevel
-  {
-    OperatorLevel(int p)
-    {
-      priority = p;
-      //usage = 0;
-    }
-    int priority;
-    //int usage;
-  }
-  List<OperatorLevel> priorityLevels = new ArrayList<OperatorLevel>();
-  Map<String,Operator> xfOps = new HashMap<String, Operator>();
-  Map<String,Operator> fxOps = new HashMap<String, Operator>();
+	static class OperatorLevel
+	{
+		OperatorLevel(int p)
+		{
+			priority = p;
+			// usage = 0;
+		}
 
-  public synchronized Operator lookupXf(String value)
-  {
-    Operator op = (Operator)xfOps.get(value);
-    return op != null? op: Operator.nonOperator;
-  }
+		int priority;
+		// int usage;
+	}
 
-  public synchronized Operator lookupFx(String value)
-  {
-    Operator op = (Operator)fxOps.get(value);
-    return op != null? op: Operator.nonOperator;
-  }
-  
-  /** get all oprators currently in the set */
-  public synchronized Set<Operator> getOperators()
-  {
-    Set<Operator> rc = new HashSet<Operator>();
-    rc.addAll(fxOps.values());
-    rc.addAll(xfOps.values());
-    return rc;
-  }
+	List<OperatorLevel> priorityLevels = new ArrayList<OperatorLevel>();
+	Map<String, Operator> xfOps = new HashMap<String, Operator>();
+	Map<String, Operator> fxOps = new HashMap<String, Operator>();
 
-  /** remove operator from oprator set*/
-  public synchronized void remove(int specifier, String name)
-  {
-    switch (specifier)
-    {
-    case Operator. FX:
-    case Operator. FY:
-      fxOps.remove(name);
-      break;
-    case Operator.XF :
-    case Operator.YF :
-    case Operator.XFX:
-    case Operator.XFY:
-    case Operator.YFX:
-      xfOps.remove(name);
-      break;
-    }
-  }
-  
-  /** add operator to oprator set*/
-  public synchronized Operator add(int priority, int specifier, String name)
-  {
-    int i,n = priorityLevels.size();
-    //System.out.println(name+" prio:" + priority+ " priolvs:"+n);
-    OperatorLevel ol = null;
-    int nlv = 0;
-    for (i = n-1; i>=0; i--)
-    {
-      ol = (OperatorLevel)priorityLevels.get(i);
-      if (ol.priority == priority)
-      {
-        nlv = i;
-        break;
-      }
-      else if(ol.priority < priority)
-      {
-        nlv = i + 1;
-        ol = new OperatorLevel(priority);
-        if (nlv == n) // w/a
-        {
-          priorityLevels.add(ol);
-        }
-        else
-        {
-          priorityLevels.add(nlv,ol);
-        }
-        break;
-      }
-    }
-    if(i<0)
-    {
-      nlv = 0;
-      ol = new OperatorLevel(priority);
-      if (priorityLevels.size() == 0) //w/a
-      {
-        priorityLevels.add(ol);
-      }
-      else
-      {
-        priorityLevels.add(nlv,ol);
-      }
-    }
-    //ol.usage++;
+	public synchronized Operator lookupXf(String value)
+	{
+		Operator op = (Operator) xfOps.get(value);
+		return op != null ? op : Operator.nonOperator;
+	}
 
-    Operator op = new Operator(name,specifier,priority);
+	public synchronized Operator lookupFx(String value)
+	{
+		Operator op = (Operator) fxOps.get(value);
+		return op != null ? op : Operator.nonOperator;
+	}
 
-    switch (specifier)
-    {
-    case Operator. FX:
-    case Operator. FY:
-      fxOps.put(name,op);
-      break;
-    case Operator.XF :
-    case Operator.YF :
-    case Operator.XFX:
-    case Operator.XFY:
-    case Operator.YFX:
-      xfOps.put(name,op);
-      break;
-    }
-    return op;
-  }
+	/** get all oprators currently in the set */
+	public synchronized Set<Operator> getOperators()
+	{
+		Set<Operator> rc = new HashSet<Operator>();
+		rc.addAll(fxOps.values());
+		rc.addAll(xfOps.values());
+		return rc;
+	}
 
-  public synchronized int getNextLevel(int priority)
-  {
-    int i,n = priorityLevels.size();
-    for (i = n-1; i>=0; i--)
-    {
-      int p = ((OperatorLevel)priorityLevels.get(i)).priority;
-      if (p<=priority)
-      {
-        return p;
-      }
-    }
-    return 0;
-  }
+	/** remove operator from oprator set */
+	public synchronized void remove(int specifier, String name)
+	{
+		switch (specifier)
+		{
+			case Operator.FX:
+			case Operator.FY:
+				fxOps.remove(name);
+				break;
+			case Operator.XF:
+			case Operator.YF:
+			case Operator.XFX:
+			case Operator.XFY:
+			case Operator.YFX:
+				xfOps.remove(name);
+				break;
+		}
+	}
 
-  public synchronized int getCommaLevel()
-  {
-    return 1000;
-  }
+	/** add operator to oprator set */
+	public synchronized Operator add(int priority, int specifier, String name)
+	{
+		int i, n = priorityLevels.size();
+		// System.out.println(name+" prio:" + priority+ " priolvs:"+n);
+		OperatorLevel ol = null;
+		int nlv = 0;
+		for (i = n - 1; i >= 0; i--)
+		{
+			ol = (OperatorLevel) priorityLevels.get(i);
+			if (ol.priority == priority)
+			{
+				nlv = i;
+				break;
+			}
+			else if (ol.priority < priority)
+			{
+				nlv = i + 1;
+				ol = new OperatorLevel(priority);
+				if (nlv == n) // w/a
+				{
+					priorityLevels.add(ol);
+				}
+				else
+				{
+					priorityLevels.add(nlv, ol);
+				}
+				break;
+			}
+		}
+		if (i < 0)
+		{
+			nlv = 0;
+			ol = new OperatorLevel(priority);
+			if (priorityLevels.size() == 0) // w/a
+			{
+				priorityLevels.add(ol);
+			}
+			else
+			{
+				priorityLevels.add(nlv, ol);
+			}
+		}
+		// ol.usage++;
 
-  public synchronized int getMaxLevel()
-  {
-    return 1200;
-  }
+		Operator op = new Operator(name, specifier, priority);
 
-  public OperatorSet(boolean defaultSet)
-  {
-    if (defaultSet)
-    {
-      initDefault();
-    }
-  }
+		switch (specifier)
+		{
+			case Operator.FX:
+			case Operator.FY:
+				fxOps.put(name, op);
+				break;
+			case Operator.XF:
+			case Operator.YF:
+			case Operator.XFX:
+			case Operator.XFY:
+			case Operator.YFX:
+				xfOps.put(name, op);
+				break;
+		}
+		return op;
+	}
 
-  public OperatorSet()
-  {
-    this(true);
-  }
+	public synchronized int getNextLevel(int priority)
+	{
+		int i, n = priorityLevels.size();
+		for (i = n - 1; i >= 0; i--)
+		{
+			int p = ((OperatorLevel) priorityLevels.get(i)).priority;
+			if (p <= priority)
+			{
+				return p;
+			}
+		}
+		return 0;
+	}
 
-  private void initDefault()
-  {
-    add(1200, Operator.XFX, "-->");
-    add(1200, Operator.XFX, ":-" );
-    add(1200, Operator.FX , ":-" );
-    add(1200, Operator.FX , "?-" );
-    add(1100, Operator.XFY, ";"  );
-    add(1050, Operator.XFY, "->" );
-    add(1000, Operator.XFY, ","  );
-    add( 900, Operator.FX,  "\\+");
-    add( 700, Operator.XFX, "="  );
-    add( 700, Operator.XFX, "\\=" );
-    add( 700, Operator.XFX, "==" );
-    add( 700, Operator.XFX, "\\==");
-    add( 700, Operator.XFX, "@<" );
-    add( 700, Operator.XFX, "@=<");
-    add( 700, Operator.XFX, "@>" );
-    add( 700, Operator.XFX, "@>=");
-    add( 700, Operator.XFX, "=..");
-    add( 700, Operator.XFX, "is" );
-    add( 700, Operator.XFX, "=:=");
-    add( 700, Operator.XFX, "=\\=");
-    add( 700, Operator.XFX, "<"  );
-    add( 700, Operator.XFX, "=<" );
-    add( 700, Operator.XFX, ">"  );
-    add( 700, Operator.XFX, ">=" );
-    add( 600, Operator.XFX, ":"  );
-    add( 500, Operator.YFX, "+"  );
-    add( 500, Operator.YFX, "-"  );
-    add( 500, Operator.YFX, "/\\" );
-    add( 500, Operator.YFX, "\\/" );
-    add( 400, Operator.YFX, "*"  );
-    add( 400, Operator.YFX, "/"  );
-    add( 400, Operator.YFX, "//" );
-    add( 400, Operator.YFX, "rem");
-    add( 400, Operator.YFX, "mod");
-    add( 400, Operator.YFX, "<<" );
-    add( 400, Operator.YFX, ">>" );
-    add( 200, Operator.XFX, "**" );
-    add( 200, Operator.XFY, "^"  );
-    add( 200, Operator.FY , "-"  );
-    add( 200, Operator.FY , "\\"  );
-    add( 100, Operator.XFX, "@"  );
-  }
+	public synchronized int getCommaLevel()
+	{
+		return 1000;
+	}
 
-  public synchronized Operator getOperatorForTag(CompoundTermTag tag)
-  {
-    if (tag.arity == 1)
-    {
-      Operator op = lookupFx(tag.functor.value);
-      if (op == Operator.nonOperator)
-      {
-        op = lookupXf(tag.functor.value);
-      }
-      if (op.tag != tag)
-      {
-        op = Operator.nonOperator;
-      }
-      return op;
-    }
-    if (tag.arity == 2)
-    {
-      Operator op = lookupXf(tag.functor.value);
-      if (op.tag != tag)
-      {
-        op = Operator.nonOperator;
-      }
-      return op;
-    }
-    return Operator.nonOperator;
-  }
+	public synchronized int getMaxLevel()
+	{
+		return 1200;
+	}
+
+	public OperatorSet(boolean defaultSet)
+	{
+		if (defaultSet)
+		{
+			initDefault();
+		}
+	}
+
+	public OperatorSet()
+	{
+		this(true);
+	}
+
+	private void initDefault()
+	{
+		add(1200, Operator.XFX, "-->");
+		add(1200, Operator.XFX, ":-");
+		add(1200, Operator.FX, ":-");
+		add(1200, Operator.FX, "?-");
+		add(1100, Operator.XFY, ";");
+		add(1050, Operator.XFY, "->");
+		add(1000, Operator.XFY, ",");
+		add(900, Operator.FX, "\\+");
+		add(700, Operator.XFX, "=");
+		add(700, Operator.XFX, "\\=");
+		add(700, Operator.XFX, "==");
+		add(700, Operator.XFX, "\\==");
+		add(700, Operator.XFX, "@<");
+		add(700, Operator.XFX, "@=<");
+		add(700, Operator.XFX, "@>");
+		add(700, Operator.XFX, "@>=");
+		add(700, Operator.XFX, "=..");
+		add(700, Operator.XFX, "is");
+		add(700, Operator.XFX, "=:=");
+		add(700, Operator.XFX, "=\\=");
+		add(700, Operator.XFX, "<");
+		add(700, Operator.XFX, "=<");
+		add(700, Operator.XFX, ">");
+		add(700, Operator.XFX, ">=");
+		add(600, Operator.XFX, ":");
+		add(500, Operator.YFX, "+");
+		add(500, Operator.YFX, "-");
+		add(500, Operator.YFX, "/\\");
+		add(500, Operator.YFX, "\\/");
+		add(400, Operator.YFX, "*");
+		add(400, Operator.YFX, "/");
+		add(400, Operator.YFX, "//");
+		add(400, Operator.YFX, "rem");
+		add(400, Operator.YFX, "mod");
+		add(400, Operator.YFX, "<<");
+		add(400, Operator.YFX, ">>");
+		add(200, Operator.XFX, "**");
+		add(200, Operator.XFY, "^");
+		add(200, Operator.FY, "-");
+		add(200, Operator.FY, "\\");
+		add(100, Operator.XFX, "@");
+	}
+
+	public synchronized Operator getOperatorForTag(CompoundTermTag tag)
+	{
+		if (tag.arity == 1)
+		{
+			Operator op = lookupFx(tag.functor.value);
+			if (op == Operator.nonOperator)
+			{
+				op = lookupXf(tag.functor.value);
+			}
+			if (op.tag != tag)
+			{
+				op = Operator.nonOperator;
+			}
+			return op;
+		}
+		if (tag.arity == 2)
+		{
+			Operator op = lookupXf(tag.functor.value);
+			if (op.tag != tag)
+			{
+				op = Operator.nonOperator;
+			}
+			return op;
+		}
+		return Operator.nonOperator;
+	}
 }
-

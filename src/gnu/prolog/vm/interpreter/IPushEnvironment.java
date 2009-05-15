@@ -16,34 +16,42 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
-/** push term from environment 
-  */
+
+/**
+ * push term from environment
+ */
 public class IPushEnvironment extends Instruction
 {
-  /** push ter from environment */
-  public IPushEnvironment(int environmentPosition)
-  {
-    this.environmentPosition = environmentPosition;
-  }
-  /** position of term in environment */
-  public int environmentPosition;
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    state.pushPushDown(state.getEnvironment(environmentPosition));
-    return ExecutionState.NEXT;
-  }
+	/** push ter from environment */
+	public IPushEnvironment(int environmentPosition)
+	{
+		this.environmentPosition = environmentPosition;
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": push_environment "+environmentPosition;
-  }
+	/** position of term in environment */
+	public int environmentPosition;
+
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		state.pushPushDown(state.getEnvironment(environmentPosition));
+		return ExecutionState.NEXT;
+	}
+
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": push_environment " + environmentPosition;
+	}
 
 }

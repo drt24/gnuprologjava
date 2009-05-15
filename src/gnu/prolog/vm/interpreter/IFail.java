@@ -16,25 +16,30 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
+
 /** fail instruction */
 public class IFail extends Instruction
 {
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo backtrackInfo) throws PrologException
-  {
-    return ExecutionState.BACKTRACK;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo backtrackInfo) throws PrologException
+	{
+		return ExecutionState.BACKTRACK;
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": fail";
-  }
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": fail";
+	}
 
 }

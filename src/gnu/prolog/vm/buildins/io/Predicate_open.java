@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
@@ -27,155 +28,161 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code for open/4
-  */
+/**
+ * prolog code for open/4
+ */
 public class Predicate_open implements PrologCode
 {
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    Term tsource_sink = args[0];
-    Term tmode = args[1];
-    Term tstream = args[2];
-    Term optionsList = args[3];
-    
-    PrologStream.OpenOptions options = new PrologStream.OpenOptions();
-    AtomTerm source_sink = null;
-    AtomTerm mode = null;
-    VariableTerm vstream = null;    
-    // check source/sink
-    if (tsource_sink instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    if (!(tsource_sink instanceof AtomTerm))
-    {
-      PrologException.domainError(TermConstants.sourceSinkAtom, tsource_sink);
-    }
-    source_sink = (AtomTerm)tsource_sink;
-    // check mode
-    if (tmode instanceof VariableTerm)
-    {
-      PrologException.instantiationError();
-    }
-    if (!(tmode instanceof AtomTerm))
-    {
-      PrologException.typeError(TermConstants.atomAtom, tmode);
-    }
-    if (tmode != PrologStream.readAtom &&
-        tmode != PrologStream.writeAtom &&
-        tmode != PrologStream.appendAtom)
-    {
-      PrologException.domainError(TermConstants.ioModeAtom, tmode);
-    }
-    mode = (AtomTerm)tmode;
-    // check stream
-    if (!(tstream instanceof VariableTerm))
-    {
-      PrologException.typeError(TermConstants.variableAtom, tstream);
-    }
-    vstream = (VariableTerm)tstream;
-    // parse options
-    Term cur = optionsList;
-    while (cur != TermConstants.emptyListAtom)
-    {
-      if (cur instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      if (!(cur instanceof CompoundTerm))
-      {
-        PrologException.typeError(TermConstants.listAtom, optionsList);
-      }
-      CompoundTerm ct = (CompoundTerm)cur;
-      if (ct.tag != TermConstants.listTag)
-      {
-        PrologException.typeError(TermConstants.listAtom, optionsList);
-      }
-      Term head = ct.args[0].dereference();
-      cur = ct.args[1].dereference();
-      if (head instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      if (!(head instanceof CompoundTerm))
-      {
-        PrologException.domainError(TermConstants.streamOptionAtom, head);
-      }
-      CompoundTerm op = (CompoundTerm)head;
-      if (op.tag == PrologStream.typeTag)
-      {
-        Term val = op.args[0].dereference();
-        if (val != PrologStream.textAtom && val != PrologStream.binaryAtom)
-        {
-          PrologException.domainError(TermConstants.streamOptionAtom, op);
-        }
-        options.type = (AtomTerm)val;
-      }
-      else if (op.tag == PrologStream.repositionTag)
-      {
-        Term val = op.args[0].dereference();
-        if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
-        {
-          PrologException.domainError(TermConstants.streamOptionAtom, op);
-        }
-        options.reposition = (AtomTerm)val;
-      }
-      else if (op.tag == PrologStream.aliasTag)
-      {
-        Term val = op.args[0].dereference();
-        if (!(val instanceof AtomTerm))
-        {
-          PrologException.domainError(TermConstants.streamOptionAtom, op);
-        }
-        options.aliases.add((AtomTerm) val);
-      }
-      else if (op.tag == PrologStream.eofActionTag)
-      {
-        Term val = op.args[0].dereference();
-        if (val != PrologStream.errorAtom && 
-            val != PrologStream.eofCodeAtom &&
-            val != PrologStream.resetAtom)
-        {
-          PrologException.domainError(TermConstants.streamOptionAtom, op);
-        }
-        options.reposition = (AtomTerm)val;
-      }
-      else
-      {
-        PrologException.domainError(TermConstants.streamOptionAtom, op);
-      }
-    }
-    options.filename=source_sink;
-    options.mode=mode;
-    options.environment=interpreter.environment;
-    vstream.value = interpreter.environment.open(source_sink,mode,options);
-    interpreter.addVariableUndo(vstream);
-    return SUCCESS_LAST;
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		Term tsource_sink = args[0];
+		Term tmode = args[1];
+		Term tstream = args[2];
+		Term optionsList = args[3];
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+		PrologStream.OpenOptions options = new PrologStream.OpenOptions();
+		AtomTerm source_sink = null;
+		AtomTerm mode = null;
+		VariableTerm vstream = null;
+		// check source/sink
+		if (tsource_sink instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		if (!(tsource_sink instanceof AtomTerm))
+		{
+			PrologException.domainError(TermConstants.sourceSinkAtom, tsource_sink);
+		}
+		source_sink = (AtomTerm) tsource_sink;
+		// check mode
+		if (tmode instanceof VariableTerm)
+		{
+			PrologException.instantiationError();
+		}
+		if (!(tmode instanceof AtomTerm))
+		{
+			PrologException.typeError(TermConstants.atomAtom, tmode);
+		}
+		if (tmode != PrologStream.readAtom && tmode != PrologStream.writeAtom && tmode != PrologStream.appendAtom)
+		{
+			PrologException.domainError(TermConstants.ioModeAtom, tmode);
+		}
+		mode = (AtomTerm) tmode;
+		// check stream
+		if (!(tstream instanceof VariableTerm))
+		{
+			PrologException.typeError(TermConstants.variableAtom, tstream);
+		}
+		vstream = (VariableTerm) tstream;
+		// parse options
+		Term cur = optionsList;
+		while (cur != TermConstants.emptyListAtom)
+		{
+			if (cur instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			if (!(cur instanceof CompoundTerm))
+			{
+				PrologException.typeError(TermConstants.listAtom, optionsList);
+			}
+			CompoundTerm ct = (CompoundTerm) cur;
+			if (ct.tag != TermConstants.listTag)
+			{
+				PrologException.typeError(TermConstants.listAtom, optionsList);
+			}
+			Term head = ct.args[0].dereference();
+			cur = ct.args[1].dereference();
+			if (head instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			if (!(head instanceof CompoundTerm))
+			{
+				PrologException.domainError(TermConstants.streamOptionAtom, head);
+			}
+			CompoundTerm op = (CompoundTerm) head;
+			if (op.tag == PrologStream.typeTag)
+			{
+				Term val = op.args[0].dereference();
+				if (val != PrologStream.textAtom && val != PrologStream.binaryAtom)
+				{
+					PrologException.domainError(TermConstants.streamOptionAtom, op);
+				}
+				options.type = (AtomTerm) val;
+			}
+			else if (op.tag == PrologStream.repositionTag)
+			{
+				Term val = op.args[0].dereference();
+				if (val != TermConstants.trueAtom && val != TermConstants.falseAtom)
+				{
+					PrologException.domainError(TermConstants.streamOptionAtom, op);
+				}
+				options.reposition = (AtomTerm) val;
+			}
+			else if (op.tag == PrologStream.aliasTag)
+			{
+				Term val = op.args[0].dereference();
+				if (!(val instanceof AtomTerm))
+				{
+					PrologException.domainError(TermConstants.streamOptionAtom, op);
+				}
+				options.aliases.add((AtomTerm) val);
+			}
+			else if (op.tag == PrologStream.eofActionTag)
+			{
+				Term val = op.args[0].dereference();
+				if (val != PrologStream.errorAtom && val != PrologStream.eofCodeAtom && val != PrologStream.resetAtom)
+				{
+					PrologException.domainError(TermConstants.streamOptionAtom, op);
+				}
+				options.reposition = (AtomTerm) val;
+			}
+			else
+			{
+				PrologException.domainError(TermConstants.streamOptionAtom, op);
+			}
+		}
+		options.filename = source_sink;
+		options.mode = mode;
+		options.environment = interpreter.environment;
+		vstream.value = interpreter.environment.open(source_sink, mode, options);
+		interpreter.addVariableUndo(vstream);
+		return SUCCESS_LAST;
+	}
 
-  }
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	}
+
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

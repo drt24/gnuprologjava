@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -26,71 +27,81 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_get_char implements PrologCode
 {
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    PrologStream stream = interpreter.environment.resolveStream(args[0]);
-    Term inchar = args[1];
-    if (inchar instanceof VariableTerm)
-    {
-    }
-    else if (inchar instanceof AtomTerm)
-    {
-      AtomTerm ch = (AtomTerm)inchar;
-      if (ch == PrologStream.endOfFileAtom)
-      {
-      }
-      else if (ch.value.length() == 1)
-      {
-      }
-      else
-      {
-        PrologException.typeError(TermConstants.inCharacterAtom, inchar);
-      }
-    }
-    else
-    {
-      PrologException.typeError(TermConstants.inCharacterAtom, inchar);
-    }
-    int inch = stream.getCode(args[0],interpreter);
-    Term rc;
-    if (inch == -1)
-    {
-      rc = PrologStream.endOfFileAtom;
-    }
-    else
-    {
-      rc = AtomTerm.getChar((char)inch);
-    }
-    return interpreter.unify(inchar, rc);
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		Term inchar = args[1];
+		if (inchar instanceof VariableTerm)
+		{
+		}
+		else if (inchar instanceof AtomTerm)
+		{
+			AtomTerm ch = (AtomTerm) inchar;
+			if (ch == PrologStream.endOfFileAtom)
+			{
+			}
+			else if (ch.value.length() == 1)
+			{
+			}
+			else
+			{
+				PrologException.typeError(TermConstants.inCharacterAtom, inchar);
+			}
+		}
+		else
+		{
+			PrologException.typeError(TermConstants.inCharacterAtom, inchar);
+		}
+		int inch = stream.getCode(args[0], interpreter);
+		Term rc;
+		if (inch == -1)
+		{
+			rc = PrologStream.endOfFileAtom;
+		}
+		else
+		{
+			rc = AtomTerm.getChar((char) inch);
+		}
+		return interpreter.unify(inchar, rc);
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

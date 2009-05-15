@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.termcreation;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.AtomicTerm;
 import gnu.prolog.term.CompoundTerm;
@@ -29,131 +30,141 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_functor implements PrologCode
 {
-  /** constant used in predicate */
-  public static final IntegerTerm zero = IntegerTerm.get(0);
+	/** constant used in predicate */
+	public static final IntegerTerm zero = IntegerTerm.get(0);
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    int undoPos = interpreter.getUndoPosition();
-    Term term = args[0];
-    Term name = args[1];
-    Term arity = args[2];
-    int rc;
-    if (term instanceof AtomicTerm)
-    {
-      rc = interpreter.unify(term,name);
-      if (rc == FAIL)
-      {
-        interpreter.undo(undoPos);
-        return FAIL;
-      }
-      rc = interpreter.unify(arity,zero);
-      if (rc == FAIL)
-      {
-        interpreter.undo(undoPos);
-        return FAIL;
-      }
-      return SUCCESS_LAST;
-    }
-    else if (term instanceof CompoundTerm)
-    {
-      CompoundTermTag tag =  ((CompoundTerm)term).tag;
-      IntegerTerm tarity = IntegerTerm.get(tag.arity);
-      rc = interpreter.unify(tag.functor,name);
-      if (rc == FAIL)
-      {
-        interpreter.undo(undoPos);
-        return FAIL;
-      }
-      rc = interpreter.unify(tarity,arity);
-      if (rc == FAIL)
-      {
-        interpreter.undo(undoPos);
-        return FAIL;
-      }
-      return SUCCESS_LAST;
-    }
-    else if (term instanceof VariableTerm)
-    {
-      if (arity instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      if (name instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      if (!(name instanceof AtomicTerm))
-      {
-        PrologException.typeError(TermConstants.atomicAtom, name);
-      }
-      if (!(arity instanceof IntegerTerm))
-      {
-        PrologException.typeError(TermConstants.integerAtom, arity);
-      }
-      IntegerTerm iarity = (IntegerTerm)arity;
-      if (iarity.value > 0)
-      {
-        if (!(name instanceof AtomTerm))
-        {
-          PrologException.typeError(TermConstants.atomAtom, name);
-        }
-        AtomTerm functor = (AtomTerm)name;
-        int n = iarity.value;
-        Term targs[] = new Term[n];
-        for (int i=0; i<n; i++)
-        {
-          targs[i] = new VariableTerm();
-        }
-        rc = interpreter.unify(term,new CompoundTerm(functor,targs));
-        if (rc == FAIL)
-        {
-          interpreter.undo(undoPos);
-          return FAIL;
-        }
-        return SUCCESS_LAST;
-      }
-      if (iarity.value < 0)
-      {
-        PrologException.domainError(TermConstants.notLessThenZeroAtom, arity);
-      }
-      rc = interpreter.unify(term,name);
-      if (rc == FAIL)
-      {
-        interpreter.undo(undoPos);
-        return FAIL;
-      }
-      return SUCCESS_LAST;
-    }
-    return FAIL; // this point is unreachable
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		int undoPos = interpreter.getUndoPosition();
+		Term term = args[0];
+		Term name = args[1];
+		Term arity = args[2];
+		int rc;
+		if (term instanceof AtomicTerm)
+		{
+			rc = interpreter.unify(term, name);
+			if (rc == FAIL)
+			{
+				interpreter.undo(undoPos);
+				return FAIL;
+			}
+			rc = interpreter.unify(arity, zero);
+			if (rc == FAIL)
+			{
+				interpreter.undo(undoPos);
+				return FAIL;
+			}
+			return SUCCESS_LAST;
+		}
+		else if (term instanceof CompoundTerm)
+		{
+			CompoundTermTag tag = ((CompoundTerm) term).tag;
+			IntegerTerm tarity = IntegerTerm.get(tag.arity);
+			rc = interpreter.unify(tag.functor, name);
+			if (rc == FAIL)
+			{
+				interpreter.undo(undoPos);
+				return FAIL;
+			}
+			rc = interpreter.unify(tarity, arity);
+			if (rc == FAIL)
+			{
+				interpreter.undo(undoPos);
+				return FAIL;
+			}
+			return SUCCESS_LAST;
+		}
+		else if (term instanceof VariableTerm)
+		{
+			if (arity instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			if (name instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			if (!(name instanceof AtomicTerm))
+			{
+				PrologException.typeError(TermConstants.atomicAtom, name);
+			}
+			if (!(arity instanceof IntegerTerm))
+			{
+				PrologException.typeError(TermConstants.integerAtom, arity);
+			}
+			IntegerTerm iarity = (IntegerTerm) arity;
+			if (iarity.value > 0)
+			{
+				if (!(name instanceof AtomTerm))
+				{
+					PrologException.typeError(TermConstants.atomAtom, name);
+				}
+				AtomTerm functor = (AtomTerm) name;
+				int n = iarity.value;
+				Term targs[] = new Term[n];
+				for (int i = 0; i < n; i++)
+				{
+					targs[i] = new VariableTerm();
+				}
+				rc = interpreter.unify(term, new CompoundTerm(functor, targs));
+				if (rc == FAIL)
+				{
+					interpreter.undo(undoPos);
+					return FAIL;
+				}
+				return SUCCESS_LAST;
+			}
+			if (iarity.value < 0)
+			{
+				PrologException.domainError(TermConstants.notLessThenZeroAtom, arity);
+			}
+			rc = interpreter.unify(term, name);
+			if (rc == FAIL)
+			{
+				interpreter.undo(undoPos);
+				return FAIL;
+			}
+			return SUCCESS_LAST;
+		}
+		return FAIL; // this point is unreachable
+	}
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
 
-  }
+	}
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

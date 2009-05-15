@@ -16,34 +16,39 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
+
 /** try_me_else instruction */
 public class ITryMeElse extends RetryInstruction
 {
-  /** a constructor */
-  public ITryMeElse(int retryPosition) 
-  {
-    super(retryPosition);
-  }
- 
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    BacktrackInfo rbi = state.getRetryBacktrackInfo(retryPosition);
-    state.pushBacktrackInfo(rbi);
-    /* proceed to next instruction */
-    return ExecutionState.NEXT;
-  }
+	/** a constructor */
+	public ITryMeElse(int retryPosition)
+	{
+		super(retryPosition);
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": try_me_else "+retryPosition;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		BacktrackInfo rbi = state.getRetryBacktrackInfo(retryPosition);
+		state.pushBacktrackInfo(rbi);
+		/* proceed to next instruction */
+		return ExecutionState.NEXT;
+	}
+
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": try_me_else " + retryPosition;
+	}
 
 }

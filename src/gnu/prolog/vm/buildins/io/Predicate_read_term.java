@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
+
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
@@ -34,175 +35,185 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/** prolog code 
-  */
+/**
+ * prolog code
+ */
 public class Predicate_read_term implements PrologCode
 {
-  final static CompoundTermTag variablesTag     = CompoundTermTag.get("variables",1);
-  final static CompoundTermTag variableNamesTag = CompoundTermTag.get("variable_names",1);
-  final static CompoundTermTag singletonsTag    = CompoundTermTag.get("singletons",1);
-  final static CompoundTermTag unifyTag    = CompoundTermTag.get("=",2);
+	final static CompoundTermTag variablesTag = CompoundTermTag.get("variables", 1);
+	final static CompoundTermTag variableNamesTag = CompoundTermTag.get("variable_names", 1);
+	final static CompoundTermTag singletonsTag = CompoundTermTag.get("singletons", 1);
+	final static CompoundTermTag unifyTag = CompoundTermTag.get("=", 2);
 
-  /** this method is used for execution of code
-    * @param interpreter interpreter in which context code is executed 
-    * @param backtrackMode true if predicate is called on backtracking and false otherwise
-    * @param args arguments of code
-    * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-    */
-  public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
-         throws PrologException
-  {
-    PrologStream stream = interpreter.environment.resolveStream(args[0]);
-    Term optionsList = args[2];
-    ReadOptions options = new ReadOptions();
-    options.operatorSet = interpreter.environment.getOperatorSet();
-    
-    List<Term> singletons = new ArrayList<Term>();
-    List<Term> variableLists = new ArrayList<Term>();
-    List<Term> vnlists = new ArrayList<Term>();
-    
-    // parse and unify options
-    Term cur = optionsList;
-    while (cur != TermConstants.emptyListAtom)
-    {
-      if (cur instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      if (!(cur instanceof CompoundTerm))
-      {
-        PrologException.typeError(TermConstants.listAtom, optionsList);
-      }
-      CompoundTerm ct = (CompoundTerm)cur;
-      if (ct.tag != TermConstants.listTag)
-      {
-        PrologException.typeError(TermConstants.listAtom, optionsList);
-      }
-      Term head = ct.args[0].dereference();
-      cur = ct.args[1].dereference();
-      if (head instanceof VariableTerm)
-      {
-        PrologException.instantiationError();
-      }
-      if (!(head instanceof CompoundTerm))
-      {
-        PrologException.domainError(TermConstants.readOptionAtom, head);
-      }
-      CompoundTerm op = (CompoundTerm)head;
-      if (op.tag == variablesTag)
-      {
-        variableLists.add(op.args[0]);
-      }
-      else if (op.tag == singletonsTag)
-      {
-        singletons.add(op.args[0]);
-      }
-      else if (op.tag == variableNamesTag)
-      {
-        vnlists.add(op.args[0]);
-      }
-      else 
-      {
-        PrologException.domainError(TermConstants.readOptionAtom, head);
-      }
-    }
-    
-    Term readTerm = stream.readTerm(args[0],interpreter,options);
-    int undoPos = interpreter.getUndoPosition();
-    
-    try
-    {
-      int rc = interpreter.simple_unify(args[1], readTerm);
-      if (rc == FAIL)
-      {
-        interpreter.undo(undoPos);
-        return FAIL;
-      }
-      Iterator<Term> i=singletons.iterator();
-      if (i.hasNext())
-      {
-        Term singletonsList = mapToList(options.singletons);
-        while (i.hasNext())
-        {
-          Term t = (Term)i.next();
-          t = t.dereference();
-          rc = interpreter.simple_unify(t,singletonsList);
-          if (rc == FAIL)
-          {
-            interpreter.undo(undoPos);
-            return FAIL;
-          }
-        }
-      }
-      i=vnlists.iterator();
-      if (i.hasNext())
-      {
-        Term vnlist = mapToList(options.variableNames);
-        while (i.hasNext())
-        {
-          Term t = (Term)i.next();
-          t = t.dereference();
-          rc = interpreter.simple_unify(t,vnlist);
-          if (rc == FAIL)
-          {
-            interpreter.undo(undoPos);
-            return FAIL;
-          }
-        }
-      }
-      i=variableLists.iterator();
-      if (i.hasNext())
-      {
-        Term vnlist = CompoundTerm.getList(options.variables);
-        while (i.hasNext())
-        {
-          Term t = (Term)i.next();
-          t = t.dereference();
-          rc = interpreter.simple_unify(t,vnlist);
-          if (rc == FAIL)
-          {
-            interpreter.undo(undoPos);
-            return FAIL;
-          }
-        }
-      }
-      return SUCCESS_LAST;
-    }
-    catch(PrologException ex)
-    {
-      interpreter.undo(undoPos);
-      throw ex;
-    }
-  }
+	/**
+	 * this method is used for execution of code
+	 * 
+	 * @param interpreter
+	 *          interpreter in which context code is executed
+	 * @param backtrackMode
+	 *          true if predicate is called on backtracking and false otherwise
+	 * @param args
+	 *          arguments of code
+	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 */
+	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException
+	{
+		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		Term optionsList = args[2];
+		ReadOptions options = new ReadOptions();
+		options.operatorSet = interpreter.environment.getOperatorSet();
 
-  /** this method is called when code is installed to the environment
-    * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
-    */
-  public void install(Environment env)
-  {
+		List<Term> singletons = new ArrayList<Term>();
+		List<Term> variableLists = new ArrayList<Term>();
+		List<Term> vnlists = new ArrayList<Term>();
 
-  }
+		// parse and unify options
+		Term cur = optionsList;
+		while (cur != TermConstants.emptyListAtom)
+		{
+			if (cur instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			if (!(cur instanceof CompoundTerm))
+			{
+				PrologException.typeError(TermConstants.listAtom, optionsList);
+			}
+			CompoundTerm ct = (CompoundTerm) cur;
+			if (ct.tag != TermConstants.listTag)
+			{
+				PrologException.typeError(TermConstants.listAtom, optionsList);
+			}
+			Term head = ct.args[0].dereference();
+			cur = ct.args[1].dereference();
+			if (head instanceof VariableTerm)
+			{
+				PrologException.instantiationError();
+			}
+			if (!(head instanceof CompoundTerm))
+			{
+				PrologException.domainError(TermConstants.readOptionAtom, head);
+			}
+			CompoundTerm op = (CompoundTerm) head;
+			if (op.tag == variablesTag)
+			{
+				variableLists.add(op.args[0]);
+			}
+			else if (op.tag == singletonsTag)
+			{
+				singletons.add(op.args[0]);
+			}
+			else if (op.tag == variableNamesTag)
+			{
+				vnlists.add(op.args[0]);
+			}
+			else
+			{
+				PrologException.domainError(TermConstants.readOptionAtom, head);
+			}
+		}
 
-  private static Term mapToList(Map<String,Term> map)
-  {
-    Iterator<String> i = map.keySet().iterator();
-    Term rc = TermConstants.emptyListAtom;
-    while (i.hasNext())
-    {
-      String key = (String)i.next();
-      Term val = (Term)map.get(key);
-      rc = CompoundTerm.getList(new CompoundTerm(unifyTag,AtomTerm.get(key),val), rc);
-    }
-    return rc;
-  }
+		Term readTerm = stream.readTerm(args[0], interpreter, options);
+		int undoPos = interpreter.getUndoPosition();
 
-  /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
-    */
-  public void uninstall(Environment env)
-  {
-  }
-    
+		try
+		{
+			int rc = interpreter.simple_unify(args[1], readTerm);
+			if (rc == FAIL)
+			{
+				interpreter.undo(undoPos);
+				return FAIL;
+			}
+			Iterator<Term> i = singletons.iterator();
+			if (i.hasNext())
+			{
+				Term singletonsList = mapToList(options.singletons);
+				while (i.hasNext())
+				{
+					Term t = (Term) i.next();
+					t = t.dereference();
+					rc = interpreter.simple_unify(t, singletonsList);
+					if (rc == FAIL)
+					{
+						interpreter.undo(undoPos);
+						return FAIL;
+					}
+				}
+			}
+			i = vnlists.iterator();
+			if (i.hasNext())
+			{
+				Term vnlist = mapToList(options.variableNames);
+				while (i.hasNext())
+				{
+					Term t = (Term) i.next();
+					t = t.dereference();
+					rc = interpreter.simple_unify(t, vnlist);
+					if (rc == FAIL)
+					{
+						interpreter.undo(undoPos);
+						return FAIL;
+					}
+				}
+			}
+			i = variableLists.iterator();
+			if (i.hasNext())
+			{
+				Term vnlist = CompoundTerm.getList(options.variables);
+				while (i.hasNext())
+				{
+					Term t = (Term) i.next();
+					t = t.dereference();
+					rc = interpreter.simple_unify(t, vnlist);
+					if (rc == FAIL)
+					{
+						interpreter.undo(undoPos);
+						return FAIL;
+					}
+				}
+			}
+			return SUCCESS_LAST;
+		}
+		catch (PrologException ex)
+		{
+			interpreter.undo(undoPos);
+			throw ex;
+		}
+	}
+
+	/**
+	 * this method is called when code is installed to the environment code can be
+	 * installed only for one environment.
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void install(Environment env)
+	{
+
+	}
+
+	private static Term mapToList(Map<String, Term> map)
+	{
+		Iterator<String> i = map.keySet().iterator();
+		Term rc = TermConstants.emptyListAtom;
+		while (i.hasNext())
+		{
+			String key = (String) i.next();
+			Term val = (Term) map.get(key);
+			rc = CompoundTerm.getList(new CompoundTerm(unifyTag, AtomTerm.get(key), val), rc);
+		}
+		return rc;
+	}
+
+	/**
+	 * this method is called when code is uninstalled from the environment
+	 * 
+	 * @param environment
+	 *          environemnt to install the predicate
+	 */
+	public void uninstall(Environment env)
+	{}
+
 }
-

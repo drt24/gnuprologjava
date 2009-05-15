@@ -16,30 +16,36 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
-/** duplicate top of pushdown stack
-  */
+
+/**
+ * duplicate top of pushdown stack
+ */
 public class IDup extends Instruction
 {
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    Term term = state.popPushDown();
-    state.pushPushDown(term);
-    state.pushPushDown(term);
-    return ExecutionState.NEXT;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		Term term = state.popPushDown();
+		state.pushPushDown(term);
+		state.pushPushDown(term);
+		return ExecutionState.NEXT;
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": dup";
-  }
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": dup";
+	}
 
 }

@@ -16,34 +16,39 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
+
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
+
 /** true instruction */
 public class IJump extends Instruction
 {
-  /** position for jump */
-  public int jumpPosition;
-  
-  public IJump (int jumpPosition)
-  {
-    this.jumpPosition = jumpPosition;
-  }
+	/** position for jump */
+	public int jumpPosition;
 
-  /** execute call instruction within specified sate 
-    * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
-    */  
-  public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
-  {
-    state.jumpPosition = jumpPosition;
-    return ExecutionState.JUMP;
-  }
+	public IJump(int jumpPosition)
+	{
+		this.jumpPosition = jumpPosition;
+	}
 
-  /** convert instruction to string */
-  public String toString()
-  {
-    return codePosition+": jump "+jumpPosition ;
-  }
+	/**
+	 * execute call instruction within specified sate
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @return instruction to caller how to execute next instrcuction
+	 * @throw PrologException if code is throwng prolog exception
+	 */
+	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	{
+		state.jumpPosition = jumpPosition;
+		return ExecutionState.JUMP;
+	}
+
+	/** convert instruction to string */
+	public String toString()
+	{
+		return codePosition + ": jump " + jumpPosition;
+	}
 
 }
