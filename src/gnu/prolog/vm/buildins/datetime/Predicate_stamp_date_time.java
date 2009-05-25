@@ -30,6 +30,7 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.Calendar;
+import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 /**
@@ -59,12 +60,23 @@ public class Predicate_stamp_date_time extends DateTimePrologCode
 		{
 			PrologException.typeError(TermConstants.variableAtom, args[1]);
 		}
-		if (!(args[2] instanceof AtomTerm))
+
+		TimeZone tz = null;
+		if (args[2] instanceof IntegerTerm)
+		{
+			tz = new SimpleTimeZone(((IntegerTerm) args[2]).value * 1000, "-");
+		}
+		else if (args[2] instanceof AtomTerm)
+		{
+			String tzString = ((AtomTerm) args[2]).value;
+			tz = TimeZone.getTimeZone(tzString);
+
+		}
+		else
 		{
 			PrologException.typeError(TermConstants.atomAtom, args[2]);
 		}
-		String tzString = ((AtomTerm) args[2]).value;
-		TimeZone tz = TimeZone.getTimeZone(tzString);
+
 		Calendar cal = Calendar.getInstance(tz);
 		cal.setTimeInMillis(Math.round(ts * 1000));
 		Term[] dateTime = new Term[9];
@@ -75,20 +87,28 @@ public class Predicate_stamp_date_time extends DateTimePrologCode
 		dateTime[4] = IntegerTerm.get(cal.get(Calendar.MINUTE));
 		dateTime[5] = new FloatTerm(cal.get(Calendar.SECOND) + (cal.get(Calendar.MILLISECOND) / 1000.0));
 		dateTime[6] = IntegerTerm.get(cal.get(Calendar.ZONE_OFFSET) / 1000);
-		dateTime[7] = AtomTerm.get(cal.getTimeZone().getID());
-		if (tz.useDaylightTime())
+		if (tz != null)
 		{
-			if (tz.inDaylightTime(cal.getTime()))
+			dateTime[7] = AtomTerm.get(tz.getID());
+			if (tz.useDaylightTime())
 			{
-				dateTime[8] = TermConstants.trueAtom;
+				if (tz.inDaylightTime(cal.getTime()))
+				{
+					dateTime[8] = TermConstants.trueAtom;
+				}
+				else
+				{
+					dateTime[8] = TermConstants.falseAtom;
+				}
 			}
 			else
 			{
-				dateTime[8] = TermConstants.falseAtom;
+				dateTime[8] = AtomTerm.get("-");
 			}
 		}
 		else
 		{
+			dateTime[7] = AtomTerm.get("-");
 			dateTime[8] = AtomTerm.get("-");
 		}
 		Term res = new CompoundTerm(date9Tag, dateTime);

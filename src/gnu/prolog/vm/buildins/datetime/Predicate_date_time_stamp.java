@@ -22,7 +22,6 @@ package gnu.prolog.vm.buildins.datetime;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
-import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
@@ -54,23 +53,5 @@ public class Predicate_date_time_stamp extends DateTimePrologCode
 		}
 		return interpreter.unify(args[1], new FloatTerm(date.getTime() / 1000.0));
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	@Override
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	@Override
-	public void uninstall(Environment env)
-	{}
 
 }
