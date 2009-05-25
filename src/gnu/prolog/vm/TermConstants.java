@@ -34,6 +34,7 @@ public final class TermConstants
 	public static final AtomTerm inByteAtom = AtomTerm.get("in_byte");
 	public static final AtomTerm inCharacterAtom = AtomTerm.get("in_character");
 	public static final AtomTerm integerAtom = AtomTerm.get("integer");
+	public static final AtomTerm floatAtom = AtomTerm.get("float");
 	public static final AtomTerm listAtom = AtomTerm.get("list");
 	public static final AtomTerm numberAtom = AtomTerm.get("number");
 	public static final AtomTerm predicateIndicatorAtom = AtomTerm.get("predicate_indicator");
