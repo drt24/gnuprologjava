@@ -23,7 +23,7 @@ import java.util.WeakHashMap;
 
 /**
  * Atom term. The object of this class represent prolog atom.
- *
+ * 
  * @author Constantin Plotnikov
  * @version 0.0.1
  */
@@ -36,7 +36,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * get atom term
-	 *
+	 * 
 	 * @param s
 	 *          string reprentation of atom.
 	 */
@@ -58,11 +58,11 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * get atom term
-	 *
+	 * 
 	 * @param s
 	 *          string reprentation of atom.
 	 */
-	public static AtomTerm getChar(char ch)
+	public static final AtomTerm getChar(char ch)
 	{
 		synchronized (chbu)
 		{
@@ -75,7 +75,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 	/**
 	 * Return an object to replace the object extracted from the stream. The
 	 * object will be used in the graph in place of the original.
-	 *
+	 * 
 	 * @return resloved object
 	 * @see java.io.Resolvable
 	 */
@@ -89,7 +89,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * a constructor.
-	 *
+	 * 
 	 * @param value
 	 *          value of atom
 	 */
@@ -100,7 +100,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/**
 	 * get type of term
-	 *
+	 * 
 	 * @return type of term
 	 */
 	@Override
@@ -111,7 +111,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -125,7 +125,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

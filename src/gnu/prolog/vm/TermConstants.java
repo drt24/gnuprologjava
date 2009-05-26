@@ -133,4 +133,6 @@ public final class TermConstants
 	public final static CompoundTermTag variableNamesTag = CompoundTermTag.get("variable_names", 1);
 	public final static CompoundTermTag singletonsTag = CompoundTermTag.get("singletons", 1);
 	public static final AtomTerm javaObjectAtom = AtomTerm.get("java_object");
+	public final static AtomTerm charsAtom = AtomTerm.get("chars");
+	public final static AtomTerm codesAtom = AtomTerm.get("codes");
 }

@@ -119,8 +119,6 @@ public class Environment implements PredicateListener
 	public final static AtomTerm errorAtom = AtomTerm.get("error");
 	public final static AtomTerm warningAtom = AtomTerm.get("warning");
 	public final static AtomTerm doubleQuotesAtom = AtomTerm.get("double_quotes");
-	public final static AtomTerm charsAtom = AtomTerm.get("chars");
-	public final static AtomTerm codesAtom = AtomTerm.get("codes");
 	public final static AtomTerm dialectAtom = AtomTerm.get("dialect");
 	public final static AtomTerm versionAtom = AtomTerm.get("version");
 	// interger terms
@@ -160,7 +158,7 @@ public class Environment implements PredicateListener
 		setPrologFlag(debugAtom, offAtom, true);
 		setPrologFlag(TermConstants.maxArityAtom, maxIntegerTerm, false);
 		setPrologFlag(unknownAtom, errorAtom, true);
-		setPrologFlag(doubleQuotesAtom, codesAtom, true);
+		setPrologFlag(doubleQuotesAtom, TermConstants.codesAtom, true);
 		setPrologFlag(dialectAtom, dialectTerm, false);
 		setPrologFlag(versionAtom, versionTerm, false);
 		initStreams(stdin, stdout);
@@ -285,7 +283,7 @@ public class Environment implements PredicateListener
 		}
 		else if (flag == doubleQuotesAtom)
 		{
-			if (newValue != charsAtom && newValue != codesAtom && newValue != TermConstants.atomAtom)
+			if (newValue != TermConstants.charsAtom && newValue != TermConstants.codesAtom && newValue != TermConstants.atomAtom)
 			{
 				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
