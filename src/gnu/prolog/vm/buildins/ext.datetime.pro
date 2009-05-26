@@ -36,6 +36,7 @@
 :-build_in(date_time_value/3,'gnu.prolog.vm.buildins.datetime.Predicate_date_time_value').
 
 % format_time(+Out, +Format, +StampOrDateTime)
+% Format guidelines: http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html
 :-build_in(format_time/3,'gnu.prolog.vm.buildins.datetime.Predicate_format_time').
 
 % format_time(+Out, +Format, +StampOrDateTime, +Locale)
