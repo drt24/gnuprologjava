@@ -101,7 +101,7 @@ public class Environment implements PredicateListener
 
 	protected OperatorSet opSet = new OperatorSet();
 	/** current state of loaded database */
-	protected PrologTextLoaderState prologTextLoaderState = new PrologTextLoaderState();
+	protected PrologTextLoaderState prologTextLoaderState;
 	/** predicate which used instead of real code when predicate is not defined */
 	protected PrologCode undefinedPredicate;
 	/** PredicateTag to code mapping */
@@ -146,6 +146,7 @@ public class Environment implements PredicateListener
 
 	public Environment(InputStream stdin, OutputStream stdout)
 	{
+		createTextLoader();
 		// load builtins
 		CompoundTerm term = new CompoundTerm(AtomTerm.get("resource"), new Term[] { AtomTerm
 				.get("/gnu/prolog/vm/buildins/buildins.pro") });
@@ -163,6 +164,11 @@ public class Environment implements PredicateListener
 		setPrologFlag(dialectAtom, dialectTerm, false);
 		setPrologFlag(versionAtom, versionTerm, false);
 		initStreams(stdin, stdout);
+	}
+
+	protected void createTextLoader()
+	{
+		prologTextLoaderState = new PrologTextLoaderState();
 	}
 
 	/** true if the environment was already initialized */
