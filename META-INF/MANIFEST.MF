@@ -17,10 +17,13 @@ Export-Package: gnu.prolog,
  gnu.prolog.vm.buildins.arithmetics,
  gnu.prolog.vm.buildins.atomicterms,
  gnu.prolog.vm.buildins.database,
+ gnu.prolog.vm.buildins.datastore,
+ gnu.prolog.vm.buildins.datetime,
  gnu.prolog.vm.buildins.debug,
  gnu.prolog.vm.buildins.imphooks,
  gnu.prolog.vm.buildins.io,
  gnu.prolog.vm.buildins.java,
+ gnu.prolog.vm.buildins.list,
  gnu.prolog.vm.buildins.misc,
  gnu.prolog.vm.buildins.termcomparsion,
  gnu.prolog.vm.buildins.termcreation,
@@ -30,3 +33,4 @@ Export-Package: gnu.prolog,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: gnuprolog.jar
 Bundle-Vendor: Software Engineering Group; University of Twente
+Bundle-ActivationPolicy: lazy

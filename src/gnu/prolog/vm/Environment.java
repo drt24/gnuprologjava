@@ -99,13 +99,14 @@ public class Environment implements PredicateListener
 		Environment.defaultOutputStream = defaultOutputStream;
 	}
 
-	OperatorSet opSet = new OperatorSet();
+	protected OperatorSet opSet = new OperatorSet();
 	/** current state of loaded database */
-	PrologTextLoaderState prologTextLoaderState = new PrologTextLoaderState();
+	protected PrologTextLoaderState prologTextLoaderState = new PrologTextLoaderState();
 	/** predicate which used instead of real code when predicate is not defined */
-	PrologCode undefinedPredicate;
+	protected PrologCode undefinedPredicate;
 	/** PredicateTag to code mapping */
-	Map<CompoundTermTag, PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
+	protected Map<CompoundTermTag, PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
+
 	// flag atmoms
 	public final static AtomTerm boundedAtom = AtomTerm.get("bounded");
 	public final static AtomTerm integerRoundingFunctionAtom = AtomTerm.get("integer_rounding_function");
@@ -133,9 +134,9 @@ public class Environment implements PredicateListener
 	public final static AtomTerm modifyAtom = AtomTerm.get("modify");
 	public final static CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 	/** atom to flag */
-	Map<AtomTerm, Term> atom2flag = new HashMap<AtomTerm, Term>();
-	Set<AtomTerm> changableFlags = new HashSet<AtomTerm>();
-	boolean initalizationRun = false;
+	protected Map<AtomTerm, Term> atom2flag = new HashMap<AtomTerm, Term>();
+	protected Set<AtomTerm> changableFlags = new HashSet<AtomTerm>();
+	protected boolean initalizationRun = false;
 
 	/** constructor of environment, it loads buildins to database at start. */
 	public Environment()
@@ -283,7 +284,8 @@ public class Environment implements PredicateListener
 		}
 		else if (flag == doubleQuotesAtom)
 		{
-			if (newValue != TermConstants.charsAtom && newValue != TermConstants.codesAtom && newValue != TermConstants.atomAtom)
+			if (newValue != TermConstants.charsAtom && newValue != TermConstants.codesAtom
+					&& newValue != TermConstants.atomAtom)
 			{
 				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
@@ -390,8 +392,8 @@ public class Environment implements PredicateListener
 		return code;
 	}
 
-	Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
-	ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
+	protected Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
+	protected ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
 
 	private void pollPrologCodeListeners()
 	{
@@ -486,13 +488,13 @@ public class Environment implements PredicateListener
 	}
 
 	// IO support
-	PrologStream userInput;
-	PrologStream userOutput;
-	PrologStream currentInput;
-	PrologStream currentOutput;
+	protected PrologStream userInput;
+	protected PrologStream userOutput;
+	protected PrologStream currentInput;
+	protected PrologStream currentOutput;
 
-	List<PrologStream> openStreams = new ArrayList<PrologStream>();
-	Map<AtomTerm, PrologStream> alias2stream = new HashMap<AtomTerm, PrologStream>();
+	protected List<PrologStream> openStreams = new ArrayList<PrologStream>();
+	protected Map<AtomTerm, PrologStream> alias2stream = new HashMap<AtomTerm, PrologStream>();
 
 	public OperatorSet getOperatorSet()
 	{
