@@ -34,3 +34,5 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: gnuprolog.jar
 Bundle-Vendor: Software Engineering Group; University of Twente
 Bundle-ActivationPolicy: lazy
+Eclipse-BuddyPolicy: registered
+
