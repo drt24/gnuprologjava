@@ -23,26 +23,26 @@ import java.util.Map;
 
 /**
  * ISO Prolog write options (Section 7.10.4)
- *
+ * 
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
 public class WriteOptions implements Cloneable
 {
 	/**
-	 * Iff this option is true, each atom and functor is quoted if it would be
-	 * necessary fro to be input by read_term/3
+	 * If this option is true, each atom and functor is quoted if it would be
+	 * necessary for to be input by read_term/3
 	 */
 	public boolean quoted;
 	/**
-	 * Iff this option is true each coumpound term is output in functional
-	 * notation. Neither operator notationnor list notation is used when this
-	 * write option is in force.
+	 * If this option is true each compound term is output in functional notation.
+	 * Neither operator notation nor list notation is used when this write option
+	 * is in force.
 	 */
 	public boolean ignoreOps;
 	/**
 	 * display terms of form '$VAR'(N) as ('A'+ N%26)+""+(N/26). this option
-	 * requires that ignoreOps = flase by ISO Standard checking this condition is
+	 * requires that ignoreOps = false by ISO Standard checking this condition is
 	 * left for user.
 	 */
 	public boolean numbervars;
@@ -73,6 +73,11 @@ public class WriteOptions implements Cloneable
 	 */
 	public boolean javaObjectsToString;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#clone()
+	 */
 	@Override
 	public Object clone()
 	{

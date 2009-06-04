@@ -32,6 +32,12 @@
 % stacktrace(?List)
 :-build_in(stacktrace/1,'gnu.prolog.vm.buildins.misc.Predicate_stacktrace').
 
+% Unifies the name and arity with of all functors with known to the system 
+% (including builtin). This can be used to determine if a given predicate
+% exists.
+% current_functor(?Name, ?Arity)
+:-build_in(current_functor/2,'gnu.prolog.vm.buildins.misc.Predicate_current_functor').
+
 %
 % Datastore predicates
 %
