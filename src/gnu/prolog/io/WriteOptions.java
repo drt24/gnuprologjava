@@ -64,6 +64,11 @@ public class WriteOptions implements Cloneable
 	Map<Term, String> variable2name;
 
 	/**
+	 * If true print the name of the variables as they were declared
+	 */
+	public boolean declaredVariableNames;
+
+	/**
 	 * Include JavaObjects in the output
 	 */
 	public boolean javaObjects = true;

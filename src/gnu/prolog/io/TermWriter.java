@@ -34,7 +34,7 @@ import java.util.HashMap;
 
 /**
  * This class is intendent for printing terms.
- *
+ * 
  * @author Constantine A. Plotnikov.
  * @version 0.0.1
  */
@@ -56,7 +56,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * convert term passed as argument to string
-	 *
+	 * 
 	 * @param term
 	 *          a term to convert
 	 * @return String representation of the term
@@ -79,7 +79,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * convert term passed as argument to string
-	 *
+	 * 
 	 * @param term
 	 *          a term to convert
 	 * @return String representation of the term
@@ -102,7 +102,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * create term writer over other writer.
-	 *
+	 * 
 	 * @param w
 	 *          underlying writer
 	 */
@@ -113,7 +113,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * print term using specified write options
-	 *
+	 * 
 	 * @param options
 	 *          write options
 	 * @param term
@@ -126,7 +126,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * print term using default write options
-	 *
+	 * 
 	 * @param term
 	 *          term to print
 	 */
@@ -137,7 +137,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * print term using default write options and specified operator set
-	 *
+	 * 
 	 * @param opSet
 	 *          operator set to use
 	 * @param term
@@ -155,7 +155,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * display term
-	 *
+	 * 
 	 * @param options
 	 *          current write options
 	 * @param priority
@@ -213,7 +213,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * display compound term
-	 *
+	 * 
 	 * @param options
 	 *          current write options
 	 * @param priority
@@ -327,7 +327,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * display list
-	 *
+	 * 
 	 * @param options
 	 *          current write options
 	 * @param term
@@ -360,7 +360,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * display float term
-	 *
+	 * 
 	 * @param options
 	 *          current write options
 	 * @param term
@@ -380,7 +380,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * display integer term
-	 *
+	 * 
 	 * @param options
 	 *          current write options
 	 * @param term
@@ -393,7 +393,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * display variable term
-	 *
+	 * 
 	 * @param options
 	 *          current write options
 	 * @param variable
@@ -406,6 +406,10 @@ public class TermWriter extends PrintWriter
 			options.variable2name = new HashMap<Term, String>();
 		}
 		String name = options.variable2name.get(term);
+		if (options.declaredVariableNames && name == null)
+		{
+			name = term.name;
+		}
 		if (name == null)
 		{
 			int n = options.numberOfVariables++;
@@ -457,7 +461,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * display atom.
-	 *
+	 * 
 	 * @param options
 	 *          current write options
 	 * @param atom
@@ -478,7 +482,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * get single quoted string.
-	 *
+	 * 
 	 * @param s
 	 *          string to quote
 	 * @return single quoted string
@@ -498,7 +502,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * check if the string is needed to be quoted .
-	 *
+	 * 
 	 * @param s
 	 *          string to test
 	 * @return true if string need to quoted in displayq
@@ -549,7 +553,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * check if character is solo char.
-	 *
+	 * 
 	 * @param c
 	 *          character to test
 	 * @return true if character is solo char
@@ -576,7 +580,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * check if character is graphics char.
-	 *
+	 * 
 	 * @param ch
 	 *          character to test
 	 * @return true if character is graphics char
@@ -610,7 +614,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * check if character is valid start of atom.
-	 *
+	 * 
 	 * @param c
 	 *          character to test
 	 * @return true if character is valid start of atom.
@@ -622,7 +626,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * check if character is valid continuation of atom.
-	 *
+	 * 
 	 * @param c
 	 *          character to test
 	 * @return true if character is valid continuation of atom.
@@ -634,7 +638,7 @@ public class TermWriter extends PrintWriter
 
 	/**
 	 * append quoted char to string buffer.
-	 *
+	 * 
 	 * @param buf
 	 *          buffer to which character is added
 	 * @param ch

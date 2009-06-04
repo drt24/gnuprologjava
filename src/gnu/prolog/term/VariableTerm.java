@@ -31,7 +31,7 @@ public class VariableTerm extends Term
 
 	/**
 	 * a constructor
-	 *
+	 * 
 	 * @param name
 	 *          name of term
 	 */
@@ -39,8 +39,13 @@ public class VariableTerm extends Term
 	public Term value = null;
 
 	/**
+	 * Name of the variable when it was declared
+	 */
+	public String name = null;
+
+	/**
 	 * clone the object using clone context
-	 *
+	 * 
 	 * @param context
 	 *          clone context
 	 * @return cloned term
@@ -54,6 +59,7 @@ public class VariableTerm extends Term
 			if (term == null)
 			{
 				term = new VariableTerm();
+				// term.name = name;
 				context.putTerm(this, term);
 			}
 			return term;
@@ -66,7 +72,7 @@ public class VariableTerm extends Term
 
 	/**
 	 * dereference term.
-	 *
+	 * 
 	 * @return dereferenced term
 	 */
 	@Override
@@ -96,7 +102,7 @@ public class VariableTerm extends Term
 
 	/**
 	 * get type of term
-	 *
+	 * 
 	 * @return type of term
 	 */
 	@Override

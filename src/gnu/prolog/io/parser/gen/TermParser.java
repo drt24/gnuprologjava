@@ -662,6 +662,7 @@ public final class TermParser implements TermParserConstants
 			var = new VariableTerm();
 			if (!"_".equals(token.image))
 			{
+				var.name = token.image;
 				options.variableNames.put(token.image, var);
 				options.singletons.put(token.image, var);
 			}
