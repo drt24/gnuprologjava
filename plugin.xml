@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="pro,pl"
+            id="gnuprologjava.file.prolog"
+            name="Prolog"
+            priority="normal">
+      </content-type>
+   </extension>
+
+</plugin>
