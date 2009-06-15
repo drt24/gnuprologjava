@@ -85,7 +85,7 @@
 				<include name="**/*.pro" />
 			</fileset>
 		</copy>
-		<jar jarfile="${build.dir}/${name}.jar" basedir="${classes}" excludes="${manifest}" manifest="${classes}/${manifest}" />
+		<jar jarfile="${build.dir}/${name}-${version}.jar" basedir="${classes}" excludes="${manifest}" manifest="${classes}/${manifest}" />
 	</target>
 
 	<target name="compile" depends="init">
