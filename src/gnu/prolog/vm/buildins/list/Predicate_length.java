@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author Michiel Hendriks
  */
 public class Predicate_length implements PrologCode
@@ -43,13 +43,13 @@ public class Predicate_length implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
 	 * gnu.prolog.term.Term[])
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		if (CompoundTerm.isListPair(args[0]))
+		if (CompoundTerm.isListPair(args[0]) || TermConstants.emptyListAtom.equals(args[0]))
 		{
 			int length = 0;
 
@@ -98,7 +98,7 @@ public class Predicate_length implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
@@ -106,7 +106,7 @@ public class Predicate_length implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)
