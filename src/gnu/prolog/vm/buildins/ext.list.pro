@@ -34,3 +34,17 @@
 % create a list holding only variables. 
 % length(?List, ?Int)
 :-build_in(length/2,'gnu.prolog.vm.buildins.list.Predicate_length').
+
+% True if Sorted can be unified with a list holding the elements of List, sorted 
+% to the standard order of terms. Duplicates are removed. 
+% sort(+List, -Sorted)
+:-build_in(sort/2,'gnu.prolog.vm.buildins.list.Predicate_sort').
+
+% Equivalent to sort/2, but does not remove duplicates.
+% msort(+List, -Sorted)
+:-build_in(msort/2,'gnu.prolog.vm.buildins.list.Predicate_msort').
+
+% Sorts similar to sort/2, but determines the order of two terms by calling Pred(-Delta, +E1, +E2) . 
+% This call must unify Delta with one of <, > or =. 
+% predsort(+Pred, +List, -Sorted)
+:-build_in(predsort/2,'gnu.prolog.vm.buildins.list.Predicate_predsort').
