@@ -47,4 +47,4 @@
 % Sorts similar to sort/2, but determines the order of two terms by calling Pred(-Delta, +E1, +E2) . 
 % This call must unify Delta with one of <, > or =. 
 % predsort(+Pred, +List, -Sorted)
-:-build_in(predsort/2,'gnu.prolog.vm.buildins.list.Predicate_predsort').
+:-build_in(predsort/3,'gnu.prolog.vm.buildins.list.Predicate_predsort').

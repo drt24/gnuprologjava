@@ -30,7 +30,6 @@ import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,17 +56,9 @@ public class Predicate_sort implements PrologCode
 		Set<Term> set = new HashSet<Term>();
 		CompoundTerm.toCollection(args[0], set);
 		List<Term> list = new ArrayList<Term>(set);
-		Collections.sort(list, getComparator());
+		Collections.sort(list, new TermComparator());
 		Term result = CompoundTerm.getList(list);
 		return interpreter.unify(args[1], result);
-	}
-
-	/**
-	 * @return
-	 */
-	protected Comparator<? super Term> getComparator()
-	{
-		return new TermComparator();
 	}
 
 	/*

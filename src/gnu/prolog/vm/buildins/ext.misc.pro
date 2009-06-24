@@ -24,7 +24,12 @@
 % List all perdicates with the given name
 % listing(+Pred)
 :-build_in(listing/1,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
-:-build_in(listing/0,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
+:-build_in(listing/0,'gnu.prolog.vm.buildins.misc.Predicate_listing').
+
+% Determine or test the Order between two terms in the standard order of terms. 
+% Order is one of <, > or =, with the obvious meaning.
+% compare(?Order, +Term1, +Term2)
+:-build_in(compare/3,'gnu.prolog.vm.buildins.misc.Predicate_compare').  
 
 % Retrieve the current stacktrace of evaluating predicates (excluding
 % the current predicate). Note: it will only contain the compound tags

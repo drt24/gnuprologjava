@@ -17,27 +17,31 @@
  * Boston, MA  02111-1307, USA. The text ol license can be also found 
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.buildins.list;
+package gnu.prolog.vm.buildins.misc;
 
-import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.TermComparator;
+import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.TermConstants;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * 
  * @author Michiel Hendriks
  */
-public class Predicate_msort implements PrologCode
+public class Predicate_compare implements PrologCode
 {
+	public static final AtomTerm EQ_ATOM = AtomTerm.get("=");
+	public static final AtomTerm LT_ATOM = AtomTerm.get("<");
+	public static final AtomTerm GT_ATOM = AtomTerm.get(">");
+
+	protected TermComparator comp = new TermComparator();
+
+	public Predicate_compare()
+	{}
 
 	/*
 	 * (non-Javadoc)
@@ -47,15 +51,24 @@ public class Predicate_msort implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		if (!CompoundTerm.isListPair(args[0]))
+		if (!(args[0] instanceof VariableTerm))
 		{
-			PrologException.typeError(TermConstants.listAtom, args[0]);
+			//
 		}
-		List<Term> list = new ArrayList<Term>();
-		CompoundTerm.toCollection(args[0], list);
-		Collections.sort(list, new TermComparator());
-		Term result = CompoundTerm.getList(list);
-		return interpreter.unify(args[1], result);
+		int rc = comp.compare(args[1], args[2]);
+		if (rc == 0)
+		{
+			return interpreter.unify(EQ_ATOM, args[0]);
+		}
+		else if (rc > 0)
+		{
+			return interpreter.unify(GT_ATOM, args[0]);
+		}
+		else if (rc < 0)
+		{
+			return interpreter.unify(LT_ATOM, args[0]);
+		}
+		return FAIL;
 	}
 
 	/*
