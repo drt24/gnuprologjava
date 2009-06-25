@@ -29,7 +29,7 @@ import java.util.Set;
 
 /**
  * Module in database
- *
+ * 
  * @author Contantine A Plotnikov
  */
 public class Module
@@ -42,7 +42,7 @@ public class Module
 
 	/**
 	 * create new predicate defined in this module
-	 *
+	 * 
 	 * @param tag
 	 *          tag of this predicate
 	 * @return created predicate
@@ -63,7 +63,7 @@ public class Module
 
 	/**
 	 * get predicate defined in this module
-	 *
+	 * 
 	 * @param tag
 	 *          tag of this predicate
 	 * @return predicate defined in this module or null if predicate is not found
@@ -122,7 +122,7 @@ public class Module
 
 	public synchronized void removePredicateListener(PredicateListener listener)
 	{
-		predicateListeners.add(listener);
+		predicateListeners.remove(listener);
 	}
 
 }
