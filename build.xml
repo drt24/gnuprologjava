@@ -1,224 +1,120 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project name="gnuprologjava" default="build.jars" basedir=".">
+<?xml version="1.0"?>
+<project name="gnuprolog" default="main" basedir=".">
 
-	<property name="basews" value="${ws}"/>
-	<property name="baseos" value="${os}"/>
-	<property name="basearch" value="${arch}"/>
-	<property name="basenl" value="${nl}"/>
-	<property name="bundleId" value="gnuprologjava"/>
-	<property name="bundleVersion" value="0.2.1"/>
+	<target name="init">
+		<loadproperties srcFile="src/gnu/prolog/version.properties">
+			<filterchain>
+				<deletecharacters chars=" \t" />
+			</filterchain>
+		</loadproperties>
 
-	<!-- Compiler settings. -->
-	<property name="javacFailOnError" value="false"/>
-	<property name="javacDebugInfo" value="on"/>
-	<property name="javacVerbose" value="false"/>
-	<property name="logExtension" value=".log"/>
-	<property name="compilerArg" value=""/>
-	<property name="javacSource" value="1.3"/>
-	<property name="javacTarget" value="1.2"/>
-	<condition property="dir_bootclasspath" value="${java.home}/../Classes">
-		<os family="mac"/>
-	</condition>
-	<property name="dir_bootclasspath" value="${java.home}/lib"/>
-	<path id="path_bootclasspath">
-		<fileset dir="${dir_bootclasspath}">
-			<include name="*.jar"/>
-		</fileset>
-	</path>
-	<property name="bootclasspath" refid="path_bootclasspath"/>
-<condition property="bundleBootClasspath" value="${J2SE-1.5}"	>
-		<isset property="J2SE-1.5"/>
-	</condition>
-<condition property="bundleJavacSource" value="1.5"	>
-		<isset property="J2SE-1.5"/>
-	</condition>
-<condition property="bundleJavacTarget" value="1.5"	>
-		<isset property="J2SE-1.5"/>
-	</condition>
-	<property name="bundleJavacSource" value="${javacSource}"/>
-	<property name="bundleJavacTarget" value="${javacTarget}"/>
-	<property name="bundleBootClasspath" value="${bootclasspath}"/>
+		<property name="Name" value="GNU Prolog for Java" />
+		<property name="name" value="gnuprolog" />
+		<property name="version" value="${gnu.prolog.version.major}.${gnu.prolog.version.minor}.${gnu.prolog.version.revision}" />
+		<property name="_version" value="${gnu.prolog.version.major}_${gnu.prolog.version.minor}_${gnu.prolog.version.revision}" />
 
-	<target name="init" depends="properties">
-<condition property="pluginTemp" value="${buildTempFolder}/plugins"		>
-			<isset property="buildTempFolder"/>
-		</condition>
-		<property name="pluginTemp" value="${basedir}"/>
-<condition property="build.result.folder" value="${pluginTemp}/gnuprologjava_0.2.1"		>
-			<isset property="buildTempFolder"/>
-		</condition>
-		<property name="build.result.folder" value="${basedir}"/>
-		<property name="temp.folder" value="${basedir}/temp.folder"/>
-		<property name="plugin.destination" value="${basedir}"/>
+		<property name="debug" value="on" />
+
+		<property name="src.dir" value="${basedir}/src" />
+		<property name="docs.dir" value="${basedir}/docs" />
+		<property name="lib.dir" value="${basedir}/lib" />
+		<property name="build.dir" value="${basedir}/build" />
+		<property name="package.dir" value="${build.dir}/${name}" />
+		<property name="classes" value="${build.dir}/classes" />
+		<property name="classpath" value="" />
+		<property name="manifest" value="manifest.mf" />
 	</target>
 
-	<target name="properties" if="eclipse.running">
-		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-
+	<target name="main" depends="build">
 	</target>
 
-	<target name="build.update.jar" depends="init" description="Build the plug-in: gnuprologjava for an update site.">
-		<delete dir="${temp.folder}"/>
-		<mkdir dir="${temp.folder}"/>
-		<antcall target="build.jars"/>
-		<antcall target="gather.bin.parts">
-			<param name="destination.temp.folder" value="${temp.folder}/"/>
-		</antcall>
-		<jar destfile="${plugin.destination}/gnuprologjava_0.2.1.jar" basedir="${temp.folder}/gnuprologjava_0.2.1" filesetmanifest="merge"/>
-		<delete dir="${temp.folder}"/>
+
+	<target name="build" depends="jar">
 	</target>
 
-	<target name="gnuprolog.jar" depends="init" unless="gnuprolog.jar" description="Create jar: gnuprologjava gnuprolog.jar.">
-		<delete dir="${temp.folder}/gnuprolog.jar.bin"/>
-		<mkdir dir="${temp.folder}/gnuprolog.jar.bin"/>
-		<path id="gnuprolog.jar.classpath">
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.core.runtime_3.4.0.v20080512.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.osgi_3.4.3.R34x_v20081215-1030.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.core.jobs_3.4.1.R34x_v20081128.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.200.v20080610/runtime_registry_compatibility.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.core.runtime.compatibility.registry_3.2.200.v20080610"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.equinox.registry_3.4.0.v20080516-0950.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.equinox.preferences_3.2.201.R34x_v20080709.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.core.contenttype_3.3.0.v20080604-1400.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.core.runtime.compatibility.auth_3.2.100.v20070502.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.equinox.app_1.1.0.v20080421-2006.jar"/>
-			<pathelement path="../../eclipse-x/plugins/org.eclipse.osgi.services_3.1.200.v20071203.jar"/>
-			<pathelement path="../../eclipse-x/plugins/javax.servlet_2.4.0.v200806031604.jar"/>
-		</path>
-		<!-- compile the source code -->
-		<javac destdir="${temp.folder}/gnuprolog.jar.bin" failonerror="${javacFailOnError}" verbose="${javacVerbose}" debug="${javacDebugInfo}" includeAntRuntime="no" bootclasspath="${bundleBootClasspath}" source="${bundleJavacSource}" target="${bundleJavacTarget}"		>
-			<compilerarg line="${compilerArg}" compiler="${build.compiler}"/>
-			<classpath refid="gnuprolog.jar.classpath" />
-			<src path="src/"			/>
-			<compilerarg value="@${basedir}/javaCompiler.gnuprolog.jar.args" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-			<compilerarg line="-log '${temp.folder}/gnuprolog.jar.bin${logExtension}'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-		</javac>
-		<!-- Copy necessary resources -->
-		<copy todir="${temp.folder}/gnuprolog.jar.bin" failonerror="true" overwrite="false">
-			<fileset dir="src/">
-				<exclude name="**/*.java"/>
-				<exclude name="**/package.htm*"/>
-			</fileset>
-		</copy>
-		<mkdir dir="${build.result.folder}"/>
-		<jar destfile="${build.result.folder}/gnuprolog.jar" basedir="${temp.folder}/gnuprolog.jar.bin"/>
-		<delete dir="${temp.folder}/gnuprolog.jar.bin"/>
+	<target name="package" depends="zip">
 	</target>
 
-	<target name="gnuprologsrc.zip" depends="init" unless="gnuprologsrc.zip">
-		<mkdir dir="${build.result.folder}"/>
-		<antcall target="zip.gnuprologsrc.zip"/>
+	<target name="zip" depends="complete_zip">
 	</target>
-	<target name="zip.gnuprologsrc.zip">
-		<zip destfile="${build.result.folder}/gnuprologsrc.zip" filesonly="false" whenempty="skip" update="false">
-			<fileset dir="src/">
-				<include name="**/*.java"/>
-			</fileset>
+
+	<target name="src_zip" depends="copy_src">
+		<zip zipfile="${build.dir}/${name}-src-${_version}.zip" basedir="${build.dir}" includes="${name}/**/*">
 		</zip>
 	</target>
-	<target name="copy.gnuprologsrc.zip">
-		<copy todir="${source.destination.folder}/gnuprologsrc" failonerror="true" overwrite="true">
-			<fileset dir="src/">
-				<include name="**/*.java"/>
+
+	<target name="copy_src" depends="jar">
+		<delete dir="${package.dir}" />
+		<copy todir="${package.dir}/src">
+			<fileset dir="${src.dir}" />
+		</copy>
+		<copy todir="${package.dir}/docs">
+			<fileset dir="${docs.dir}" />
+		</copy>
+		<copy file="${manifest}" todir="${package.dir}" />
+		<copy file="${basedir}/build.xml" todir="${package.dir}" />
+		<copy file="${basedir}/changes.txt" todir="${package.dir}" />
+		<copy file="${basedir}/package-list" todir="${package.dir}" />
+	</target>
+
+	<target name="copy_complete" depends="src_zip,javadoc">
+		<copy todir="${package.dir}/docs/api">
+			<fileset dir="${build.dir}/api" />
+		</copy>
+		<copy file="${build.dir}/${name}.jar" todir="${package.dir}" />
+	</target>
+
+	<target name="complete_zip" depends="copy_complete">
+		<zip zipfile="${build.dir}/${name}-complete-${_version}.zip" basedir="${build.dir}" includes="${name}/**/*">
+		</zip>
+	</target>
+
+
+	<target name="javadoc" depends="init">
+		<delete dir="${build.dir}/api" />
+		<mkdir dir="${build.dir}/api" />
+		<javadoc private="true" destdir="${build.dir}/api" packageList="${basedir}/package-list" sourcepath="${src.dir}" author="true" use="true" header="&lt;a href='http://gnuprologjava.sourceforge.net'&gt; GNU Prolog for Java &lt;/a&gt;" footer="&lt;a href='http://gnuprologjava.sourceforge.net'&gt; GNU Prolog for Java &lt;/a&gt;" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<delete file="${build.dir}/${name}.jar" />
+		<filter token="version" value="${version}" />
+		<copy file="${manifest}" tofile="${classes}/${manifest}" filtering="on" />
+		<copy todir="${classes}" filtering="off">
+			<fileset dir="${src.dir}">
+				<include name="**/*.pro" />
 			</fileset>
 		</copy>
+		<jar jarfile="${build.dir}/${name}-${version}.jar" basedir="${classes}" excludes="${manifest}" manifest="${classes}/${manifest}" />
 	</target>
 
-	<target name="build.jars" depends="init" description="Compile classes and build nested jars for the plug-in: gnuprologjava.">
-		<available property="gnuprolog.jar" file="${build.result.folder}/gnuprolog.jar"/>
-		<antcall target="gnuprolog.jar"/>
+	<target name="compile" depends="init">
+		<mkdir dir="${classes}" />
+		<javac srcdir="${src.dir}" destdir="${classes}" debug="${debug}" deprecation="off" optimize="on" target="1.5" />
 	</target>
 
-	<target name="build.sources" depends="init">
-		<available property="gnuprologsrc.zip" file="${build.result.folder}/gnuprologsrc.zip"/>
-		<antcall target="gnuprologsrc.zip"/>
-	</target>
-
-	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/gnuprologjava_0.2.1"/>
-		<copy todir="${destination.temp.folder}/gnuprologjava_0.2.1" failonerror="true" overwrite="false">
-			<fileset dir="${build.result.folder}">
-				<include name="gnuprolog.jar"/>
-			</fileset>
+	<target name="site" depends="javadoc">
+		<delete dir="${build.dir}/site" />
+		<delete file="${build.dir}/site.zip" />
+		<mkdir dir="${build.dir}/site" />
+		<filter token="version" value="${_version}" />
+		<copy file="${basedir}/site/index.html" todir="${build.dir}/site" filtering="on">
 		</copy>
-		<copy todir="${destination.temp.folder}/gnuprologjava_0.2.1" failonerror="true" overwrite="false">
-			<fileset dir="${basedir}">
-				<include name="META-INF/"/>
-				<include name="gnuprolog.jar"/>
-				<include name="src/gnu/prolog/version.properties"/>
-				<include name="src/gnu/prolog/vm/buildins/buildins.pro"/>
-				<include name="src/gnu/prolog/vm/buildins/ext.debug.pro"/>
-				<include name="src/gnu/prolog/vm/buildins/ext.java.pro"/>
-				<include name="src/gnu/prolog/vm/buildins/ext.misc.pro"/>
-				<include name="plugin.xml"/>
-			</fileset>
+		<copy todir="${build.dir}/site/api">
+			<fileset dir="${build.dir}/api" />
 		</copy>
+		<zip zipfile="${build.dir}/site/vanila.zip" basedir="${basedir}/test" />
+		<zip zipfile="${build.dir}/site.zip" basedir="${build.dir}/site" />
 	</target>
 
-	<target name="build.zips" depends="init">
-	</target>
 
-	<target name="gather.sources" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/gnuprologjava_0.2.1"/>
-		<copy file="${build.result.folder}/gnuprologsrc.zip" todir="${destination.temp.folder}/gnuprologjava_0.2.1" failonerror="false" overwrite="false"/>
-		<antcall target="copy.src.includes">
-			<param name="source.destination.folder" value="${destination.temp.folder}/gnuprologjava_0.2.1"/>
-		</antcall>
-	</target>
-
-	<target name="gather.individual.sources" depends="init">
-		<antcall target="copy.gnuprologsrc.zip">
-			<param name="source.destination.folder" value="${destination.temp.folder}"/>
-		</antcall>
-		<antcall target="copy.src.includes">
-			<param name="source.destination.folder" value="${destination.temp.folder}"/>
-		</antcall>
-	</target>
-
-	<target name="copy.src.includes" depends="init">
-	</target>
-
-	<target name="gather.logs" depends="init" if="destination.temp.folder">
-		<mkdir dir="${destination.temp.folder}/gnuprologjava_0.2.1"/>
-		<copy todir="${destination.temp.folder}/gnuprologjava_0.2.1" failonerror="false" overwrite="false">
-			<fileset dir="${temp.folder}">
-				<include name="gnuprolog.jar.bin${logExtension}"/>
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="clean" depends="init" description="Clean the plug-in: gnuprologjava of all the zips, jars and logs created.">
-		<delete file="${build.result.folder}/gnuprolog.jar"/>
-		<delete file="${build.result.folder}/gnuprologsrc.zip"/>
-		<delete file="${plugin.destination}/gnuprologjava_0.2.1.jar"/>
-		<delete file="${plugin.destination}/gnuprologjava_0.2.1.zip"/>
-		<delete dir="${temp.folder}"/>
-	</target>
-
-	<target name="refresh" depends="init" if="eclipse.running" description="Refresh this folder.">
-		<eclipse.convertPath fileSystemPath="C:/local/mhendrik_ample/trese.ample/gnuprologjava" property="resourcePath"/>
-		<eclipse.refreshLocal resource="${resourcePath}" depth="infinite"/>
-	</target>
-
-	<target name="zip.plugin" depends="init" description="Create a zip containing all the elements for the plug-in: gnuprologjava.">
-		<delete dir="${temp.folder}"/>
-		<mkdir dir="${temp.folder}"/>
-		<antcall target="build.jars"/>
-		<antcall target="build.sources"/>
-		<antcall target="gather.bin.parts">
-			<param name="destination.temp.folder" value="${temp.folder}/"/>
-		</antcall>
-		<antcall target="gather.sources">
-			<param name="destination.temp.folder" value="${temp.folder}/"/>
-		</antcall>
-		<delete>
-			<fileset dir="${temp.folder}">
-				<include name="**/*.bin${logExtension}"/>
-			</fileset>
-		</delete>
-		<zip destfile="${plugin.destination}/gnuprologjava_0.2.1.zip" basedir="${temp.folder}" filesonly="true" whenempty="skip" update="false"/>
-		<delete dir="${temp.folder}"/>
+	<!-- =================================================================== -->
+	<!-- Cleans up generated stuff                                           -->
+	<!-- =================================================================== -->
+	<target name="clean" depends="init">
+		<delete dir="${build.dir}" />
+		<!-- <delete dir="${docs.dir}/api"/> -->
 	</target>
 
 </project>
+
