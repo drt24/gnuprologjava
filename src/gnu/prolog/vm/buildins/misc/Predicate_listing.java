@@ -40,7 +40,7 @@ public class Predicate_listing implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
 	 * gnu.prolog.term.Term[])
 	 */
@@ -52,6 +52,7 @@ public class Predicate_listing implements PrologCode
 			filter = Predicate_spy.getTag(args[0]);
 		}
 		WriteOptions options = new WriteOptions();
+		options.declaredVariableNames = true;
 		options.operatorSet = interpreter.environment.getOperatorSet();
 		options.numbervars = true;
 		options.quoted = true;
@@ -97,7 +98,7 @@ public class Predicate_listing implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
@@ -105,7 +106,7 @@ public class Predicate_listing implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)
