@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GNU Prolog for Java
 Bundle-SymbolicName: gnuprologjava;singleton:=true
-Bundle-Version: 0.2.1
+Bundle-Version: 0.2.2
 Export-Package: gnu.prolog,
  gnu.prolog.database,
  gnu.prolog.gui,
