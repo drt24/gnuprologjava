@@ -71,6 +71,7 @@ public class TermParserUtils
 							{
 								i++;
 							}
+							/* FALL THROUGH */
 						case '\n':
 							continue chars;
 						case 'x':

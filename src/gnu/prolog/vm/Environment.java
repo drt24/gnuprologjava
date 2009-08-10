@@ -529,8 +529,8 @@ public class Environment implements PredicateListener
 					: stdin));
 			userOutput = new TextOutputPrologStream(outops, new OutputStreamWriter(stdout == null ? getDefaultOutputStream()
 					: stdout));
-			currentInput = getUserInput();
-			currentOutput = getUserOutput();
+			setCurrentInput(getUserInput());
+			setCurrentOutput(getUserOutput());
 			alias2stream.put(PrologStream.userOutputAtom, userOutput);
 			alias2stream.put(PrologStream.userInputAtom, userInput);
 			openStreams.add(userInput);
