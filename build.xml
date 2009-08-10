@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="gnuprolog" default="main" basedir=".">
+<project name="gnuprolog" default="build">
 
 	<target name="init">
 		<loadproperties srcFile="src/gnu/prolog/version.properties">
@@ -8,92 +8,111 @@
 			</filterchain>
 		</loadproperties>
 
-		<property name="Name" value="GNU Prolog for Java" />
-		<property name="name" value="gnuprolog" />
+		<mkdir dir="build" />
+		<mkdir dir="dist" />
+
+		<property name="name.friendly" value="GNU Prolog for Java" />
+		<property name="url.website" value="http://gnuprologjava.sourceforge.net" />
+
 		<property name="version" value="${gnu.prolog.version.major}.${gnu.prolog.version.minor}.${gnu.prolog.version.revision}" />
-		<property name="_version" value="${gnu.prolog.version.major}_${gnu.prolog.version.minor}_${gnu.prolog.version.revision}" />
-
-		<property name="debug" value="on" />
-
-		<property name="src.dir" value="${basedir}/src" />
-		<property name="docs.dir" value="${basedir}/docs" />
-		<property name="lib.dir" value="${basedir}/lib" />
-		<property name="build.dir" value="${basedir}/build" />
-		<property name="package.dir" value="${build.dir}/${name}" />
-		<property name="classes" value="${build.dir}/classes" />
-		<property name="classpath" value="" />
-		<property name="manifest" value="manifest.mf" />
+		<property name="ant.build.javac.target" value="1.5" />
+		<property name="ant.build.javac.source" value="1.5" />
 	</target>
 
-	<target name="main" depends="build">
+	<target name="clean" description="Clean all generated content">
+		<delete dir="build" />
+		<delete dir="dist" />
 	</target>
 
+	<target name="build" depends="jar" description="Build all the sources" />
 
-	<target name="build" depends="jar">
-	</target>
-
-	<target name="package" depends="zip">
-	</target>
-
-	<target name="zip" depends="complete_zip">
-	</target>
-
-	<target name="src_zip" depends="copy_src">
-		<zip zipfile="${build.dir}/${name}-src-${_version}.zip" basedir="${build.dir}" includes="${name}/**/*">
-		</zip>
-	</target>
-
-	<target name="copy_src" depends="jar">
-		<delete dir="${package.dir}" />
-		<copy todir="${package.dir}/src">
-			<fileset dir="${src.dir}" />
-		</copy>
-		<copy todir="${package.dir}/docs">
-			<fileset dir="${docs.dir}" />
-		</copy>
-		<copy file="${manifest}" todir="${package.dir}" />
-		<copy file="${basedir}/build.xml" todir="${package.dir}" />
-		<copy file="${basedir}/changes.txt" todir="${package.dir}" />
-		<copy file="${basedir}/package-list" todir="${package.dir}" />
-	</target>
-
-	<target name="copy_complete" depends="src_zip,javadoc">
-		<copy todir="${package.dir}/docs/api">
-			<fileset dir="${build.dir}/api" />
-		</copy>
-		<copy file="${build.dir}/${name}.jar" todir="${package.dir}" />
-	</target>
-
-	<target name="complete_zip" depends="copy_complete">
-		<zip zipfile="${build.dir}/${name}-complete-${_version}.zip" basedir="${build.dir}" includes="${name}/**/*">
-		</zip>
-	</target>
-
-
-	<target name="javadoc" depends="init">
-		<delete dir="${build.dir}/api" />
-		<mkdir dir="${build.dir}/api" />
-		<javadoc private="true" destdir="${build.dir}/api" packageList="${basedir}/package-list" sourcepath="${src.dir}" author="true" use="true" header="&lt;a href='http://gnuprologjava.sourceforge.net'&gt; GNU Prolog for Java &lt;/a&gt;" footer="&lt;a href='http://gnuprologjava.sourceforge.net'&gt; GNU Prolog for Java &lt;/a&gt;" />
-	</target>
+	<target name="rebuild" depends="clean,build" description="Perform a clean rebuild of the project" />
 
 	<target name="jar" depends="compile">
-		<delete file="${build.dir}/${name}.jar" />
-		<filter token="version" value="${version}" />
-		<copy file="${manifest}" tofile="${classes}/${manifest}" filtering="on" />
-		<copy todir="${classes}" filtering="off">
-			<fileset dir="${src.dir}">
+		<copy todir="build/code">
+			<fileset dir="src">
 				<include name="**/*.pro" />
+				<include name="**/*.properties" />
 			</fileset>
 		</copy>
-		<jar jarfile="${build.dir}/${name}-${version}.jar" basedir="${classes}" excludes="${manifest}" manifest="${classes}/${manifest}" />
+		<jar destfile="build/${ant.project.name}-${version}.jar" basedir="build/code">
+			<manifest>
+				<attribute name="Main-Class" value="gnu.prolog.test.GoalRunner" />
+				<section name="gnu/prolog/">
+					<attribute name="Specification-Title" value="${name.friendly}" />
+					<attribute name="Specification-Version" value="${version}" />
+					<attribute name="Specification-Vendor" value="${url.website}" />
+					<attribute name="Implementation-Vendor" value="${url.website}" />
+					<attribute name="Implementation-Version" value="${version}" />
+					<attribute name="Implementation-Title" value="${name.friendly}" />
+				</section>
+			</manifest>
+		</jar>
 	</target>
 
 	<target name="compile" depends="init">
-		<mkdir dir="${classes}" />
-		<javac srcdir="${src.dir}" destdir="${classes}" debug="${debug}" deprecation="off" optimize="on" target="1.5" />
+		<mkdir dir="build/code" />
+		<javac srcdir="src" destdir="build/code" />
 	</target>
 
-	<target name="site" depends="javadoc">
+	<target name="dist" depends="build,docs">
+		<zip destfile="dist/${ant.project.name}-${version}.zip">
+			<fileset dir="build">
+				<include name="${ant.project.name}-${version}.jar" />
+				<include name="api/**" />
+			</fileset>
+			<fileset dir="docs">
+				<include name="readme.txt" />
+				<include name="copyleft.txt" />
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="changes.txt" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="dist-src" depends="init">
+		<zip destfile="dist/${ant.project.name}-${version}-src.zip">
+			<fileset dir="${basedir}">
+				<include name="src/**" />
+				<include name="build.xml" />
+				<include name="changes.txt" />
+				<include name="docs/readme.txt" />
+				<include name="docs/copyleft.txt" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="docs" depends="init">
+		<mkdir dir="build/api" />
+		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes" use="yes">
+			<packageset dir="src">
+				<include name="gnu/prolog/**" />
+			</packageset>
+			<header>
+				&lt;a href="${url.website}" target="_top"&gt;${name.friendly}&lt;/a&gt;
+			</header>
+			<footer>
+				&lt;a href="${url.website}" target="_top"&gt;${name.friendly}&lt;/a&gt;
+			</footer>
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+		</javadoc>
+	</target>
+
+	<target name="test" depends="build,test-vanilla" description="Execute tests">
+	</target>
+
+	<target name="test-vanilla">
+		<!-- verify output -->
+		<java jar="build/${ant.project.name}-${version}.jar" dir="test/vanilla_stock" fork="true" logerror="true" output="test/test.out">
+			<arg value="-once" />
+			<arg value="gnuprologjava.pl" />
+			<arg value="validate" />
+		</java>
+	</target>
+
+	<!--
+		<target name="site" depends="javadoc">
 		<delete dir="${build.dir}/site" />
 		<delete file="${build.dir}/site.zip" />
 		<mkdir dir="${build.dir}/site" />
@@ -107,14 +126,7 @@
 		<zip zipfile="${build.dir}/site.zip" basedir="${build.dir}/site" />
 	</target>
 
-
-	<!-- =================================================================== -->
-	<!-- Cleans up generated stuff                                           -->
-	<!-- =================================================================== -->
-	<target name="clean" depends="init">
-		<delete dir="${build.dir}" />
-		<!-- <delete dir="${docs.dir}/api"/> -->
-	</target>
+-->
 
 </project>
 
