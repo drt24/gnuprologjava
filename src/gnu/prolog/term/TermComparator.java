@@ -45,7 +45,7 @@ public class TermComparator implements Comparator<Term>
 	 * <p>
 	 * Finally, the implementer must ensure that compare(x, y) == 0 implies that
 	 * sgn(compare(x, z)) == sgn(compare(y, z)), for all z.
-	 *
+	 * 
 	 * @return a negative integer, zero, or a positive integer as the first
 	 *         argument is less than, equal to, or greater than the second.
 	 * @exception ClassCastException
@@ -74,13 +74,13 @@ public class TermComparator implements Comparator<Term>
 				Integer i1 = orderMap.get(t1);
 				if (i1 == null)
 				{
-					i1 = new Integer(currentIdx++);
+					i1 = Integer.valueOf(currentIdx++);
 					orderMap.put(t1, i1);
 				}
 				Integer i2 = orderMap.get(t2);
 				if (i2 == null)
 				{
-					i2 = new Integer(currentIdx++);
+					i2 = Integer.valueOf(currentIdx++);
 					orderMap.put(t2, i2);
 				}
 				return i1.intValue() - i2.intValue();

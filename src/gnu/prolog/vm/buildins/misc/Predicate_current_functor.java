@@ -42,7 +42,7 @@ import java.util.Set;
  */
 public class Predicate_current_functor implements PrologCode
 {
-	private class CurrentPredicateBacktrackInfo extends BacktrackInfo
+	private static class CurrentPredicateBacktrackInfo extends BacktrackInfo
 	{
 		CurrentPredicateBacktrackInfo()
 		{

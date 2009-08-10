@@ -47,6 +47,7 @@ public class BinaryPrologStream extends PrologStream
 		}
 		catch (Exception ex)
 		{
+			PrologException.systemError(ex);
 		}
 	}
 
@@ -149,7 +150,7 @@ public class BinaryPrologStream extends PrologStream
 	{
 		try
 		{
-			return new JavaObjectTerm(new Long(file.getFilePointer()));
+			return new JavaObjectTerm(Long.valueOf(file.getFilePointer()));
 		}
 		catch (IOException ex)
 		{

@@ -36,7 +36,7 @@ import java.util.Map;
 
 public final class Interpreter
 {
-	final double FLOAT_EPSILON = 0.0000001d;
+	static final double FLOAT_EPSILON = 0.0000001d;
 
 	/** environment for this interpreter */
 	public Environment environment;
@@ -449,7 +449,7 @@ public final class Interpreter
 	}
 
 	/** user level calls */
-	public class Goal
+	public static class Goal
 	{
 		Term goal = null;
 		boolean firstTime = true;

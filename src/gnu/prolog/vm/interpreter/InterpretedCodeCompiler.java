@@ -92,7 +92,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile creation of term
-	 *
+	 * 
 	 * @param term
 	 *          term to create
 	 * @throw PrologException.systemError() if term cannot be compiled
@@ -125,7 +125,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile head of clause
-	 *
+	 * 
 	 * @param term
 	 *          term to compile
 	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
@@ -162,7 +162,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile body of clause
-	 *
+	 * 
 	 * @param term
 	 *          term to compile
 	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
@@ -291,7 +291,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile is then else construct
-	 *
+	 * 
 	 * @param ifTerm
 	 *          term for if
 	 * @param thenTerm
@@ -321,7 +321,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * get reserved environment size for body term
-	 *
+	 * 
 	 * @param term
 	 *          term to analize
 	 * @return amount of allocated environement
@@ -373,7 +373,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * get all variables from term and populate variableToEnvironmentIndex map
-	 *
+	 * 
 	 * @param term
 	 *          to analize
 	 * @param currentEnvPositon
@@ -386,7 +386,7 @@ public class InterpretedCodeCompiler
 		{
 			if (!variableToEnvironmentIndex.containsKey(term))
 			{
-				variableToEnvironmentIndex.put(term, new Integer(currentEnvPositon++));
+				variableToEnvironmentIndex.put(term, Integer.valueOf(currentEnvPositon++));
 			}
 		}
 		else if (term instanceof CompoundTerm)
@@ -404,7 +404,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * recursively dereference term
-	 *
+	 * 
 	 * @param term
 	 *          to be recursively dereferenced
 	 * @return recursively dereferenced term
@@ -445,7 +445,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile set of clauses to interpreted code
-	 *
+	 * 
 	 * @param passedClauses
 	 *          clauses passed to compiler
 	 * @return instance of inerpreted code
@@ -458,7 +458,7 @@ public class InterpretedCodeCompiler
 
 	/**
 	 * compile set of clauses to interpreted code
-	 *
+	 * 
 	 * @param passedClauses
 	 *          clauses passed to compiler
 	 * @return instance of inerpreted code
@@ -484,7 +484,7 @@ public class InterpretedCodeCompiler
 			}
 			// get number of reserved variables
 			numberOfReserved = 1; // init number of reserved variable, 1 is reserved
-														// for cut
+			// for cut
 			for (iclauses = clauses.iterator(); iclauses.hasNext();)
 			{
 				Term term = iclauses.next();
@@ -558,7 +558,7 @@ public class InterpretedCodeCompiler
 	/** push cut position */
 	void pushCutPosition(int envPos)
 	{
-		cutPositionStack.add(new Integer(envPos));
+		cutPositionStack.add(Integer.valueOf(envPos));
 	}
 
 	/** pop cut position */

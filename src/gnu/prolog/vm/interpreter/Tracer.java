@@ -34,13 +34,13 @@ import java.util.Map.Entry;
 
 /**
  * @author Michiel Hendriks
- *
+ * 
  */
 public class Tracer
 {
 	/**
 	 * Different trace levels
-	 *
+	 * 
 	 * @author Michiel Hendriks
 	 */
 	public enum TraceLevel
@@ -80,7 +80,7 @@ public class Tracer
 
 		/**
 		 * Convert a string to an enum set
-		 *
+		 * 
 		 * @param lvl
 		 * @return
 		 */
@@ -110,13 +110,13 @@ public class Tracer
 		}
 	}
 
-	public static final Set<String> UNTRACEABLE = new HashSet<String>();
+	public static final Set<CompoundTermTag> UNTRACEABLE = new HashSet<CompoundTermTag>();
 
 	static
 	{
-		UNTRACEABLE.add("trace/0");
-		UNTRACEABLE.add("untrace/0");
-		UNTRACEABLE.add("tracing/0");
+		UNTRACEABLE.add(CompoundTermTag.get("trace", 0));
+		UNTRACEABLE.add(CompoundTermTag.get("untrace", 0));
+		UNTRACEABLE.add(CompoundTermTag.get("tracing", 0));
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class Tracer
 
 	/**
 	 * Enable/disable tracing
-	 *
+	 * 
 	 * @param tracingActive
 	 */
 	public void setActive(boolean tracingActive)
@@ -188,7 +188,7 @@ public class Tracer
 
 	/**
 	 * Set a trace point
-	 *
+	 * 
 	 * @param pred
 	 * @param level
 	 */
@@ -222,7 +222,7 @@ public class Tracer
 
 	/**
 	 * Remove a trace point
-	 *
+	 * 
 	 * @param pred
 	 */
 	public void removeTrace(CompoundTermTag pred)
@@ -233,7 +233,7 @@ public class Tracer
 
 	/**
 	 * Remove a given level
-	 *
+	 * 
 	 * @param pred
 	 * @param level
 	 */
@@ -281,7 +281,7 @@ public class Tracer
 
 	/**
 	 * A trace event
-	 *
+	 * 
 	 * @param level
 	 * @param interpreter
 	 * @param tag
@@ -347,7 +347,7 @@ public class Tracer
 
 	/**
 	 * Notify the listeners
-	 *
+	 * 
 	 * @param level
 	 * @param interpreter
 	 * @param tag

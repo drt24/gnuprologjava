@@ -54,7 +54,7 @@ public class NameToken extends Token
 		{
 			xfOp = set.lookupXf(value);
 		}
-		return fxOp != Operator.nonOperator || fxOp != Operator.nonOperator;
+		return fxOp != Operator.nonOperator || xfOp != Operator.nonOperator;
 	}
 
 	public final boolean isNonOperator(OperatorSet set)

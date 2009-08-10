@@ -529,8 +529,8 @@ public class Environment implements PredicateListener
 					: stdin));
 			userOutput = new TextOutputPrologStream(outops, new OutputStreamWriter(stdout == null ? getDefaultOutputStream()
 					: stdout));
-			currentInput = userInput;
-			currentOutput = userOutput;
+			currentInput = getUserInput();
+			currentOutput = getUserOutput();
 			alias2stream.put(PrologStream.userOutputAtom, userOutput);
 			alias2stream.put(PrologStream.userInputAtom, userInput);
 			openStreams.add(userInput);
@@ -698,8 +698,12 @@ public class Environment implements PredicateListener
 					PrologException.permissionError(PrologStream.openAtom, PrologStream.sourceSinkAtom, source_sink);
 				}
 			}
-
 		}
+		else
+		{
+			PrologException.domainError(AtomTerm.get("invalid_stream_type"), options.type);
+		}
+
 		ia = options.aliases.iterator();
 		while (ia.hasNext())
 		{

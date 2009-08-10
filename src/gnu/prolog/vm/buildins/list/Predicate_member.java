@@ -31,19 +31,19 @@ import gnu.prolog.vm.TermConstants;
 
 /**
  * Does:
- *
+ * 
  * <pre>
  * member(X, [X|_]).
  * member(X, [_|Y]):-member(X,Y).
  * </pre>
- *
+ * 
  * But without recursion
- *
+ * 
  * @author Michiel Hendriks
  */
 public class Predicate_member implements PrologCode
 {
-	protected class MemberBacktrackInfo extends BacktrackInfo
+	protected static class MemberBacktrackInfo extends BacktrackInfo
 	{
 		protected Term item;
 		protected Term list;
@@ -63,7 +63,7 @@ public class Predicate_member implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
 	 * gnu.prolog.term.Term[])
 	 */
@@ -143,7 +143,7 @@ public class Predicate_member implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
@@ -151,7 +151,7 @@ public class Predicate_member implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)

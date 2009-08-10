@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * prolog code
@@ -41,7 +42,7 @@ public class Predicate_read_term implements PrologCode
 {
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -179,7 +180,7 @@ public class Predicate_read_term implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -190,20 +191,18 @@ public class Predicate_read_term implements PrologCode
 
 	private static Term mapToList(Map<String, Term> map)
 	{
-		Iterator<String> i = map.keySet().iterator();
 		Term rc = TermConstants.emptyListAtom;
-		while (i.hasNext())
+		for (Entry<String, Term> entry : map.entrySet())
 		{
-			String key = i.next();
-			Term val = map.get(key);
-			rc = CompoundTerm.getList(new CompoundTerm(TermConstants.unifyTag, AtomTerm.get(key), val), rc);
+			rc = CompoundTerm.getList(
+					new CompoundTerm(TermConstants.unifyTag, AtomTerm.get(entry.getKey()), entry.getValue()), rc);
 		}
 		return rc;
 	}
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

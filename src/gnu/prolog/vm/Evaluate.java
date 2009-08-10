@@ -312,7 +312,7 @@ public class Evaluate
 					zero_divizor();
 				}
 				double res = d0 / d1;
-				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
+				if (Double.isInfinite(res))
 				{
 					float_overflow();
 				}
@@ -776,7 +776,7 @@ public class Evaluate
 
 	/**
 	 * Test the term for an interget term
-	 *
+	 * 
 	 * @param t1
 	 */
 	protected static void typeTestInt(Term term) throws PrologException

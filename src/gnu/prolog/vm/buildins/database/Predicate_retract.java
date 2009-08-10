@@ -41,7 +41,7 @@ import java.util.Map;
  */
 public class Predicate_retract implements PrologCode
 {
-	private class RetractBacktrackInfo extends BacktrackInfo
+	private static class RetractBacktrackInfo extends BacktrackInfo
 	{
 		RetractBacktrackInfo()
 		{
@@ -57,7 +57,7 @@ public class Predicate_retract implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -180,7 +180,7 @@ public class Predicate_retract implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -191,7 +191,7 @@ public class Predicate_retract implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

@@ -42,7 +42,7 @@ public class Predicate_current_predicate implements PrologCode
 {
 	CompoundTermTag divideTag = CompoundTermTag.get("/", 2);
 
-	private class CurrentPredicateBacktrackInfo extends BacktrackInfo
+	private static class CurrentPredicateBacktrackInfo extends BacktrackInfo
 	{
 		CurrentPredicateBacktrackInfo()
 		{
@@ -56,7 +56,7 @@ public class Predicate_current_predicate implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -123,7 +123,7 @@ public class Predicate_current_predicate implements PrologCode
 				continue;
 			}
 			if (p.getType() != Predicate.USER_DEFINED && p.getType() != Predicate.EXTERNAL) // no
-																																											// buidins
+			// buidins
 			{
 				continue;
 			}
@@ -140,7 +140,7 @@ public class Predicate_current_predicate implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -151,7 +151,7 @@ public class Predicate_current_predicate implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

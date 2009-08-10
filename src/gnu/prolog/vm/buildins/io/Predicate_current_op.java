@@ -39,7 +39,7 @@ import java.util.List;
 public class Predicate_current_op implements PrologCode
 {
 
-	private class CurrentOpBacktrackInfo extends BacktrackInfo
+	private static class CurrentOpBacktrackInfo extends BacktrackInfo
 	{
 		CurrentOpBacktrackInfo()
 		{
@@ -59,7 +59,7 @@ public class Predicate_current_op implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -87,8 +87,10 @@ public class Predicate_current_op implements PrologCode
 			{
 				PrologException.typeError(TermConstants.atomAtom, op);
 			}
-			if (!(specifier instanceof VariableTerm || specifier == TermConstants.xfxAtom || specifier == TermConstants.xfyAtom || specifier == TermConstants.yfxAtom
-					|| specifier == TermConstants.fxAtom || specifier == TermConstants.fyAtom || specifier == TermConstants.xfAtom || specifier == TermConstants.yfAtom))
+			if (!(specifier instanceof VariableTerm || specifier == TermConstants.xfxAtom
+					|| specifier == TermConstants.xfyAtom || specifier == TermConstants.yfxAtom
+					|| specifier == TermConstants.fxAtom || specifier == TermConstants.fyAtom
+					|| specifier == TermConstants.xfAtom || specifier == TermConstants.yfAtom))
 			{
 				PrologException.domainError(TermConstants.operatorSpecifierAtom, specifier);
 			}
@@ -188,7 +190,7 @@ public class Predicate_current_op implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -199,7 +201,7 @@ public class Predicate_current_op implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

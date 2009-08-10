@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class Predicate_clause implements PrologCode
 {
-	private class ClauseBacktrackInfo extends BacktrackInfo
+	private static class ClauseBacktrackInfo extends BacktrackInfo
 	{
 		ClauseBacktrackInfo()
 		{

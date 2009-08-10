@@ -62,7 +62,7 @@ public class Predicate_predsort implements PrologCode
 	 * 
 	 * @author Michiel Hendriks
 	 */
-	public class CallPredComparator implements Comparator<Term>
+	public static class CallPredComparator implements Comparator<Term>
 	{
 		Interpreter interpreter;
 		CompoundTerm callMe;

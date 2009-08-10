@@ -53,7 +53,7 @@ public class InterpretedCode implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -123,7 +123,7 @@ public class InterpretedCode implements PrologCode
 							currentPosition++;
 							continue interpreter_loop;
 						case ExecutionState.JUMP: // jump to location stored in
-																			// executionState.jumpPosition
+							// executionState.jumpPosition
 							currentPosition = executionState.jumpPosition;
 							continue interpreter_loop;
 						case ExecutionState.RETURN: // return with success
@@ -178,7 +178,7 @@ public class InterpretedCode implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -192,7 +192,7 @@ public class InterpretedCode implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -209,20 +209,22 @@ public class InterpretedCode implements PrologCode
 	public String toString()
 	{
 		int i, n;
-		String rc = "interpreted code\n";
+		StringBuilder rc = new StringBuilder("interpreted code\n");
 		n = instructions.length;
 		for (i = 0; i < n; i++)
 		{
-			rc += instructions[i] + "\n";
+			rc.append(instructions[i]);
+			rc.append("\n");
 		}
-		rc += "exceptions\n";
+		rc.append("exceptions\n");
 		n = exceptionHandlers.length;
 		for (i = 0; i < n; i++)
 		{
-			rc += exceptionHandlers[i] + "\n";
+			rc.append(exceptionHandlers[i]);
+			rc.append("\n");
 		}
-		rc += "end interpreted code\n";
-		return rc;
+		rc.append("end interpreted code\n");
+		return rc.toString();
 	}
 
 }

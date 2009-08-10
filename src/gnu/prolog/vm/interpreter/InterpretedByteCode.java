@@ -227,14 +227,14 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		{
 			CompoundTermTag tag = j.next();
 			tags[i] = tag;
-			tag2idx.put(tag, new Integer(i));
+			tag2idx.put(tag, Integer.valueOf(i));
 		}
 		j = createCompoundTermTags.iterator();
 		for (; j.hasNext(); i++)
 		{
 			CompoundTermTag tag = j.next();
 			tags[i] = tag;
-			tag2idx.put(tag, new Integer(i));
+			tag2idx.put(tag, Integer.valueOf(i));
 		}
 		constants = new AtomicTerm[constantSet.size()];
 		Iterator<AtomicTerm> j2 = constantSet.iterator();
@@ -242,7 +242,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		{
 			AtomicTerm term = j2.next();
 			constants[i] = term;
-			constant2idx.put(term, new Integer(i));
+			constant2idx.put(term, Integer.valueOf(i));
 		}
 		instructions = new byte[bytes];
 	}
@@ -400,7 +400,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -502,7 +502,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 								for (int i = arity - 1; i >= 0; i--)
 								{
 									cargs[i] = pds[--pdsSize].dereference(); // pop argument from
-																														// stack
+									// stack
 									pds[pdsSize] = null;
 								}
 								code = predicateCodes[cd];
@@ -553,7 +553,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 							for (int i = arity - 1; i >= 0; i--)
 							{
 								targs[i] = pds[--pdsSize].dereference(); // pop argument from
-																													// stack
+								// stack
 								pds[pdsSize] = null;
 							}
 							pds[pdsSize++] = new CompoundTerm(tag, targs);
@@ -806,7 +806,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -820,7 +820,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
