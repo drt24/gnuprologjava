@@ -509,6 +509,10 @@ public class TermWriter extends PrintWriter
 	 */
 	private static boolean needBeQuoted(String s)
 	{
+		if (s.length() == 0)
+		{
+			return true;
+		}
 		char ch = s.charAt(0);
 		if (isSoloChar(ch))
 		{
