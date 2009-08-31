@@ -31,6 +31,7 @@ import gnu.prolog.vm.TermConstants;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Stack;
 
 public class PrologTextLoader
@@ -88,6 +89,42 @@ public class PrologTextLoader
 		catch (Exception ex)
 		{
 			logError("could not open file \'" + currentFile + "\': " + ex.getMessage());
+			return;
+		}
+		processFile();
+	}
+
+	/**
+	 * @param prologTextLoaderState
+	 * @param root
+	 */
+	public PrologTextLoader(PrologTextLoaderState prologTextLoaderState, Reader stream)
+	{
+		this(prologTextLoaderState, stream, "input:");
+	}
+
+	/**
+	 * @param prologTextLoaderState
+	 * @param stream
+	 * @param streamName
+	 *          The stream name
+	 */
+	public PrologTextLoader(PrologTextLoaderState prologTextLoaderState, Reader stream, String streamName)
+	{
+		this(prologTextLoaderState);
+		if (streamName == null || streamName.length() == 0)
+		{
+			streamName = "input:";
+		}
+		rootFile = streamName;
+		currentFile = rootFile;
+		try
+		{
+			currentReader = new TermReader(stream);
+		}
+		catch (Exception ex)
+		{
+			logError("could not open stream \'" + currentFile + "\': " + ex.getMessage());
 			return;
 		}
 		processFile();

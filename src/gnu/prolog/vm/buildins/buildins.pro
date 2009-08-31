@@ -215,3 +215,4 @@ halt:-halt(0).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.datetime.pro')).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.misc.pro')).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.java.pro')).
+:-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.uuid.pro')).

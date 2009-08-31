@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GNU Prolog for Java
 Bundle-SymbolicName: gnuprologjava;singleton:=true
-Bundle-Version: 0.2.2.qualifier
+Bundle-Version: 0.2.3.qualifier
 Export-Package: gnu.prolog,
  gnu.prolog.database,
  gnu.prolog.gui,
@@ -28,6 +28,7 @@ Export-Package: gnu.prolog,
  gnu.prolog.vm.buildins.termcreation,
  gnu.prolog.vm.buildins.typetesting,
  gnu.prolog.vm.buildins.unification,
+ gnu.prolog.vm.buildins.uuid,
  gnu.prolog.vm.interpreter
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: gnuprolog.jar
