@@ -19,12 +19,10 @@
  */
 package gnu.prolog.vm.buildins.uuid;
 
-import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
-import gnu.prolog.vm.Environment;
-import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.TermConstants;
 
 import java.util.UUID;
 
@@ -32,51 +30,26 @@ import java.util.UUID;
  * 
  * @author Michiel Hendriks
  */
-public abstract class Predicate_uuid implements PrologCode
+public class Predicate_uuid_version extends Predicate_uuid
 {
-	public static final AtomTerm UUID_ATOM = AtomTerm.get("uuid");
 
-	/**
-	 * Get the UUID from an atom term. Returns null in case of an invalid UUID.
+	public Predicate_uuid_version()
+	{}
+
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param value
-	 * @return
-	 * @throws PrologException
+	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
+	 * gnu.prolog.term.Term[])
 	 */
-	public static final UUID getUUID(Term value) throws PrologException
+	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		if (!(value instanceof AtomTerm))
+		UUID uuid = getUUID(args[0]);
+		if (uuid == null)
 		{
-			PrologException.typeError(TermConstants.atomAtom, value);
+			PrologException.domainError(UUID_ATOM, args[0]);
 		}
-		String data = ((AtomTerm) value).value;
-		try
-		{
-			return UUID.fromString(data);
-		}
-		catch (IllegalArgumentException e)
-		{
-			return null;
-		}
+		return interpreter.unify(args[1], IntegerTerm.get(uuid.version()));
 	}
-
-	public Predicate_uuid()
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
 
 }

@@ -36,12 +36,5 @@
 % uuid_version(+UUID, ?Version)
 :-build_in(uuid_version/2,'gnu.prolog.vm.buildins.uuid.Predicate_uuid_version').
 
-% uuid_timestamp(+UUID, ?Timestamp)
-:-build_in(uuid_timestamp/2,'gnu.prolog.vm.buildins.uuid.Predicate_uuid_timestamp').
-
 % uuid_timestamp(+UUID, ?Variant)
 :-build_in(uuid_variant/2,'gnu.prolog.vm.buildins.uuid.Predicate_uuid_variant').
-
-% uuid_clock(+UUID, ?Clock)
-:-build_in(uuid_clock/2,'gnu.prolog.vm.buildins.uuid.Predicate_uuid_clock').
-
