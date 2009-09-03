@@ -29,7 +29,7 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 /**
- *
+ * 
  * @author Michiel Hendriks
  */
 public class Predicate_stacktrace implements PrologCode
@@ -39,29 +39,25 @@ public class Predicate_stacktrace implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
 	 * gnu.prolog.term.Term[])
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Term res = TermConstants.emptyListAtom;
-		boolean skipfirst = true;
+		Term prev = TermConstants.emptyListAtom;
 		for (CompoundTermTag tag : interpreter.getTracer().getCallStack())
 		{
-			if (skipfirst)
-			{// don't list stacktrace/1 call
-				skipfirst = false;
-				continue;
-			}
+			prev = res;
 			res = CompoundTerm.getList(tag.getPredicateIndicator(), res);
 		}
-		return interpreter.unify(args[0], res);
+		return interpreter.unify(args[0], prev);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
 	 */
 	public void install(Environment env)
@@ -69,7 +65,7 @@ public class Predicate_stacktrace implements PrologCode
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
 	 */
 	public void uninstall(Environment env)

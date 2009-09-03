@@ -279,6 +279,15 @@ public class Tracer
 		return res;
 	}
 
+	public void decreaseDepth()
+	{
+		if (callStackPointer >= 0)
+		{
+			callStack[--callStackPointer] = null;
+		}
+		// else invalid stack
+	}
+
 	/**
 	 * A trace event
 	 * 
@@ -289,6 +298,7 @@ public class Tracer
 	 */
 	public void traceEvent(TraceLevel level, Interpreter interpreter, CompoundTermTag tag, Term args[])
 	{
+		int execDepth = callStackPointer;
 		// update call stack
 		switch (level)
 		{
@@ -306,12 +316,6 @@ public class Tracer
 				break;
 			case EXIT:
 			case FAIL:
-				if (callStackPointer >= 0)
-				{
-					callStack[--callStackPointer] = null;
-				}
-				// else invalid stack
-				break;
 			default:
 		}
 
@@ -336,8 +340,7 @@ public class Tracer
 				}
 				sb.append(TermWriter.toString(arg));
 			}
-			println(String.format("%7s: (%d) %s(%s)", level.toString(), interpreter.getExecutionDepth(), tag.functor.value,
-					sb.toString()));
+			println(String.format("%7s: (%d) %s(%s)", level.toString(), execDepth, tag.functor.value, sb.toString()));
 			if (!listeners.isEmpty())
 			{
 				sendEvent(level, interpreter, tag, args);

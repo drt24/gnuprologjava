@@ -231,26 +231,6 @@ public final class Interpreter
 		undoData_amount++;
 	}
 
-	/**
-	 * The execution depth
-	 */
-	int execDepth = 1;
-
-	public void increaseDepth()
-	{
-		++execDepth;
-	}
-
-	public void decreaseDepth()
-	{
-		--execDepth;
-	}
-
-	public int getExecutionDepth()
-	{
-		return execDepth;
-	}
-
 	// final static int maxStackSize = 0x1000000; // is not used
 	final static int pageSize = 0x4096;
 	final static int growSize = 0x4096;

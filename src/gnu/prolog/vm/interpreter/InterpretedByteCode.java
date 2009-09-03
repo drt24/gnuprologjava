@@ -514,9 +514,15 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 							}
 							interpreter.getTracer().traceEvent(backtrackMode ? TraceLevel.REDO : TraceLevel.CALL, interpreter, tag,
 									cargs);
-							interpreter.increaseDepth();
-							int rc = code.execute(interpreter, backtrackMode, cargs);
-							interpreter.decreaseDepth();
+							int rc;
+							try
+							{
+								rc = code.execute(interpreter, backtrackMode, cargs);
+							}
+							finally
+							{
+								interpreter.getTracer().decreaseDepth();
+							}
 							switch (rc)
 							{
 								case SUCCESS_LAST:
