@@ -35,13 +35,14 @@
 		filemask(prolog) is shorthand for: filemask('*.pro;*.pl'('Prolog files'))
 		
 	dialog_confirm:
-	ok, cancel, yes, no, abort, retry
+	ok, cancel, yes, no, abort, retry, ignore
 		The buttons to include, these are also the result. If no buttons are given
 		it will default to: ok, cancel
 		
-	dialog_message:
+	dialog_message, dialog_confirm:
 	type(+Type)
 		type is one of the following: error, warning, info, question
+		if no type is specified it will show a plain message
 */
 
 % Prompt for a filename to save data to. If the dialog is canceled the predicate
@@ -64,7 +65,8 @@
 :-build_in(dialog_prompt/2,'gnu.prolog.vm.buildins.dialogs.Predicate_prompt').
 
 % Prompt the user to press a button. Pressing the cancel button does not result
-% in this predicate failing.
+% in this predicate failing. Closing the dialog (i.e. making no selection) does
+% result in a fail.
 % dialog_confirm(?Selection)
 % dialog_confirm(?Selection, +Options)
 :-build_in(dialog_confirm/1,'gnu.prolog.vm.buildins.dialogs.Predicate_confirm').
