@@ -36,5 +36,4 @@ Bundle-ClassPath: gnuprolog.jar
 Bundle-Vendor: Software Engineering Group; University of Twente
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: registered
-Require-Bundle: org.eclipse.core.runtime;bundle-version="3.0.0"
 

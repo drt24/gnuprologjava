@@ -52,25 +52,25 @@ public class PrologTextLoader
 	protected PrologTextLoaderState prologTextLoaderState;
 
 	// tags used in loader
-	CompoundTermTag includeTag = CompoundTermTag.get("include", 1);
-	CompoundTermTag multifileTag = CompoundTermTag.get("multifile", 1);
-	CompoundTermTag dynamicTag = CompoundTermTag.get("dynamic", 1);
-	CompoundTermTag discontiguousTag = CompoundTermTag.get("discontiguous", 1);
-	CompoundTermTag opTag = CompoundTermTag.get("op", 3);
-	CompoundTermTag char_conversionTag = CompoundTermTag.get("char_conversion", 2);
-	CompoundTermTag initializationTag = CompoundTermTag.get("initialization", 1);
-	CompoundTermTag ensure_loadedTag = CompoundTermTag.get("ensure_loaded", 1);
-	CompoundTermTag set_prolog_flagTag = CompoundTermTag.get("set_prolog_flag", 2);
+	public static final CompoundTermTag includeTag = CompoundTermTag.get("include", 1);
+	public static final CompoundTermTag multifileTag = CompoundTermTag.get("multifile", 1);
+	public static final CompoundTermTag dynamicTag = CompoundTermTag.get("dynamic", 1);
+	public static final CompoundTermTag discontiguousTag = CompoundTermTag.get("discontiguous", 1);
+	public static final CompoundTermTag opTag = CompoundTermTag.get("op", 3);
+	public static final CompoundTermTag char_conversionTag = CompoundTermTag.get("char_conversion", 2);
+	public static final CompoundTermTag initializationTag = CompoundTermTag.get("initialization", 1);
+	public static final CompoundTermTag ensure_loadedTag = CompoundTermTag.get("ensure_loaded", 1);
+	public static final CompoundTermTag set_prolog_flagTag = CompoundTermTag.get("set_prolog_flag", 2);
 
 	// my extension directives
-	CompoundTermTag externalTag = CompoundTermTag.get("external", 2);
-	CompoundTermTag build_inTag = CompoundTermTag.get("build_in", 2);
-	CompoundTermTag controlTag = CompoundTermTag.get("control", 2);
+	public static final CompoundTermTag externalTag = CompoundTermTag.get("external", 2);
+	public static final CompoundTermTag build_inTag = CompoundTermTag.get("build_in", 2);
+	public static final CompoundTermTag controlTag = CompoundTermTag.get("control", 2);
 
 	// include/ensure loaded argument terms
-	CompoundTermTag url1Tag = CompoundTermTag.get("url", 1);
-	CompoundTermTag resource1Tag = CompoundTermTag.get("resource", 1);
-	CompoundTermTag file1Tag = CompoundTermTag.get("file", 1);
+	public static final CompoundTermTag url1Tag = CompoundTermTag.get("url", 1);
+	public static final CompoundTermTag resource1Tag = CompoundTermTag.get("resource", 1);
+	public static final CompoundTermTag file1Tag = CompoundTermTag.get("file", 1);
 
 	protected PrologTextLoader(PrologTextLoaderState prologTextLoaderState)
 	{

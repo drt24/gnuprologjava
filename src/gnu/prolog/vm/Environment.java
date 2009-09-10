@@ -147,6 +147,15 @@ public class Environment implements PredicateListener
 	public Environment(InputStream stdin, OutputStream stdout)
 	{
 		createTextLoader();
+		initEnvironment();
+		initStreams(stdin, stdout);
+	}
+
+	/**
+	 * Initialize the environment
+	 */
+	protected void initEnvironment()
+	{
 		// load builtins
 		CompoundTerm term = new CompoundTerm(AtomTerm.get("resource"), new Term[] { AtomTerm
 				.get("/gnu/prolog/vm/buildins/buildins.pro") });
@@ -163,7 +172,8 @@ public class Environment implements PredicateListener
 		setPrologFlag(doubleQuotesAtom, TermConstants.codesAtom, true);
 		setPrologFlag(dialectAtom, dialectTerm, false);
 		setPrologFlag(versionAtom, versionTerm, false);
-		initStreams(stdin, stdout);
+
+		EnvInitializer.runInitializers(this);
 	}
 
 	protected void createTextLoader()
