@@ -181,6 +181,11 @@ public class Environment implements PredicateListener
 		prologTextLoaderState = new PrologTextLoaderState();
 	}
 
+	public PrologTextLoaderState getTextLoaderState()
+	{
+		return prologTextLoaderState;
+	}
+
 	/** true if the environment was already initialized */
 	public boolean isInitialized()
 	{

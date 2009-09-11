@@ -153,8 +153,17 @@ public class PrologTextLoader
 		return currentReader.getCurrentColumn();
 	}
 
+	/**
+	 * @return the prologTextLoaderState
+	 */
+	public PrologTextLoaderState getPrologTextLoaderState()
+	{
+		return prologTextLoaderState;
+	}
+
 	protected void processFile()
 	{
+		prologTextLoaderState.beforeProcessFile(this);
 		while (currentReader != null)
 		{
 			Term term;
@@ -251,6 +260,7 @@ public class PrologTextLoader
 				logError("term is not a clause or directive");
 			}
 		}
+		prologTextLoaderState.afterProcessFile(this);
 	}
 
 	protected void processSetPrologFlagDirective(Term arg0, Term arg1)
@@ -436,6 +446,7 @@ public class PrologTextLoader
 	{
 		try
 		{
+			prologTextLoaderState.beforeIncludeFile(this, argument);
 			TermReader reader = new TermReader(new InputStreamReader(prologTextLoaderState.getInputStream(argument)));
 			readerStack.push(currentReader);
 			fileStack.push(currentFile);
@@ -458,6 +469,7 @@ public class PrologTextLoader
 	{
 		if (!fileStack.isEmpty())
 		{
+			prologTextLoaderState.afterIncludeFile(this);
 			currentFile = null;
 			try
 			{

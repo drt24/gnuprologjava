@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GNU Prolog for Java
 Bundle-SymbolicName: gnuprologjava;singleton:=true
-Bundle-Version: 0.2.4.qualifier
+Bundle-Version: 0.2.5.qualifier
 Export-Package: gnu.prolog,
  gnu.prolog.database,
  gnu.prolog.gui,
@@ -36,4 +36,5 @@ Bundle-ClassPath: gnuprolog.jar
 Bundle-Vendor: Software Engineering Group; University of Twente
 Bundle-ActivationPolicy: lazy
 Eclipse-BuddyPolicy: registered
+Eclipse-ExtensibleAPI: true
 

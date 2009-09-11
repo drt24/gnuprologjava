@@ -39,14 +39,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PrologTextLoaderState
+public class PrologTextLoaderState implements PrologTextLoaderListener
 {
-	Module module = new Module();
-	Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
-	Predicate currentPredicate = null;
-	List<PrologTextLoaderError> errorList = new ArrayList<PrologTextLoaderError>();
-	Set<String> loadedFiles = new HashSet<String>();
-	CharConversionTable convTable = new CharConversionTable();
+	protected Module module = new Module();
+	protected Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
+	protected Predicate currentPredicate = null;
+	protected List<PrologTextLoaderError> errorList = new ArrayList<PrologTextLoaderError>();
+	protected Set<String> loadedFiles = new HashSet<String>();
+	protected CharConversionTable convTable = new CharConversionTable();
+	protected List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
 
 	// arguments of ensure_loaded/1 and include/2 derectived
 	final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
@@ -459,6 +460,80 @@ public class PrologTextLoaderState
 			}
 		}
 		throw new IOException("unknown type of datasource");
+	}
+
+	public boolean addPrologTextLoaderListener(PrologTextLoaderListener listener)
+	{
+		if (listener == null || listener == this)
+		{
+			return false;
+		}
+		return listeners.add(listener);
+	}
+
+	public boolean removePrologTextLoaderListener(PrologTextLoaderListener listener)
+	{
+		return listeners.remove(listener);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.database.PrologTextLoaderListener#afterIncludeFile(gnu.prolog
+	 * .database.PrologTextLoader)
+	 */
+	public void afterIncludeFile(PrologTextLoader loader)
+	{
+		for (PrologTextLoaderListener listener : listeners)
+		{
+			listener.afterIncludeFile(loader);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.database.PrologTextLoaderListener#afterProcessFile(gnu.prolog
+	 * .database.PrologTextLoader)
+	 */
+	public void afterProcessFile(PrologTextLoader loader)
+	{
+		for (PrologTextLoaderListener listener : listeners)
+		{
+			listener.afterProcessFile(loader);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.database.PrologTextLoaderListener#beforeIncludeFile(gnu.prolog
+	 * .database.PrologTextLoader, gnu.prolog.term.Term)
+	 */
+	public void beforeIncludeFile(PrologTextLoader loader, Term argument)
+	{
+		for (PrologTextLoaderListener listener : listeners)
+		{
+			listener.beforeIncludeFile(loader, argument);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.database.PrologTextLoaderListener#beforeProcessFile(gnu.prolog
+	 * .database.PrologTextLoader)
+	 */
+	public void beforeProcessFile(PrologTextLoader loader)
+	{
+		for (PrologTextLoaderListener listener : listeners)
+		{
+			listener.beforeProcessFile(loader);
+		}
 	}
 
 }
