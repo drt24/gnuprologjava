@@ -35,10 +35,10 @@ import java.util.Set;
 public class Module
 {
 	/** map from tag to predicates */
-	Map<CompoundTermTag, Predicate> tag2predicate = new HashMap<CompoundTermTag, Predicate>();
+	protected Map<CompoundTermTag, Predicate> tag2predicate = new HashMap<CompoundTermTag, Predicate>();
 
 	/** initialization */
-	List<Term> initialization = new ArrayList<Term>();
+	protected List<Term> initialization = new ArrayList<Term>();
 
 	/**
 	 * create new predicate defined in this module
@@ -102,7 +102,7 @@ public class Module
 		return tag2predicate.keySet();
 	}
 
-	List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
+	protected List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
 
 	public synchronized void predicateUpdated(CompoundTermTag tag)
 	{

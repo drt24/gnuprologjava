@@ -43,7 +43,7 @@ final public class Operator
 	public final int priority;
 	public final CompoundTermTag tag;
 
-	Operator(String name, int specifier, int priority)
+	protected Operator(String name, int specifier, int priority)
 	{
 		this.name = name;
 		this.specifier = specifier;

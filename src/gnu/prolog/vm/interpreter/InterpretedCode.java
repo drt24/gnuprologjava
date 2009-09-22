@@ -32,7 +32,8 @@ public class InterpretedCode implements PrologCode
 {
 
 	/** constructor of code */
-	InterpretedCode(CompoundTermTag codeTag, Instruction instructions[], ExceptionHandlerInfo exceptionHandlers[])
+	protected InterpretedCode(CompoundTermTag codeTag, Instruction instructions[],
+			ExceptionHandlerInfo exceptionHandlers[])
 	{
 		this.codeTag = codeTag;
 		this.instructions = instructions.clone();
@@ -40,16 +41,16 @@ public class InterpretedCode implements PrologCode
 	}
 
 	/** tag of this code */
-	CompoundTermTag codeTag;
+	protected CompoundTermTag codeTag;
 
 	/** set of instructions */
-	Instruction instructions[];
+	protected Instruction instructions[];
 
 	/**
 	 * set of exception handlers nested exception go first. This value cannot be
 	 * null. It should be empty array if code has no exception handlers.
 	 */
-	ExceptionHandlerInfo exceptionHandlers[];
+	protected ExceptionHandlerInfo exceptionHandlers[];
 
 	/**
 	 * this method is used for execution of code

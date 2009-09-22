@@ -27,7 +27,7 @@ import java.io.RandomAccessFile;
 
 public class BinaryPrologStream extends PrologStream
 {
-	RandomAccessFile file;
+	protected RandomAccessFile file;
 
 	public BinaryPrologStream(AtomTerm fileAtom, AtomTerm mode, OpenOptions options) throws PrologException
 	{

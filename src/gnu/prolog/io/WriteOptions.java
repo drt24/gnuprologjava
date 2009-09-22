@@ -56,12 +56,12 @@ public class WriteOptions implements Cloneable
 	/**
 	 * Number of used variables. This variable is used solely by Term Writer
 	 */
-	int numberOfVariables;
+	protected int numberOfVariables;
 
 	/**
 	 * Map from variables to names. This variable is used solely by Term Writer.
 	 */
-	Map<Term, String> variable2name;
+	protected Map<Term, String> variable2name;
 
 	/**
 	 * If true print the name of the variables as they were declared

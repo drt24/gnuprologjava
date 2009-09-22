@@ -26,7 +26,7 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 
 /**
- *
+ * 
  * @author Michiel Hendriks
  */
 public class RandomAccessFileReader extends Reader
@@ -45,7 +45,7 @@ public class RandomAccessFileReader extends Reader
 		createReader();
 	}
 
-	private void createReader()
+	protected void createReader()
 	{
 		rd = new InputStreamReader(new InputStream()
 		{
@@ -70,7 +70,7 @@ public class RandomAccessFileReader extends Reader
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.io.Reader#close()
 	 */
 	@Override
@@ -82,7 +82,7 @@ public class RandomAccessFileReader extends Reader
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.io.Reader#read(char[], int, int)
 	 */
 	@Override

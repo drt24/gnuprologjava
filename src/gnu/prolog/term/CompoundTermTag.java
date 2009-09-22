@@ -168,7 +168,7 @@ final public class CompoundTermTag implements java.io.Serializable
 	 * @param a
 	 *          arity of term
 	 */
-	private CompoundTermTag(AtomTerm f, int a)
+	protected CompoundTermTag(AtomTerm f, int a)
 	{
 		functor = f;
 		arity = a;

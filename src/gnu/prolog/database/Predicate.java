@@ -32,7 +32,7 @@ import java.util.Set;
 
 /**
  * Predicate in database
- *
+ * 
  * @author Contantine A Plotnikov
  */
 public class Predicate
@@ -58,21 +58,21 @@ public class Predicate
 	 * type of predicate. It should be either UNDEFINED, CONTROL ,BUILD_IN,
 	 * USER_DEFINED or EXTERNAL
 	 */
-	int type = UNDEFINED;
+	protected int type = UNDEFINED;
 	/** a tag of predicate head */
-	CompoundTermTag tag;
+	protected CompoundTermTag tag;
 	/** list of clauses for this predicate */
-	List<Term> clauses = new ArrayList<Term>();
+	protected List<Term> clauses = new ArrayList<Term>();
 	/** flag which indicate that clauses was added for this predicate */
-	boolean propertiesLocked = false;
+	protected boolean propertiesLocked = false;
 	/** dynamic property of predicate */
-	boolean dynamicFlag = false;
+	protected boolean dynamicFlag = false;
 	/** class name for external predicate */
-	String javaClassName;
+	protected String javaClassName;
 	/** set files where this predicate is defined */
-	Set<String> files = new HashSet<String>();
+	protected Set<String> files = new HashSet<String>();
 	/** current module */
-	Module module;
+	protected Module module;
 
 	/** constructor of predicate */
 	public Predicate(Module module, CompoundTermTag tag)
@@ -89,7 +89,7 @@ public class Predicate
 
 	/**
 	 * get type of predicate
-	 *
+	 * 
 	 * @return type of predicate
 	 */
 	public int getType()
@@ -99,7 +99,7 @@ public class Predicate
 
 	/**
 	 * set type of predicate
-	 *
+	 * 
 	 * @param type
 	 *          type of predicate
 	 * @throws IllegalStateException
@@ -116,7 +116,7 @@ public class Predicate
 
 	/**
 	 * Get name of Java class that defines this predicate.
-	 *
+	 * 
 	 * @return true if predicate is external, false otherwise.
 	 */
 	public String getJavaClassName()
@@ -168,7 +168,7 @@ public class Predicate
 	/**
 	 * Add clause for predicate at the end. This method simply add clause to
 	 * predicate. No modification to term is done. It even is not copied.
-	 *
+	 * 
 	 * @param clause
 	 *          a clause to add
 	 */
@@ -186,7 +186,7 @@ public class Predicate
 	/**
 	 * Add clause for predicate at the heginning. This method simply add clause to
 	 * predicate. No modification to term is done. It even is not copied.
-	 *
+	 * 
 	 * @param clause
 	 *          a clause to add
 	 */
@@ -211,7 +211,7 @@ public class Predicate
 	/**
 	 * Remove clause for predicate. This method remove first clause which is
 	 * identical to clause.
-	 *
+	 * 
 	 * @param clause
 	 *          a clause to remove
 	 */
@@ -223,7 +223,7 @@ public class Predicate
 
 	/**
 	 * Check if properties of predicate could be changed at this moment
-	 *
+	 * 
 	 * @return true if properties of predicate could be changed at this moment
 	 */
 	public boolean arePropertiesLocked()
@@ -233,7 +233,7 @@ public class Predicate
 
 	/**
 	 * Check if predicate is dynamic.
-	 *
+	 * 
 	 * @return true if predicate is dynamic, false otherwise.
 	 */
 	public boolean isDynamic()
@@ -244,7 +244,7 @@ public class Predicate
 	/**
 	 * set "dynamic" property of predicate to true. This method should be called
 	 * first time before any clause was added.
-	 *
+	 * 
 	 * @param new value of "dynamic" property of predicate
 	 * @throws IllegalStateException
 	 *           if there were clauses added to predicate and dynamic flag was not

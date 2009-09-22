@@ -24,11 +24,11 @@ package gnu.prolog.vm.interpreter;
 public class ExceptionHandlerInfo
 {
 	/** start position of code segment */
-	int startPosition;
+	protected int startPosition;
 	/** end position of code segment */
-	int endPosition;
+	protected int endPosition;
 	/** position where to go for exception handling */
-	int handlerPosition;
+	protected int handlerPosition;
 
 	/** convert handler to string */
 	@Override

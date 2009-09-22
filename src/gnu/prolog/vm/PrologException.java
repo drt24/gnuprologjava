@@ -28,9 +28,9 @@ public class PrologException extends Exception
 	private static final long serialVersionUID = 946127094875894543L;
 
 	/** term of the exception */
-	Term term;
+	protected Term term;
 	/** message of exception */
-	String msg;
+	protected String msg;
 
 	/**
 	 *
@@ -67,7 +67,7 @@ public class PrologException extends Exception
 
 	/**
 	 * a constructor
-	 *
+	 * 
 	 * @param inner
 	 *          TODO
 	 */

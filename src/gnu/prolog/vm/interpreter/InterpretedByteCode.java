@@ -46,20 +46,20 @@ import java.util.Set;
 public class InterpretedByteCode implements PrologCode, PrologCodeListener
 {
 	/** tag of this code */
-	CompoundTermTag codeTag;
+	protected CompoundTermTag codeTag;
 	/** tags used by code */
-	CompoundTermTag tags[];
+	protected CompoundTermTag tags[];
 	/** constants used by code */
-	AtomicTerm constants[];
+	protected AtomicTerm constants[];
 	/** predicate codes used by coie */
-	PrologCode predicateCodes[];
+	protected PrologCode predicateCodes[];
 	/** set of instructions */
-	byte instructions[];
+	protected byte instructions[];
 	/** set of exception handlers */
-	ExceptionHandlerInfo exceptionHandlers[];
+	protected ExceptionHandlerInfo exceptionHandlers[];
 
 	/** constructor of code */
-	InterpretedByteCode(CompoundTermTag codeTag, Instruction isrc[], ExceptionHandlerInfo ehs[])
+	protected InterpretedByteCode(CompoundTermTag codeTag, Instruction isrc[], ExceptionHandlerInfo ehs[])
 	{
 		this.codeTag = codeTag;
 		int ipos[] = new int[isrc.length];
@@ -78,7 +78,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		pass2(isrc, ipos, tag2idx, constant2idx);
 	}
 
-	private void pass1(Instruction isrc[], int ipos[], Map<CompoundTermTag, Integer> tag2idx,
+	protected void pass1(Instruction isrc[], int ipos[], Map<CompoundTermTag, Integer> tag2idx,
 			Map<AtomicTerm, Integer> constant2idx)
 	{
 		Set<CompoundTermTag> callTags = new HashSet<CompoundTermTag>();
@@ -247,7 +247,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		instructions = new byte[bytes];
 	}
 
-	private void pass2(Instruction isrc[], int ipos[], Map<CompoundTermTag, Integer> tag2idx,
+	protected void pass2(Instruction isrc[], int ipos[], Map<CompoundTermTag, Integer> tag2idx,
 			Map<AtomicTerm, Integer> constant2idx)
 	{
 		int bytes = 0;

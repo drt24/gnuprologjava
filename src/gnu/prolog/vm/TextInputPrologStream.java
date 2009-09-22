@@ -31,9 +31,9 @@ import java.io.Reader;
 
 public class TextInputPrologStream extends PrologStream
 {
-	TermReader termReader;
+	protected TermReader termReader;
 
-	RandomAccessFileReader fileReader;
+	protected RandomAccessFileReader fileReader;
 
 	public TextInputPrologStream(OpenOptions options, Reader rd) throws PrologException
 	{

@@ -26,7 +26,7 @@ import java.io.StringReader;
 
 public class TermReader extends FilterReader
 {
-	private static OperatorSet defaultOperatorSet = new OperatorSet();
+	protected static OperatorSet defaultOperatorSet = new OperatorSet();
 	TermParser parser;
 
 	public TermReader(Reader r, int line, int col)

@@ -19,7 +19,7 @@ package gnu.prolog.term;
 
 /**
  * 32bit Integer term.
- *
+ * 
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
@@ -28,7 +28,7 @@ public class IntegerTerm extends AtomicTerm
 	private static final long serialVersionUID = 4778268363190379033L;
 
 	// terms from -32k to +32k are cached
-	private static IntegerTerm cache[] = new IntegerTerm[64 * 1024];
+	protected static IntegerTerm cache[] = new IntegerTerm[64 * 1024];
 
 	// often used integers
 	/** -2 interger term */
@@ -48,7 +48,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get integer term equal to val
-	 *
+	 * 
 	 * @param val
 	 *          value of integer term
 	 * @return new integer term
@@ -73,7 +73,7 @@ public class IntegerTerm extends AtomicTerm
 		return rc;
 	}
 
-	private static int parseInt(String str)
+	protected static int parseInt(String str)
 	{
 		int val;
 		int sign = 1;
@@ -186,7 +186,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get integer term using string value
-	 *
+	 * 
 	 * @param str
 	 *          value of integer term
 	 * @return new integer term
@@ -199,7 +199,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get integer term using string value
-	 *
+	 * 
 	 * @param str
 	 *          value of integer term
 	 * @return new integer term
@@ -212,7 +212,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * a constructor
-	 *
+	 * 
 	 * @param val
 	 *          value of term
 	 */
@@ -226,7 +226,7 @@ public class IntegerTerm extends AtomicTerm
 
 	/**
 	 * get type of term
-	 *
+	 * 
 	 * @return type of term
 	 */
 	@Override

@@ -93,7 +93,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
 	 * @param value
 	 *          value of atom
 	 */
-	private AtomTerm(String value) // constructor is private to package
+	protected AtomTerm(String value) // constructor is private to package
 	{
 		this.value = value;
 	}

@@ -30,8 +30,8 @@ import java.io.Writer;
 
 public class TextOutputPrologStream extends PrologStream
 {
-	TermWriter termWriter;
-	RandomAccessFileWriter fileWriter;
+	protected TermWriter termWriter;
+	protected RandomAccessFileWriter fileWriter;
 
 	TextOutputPrologStream(OpenOptions options, Writer wr)
 	{

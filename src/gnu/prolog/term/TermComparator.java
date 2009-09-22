@@ -24,8 +24,8 @@ import java.util.Map;
 /** comparator for two term */
 public class TermComparator implements Comparator<Term>
 {
-	int currentIdx;
-	Map<Term, Integer> orderMap = new HashMap<Term, Integer>();
+	protected int currentIdx;
+	protected Map<Term, Integer> orderMap = new HashMap<Term, Integer>();
 
 	/**
 	 * Compares its two arguments for order. Returns a negative integer, zero, or

@@ -36,13 +36,22 @@ import java.util.Map;
 
 public final class Interpreter
 {
+	/**
+	 * The "slack" used in float comparison
+	 */
 	static final double FLOAT_EPSILON = 0.0000001d;
 
 	/** environment for this interpreter */
 	public Environment environment;
 
-	public Tracer tracer;
+	/**
+	 * Keeps track of prolog call/return traces
+	 */
+	protected Tracer tracer;
 
+	/**
+	 * Contains an {@link PrologHalt} instance when the interpreter was halted.
+	 */
 	protected PrologHalt haltExitCode;
 
 	/**
@@ -55,7 +64,7 @@ public final class Interpreter
 	/**
 	 * this constructor should not be used by client programs
 	 */
-	Interpreter(Environment environment)
+	protected Interpreter(Environment environment)
 	{
 		this.environment = environment;
 		PrologStream outstream = null;
@@ -73,7 +82,7 @@ public final class Interpreter
 	}
 
 	/** get environment */
-	Environment getEnvironment()
+	protected Environment getEnvironment()
 	{
 		return environment;
 	}
@@ -130,10 +139,10 @@ public final class Interpreter
 	// return (BacktrackInfo)backtrackInfoStack.get(backtrackInfoStack.size()-1);
 	// }
 
-	BacktrackInfo backtrackInfoStack[] = new BacktrackInfo[4096];
-	int backtrackInfoAmount = 0;
-	int backtrackInfoMax = 4096;
-	int backtrackInfoGrow = 4096;
+	protected BacktrackInfo backtrackInfoStack[] = new BacktrackInfo[4096];
+	protected int backtrackInfoAmount = 0;
+	protected int backtrackInfoMax = 4096;
+	protected int backtrackInfoGrow = 4096;
 
 	/** push backtrack information */
 	public void pushBacktrackInfo(BacktrackInfo bi)
@@ -232,22 +241,22 @@ public final class Interpreter
 	}
 
 	// final static int maxStackSize = 0x1000000; // is not used
-	final static int pageSize = 0x4096;
-	final static int growSize = 0x4096;
+	protected final static int pageSize = 0x4096;
+	protected final static int growSize = 0x4096;
 
-	VariableTerm variables[] = new VariableTerm[4096];
-	int variables_amount = 0;
+	protected VariableTerm variables[] = new VariableTerm[4096];
+	protected int variables_amount = 0;
 
-	UndoData undoData[] = new UndoData[4096];
-	int undoData_amount = 0;
-	boolean undoPositionAsked = true;
+	protected UndoData undoData[] = new UndoData[4096];
+	protected int undoData_amount = 0;
+	protected boolean undoPositionAsked = true;
 
-	private class VariableUndoData implements UndoData// maybe later this class
-	// will be pooled
+	protected class VariableUndoData implements UndoData
+	// maybe later this class will be pooled
 	{
-		int startPosion;
+		protected int startPosion;
 
-		VariableUndoData()
+		protected VariableUndoData()
 		{
 			startPosion = variables_amount;
 		}
@@ -437,7 +446,7 @@ public final class Interpreter
 		Term args[] = null;
 	}
 
-	Goal currentGoal;
+	protected Goal currentGoal;
 
 	/** prepare goal for execution */
 	public Goal prepareGoal(Term term) throws PrologException

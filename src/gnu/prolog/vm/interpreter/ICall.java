@@ -51,7 +51,7 @@ public class ICall extends Instruction implements PrologCodeListener
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instrcuction
@@ -135,7 +135,7 @@ public class ICall extends Instruction implements PrologCodeListener
 	}
 
 	/** ensure that code is loaded in predicate */
-	private void ensureLoaded(Environment env) throws PrologException
+	protected void ensureLoaded(Environment env) throws PrologException
 	{
 		if (code == null)
 		{

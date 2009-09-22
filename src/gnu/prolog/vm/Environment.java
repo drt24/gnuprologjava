@@ -62,8 +62,8 @@ import java.util.Set;
  */
 public class Environment implements PredicateListener
 {
-	static InputStream defaultInputStream;
-	static OutputStream defaultOutputStream;
+	private static InputStream defaultInputStream;
+	private static OutputStream defaultOutputStream;
 
 	/**
 	 * @return the defaultInputStream
@@ -231,7 +231,7 @@ public class Environment implements PredicateListener
 	}
 
 	/** get flag for this environemnt */
-	private synchronized void setPrologFlag(AtomTerm term, Term newValue, boolean changable)
+	protected synchronized void setPrologFlag(AtomTerm term, Term newValue, boolean changable)
 	{
 		atom2flag.put(term, newValue);
 		if (changable)
@@ -416,7 +416,7 @@ public class Environment implements PredicateListener
 	protected Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
 	protected ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
 
-	private void pollPrologCodeListeners()
+	protected void pollPrologCodeListeners()
 	{
 		PrologCodeListenerRef ref;
 		while (null != (ref = (PrologCodeListenerRef) prologCodeListenerReferenceQueue.poll()))
@@ -426,7 +426,7 @@ public class Environment implements PredicateListener
 		}
 	}
 
-	private static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
+	protected static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
 	{
 		PrologCodeListenerRef(ReferenceQueue<? super PrologCodeListener> queue, PrologCodeListener listener,
 				CompoundTermTag tag)
@@ -522,7 +522,7 @@ public class Environment implements PredicateListener
 		return opSet;
 	}
 
-	private void initStreams(InputStream stdin, OutputStream stdout)
+	protected void initStreams(InputStream stdin, OutputStream stdout)
 	{
 		try
 		{

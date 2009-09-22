@@ -58,26 +58,26 @@ public class InterpretedCodeCompiler
 
 	// compilation variables
 	/** code so far compiled */
-	List<Instruction> code = new ArrayList<Instruction>();
+	protected List<Instruction> code = new ArrayList<Instruction>();
 	/** exception handlers */
-	List<ExceptionHandlerInfo> exceptionHandlers = new ArrayList<ExceptionHandlerInfo>();
+	protected List<ExceptionHandlerInfo> exceptionHandlers = new ArrayList<ExceptionHandlerInfo>();
 	/** current code position */
-	int currentCodePosition = 0;
+	protected int currentCodePosition = 0;
 	/** number of already allocated reserved variables */
-	int allocatedReserved = 0;
+	protected int allocatedReserved = 0;
 	/** mapping from variables to environment indexes */
-	Map<Term, Integer> variableToEnvironmentIndex = new HashMap<Term, Integer>();
+	protected Map<Term, Integer> variableToEnvironmentIndex = new HashMap<Term, Integer>();
 	/** this predicate tag */
-	CompoundTermTag codeTag;
+	protected CompoundTermTag codeTag;
 
 	// analisys variables
 	/** number of reserved fields, one position for saving cut */
-	int numberOfReserved = 1;
+	protected int numberOfReserved = 1;
 
 	/** cut position stack */
-	List<Integer> cutPositionStack = new ArrayList<Integer>();
+	protected List<Integer> cutPositionStack = new ArrayList<Integer>();
 	/** clauses to compile */
-	List<Term> passedClauses;
+	protected List<Term> passedClauses;
 
 	/** a constructor */
 	public InterpretedCodeCompiler(List<Term> clauses)
@@ -85,7 +85,7 @@ public class InterpretedCodeCompiler
 		passedClauses = clauses;
 	}
 
-	private int allocReserved()
+	protected int allocReserved()
 	{
 		return allocatedReserved++;
 	}

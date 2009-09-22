@@ -42,10 +42,11 @@ import java.util.HashMap;
 public class TermWriter extends PrintWriter
 {
 	// static variables
-	private static final CompoundTermTag numbervarsTag = CompoundTermTag.get("$VAR", 1);
-	private static final CompoundTermTag curly1Tag = CompoundTermTag.get("{}", 1);
-	private static final OperatorSet defaultOperatorSet = new OperatorSet();
-	private static final WriteOptions defaultWrteOptions = new WriteOptions();
+	protected static final CompoundTermTag numbervarsTag = CompoundTermTag.get("$VAR", 1);
+	protected static final CompoundTermTag curly1Tag = CompoundTermTag.get("{}", 1);
+	protected static final OperatorSet defaultOperatorSet = new OperatorSet();
+	protected static final WriteOptions defaultWrteOptions = new WriteOptions();
+
 	static
 	{
 		defaultWrteOptions.ignoreOps = false;
@@ -164,7 +165,7 @@ public class TermWriter extends PrintWriter
 	 * @param term
 	 *          term to write
 	 */
-	private void displayTerm(WriteOptions options, int priority, Term term)
+	protected void displayTerm(WriteOptions options, int priority, Term term)
 	{
 		term = term.dereference();
 		if (term == null)
@@ -222,7 +223,7 @@ public class TermWriter extends PrintWriter
 	 * @param term
 	 *          compound term to write
 	 */
-	private void displayCompound(WriteOptions options, int priority, CompoundTerm term)
+	protected void displayCompound(WriteOptions options, int priority, CompoundTerm term)
 	{
 		// check for numbervars
 		if (options.numbervars && term.tag == numbervarsTag && term.args[0] instanceof IntegerTerm)
@@ -333,7 +334,7 @@ public class TermWriter extends PrintWriter
 	 * @param term
 	 *          list term to write
 	 */
-	private void displayList(WriteOptions options, CompoundTerm term)
+	protected void displayList(WriteOptions options, CompoundTerm term)
 	{
 		displayTerm(options, 999, term.args[0]);
 		Term tail = term.args[1];
@@ -366,7 +367,7 @@ public class TermWriter extends PrintWriter
 	 * @param term
 	 *          fload term to write
 	 */
-	private void displayFloat(WriteOptions options, FloatTerm term)
+	protected void displayFloat(WriteOptions options, FloatTerm term)
 	{
 		if (options.quoted)
 		{
@@ -386,7 +387,7 @@ public class TermWriter extends PrintWriter
 	 * @param term
 	 *          integer term to write
 	 */
-	private void displayInteger(WriteOptions options, IntegerTerm term)
+	protected void displayInteger(WriteOptions options, IntegerTerm term)
 	{
 		print(term.value);
 	}
@@ -399,7 +400,7 @@ public class TermWriter extends PrintWriter
 	 * @param variable
 	 *          variable to display
 	 */
-	private void displayVariable(WriteOptions options, VariableTerm term)
+	protected void displayVariable(WriteOptions options, VariableTerm term)
 	{
 		if (options.variable2name == null)
 		{
@@ -419,7 +420,7 @@ public class TermWriter extends PrintWriter
 		print(name);
 	}
 
-	private void displayJavaObject(WriteOptions options, JavaObjectTerm term)
+	protected void displayJavaObject(WriteOptions options, JavaObjectTerm term)
 	{
 		if (options.javaObjects)
 		{
@@ -452,7 +453,7 @@ public class TermWriter extends PrintWriter
 		}
 	}
 
-	private static boolean isOperator(OperatorSet set, AtomTerm term)
+	protected static boolean isOperator(OperatorSet set, AtomTerm term)
 	{
 		Operator fxOp = set.lookupFx(term.value);
 		Operator xfOp = set.lookupXf(term.value);
@@ -467,7 +468,7 @@ public class TermWriter extends PrintWriter
 	 * @param atom
 	 *          atom to display
 	 */
-	private void displayAtom(WriteOptions options, AtomTerm atom)
+	protected void displayAtom(WriteOptions options, AtomTerm atom)
 	{
 		if (options.quoted)
 		{
@@ -487,7 +488,7 @@ public class TermWriter extends PrintWriter
 	 *          string to quote
 	 * @return single quoted string
 	 */
-	private static String getSingleQuoted(String s)
+	protected static String getSingleQuoted(String s)
 	{
 		StringBuffer buf = new StringBuffer(s.length() + 6);
 		buf.append('\'');
@@ -507,7 +508,7 @@ public class TermWriter extends PrintWriter
 	 *          string to test
 	 * @return true if string need to quoted in displayq
 	 */
-	private static boolean needBeQuoted(String s)
+	protected static boolean needBeQuoted(String s)
 	{
 		if (s.length() == 0)
 		{
@@ -562,7 +563,7 @@ public class TermWriter extends PrintWriter
 	 *          character to test
 	 * @return true if character is solo char
 	 */
-	private static boolean isSoloChar(char c)
+	protected static boolean isSoloChar(char c)
 	{
 		switch (c)
 		{
@@ -589,7 +590,7 @@ public class TermWriter extends PrintWriter
 	 *          character to test
 	 * @return true if character is graphics char
 	 */
-	private static boolean isGraphicsChar(char ch)
+	protected static boolean isGraphicsChar(char ch)
 	{
 		switch (ch)
 		{
@@ -623,7 +624,7 @@ public class TermWriter extends PrintWriter
 	 *          character to test
 	 * @return true if character is valid start of atom.
 	 */
-	private static boolean isAtomStartChar(char c)
+	protected static boolean isAtomStartChar(char c)
 	{
 		return 'a' <= c && c <= 'z';
 	}
@@ -635,7 +636,7 @@ public class TermWriter extends PrintWriter
 	 *          character to test
 	 * @return true if character is valid continuation of atom.
 	 */
-	private static boolean isAtomChar(char c)
+	protected static boolean isAtomChar(char c)
 	{
 		return 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || '0' <= c && c <= '9' || c == '_';
 	}
@@ -650,7 +651,7 @@ public class TermWriter extends PrintWriter
 	 * @param quote
 	 *          a quote of string
 	 */
-	private static void appendQuotedChar(StringBuffer buf, char ch, char quote)
+	protected static void appendQuotedChar(StringBuffer buf, char ch, char quote)
 	{
 		if (ch == quote) // if quote append "\" quote
 		{

@@ -185,7 +185,7 @@ final public class OperatorSet
 		this(true);
 	}
 
-	private void initDefault()
+	protected void initDefault()
 	{
 		add(1200, Operator.XFX, "-->");
 		add(1200, Operator.XFX, ":-");

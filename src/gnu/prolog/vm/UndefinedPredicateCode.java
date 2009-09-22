@@ -28,9 +28,9 @@ import gnu.prolog.term.Term;
 public class UndefinedPredicateCode implements PrologCode
 {
 	/** predicate indicator for thuis precedure */
-	CompoundTerm predicateIndicator;
+	protected CompoundTerm predicateIndicator;
 	/** predicate tag */
-	CompoundTermTag predicateTag;
+	protected CompoundTermTag predicateTag;
 
 	public final static AtomTerm unknownAtom = AtomTerm.get("unknown");
 	public final static AtomTerm errorAtom = AtomTerm.get("error");
@@ -45,7 +45,7 @@ public class UndefinedPredicateCode implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -82,7 +82,7 @@ public class UndefinedPredicateCode implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -93,7 +93,7 @@ public class UndefinedPredicateCode implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

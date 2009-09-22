@@ -50,9 +50,9 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 	protected List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
 
 	// arguments of ensure_loaded/1 and include/2 derectived
-	final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
-	final static CompoundTermTag urlTag = CompoundTermTag.get("url", 1);
-	final static CompoundTermTag fileTag = CompoundTermTag.get("file", 1);
+	protected final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
+	protected final static CompoundTermTag urlTag = CompoundTermTag.get("url", 1);
+	protected final static CompoundTermTag fileTag = CompoundTermTag.get("file", 1);
 
 	public List<PrologTextLoaderError> getErrors()
 	{
@@ -72,7 +72,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		return convTable;
 	}
 
-	private boolean testOption(PrologTextLoader loader, Predicate p, String option)
+	protected boolean testOption(PrologTextLoader loader, Predicate p, String option)
 	{
 		Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
 		if (options2loaders == null)
@@ -92,7 +92,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		return true;
 	}
 
-	private void defineOption(PrologTextLoader loader, Predicate p, String option)
+	protected void defineOption(PrologTextLoader loader, Predicate p, String option)
 	{
 		Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
 		if (options2loaders == null)
@@ -112,13 +112,13 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		}
 	}
 
-	private void defineOptionAndDeclare(PrologTextLoader loader, Predicate p, String option)
+	protected void defineOptionAndDeclare(PrologTextLoader loader, Predicate p, String option)
 	{
 		defineOption(loader, p, option);
 		defineOption(loader, p, "declared");
 	}
 
-	private boolean isDeclaredInOtherLoaders(PrologTextLoader loader, Predicate p)
+	protected boolean isDeclaredInOtherLoaders(PrologTextLoader loader, Predicate p)
 	{
 		Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
 		if (options2loaders == null)
@@ -319,7 +319,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		defineOptionAndDeclare(loader, p, "defined");
 	}
 
-	Predicate findOrCreatePredicate(CompoundTermTag tag)
+	protected Predicate findOrCreatePredicate(CompoundTermTag tag)
 	{
 		Predicate p = module.getDefinedPredicate(tag);
 		if (p == null)
@@ -359,7 +359,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 	 * @param filename
 	 * @return
 	 */
-	File resolveInputFile(String filename)
+	protected File resolveInputFile(String filename)
 	{
 		File fl = new File(filename);
 		if (fl.exists())
@@ -382,7 +382,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		return new File(filename);
 	}
 
-	String getInputName(Term term)
+	protected String getInputName(Term term)
 	{
 		if (term instanceof AtomTerm) // argument is an atom, which is an filename
 		{
@@ -418,7 +418,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		return "bad_input(" + TermWriter.toString(term) + ")";
 	}
 
-	InputStream getInputStream(Term term) throws IOException
+	protected InputStream getInputStream(Term term) throws IOException
 	{
 		if (term instanceof AtomTerm) // argument is an atom, which is an filename
 		{

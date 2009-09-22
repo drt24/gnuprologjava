@@ -24,9 +24,9 @@ public class PredicateUpdatedEvent extends java.util.EventObject
 {
 	private static final long serialVersionUID = -7290433520091984961L;
 
-	CompoundTermTag tag;
+	protected CompoundTermTag tag;
 
-	PredicateUpdatedEvent(Module module, CompoundTermTag tag)
+	protected PredicateUpdatedEvent(Module module, CompoundTermTag tag)
 	{
 		super(module);
 		this.tag = tag;

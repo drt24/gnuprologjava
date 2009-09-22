@@ -33,7 +33,7 @@ public class TermUtils
 		return isVariant(term1, term2, new HashMap<Term, Term>());
 	}
 
-	private static boolean isVariant(Term term1, Term term2, Map<Term, Term> map)
+	protected static boolean isVariant(Term term1, Term term2, Map<Term, Term> map)
 	{
 		term1 = term1.dereference();
 		term2 = term2.dereference();
@@ -147,7 +147,7 @@ public class TermUtils
 
 	/**
 	 * get free variables of term1 with respect to term2
-	 *
+	 * 
 	 * @return term1 w/o existential specifiers
 	 */
 	public static Term getFreeVariableSet(Term term1, Term term2, Set<Term> set)

@@ -34,7 +34,7 @@ public class Predicate_halt implements PrologCode
 {
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -57,21 +57,12 @@ public class Predicate_halt implements PrologCode
 		}
 		IntegerTerm code = (IntegerTerm) tcode;
 		throw new PrologHalt(code.value);
-		// try
-		// {
-		// System.exit(code.value);
-		// }
-		// catch(RuntimeException ex)
-		// {
-		// PrologException.systemError();
-		// }
-		// return FAIL; // fake return
 	}
 
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -82,7 +73,7 @@ public class Predicate_halt implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
