@@ -53,9 +53,9 @@ public class CodeDumper
       env.ensureLoaded(AtomTerm.get(textToLoad));
       Interpreter interpreter = env.createInterpreter();
       env.runIntialization(interpreter);
-      for (Iterator ierr = env.getLoadingErrors().iterator();ierr.hasNext();)
+      for (Iterator<PrologTextLoaderError> ierr = env.getLoadingErrors().iterator(); ierr.hasNext();)
       {
-        PrologTextLoaderError err = (PrologTextLoaderError)ierr.next();
+        PrologTextLoaderError err = ierr.next();
         System.err.println(err);
         //err.printStackTrace();
       }

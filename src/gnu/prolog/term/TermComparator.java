@@ -18,10 +18,10 @@
 package gnu.prolog.term;
 
 /** comparator for two term */
-public class TermComparator implements java.util.Comparator
+public class TermComparator implements java.util.Comparator<Term>
 {
   int currentIdx;
-  java.util.HashMap orderMap = new java.util.HashMap();
+  java.util.HashMap<Term,Integer> orderMap = new java.util.HashMap<Term,Integer>();
 
   /** Compares its two arguments for order.  Returns a negative integer,
     * zero, or a positive integer as the first argument is less than, equal
@@ -48,10 +48,10 @@ public class TermComparator implements java.util.Comparator
     * 		  being compared by this Comparator.
     * @since   JDK1.2
     */
-  public int compare(Object o1, Object o2)
+  public int compare(Term o1, Term o2)
   {
-    Term t1 = ((Term)o1).dereference();
-    Term t2 = ((Term)o2).dereference();
+    Term t1 = o1.dereference();
+    Term t2 = o2.dereference();
     if (t1 == t2)
     {
       return 0;
@@ -66,13 +66,13 @@ public class TermComparator implements java.util.Comparator
     {
     case Term.VARIABLE   :
     case Term.JAVA_OBJECT:
-      Integer i1 = (Integer)orderMap.get(t1);
+      Integer i1 = orderMap.get(t1);
       if (i1 == null)
       {
         i1 = new Integer(currentIdx++);
         orderMap.put(t1,i1);
       }
-      Integer i2 = (Integer)orderMap.get(t2);
+      Integer i2 = orderMap.get(t2);
       if (i2 == null)
       {
         i2 = new Integer(currentIdx++);

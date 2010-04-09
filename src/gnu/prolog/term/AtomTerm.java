@@ -16,16 +16,17 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-import java.io.Serializable;
 import java.util.HashMap;
 /** Atom term. The object of this class represent prolog atom.
   * @author Constantin Plotnikov
   * @version 0.0.1
   */
-public class AtomTerm extends AtomicTerm implements Serializable
+public class AtomTerm extends AtomicTerm
 {
+  private static final long serialVersionUID = 3977202291132125939L;
+  
   /** a map from string to atom */
-  private final static HashMap string2atom = new HashMap();
+  private final static HashMap<String,AtomTerm> string2atom = new HashMap<String,AtomTerm>();
   /** empty list atom */
   public final static AtomTerm emptyList = get("[]");
   /** empty curly atom */
@@ -39,7 +40,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
   {
     synchronized(string2atom)
     {
-      AtomTerm atom = (AtomTerm)string2atom.get(s);
+      AtomTerm atom = string2atom.get(s);
       if (atom == null)
       {
         atom = new AtomTerm(s);
@@ -85,6 +86,7 @@ public class AtomTerm extends AtomicTerm implements Serializable
   /** get type of term 
     * @return type of term
     */
+  @Override
   public int getTermType()
   {
     return ATOM;

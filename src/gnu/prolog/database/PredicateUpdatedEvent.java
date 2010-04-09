@@ -20,6 +20,8 @@ import gnu.prolog.term.CompoundTermTag;
 /** event notifying about event with predicates */
 public class PredicateUpdatedEvent extends java.util.EventObject
 {
+  private static final long serialVersionUID = -7290433520091984961L;
+  
   CompoundTermTag tag;
   PredicateUpdatedEvent(Module module, CompoundTermTag tag)
   {

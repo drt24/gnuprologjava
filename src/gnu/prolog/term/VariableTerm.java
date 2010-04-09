@@ -23,6 +23,8 @@ package gnu.prolog.term;
 
 public class VariableTerm extends Term
 {
+  private static final long serialVersionUID = -8440602532721728373L;
+
   /** create new unnamed variable term */
   public VariableTerm() 
   {
@@ -37,6 +39,7 @@ public class VariableTerm extends Term
     * @param context clone context
     * @return cloned term
     */
+  @Override
   public Term clone(TermCloneContext context)
   {
     if (value == null)
@@ -58,6 +61,7 @@ public class VariableTerm extends Term
   /** dereference term.
     * @return dereferenced term
     */
+  @Override
   public Term dereference()
   {
     VariableTerm variable = this;
@@ -89,6 +93,7 @@ public class VariableTerm extends Term
   /** get type of term 
     * @return type of term
     */
+  @Override
   public int getTermType()
   {
     return VARIABLE;

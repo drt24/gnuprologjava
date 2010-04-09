@@ -183,14 +183,14 @@ public class Predicate_read_term implements PrologCode, TermConstants
 
   }
 
-  private static Term mapToList(Map map)
+  private static Term mapToList(Map<String,Term> map)
   {
-    Iterator i = map.keySet().iterator();
+    Iterator<String> i = map.keySet().iterator();
     Term rc = emptyListAtom;
     while (i.hasNext())
     {
-      String key = (String)i.next();
-      Term val = (Term)map.get(key);
+      String key = i.next();
+      Term val = map.get(key);
       rc = CompoundTerm.getList(new CompoundTerm(unifyTag,AtomTerm.get(key),val), rc);
     }
     return rc;

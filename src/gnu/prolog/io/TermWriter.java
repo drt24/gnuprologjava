@@ -351,9 +351,9 @@ public class TermWriter extends PrintWriter
   {
     if (options.variable2name == null)
     {
-      options.variable2name = new HashMap();
+      options.variable2name = new HashMap<VariableTerm,String>();
     }
-    String name = (String)options.variable2name.get(term);
+    String name = options.variable2name.get(term);
     if (name == null)
     {
       int n = options.numberOfVariables++;

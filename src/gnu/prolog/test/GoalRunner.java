@@ -74,9 +74,9 @@ public class GoalRunner
       env.ensureLoaded(AtomTerm.get(textToLoad));
       Interpreter interpreter = env.createInterpreter();
       env.runIntialization(interpreter);
-      for (Iterator ierr = env.getLoadingErrors().iterator();ierr.hasNext();)
+      for (Iterator<PrologTextLoaderError> ierr = env.getLoadingErrors().iterator(); ierr.hasNext();)
       {
-        PrologTextLoaderError err = (PrologTextLoaderError)ierr.next();
+        PrologTextLoaderError err = ierr.next();
         System.err.println(err);
         //err.printStackTrace();
       }
@@ -109,13 +109,12 @@ public class GoalRunner
           {
             WriteOptions options = new WriteOptions();
             options.operatorSet = new OperatorSet();
-            Iterator ivars2 = rd_ops.variableNames.keySet().iterator();
-            Iterator ivars = rd_ops.variableNames.keySet().iterator();
+            Iterator<String> ivars = rd_ops.variableNames.keySet().iterator();
             while (ivars.hasNext())
             {
-              String name = (String)ivars.next();
+              String name = ivars.next();
               out.print(name+" = ");
-              out.print(options,((Term)rd_ops.variableNames.get(name)).dereference());
+              out.print(options,rd_ops.variableNames.get(name).dereference());
               out.print("; ");
             }
             out.println();
@@ -144,12 +143,12 @@ public class GoalRunner
           {
             WriteOptions options = new WriteOptions();
             options.operatorSet = new OperatorSet();
-            Iterator ivars2 = rd_ops.variableNames.keySet().iterator();
+            Iterator<String> ivars2 = rd_ops.variableNames.keySet().iterator();
             while (ivars2.hasNext())
             {
-              String name = (String)ivars2.next();
+              String name = ivars2.next();
               out.print(name+" = ");
-              out.print(options, ((Term)rd_ops.variableNames.get(name)).dereference());
+              out.print(options, rd_ops.variableNames.get(name).dereference());
               out.print("; ");
             }
             out.println();

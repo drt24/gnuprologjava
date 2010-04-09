@@ -16,6 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.allsolutions;
+import gnu.prolog.term.Term;
 import gnu.prolog.term.TermComparator;
 
 import java.util.ArrayList;
@@ -26,17 +27,18 @@ import java.util.ListIterator;
 public class Predicate_setof extends Predicate_bagof
 {
 
-  protected void processList(ArrayList curTList)
+  @Override
+  protected void processList(ArrayList<Term> curTList)
   {
     TermComparator tc = new TermComparator();
     Collections.sort(curTList, tc);
     // remove duplicates
-    ListIterator i = curTList.listIterator();
+    ListIterator<Term> i = curTList.listIterator();
     if (!i.hasNext())
     {
       return;
     }
-    Object cur = i.next();
+    Term cur = i.next();
     while (i.hasNext())
     {
       if (tc.compare(cur, i.next())==0)

@@ -16,6 +16,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
+import gnu.prolog.term.VariableTerm;
+
 import java.util.Map;
 /** ISO Prolog write options (Section 7.10.4)
   * @author Constantine Plotnikov
@@ -53,9 +55,10 @@ public class WriteOptions implements Cloneable
   /** Map from variables to names. This variable is used solely by
     * Term Writer.
     */
-  Map variable2name;
+  Map<VariableTerm,String> variable2name;
 
 
+  @Override
   public Object clone()
   {
     try

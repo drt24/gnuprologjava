@@ -25,14 +25,14 @@ import java.util.HashMap;
 public class TermCloneContext
 {
   /** term to cloned term map */
-  private HashMap term2clone = new HashMap();
+  private HashMap<Term,Term> term2clone = new HashMap<Term,Term>();
   /** get cloned term if it is alrady added to context
     * @param term source term
     * @return cloned term or null if it was not added
     */
   public Term getTerm(Term term)
   {
-    return (Term)term2clone.get(term);
+    return term2clone.get(term);
   }
   /** put cloned term to context
     * @param term source term

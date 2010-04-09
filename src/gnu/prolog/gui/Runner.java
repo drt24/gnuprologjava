@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
 
 public class Runner extends JFrame
 {
-  
+  private static final long serialVersionUID = 4536135999079155652L;
   
   JButton   prepareButton = new JButton("Prepare");
   JButton   executeButton = new JButton("Execute");

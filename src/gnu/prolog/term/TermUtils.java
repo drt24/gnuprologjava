@@ -23,13 +23,13 @@ import java.util.Set;
 
 public class TermUtils
 {
-  /** chaeck if one term is variant of another */
+  /** check if one term is variant of another */
   public static boolean isVariant(Term term1, Term term2)
   {
-    HashMap map = new HashMap();
+    HashMap<Term,Term> map = new HashMap<Term,Term>();
     return isVariant(term1, term2, map);
   }
-  private static boolean isVariant(Term term1, Term term2, HashMap map)
+  private static boolean isVariant(Term term1, Term term2, HashMap<Term,Term> map)
   {
     term1 = term1.dereference();
     term2 = term2.dereference();
@@ -39,7 +39,7 @@ public class TermUtils
       {
         return false;
       }
-      Term s = (Term)map.get(term1);
+      Term s = map.get(term1);
       if (s != null)
       {
         return s == term2;
@@ -103,7 +103,7 @@ public class TermUtils
   static final CompoundTermTag existsTag = CompoundTermTag.get("^",2);
   
   /** get variable set */
-  public static void getVariableSet(Term term, Set set)
+  public static void getVariableSet(Term term, Set<Term> set)
   {
     term = term.dereference();
     if (term instanceof VariableTerm)
@@ -121,7 +121,7 @@ public class TermUtils
   }
   
   /** get existential variable set */
-  public static Term getExistentialVariableSet(Term term, Set set)
+  public static Term getExistentialVariableSet(Term term, Set<Term> set)
   {
     term = term.dereference();
     if (term instanceof CompoundTerm)
@@ -143,9 +143,9 @@ public class TermUtils
   /** get free variables of term1 with respect to term2 
     * @return term1 w/o existential specifiers
      */
-  public static Term getFreeVariableSet(Term term1, Term term2, Set set)
+  public static Term getFreeVariableSet(Term term1, Term term2, Set<Term> set)
   {
-    HashSet bound = new HashSet();
+    HashSet<Term> bound = new HashSet<Term>();
     getVariableSet(term2, bound);
     Term rc = getExistentialVariableSet(term1, bound);
     getVariableSet(term1,set);
@@ -154,13 +154,13 @@ public class TermUtils
   }
 
   /** get witness of variable set, now just list of variables */
-  public static Term getWitness(Set set)
+  public static Term getWitness(Set<Term> set)
   {
     Term rc = AtomTerm.emptyList;
-    Iterator i = set.iterator();
+    Iterator<Term> i = set.iterator();
     while (i.hasNext())
     {
-      rc = CompoundTerm.getList((Term)i.next(), rc);
+      rc = CompoundTerm.getList(i.next(), rc);
     }
     return rc;
   }

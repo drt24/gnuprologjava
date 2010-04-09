@@ -35,26 +35,26 @@ final public class OperatorSet
     int priority;
     //int usage;
   }
-  ArrayList priorityLevels = new ArrayList();
-  HashMap xfOps = new HashMap();
-  HashMap fxOps = new HashMap();
+  ArrayList<OperatorLevel> priorityLevels = new ArrayList<OperatorLevel>();
+  HashMap<String,Operator> xfOps = new HashMap<String,Operator>();
+  HashMap<String,Operator> fxOps = new HashMap<String,Operator>();
 
   public synchronized Operator lookupXf(String value)
   {
-    Operator op = (Operator)xfOps.get(value);
+    Operator op = xfOps.get(value);
     return op != null? op: Operator.nonOperator;
   }
 
   public synchronized Operator lookupFx(String value)
   {
-    Operator op = (Operator)fxOps.get(value);
+    Operator op = fxOps.get(value);
     return op != null? op: Operator.nonOperator;
   }
   
   /** get all oprators currently in the set */
-  public synchronized HashSet getOperators()
+  public synchronized HashSet<Operator> getOperators()
   {
-    HashSet rc = new HashSet();
+    HashSet<Operator> rc = new HashSet<Operator>();
     rc.addAll(fxOps.values());
     rc.addAll(xfOps.values());
     return rc;
@@ -88,7 +88,7 @@ final public class OperatorSet
     int nlv = 0;
     for (i = n-1; i>=0; i--)
     {
-      ol = (OperatorLevel)priorityLevels.get(i);
+      ol = priorityLevels.get(i);
       if (ol.priority == priority)
       {
         nlv = i;
@@ -148,7 +148,7 @@ final public class OperatorSet
     int i,n = priorityLevels.size();
     for (i = n-1; i>=0; i--)
     {
-      int p = ((OperatorLevel)priorityLevels.get(i)).priority;
+      int p = priorityLevels.get(i).priority;
       if (p<=priority)
       {
         return p;

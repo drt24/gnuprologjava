@@ -23,6 +23,8 @@ package gnu.prolog.term;
   */
 public abstract class Term implements java.io.Serializable, Cloneable
 {
+  private static final long serialVersionUID = -5388107925239494079L;
+  
   public static final int UNKNOWN = -1;
   public static final int VARIABLE    = 1;
   public static final int JAVA_OBJECT = 2;
@@ -34,6 +36,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
   /** clone th term.
     * @return cloned term
     */
+  @Override
   public Object clone()
   {
     TermCloneContext context = new TermCloneContext();

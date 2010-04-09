@@ -23,6 +23,8 @@ import java.util.List;
   */
 public class CompoundTerm extends Term
 {
+  private static final long serialVersionUID = -8207470525318790957L;
+  
   /** tag for list */
   public static final CompoundTermTag listTag = CompoundTermTag.get(".",2);
   /** tag for conjunction */
@@ -46,12 +48,12 @@ public class CompoundTerm extends Term
   }
   
   /** get prolog list by java list */
-  public static Term getList(List list)
+  public static Term getList(List<Term> list)
   {
     Term tlist = AtomTerm.emptyList;
     for (int i=list.size()-1;i>=0;i--)
     {
-      tlist = getList((Term)list.get(i),tlist);
+      tlist = getList(list.get(i),tlist);
     }
     return tlist;
   }
@@ -193,6 +195,7 @@ public class CompoundTerm extends Term
     * @param context clone context
     * @return cloned term
     */
+  @Override
   public Term clone(TermCloneContext context)
   {
     CompoundTerm term = (CompoundTerm)context.getTerm(this);
@@ -215,6 +218,7 @@ public class CompoundTerm extends Term
   /** get type of term 
     * @return type of term
     */
+  @Override
   public int getTermType()
   {
     return COMPOUND;

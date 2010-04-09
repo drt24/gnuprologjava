@@ -72,6 +72,7 @@ final public class Operator
   }
 
 
+  @Override
   public String toString()
   {
     String specifiers[] =
