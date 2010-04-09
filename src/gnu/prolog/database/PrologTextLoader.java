@@ -39,9 +39,9 @@ public class PrologTextLoader
   /** current term reader */
   protected TermReader  currentReader;
   /** stack of previous readers */
-  protected Stack       readerStack = new Stack();
+  protected Stack<TermReader>   readerStack = new Stack<TermReader>();
   /** stack of previous files */
-  protected Stack       fileStack = new Stack();
+  protected Stack<String>       fileStack = new Stack<String>();
   /** operator set */
   protected OperatorSet operatorSet =  new OperatorSet();
   /** prolog text loader state */
@@ -371,8 +371,8 @@ public class PrologTextLoader
       {
         logError("error during closing file: "+ex.getMessage());
       }
-      currentFile   = (String)fileStack.pop();
-      currentReader = (TermReader)readerStack.pop();
+      currentFile   = fileStack.pop();
+      currentReader = readerStack.pop();
     }
     else
     {

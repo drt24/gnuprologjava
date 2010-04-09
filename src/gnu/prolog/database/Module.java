@@ -31,10 +31,10 @@ import java.util.Set;
 public class Module
 {
   /** map from tag to predicates */
-  HashMap tag2predicate = new HashMap();
+  HashMap<CompoundTermTag,Predicate> tag2predicate = new HashMap<CompoundTermTag,Predicate>();
 
   /** initialization */
-  List initialization = new ArrayList();
+  List<Term> initialization = new ArrayList<Term>();
   /** create new predicate defined in this module
     * @param tag tag of this predicate
     * @return created predicate
@@ -58,7 +58,7 @@ public class Module
     */
   public synchronized Predicate getDefinedPredicate(CompoundTermTag tag)
   {
-    Predicate p = (Predicate)tag2predicate.get(tag);
+    Predicate p = tag2predicate.get(tag);
     if (p == null)
     {
       return null;
@@ -79,26 +79,26 @@ public class Module
   }
 
   /** get initaliztion */
-  public synchronized List getInitialization()
+  public synchronized List<Term> getInitialization()
   {
     return initialization;
   }
 
   /** get initaliztion */
-  public synchronized Set getPredicateTags()
+  public synchronized Set<CompoundTermTag> getPredicateTags()
   {
-    Set set = tag2predicate.keySet();
+    Set<CompoundTermTag> set = tag2predicate.keySet();
     return set;
   }
 
-  ArrayList predicateListeners = new ArrayList();
+  ArrayList<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
   public synchronized void predicateUpdated(CompoundTermTag tag)
   {
     PredicateUpdatedEvent evt = new PredicateUpdatedEvent(this,tag);
-    Iterator i = ((List)predicateListeners.clone()).iterator();
+    Iterator<PredicateListener> i = ((List<PredicateListener>)predicateListeners.clone()).iterator();
     while (i.hasNext())
     {
-      PredicateListener listener = (PredicateListener)i.next();
+      PredicateListener listener = i.next();
       listener.predicateUpdated(evt);
     }
   }

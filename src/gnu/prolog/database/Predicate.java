@@ -51,7 +51,7 @@ public class Predicate
   /** a tag of predicate head */
   CompoundTermTag tag;
   /** list of clauses for this predicate */
-  ArrayList clauses = new ArrayList();
+  ArrayList<Term> clauses = new ArrayList<Term>();
   /** flag which indicate that clauses was added for this predicate */
   boolean propertiesLocked = false;
   /** dynamic property of predicate */
@@ -71,7 +71,7 @@ public class Predicate
   }
 
   /** get clauses of predicate */
-  public List getClauses()
+  public List<Term> getClauses()
   {
     return Collections.unmodifiableList(clauses);
   }

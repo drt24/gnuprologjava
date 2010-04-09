@@ -66,6 +66,7 @@ public class PrologTextLoaderError extends Exception
     return column;
   }
 
+  @Override
   public String toString()
   {
     return file+":"+line+":"+column+": "+getMessage();

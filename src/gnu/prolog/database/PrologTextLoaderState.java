@@ -37,10 +37,10 @@ import java.util.Set;
 public class PrologTextLoaderState
 {
   Module module = new Module();
-  HashMap predicate2options2loaders = new HashMap();
+  HashMap<Predicate,HashMap<String,Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate,HashMap<String,Set<PrologTextLoader>>>();
   Predicate currentPredicate = null;
-  ArrayList errorList = new ArrayList();
-  HashSet   loadedFiles = new HashSet();
+  ArrayList<PrologTextLoaderError> errorList = new ArrayList<PrologTextLoaderError>();
+  HashSet<String>   loadedFiles = new HashSet<String>();
 
 
   // arguments of ensure_loaded/1 and include/2 derectived
@@ -48,7 +48,7 @@ public class PrologTextLoaderState
   final static CompoundTermTag urlTag      = CompoundTermTag.get("url",1);
   final static CompoundTermTag fileTag     = CompoundTermTag.get("file",1);
 
-  public List getErrors()
+  public List<PrologTextLoaderError> getErrors()
   {
     return errorList;
   }
@@ -60,13 +60,13 @@ public class PrologTextLoaderState
 
   private boolean testOption(PrologTextLoader loader, Predicate p, String option)
   {
-    HashMap options2loaders = (HashMap)predicate2options2loaders.get(p);
+    HashMap<String,Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
     if (options2loaders == null)
     {
       return false;
     }
 
-    Set loaders = (Set)options2loaders.get(option);
+    Set<PrologTextLoader> loaders = options2loaders.get(option);
     if (loaders == null)
     {
       return false;
@@ -80,16 +80,16 @@ public class PrologTextLoaderState
 
   private void defineOption(PrologTextLoader loader, Predicate p, String option)
   {
-    HashMap options2loaders = (HashMap)predicate2options2loaders.get(p);
+    HashMap<String,Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
     if (options2loaders == null)
     {
-      options2loaders = new HashMap();
+      options2loaders = new HashMap<String,Set<PrologTextLoader>>();
       predicate2options2loaders.put(p,options2loaders);
     }
-    Set loaders = (Set)options2loaders.get(option);
+    Set<PrologTextLoader> loaders = options2loaders.get(option);
     if (loaders == null)
     {
-      loaders = new HashSet();
+      loaders = new HashSet<PrologTextLoader>();
       options2loaders.put(option,loaders);
     }
     if( !loaders.contains(loader))
@@ -106,19 +106,19 @@ public class PrologTextLoaderState
 
   private boolean isDeclaredInOtherLoaders(PrologTextLoader loader, Predicate p)
   {
-    HashMap options2loaders = (HashMap)predicate2options2loaders.get(p);
+    HashMap<String,Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
     if (options2loaders == null)
     {
       return false;
     }
 
-    Set loaders = (Set)options2loaders.get("declared");
+    Set<PrologTextLoader> loaders = options2loaders.get("declared");
     if (loaders == null || loaders.isEmpty())
     {
       return false;
     }
 
-    Iterator i = loaders.iterator();
+    Iterator<PrologTextLoader> i = loaders.iterator();
     while (i.hasNext())
     {
       if (loader != i.next())
@@ -328,11 +328,6 @@ public class PrologTextLoaderState
   public void logError(PrologTextLoader loader, String message)
   {
     errorList.add(new PrologTextLoaderError(loader, message));
-  }
-
-  public List getErrorList()
-  {
-    return errorList;
   }
 
   public void addInitialization(PrologTextLoader loader, Term term)
