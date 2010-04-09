@@ -16,9 +16,9 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.gui;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.event.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
 
 public class Runner extends JFrame
 {

@@ -16,9 +16,11 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.allsolutions;
-import gnu.prolog.term.*;
-import gnu.prolog.vm.*;
-import java.util.*;
+import gnu.prolog.term.TermComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.ListIterator;
 /** prolog code 
   */
 public class Predicate_setof extends Predicate_bagof

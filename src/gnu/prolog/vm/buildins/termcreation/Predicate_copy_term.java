@@ -16,8 +16,11 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.termcreation;
-import gnu.prolog.term.*;
-import gnu.prolog.vm.*;
+import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
 
 /** prolog code 
   */

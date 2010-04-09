@@ -16,9 +16,17 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
-import java.util.*;
+import gnu.prolog.io.ReadOptions;
+import gnu.prolog.io.WriteOptions;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.JavaObjectTerm;
+import gnu.prolog.term.Term;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 public abstract class PrologStream
 {
   public static class OpenOptions

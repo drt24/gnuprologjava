@@ -16,7 +16,10 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 /** this class contains representation of ISO prolog read options.
   * @author Constantine Plotnikov
   * @versiom 0.0.1

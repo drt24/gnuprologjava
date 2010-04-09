@@ -16,11 +16,23 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
-import java.util.*;
-import java.io.*;
+import gnu.prolog.io.ParseException;
+import gnu.prolog.io.TermWriter;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class PrologTextLoaderState
 {

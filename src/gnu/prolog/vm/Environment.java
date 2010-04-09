@@ -16,14 +16,38 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.database.*;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
+import gnu.prolog.database.Module;
+import gnu.prolog.database.Predicate;
+import gnu.prolog.database.PredicateListener;
+import gnu.prolog.database.PredicateUpdatedEvent;
+import gnu.prolog.database.PrologTextLoaderState;
+import gnu.prolog.io.OperatorSet;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.JavaObjectTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.interpreter.InterpretedCodeCompiler;
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import java.lang.ref.*;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 /** this class represent prolog processor. 
   */
 public class Environment implements PredicateListener

@@ -16,8 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.vm.BacktrackInfo;
 
 /** this backtrack info is created upon entering in predicate, it is used 
   * to detect fails and it is a normal cut parent.

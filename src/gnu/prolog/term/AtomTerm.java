@@ -16,8 +16,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-import java.util.HashMap;
 import java.io.Serializable;
+import java.util.HashMap;
 /** Atom term. The object of this class represent prolog atom.
   * @author Constantin Plotnikov
   * @version 0.0.1

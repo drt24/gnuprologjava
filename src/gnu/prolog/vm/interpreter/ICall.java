@@ -16,8 +16,14 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologCodeListener;
+import gnu.prolog.vm.PrologCodeUpdatedEvent;
+import gnu.prolog.vm.PrologException;
 
 /** call instruction.
   */

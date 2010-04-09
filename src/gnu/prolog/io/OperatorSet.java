@@ -17,10 +17,11 @@
  */
 package gnu.prolog.io;
 
+import gnu.prolog.term.CompoundTermTag;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import gnu.prolog.term.CompoundTermTag;
 
 final public class OperatorSet
 {

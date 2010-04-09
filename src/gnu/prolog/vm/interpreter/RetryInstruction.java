@@ -16,8 +16,6 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
 
 /** base calss to try_me_else and retry_me_else instructions.
   * it exists only for purposes of code generation.

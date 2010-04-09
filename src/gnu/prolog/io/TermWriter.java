@@ -16,9 +16,18 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
-import java.io.*;
-import java.util.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.FloatTerm;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
 
 /** This class is intendent for printing terms.
   * @author Constantine A. Plotnikov.

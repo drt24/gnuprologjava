@@ -16,8 +16,12 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.io;
-import gnu.prolog.term.*;
-import gnu.prolog.vm.*;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.PrologStream;
+import gnu.prolog.vm.TermConstants;
 
 /** prolog code 
   */

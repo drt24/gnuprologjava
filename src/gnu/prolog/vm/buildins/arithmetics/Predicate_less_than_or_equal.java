@@ -16,8 +16,14 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.arithmetics;
-import gnu.prolog.term.*;
-import gnu.prolog.vm.*;
+import gnu.prolog.term.FloatTerm;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Evaluate;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
 
 /** prolog code 
   */

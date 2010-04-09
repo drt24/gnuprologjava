@@ -20,7 +20,7 @@
 /* Modified by Constantine A. Plotnikov <cap@tassun.math.nsc.ru> 1997-07-30 */
 
 package gnu.prolog.io.parser;
-import gnu.prolog.io.parser.gen.*;
+import gnu.prolog.io.parser.gen.CharStream;
 
 /**
  * An implementation of interface CharStream, where the stream is assumed to

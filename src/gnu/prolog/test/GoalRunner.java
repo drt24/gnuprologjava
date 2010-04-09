@@ -16,12 +16,23 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.test;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
-import java.io.*;
-import java.util.*;
 import gnu.prolog.database.PrologTextLoaderError;
+import gnu.prolog.io.OperatorSet;
+import gnu.prolog.io.ReadOptions;
+import gnu.prolog.io.TermReader;
+import gnu.prolog.io.TermWriter;
+import gnu.prolog.io.WriteOptions;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.OutputStreamWriter;
+import java.io.StringReader;
+import java.util.Iterator;
 public class GoalRunner
 {
   private static void usage()

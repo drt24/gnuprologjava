@@ -16,8 +16,12 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import java.util.*;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.FloatTerm;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.JavaObjectTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 /** This class represent interpreter, it should be used only from one thread
   * If you need to use interpreter from two threads, create new interpreter from 
   * Environment

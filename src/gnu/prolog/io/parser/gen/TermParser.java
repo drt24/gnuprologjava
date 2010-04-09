@@ -17,10 +17,20 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io.parser.gen;
-import gnu.prolog.io.parser.*;
-import gnu.prolog.term.*;
-import gnu.prolog.io.*;
-import java.util.*;
+import gnu.prolog.io.Operator;
+import gnu.prolog.io.ReadOptions;
+import gnu.prolog.io.parser.NameToken;
+import gnu.prolog.io.parser.ReaderCharStream;
+import gnu.prolog.io.parser.TermParserUtils;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.FloatTerm;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+
+import java.util.ArrayList;
 
 public final class TermParser implements TermParserConstants {
   CharStream stream;

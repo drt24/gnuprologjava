@@ -17,12 +17,12 @@
  */
 package gnu.prolog.io;
 
-import  java.io.FilterReader;
-import  java.io.Reader;
-import  java.io.StringReader;
-import  gnu.prolog.term.Term;
-import  gnu.prolog.io.parser.gen.TermParser;
-import  gnu.prolog.io.parser.ReaderCharStream;
+import gnu.prolog.io.parser.gen.TermParser;
+import gnu.prolog.term.Term;
+
+import java.io.FilterReader;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class TermReader extends FilterReader
 {

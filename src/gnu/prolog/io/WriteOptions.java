@@ -16,7 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
-import java.util.*;
+import java.util.Map;
 /** ISO Prolog write options (Section 7.10.4)
   * @author Constantine Plotnikov
   * @version 0.0.1

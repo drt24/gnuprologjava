@@ -16,8 +16,15 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.buildins.atomicterms;
-import gnu.prolog.term.*;
-import gnu.prolog.vm.*;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
 
 /** prolog code 
   */

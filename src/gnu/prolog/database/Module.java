@@ -16,14 +16,14 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
-import gnu.prolog.term.Term;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.Term;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /** Module in database
   * @author Contantine A Plotnikov

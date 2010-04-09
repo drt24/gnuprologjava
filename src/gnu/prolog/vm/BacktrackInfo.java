@@ -16,8 +16,6 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
 
 /** back track information base class */
 public class BacktrackInfo

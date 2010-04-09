@@ -16,8 +16,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm.interpreter;
-import gnu.prolog.vm.*;
-import gnu.prolog.term.*;
+import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.PrologException;
 /** push argument of execution state
   */
 public class IPushArgument extends Instruction

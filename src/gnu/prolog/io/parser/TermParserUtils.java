@@ -16,9 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io.parser;
-import gnu.prolog.io.parser.gen.*;
-import gnu.prolog.io.*;
-import gnu.prolog.term.*;
+import gnu.prolog.io.parser.gen.TermParserConstants;
 
 public class TermParserUtils
 {

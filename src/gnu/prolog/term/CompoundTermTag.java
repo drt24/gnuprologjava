@@ -16,11 +16,11 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /** A tag of compound term. A tag consists of functor and arity.
   * All tags are unique in one JVM.

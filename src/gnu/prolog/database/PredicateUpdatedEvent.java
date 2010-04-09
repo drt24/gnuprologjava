@@ -16,7 +16,7 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.database;
-import gnu.prolog.term.*;
+import gnu.prolog.term.CompoundTermTag;
 /** event notifying about event with predicates */
 public class PredicateUpdatedEvent extends java.util.EventObject
 {
