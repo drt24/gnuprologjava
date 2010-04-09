@@ -34,8 +34,11 @@ public abstract class Predicate_assert implements PrologCode
   static final AtomTerm staticProcedureAtom = AtomTerm.get("static_procedure"); 
   static final AtomTerm callableAtom = AtomTerm.get("callable"); 
 
-  /** assert a clause */
-  protected abstract void assert(Predicate p, CompoundTerm clause);
+  /** assert a clause 
+   * @param p 
+   * @param clause
+   */
+  protected abstract void assertClause(Predicate p, CompoundTerm clause);
 
   /** this method is used for execution of code
     * @param interpreter interpreter in which context code is executed 
@@ -112,7 +115,7 @@ public abstract class Predicate_assert implements PrologCode
     {
       PrologException.permissionError(modifyAtom,staticProcedureAtom,predTag.getPredicateIndicator());
     }
-    assert(p, (CompoundTerm)new CompoundTerm(clauseTag,head,body).clone());
+    assertClause(p, (CompoundTerm)new CompoundTerm(clauseTag,head,body).clone());
     return SUCCESS_LAST;
   }
 

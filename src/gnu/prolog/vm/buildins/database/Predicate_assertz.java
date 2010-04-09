@@ -24,8 +24,8 @@ import gnu.prolog.database.*;
   */
 public class Predicate_assertz extends Predicate_assert
 {
-  /** assert a clause */
-  protected void assert(Predicate p, CompoundTerm clause)
+  @Override
+  protected void assertClause(Predicate p, CompoundTerm clause)
   {
     p.addClauseLast(clause);
   }

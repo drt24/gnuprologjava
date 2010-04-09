@@ -404,7 +404,7 @@ public final class Interpreter
       {
         if (currentGoal == null)
         {
-          throw new IllegalStateException("The goal is not prepared");;
+          throw new IllegalStateException("The goal is not prepared");
         }
         if (currentGoal != goal)
         {
