@@ -130,13 +130,18 @@
     <zip zipfile="${build.dir}/site.zip" basedir="${build.dir}/site"/>
   </target>
 
+  <target name="generate-parser" depends="init">
+  	<!-- TODO: convert this command line to ant: javacc -OUTPUT_DIRECTORY="gnu/prolog/io/parser/gen/" -JDK_VERSION=1.6 gnu/prolog/io/parser/TermParser.jj -->
+  </target>
 
   <!-- =================================================================== -->
   <!-- Cleans up generated stuff                                           -->
   <!-- =================================================================== -->
   <target name="clean" depends="init">
     <delete dir="${build.dir}"/>
-    <!-- <delete dir="${docs.dir}/api"/> -->
+  </target>
+  <target name="clean-doc" depends="init">
+  	<delete dir="${docs.dir}/api"/>
   </target>
 
 </project>
