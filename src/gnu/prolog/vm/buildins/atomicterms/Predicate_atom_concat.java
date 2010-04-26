@@ -179,7 +179,7 @@ public class Predicate_atom_concat implements PrologCode
           AtomTerm a1 = (AtomTerm)t1; 
           AtomTerm a2 = (AtomTerm)t2; 
           String s1 = a1.value;
-          String s2 = a1.value;
+          String s2 = a2.value;
           if (s12.equals(s1+s2))
           {
             return SUCCESS_LAST;
