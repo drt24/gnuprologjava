@@ -42,10 +42,10 @@ public class Predicate_stream_property implements PrologCode, TermConstants
   {
     StreamPropertyBacktrackInfo() {super(-1,-1);}
     int startUndoPosition;
-    Map stream2option;
-    Iterator streams;
+    Map<PrologStream,List<Term>> stream2option;
+    Iterator<PrologStream> streams;
     Term currentStream;
-    Iterator options;
+    Iterator<Term> options;
 
     Term stream;
     Term property;
@@ -190,9 +190,9 @@ public class Predicate_stream_property implements PrologCode, TermConstants
       {
         if (bi.streams.hasNext())
         {
-          PrologStream stream = (PrologStream)bi.streams.next();
+          PrologStream stream = bi.streams.next();
           bi.currentStream = stream.getStreamTerm();
-          bi.options = ((List)bi.stream2option.get(stream)).iterator();
+          bi.options = bi.stream2option.get(stream).iterator();
           continue;
         }
         else
@@ -200,7 +200,7 @@ public class Predicate_stream_property implements PrologCode, TermConstants
           return FAIL;
         }
       }
-      Term currentProp = (Term)bi.options.next();
+      Term currentProp = bi.options.next();
       if (interpreter.simple_unify(bi.stream, bi.currentStream) == SUCCESS_LAST &&
           interpreter.simple_unify(bi.property, currentProp) == SUCCESS_LAST)
       {

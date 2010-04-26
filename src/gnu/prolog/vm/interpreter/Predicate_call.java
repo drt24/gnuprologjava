@@ -72,6 +72,7 @@ public class Predicate_call implements PrologCode
     /** environment */
     Environment environment;
     
+    @Override
     protected void finalize() throws Throwable
     {
       super.finalize();
@@ -114,8 +115,8 @@ public class Predicate_call implements PrologCode
       {
         PrologException.instantiationError();
       }
-      ArrayList argumentVariables = new ArrayList();
-      ArrayList arguments = new ArrayList();
+      ArrayList<Term> argumentVariables = new ArrayList<Term>();
+      ArrayList<Term> arguments = new ArrayList<Term>();
       Term body;
       try
       {
@@ -126,11 +127,11 @@ public class Predicate_call implements PrologCode
         PrologException.typeError(callableAtom,callTerm);
         return -1; // fake return
       }
-      Term headArgs[] = (Term[])argumentVariables.toArray(termArrayType);
+      Term headArgs[] = argumentVariables.toArray(termArrayType);
       Term head = new CompoundTerm(headFunctor, headArgs);
       Term clause = new CompoundTerm(clauseTag, head, body);
-      args = (Term[])arguments.toArray(termArrayType);
-      ArrayList clauses = new ArrayList(1);
+      args = arguments.toArray(termArrayType);
+      ArrayList<Term> clauses = new ArrayList<Term>(1);
       clauses.add(clause);
       code = InterpretedCodeCompiler.compile(clauses);
       code.install(interpreter.environment);
@@ -165,7 +166,7 @@ public class Predicate_call implements PrologCode
   }
   
   /** convert callable term to clause */
-  public static Term getClause(Term term, ArrayList argumentVariables, ArrayList arguments)
+  public static Term getClause(Term term, ArrayList<Term> argumentVariables, ArrayList<Term> arguments)
   {
     if (term instanceof AtomTerm)
     {
@@ -180,7 +181,7 @@ public class Predicate_call implements PrologCode
         arguments.add(term);
         return var1;
       }
-      return (Term)argumentVariables.get(arguments.indexOf(term));
+      return argumentVariables.get(arguments.indexOf(term));
     }
     else if (term instanceof CompoundTerm)
     {
@@ -207,7 +208,7 @@ public class Predicate_call implements PrologCode
         }
         else
         {
-          newArgs[i] = (Term)argumentVariables.get(arguments.indexOf(arg));
+          newArgs[i] = argumentVariables.get(arguments.indexOf(arg));
         }
       }
       return new CompoundTerm(ct.tag,newArgs);

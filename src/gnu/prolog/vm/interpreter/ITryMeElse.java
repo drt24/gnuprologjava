@@ -32,6 +32,7 @@ public class ITryMeElse extends RetryInstruction
     * @return instruction to caller how to execute next instrcuction
     * @throw PrologException if code is throwng prolog exception
     */  
+  @Override
   public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
   {
     BacktrackInfo rbi = state.getRetryBacktrackInfo(retryPosition);
@@ -41,6 +42,7 @@ public class ITryMeElse extends RetryInstruction
   }
 
   /** convert instruction to string */
+  @Override
   public String toString()
   {
     return codePosition+": try_me_else "+retryPosition;

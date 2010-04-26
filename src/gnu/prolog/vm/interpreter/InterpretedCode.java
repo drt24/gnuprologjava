@@ -34,8 +34,8 @@ public class InterpretedCode implements PrologCode
   InterpretedCode(CompoundTermTag  codeTag, Instruction instructions[], ExceptionHandlerInfo exceptionHandlers[])
   {
     this.codeTag = codeTag;
-    this.instructions = (Instruction[])instructions.clone();
-    this.exceptionHandlers = (ExceptionHandlerInfo[])exceptionHandlers.clone();
+    this.instructions = instructions.clone();
+    this.exceptionHandlers = exceptionHandlers.clone();
   }
   
   /** tag of this code */
@@ -194,6 +194,7 @@ public class InterpretedCode implements PrologCode
   }
 
   /** convert code to string */
+  @Override
   public String toString()
   {
     int i,n;

@@ -50,7 +50,7 @@ public class ExecutionState
   /** current environment */
   public Term environment[];
   /** pushdown stack, used for unification and calls */
-  public ArrayList pushdown = new ArrayList();
+  public ArrayList<Term> pushdown = new ArrayList<Term>();
   /** current position */
   public int jumpPosition;
   /** arguments */ 
@@ -89,7 +89,7 @@ public class ExecutionState
   /** pop term from pushdown stack */
   public Term popPushDown()
   {
-    return (Term)pushdown.remove(pushdown.size()-1);
+    return pushdown.remove(pushdown.size()-1);
   }
    
   /** push term to pushdown stack */

@@ -33,12 +33,14 @@ public class TextOutputPrologStream extends PrologStream
     termWriter = new TermWriter(wr);
   }
 
+  @Override
   public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(inputAtom, textStreamAtom, streamTerm);
     return 0;
   }
+  @Override
   public int peekByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
@@ -46,53 +48,63 @@ public class TextOutputPrologStream extends PrologStream
     return 0;
   }
 
+  @Override
   public void putByte(Term streamTerm, Interpreter interptreter, int _byte) throws PrologException
   {
     checkExists();
     PrologException.permissionError(outputAtom, textStreamAtom, streamTerm);
   }
   
+  @Override
   public Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
     return null;
   }
+  @Override
   public void setPosition(Term streamTerm, Interpreter interptreter, Term pos) throws PrologException
   {
     checkExists();
     PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
   }
   
+  @Override
   public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(inputAtom, streamAtom, streamTerm);
     return 0;
   }
+  @Override
   public int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(inputAtom, streamAtom, streamTerm);
     return 0;
   }
+  @Override
   public void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException
   {
     termWriter.print((char)code);
   }
+  @Override
   public Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException
   {
     PrologException.permissionError(inputAtom, streamAtom, streamTerm);
     return null;
   }
+  @Override
   public void writeTerm(Term streamTerm, Interpreter interptreter, WriteOptions options, Term term) throws PrologException
   {
     termWriter.print(options, term);
   }
+  @Override
   public void flushOutput(Term streamTerm) throws PrologException
   {
     termWriter.flush();
   }
+  @Override
   public void close(boolean force) throws PrologException
   {
     try

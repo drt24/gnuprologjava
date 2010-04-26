@@ -46,7 +46,7 @@ public class Predicate_current_predicate implements PrologCode
       super(-1,-1);
     }
     int startUndoPosition;
-    Iterator tagsIterator;
+    Iterator<CompoundTermTag> tagsIterator;
     Term     pi;
   }
   /** this method is used for execution of code
@@ -93,7 +93,7 @@ public class Predicate_current_predicate implements PrologCode
       {
         PrologException.typeError(predicateIndicatorAtom,pi);
       }
-      HashSet tagSet = new HashSet(interpreter.environment.getModule().getPredicateTags());
+      HashSet<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.environment.getModule().getPredicateTags());
       CurrentPredicateBacktrackInfo bi = new CurrentPredicateBacktrackInfo();
       bi.startUndoPosition = interpreter.getUndoPosition();
       bi.pi = pi;
@@ -108,7 +108,7 @@ public class Predicate_current_predicate implements PrologCode
   {
     while (bi.tagsIterator.hasNext())
     {
-      CompoundTermTag tag = (CompoundTermTag)bi.tagsIterator.next();
+      CompoundTermTag tag = bi.tagsIterator.next();
       Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
       if (p == null) // if was destroyed 
       {

@@ -35,12 +35,14 @@ public class IPushConstant extends Instruction
     * @return instruction to caller how to execute next instrcuction
     * @throw PrologException if code is throwng prolog exception
     */  
+  @Override
   public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
   {
     state.pushPushDown(term);
     return ExecutionState.NEXT;
   }
   /** convert instruction to string */
+  @Override
   public String toString()
   {
     return codePosition+": push_constant "+gnu.prolog.io.TermWriter.toString(term);

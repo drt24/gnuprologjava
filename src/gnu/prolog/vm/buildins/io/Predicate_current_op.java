@@ -51,9 +51,9 @@ public class Predicate_current_op implements PrologCode, TermConstants
 
     int startUndoPosition;
 
-    Iterator ops;
-    Iterator specifiers;
-    Iterator priorities;
+    Iterator<Term> ops;
+    Iterator<Term> specifiers;
+    Iterator<Term> priorities;
     
     Term op;
     Term specifier;
@@ -109,14 +109,14 @@ public class Predicate_current_op implements PrologCode, TermConstants
       }
 
       // prepare and exec
-      ArrayList ops = new ArrayList();
-      ArrayList specifiers = new ArrayList();
-      ArrayList priorities = new ArrayList();
+      ArrayList<Term> ops = new ArrayList<Term>();
+      ArrayList<Term> specifiers = new ArrayList<Term>();
+      ArrayList<Term> priorities = new ArrayList<Term>();
       
-      Iterator i = interpreter.environment.getOperatorSet().getOperators().iterator();
-      while (i.hasNext())
+      Iterator<Operator> iOp = interpreter.environment.getOperatorSet().getOperators().iterator();
+      while (iOp.hasNext())
       {
-        Operator o = (Operator)i.next();
+        Operator o = iOp.next();
         ops.add(o.tag.functor);
         priorities.add(IntegerTerm.get(o.priority));
         AtomTerm a = null;
@@ -150,9 +150,9 @@ public class Predicate_current_op implements PrologCode, TermConstants
     {
       while (bi.ops.hasNext())
       {
-        Term op        = ((Term)bi.ops.next());       
-        Term specifier = ((Term)bi.specifiers.next());
-        Term priority  = ((Term)bi.priorities.next());
+        Term op        = bi.ops.next();       
+        Term specifier = bi.specifiers.next();
+        Term priority  = bi.priorities.next();
         if ( interpreter.simple_unify(op       ,bi.op       ) == SUCCESS_LAST && 
              interpreter.simple_unify(specifier,bi.specifier) == SUCCESS_LAST &&
              interpreter.simple_unify(priority ,bi.priority ) == SUCCESS_LAST)

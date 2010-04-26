@@ -74,7 +74,7 @@ public class Predicate_char_code implements PrologCode
       {
         PrologException.typeError(characterAtom,achar);
       }
-      IntegerTerm code = IntegerTerm.get((int)achar.value.charAt(0));
+      IntegerTerm code = IntegerTerm.get(achar.value.charAt(0));
       return interpreter.unify(code,tcode);
     }
     else

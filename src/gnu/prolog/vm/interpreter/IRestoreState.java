@@ -31,6 +31,7 @@ public class IRestoreState extends Instruction
     * @return instruction to caller how to execute next instrcuction
     * @throw PrologException if code is throwng prolog exception
     */  
+  @Override
   public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
   {
     JavaObjectTerm term = (JavaObjectTerm)state.environment[environmentIndex];
@@ -45,6 +46,7 @@ public class IRestoreState extends Instruction
   }
 
   /** convert instruction to string */
+  @Override
   public String toString()
   {
     return codePosition+": restore_state "+environmentIndex;

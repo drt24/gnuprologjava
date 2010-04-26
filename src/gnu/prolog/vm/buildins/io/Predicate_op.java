@@ -60,7 +60,7 @@ public class Predicate_op implements PrologCode, TermConstants
 
     int priority=0; // parsed priority
     int opspec=-1;  // parsed operator specifier
-    HashSet ops = new HashSet(); // set of operators
+    HashSet<Term> ops = new HashSet<Term>(); // set of operators
     boolean fx = false;
     boolean xf = false;
     boolean xfx = false;
@@ -178,7 +178,7 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     if (priority == 0) // if remove requested
     {
-      Iterator i = ops.iterator();
+      Iterator<Term> i = ops.iterator();
       while (i.hasNext())
       {
         AtomTerm op = (AtomTerm)i.next();
@@ -187,7 +187,7 @@ public class Predicate_op implements PrologCode, TermConstants
     }
     else
     {
-      Iterator i = ops.iterator();
+      Iterator<Term> i = ops.iterator();
       while (i.hasNext())
       {
         AtomTerm op = (AtomTerm)i.next();

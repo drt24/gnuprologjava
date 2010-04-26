@@ -42,14 +42,14 @@ public class Predicate_unify_with_occurs_check implements PrologCode
   public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
          throws PrologException
   {
-    ArrayList stack = new ArrayList(10);
+    ArrayList<Term> stack = new ArrayList<Term>(10);
     stack.add(args[0]);
     stack.add(args[1]);
     int rc = SUCCESS_LAST;
     unify_loop: while(stack.size() > 0)
     {
-      Term t1 = (Term)stack.remove(stack.size()-1); 
-      Term t2 = (Term)stack.remove(stack.size()-1); 
+      Term t1 = stack.remove(stack.size()-1); 
+      Term t2 = stack.remove(stack.size()-1); 
       if (t1 == t2)
       {
       }

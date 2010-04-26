@@ -61,8 +61,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
   {
     this.codeTag = codeTag;
     int ipos[] = new int[isrc.length];
-    HashMap tag2idx = new HashMap();
-    HashMap constant2idx = new HashMap();
+    HashMap<CompoundTermTag,Integer> tag2idx = new HashMap<CompoundTermTag,Integer>();
+    HashMap<AtomicTerm,Integer> constant2idx = new HashMap<AtomicTerm,Integer>();
     pass1(isrc, ipos, tag2idx, constant2idx);
     exceptionHandlers = new ExceptionHandlerInfo[ehs.length];
     int i,n = ehs.length;
@@ -76,11 +76,11 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
     pass2(isrc, ipos, tag2idx, constant2idx);
   }
 
-  private void pass1(Instruction isrc[], int ipos[], HashMap tag2idx, HashMap constant2idx)
+  private void pass1(Instruction isrc[], int ipos[], HashMap<CompoundTermTag,Integer> tag2idx, HashMap<AtomicTerm, Integer> constant2idx)
   {
-    HashSet callTags = new HashSet();
-    HashSet createCompoundTermTags = new HashSet();
-    HashSet constantSet = new HashSet();
+    HashSet<CompoundTermTag> callTags = new HashSet<CompoundTermTag>();
+    HashSet<CompoundTermTag> createCompoundTermTags = new HashSet<CompoundTermTag>();
+    HashSet<AtomicTerm> constantSet = new HashSet<AtomicTerm>();
     
     int bytes = 0;
     int i,n = isrc.length;
@@ -220,6 +220,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
     tags = new CompoundTermTag[createCompoundTermTags.size()+callTags.size()];
     predicateCodes = new PrologCode[callTags.size()];
     Iterator j = callTags.iterator();
+    //TODO: Possible type mismatch must be both AtomicTerm and CompoundTermTag
     for (i=0; j.hasNext(); i++)
     {
       CompoundTermTag tag = (CompoundTermTag)j.next();
@@ -826,6 +827,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
   }
 
   /** convert code to string */
+  @Override
   public String toString()
   {
     int currentPosition = 0;

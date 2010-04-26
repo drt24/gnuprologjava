@@ -34,8 +34,8 @@ public class Predicate_current_prolog_flag implements PrologCode
    private class CurrentPrologFlagBacktrackInfo extends BacktrackInfo
    {
      CurrentPrologFlagBacktrackInfo(){super(-1,-1);}
-     Map map;
-     Iterator keys; 
+     Map<AtomTerm,Term> map;
+     Iterator<AtomTerm> keys; 
      int startUndoPosition;
      Term flag;
      Term value;
@@ -84,8 +84,8 @@ public class Predicate_current_prolog_flag implements PrologCode
   {
     while (bi.keys.hasNext())
     {
-      AtomTerm f = (AtomTerm)bi.keys.next();
-      Term v = (Term)bi.map.get(f);
+      AtomTerm f = bi.keys.next();
+      Term v = bi.map.get(f);
       int rc = interpreter.simple_unify(f,bi.flag);
       if (rc == FAIL)
       {

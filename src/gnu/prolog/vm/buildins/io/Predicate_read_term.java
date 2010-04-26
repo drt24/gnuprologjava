@@ -56,9 +56,9 @@ public class Predicate_read_term implements PrologCode, TermConstants
     ReadOptions options = new ReadOptions();
     options.operatorSet = interpreter.environment.getOperatorSet();
     
-    ArrayList singletons = new ArrayList();
-    ArrayList variableLists = new ArrayList();
-    ArrayList vnlists = new ArrayList();
+    ArrayList<Term> singletons = new ArrayList<Term>();
+    ArrayList<Term> variableLists = new ArrayList<Term>();
+    ArrayList<Term> vnlists = new ArrayList<Term>();
     
     // parse and unify options
     Term cur = optionsList;
@@ -117,13 +117,13 @@ public class Predicate_read_term implements PrologCode, TermConstants
         interpreter.undo(undoPos);
         return FAIL;
       }
-      Iterator i=singletons.iterator();
-      if (i.hasNext())
+      Iterator<Term> iS=singletons.iterator();
+      if (iS.hasNext())
       {
         Term singletonsList = mapToList(options.singletons);
-        while (i.hasNext())
+        while (iS.hasNext())
         {
-          Term t = (Term)i.next();
+          Term t = iS.next();
           t = t.dereference();
           rc = interpreter.simple_unify(t,singletonsList);
           if (rc == FAIL)
@@ -133,13 +133,13 @@ public class Predicate_read_term implements PrologCode, TermConstants
           }
         }
       }
-      i=vnlists.iterator();
-      if (i.hasNext())
+      iS=vnlists.iterator();
+      if (iS.hasNext())
       {
         Term vnlist = mapToList(options.variableNames);
-        while (i.hasNext())
+        while (iS.hasNext())
         {
-          Term t = (Term)i.next();
+          Term t = iS.next();
           t = t.dereference();
           rc = interpreter.simple_unify(t,vnlist);
           if (rc == FAIL)
@@ -149,13 +149,13 @@ public class Predicate_read_term implements PrologCode, TermConstants
           }
         }
       }
-      i=variableLists.iterator();
-      if (i.hasNext())
+      iS=variableLists.iterator();
+      if (iS.hasNext())
       {
         Term vnlist = CompoundTerm.getList(options.variables);
-        while (i.hasNext())
+        while (iS.hasNext())
         {
-          Term t = (Term)i.next();
+          Term t = iS.next();
           t = t.dereference();
           rc = interpreter.simple_unify(t,vnlist);
           if (rc == FAIL)

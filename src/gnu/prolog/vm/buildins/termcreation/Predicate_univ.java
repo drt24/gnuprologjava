@@ -123,7 +123,7 @@ public class Predicate_univ implements PrologCode
         PrologException.typeError(atomAtom,head);
       }
       AtomTerm functor = (AtomTerm)head;
-      ArrayList argList = new ArrayList();
+      ArrayList<Term> argList = new ArrayList<Term>();
       do
       {
         ct = (CompoundTerm)tail;
@@ -131,7 +131,7 @@ public class Predicate_univ implements PrologCode
         tail = ct.args[1].dereference();
         argList.add(head);
       } while ( tail != AtomTerm.emptyList);
-      Term targs[] = (Term[])argList.toArray(termArrayType);
+      Term targs[] = argList.toArray(termArrayType);
       interpreter.addVariableUndo(vt);
       vt.value = new CompoundTerm(functor, targs);
       return SUCCESS_LAST;

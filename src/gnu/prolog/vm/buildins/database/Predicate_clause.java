@@ -50,7 +50,7 @@ public class Predicate_clause implements PrologCode
     {
       super(-1,-1);
     }
-    ArrayList clauses;
+    ArrayList<Term> clauses;
     int  position;
     int  startUndoPosition;
     Term clause;
@@ -107,10 +107,10 @@ public class Predicate_clause implements PrologCode
       {
         PrologException.typeError(callableAtom, body);
       }
-      ArrayList clauses = new ArrayList();
-      for(Iterator ic = p.getClauses().iterator();ic.hasNext();)
+      ArrayList<Term> clauses = new ArrayList<Term>();
+      for(Iterator<Term> ic = p.getClauses().iterator();ic.hasNext();)
       {
-        clauses.add((Term)((Term)ic.next()).clone());
+        clauses.add((Term)ic.next().clone());
       }
       if (clauses.size() == 0)
       {
@@ -133,7 +133,7 @@ public class Predicate_clause implements PrologCode
   {
     while(bi.position < bi.clauses.size())
     {
-      int rc = interpreter.unify((Term)bi.clauses.get(bi.position++),bi.clause);
+      int rc = interpreter.unify(bi.clauses.get(bi.position++),bi.clause);
       if (rc == SUCCESS_LAST)
       {
         interpreter.pushBacktrackInfo(bi);

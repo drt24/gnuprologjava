@@ -135,7 +135,7 @@ public class Predicate_open implements PrologCode, TermConstants
         {
           PrologException.domainError(streamOptionAtom, op);
         }
-        options.aliases.add(val);
+        options.aliases.add((AtomTerm)val);
       }
       else if (op.tag == PrologStream.eofActionTag)
       {

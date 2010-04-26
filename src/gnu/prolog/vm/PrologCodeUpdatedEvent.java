@@ -21,6 +21,7 @@ import gnu.prolog.term.CompoundTermTag;
   */
 public class PrologCodeUpdatedEvent extends java.util.EventObject
 {
+  private static final long serialVersionUID = 3547991978575619876L;
   /** tag for predicate */
   CompoundTermTag tag;
 

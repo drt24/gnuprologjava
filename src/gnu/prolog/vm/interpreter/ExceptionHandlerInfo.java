@@ -29,6 +29,7 @@ public class ExceptionHandlerInfo
   int handlerPosition;
 
   /** convert handler to string */
+  @Override
   public String toString()
   {
     return "from "+startPosition+" to "+endPosition+" go to "+handlerPosition;

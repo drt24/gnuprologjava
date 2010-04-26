@@ -35,18 +35,21 @@ public class TextInputPrologStream extends PrologStream
   }
   
   // byte io
+  @Override
   public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(inputAtom, textStreamAtom, streamTerm);
     return 0;
   }
+  @Override
   public int peekByte(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(inputAtom, textStreamAtom, streamTerm);
     return 0;
   }
+  @Override
   public void putByte(Term streamTerm, Interpreter interptreter, int _byte) throws PrologException
   {
     checkExists();
@@ -54,18 +57,21 @@ public class TextInputPrologStream extends PrologStream
   }
   
   // repositioning
+  @Override
   public Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
     PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
     return null;
   }
+  @Override
   public void setPosition(Term streamTerm, Interpreter interptreter, Term pos) throws PrologException
   {
     checkExists();
     PrologException.permissionError(repositionAtom, textStreamAtom, streamTerm);
   }
 
+  @Override
   public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
@@ -102,6 +108,7 @@ public class TextInputPrologStream extends PrologStream
     }
   }
   
+  @Override
   public int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException
   {
     checkExists();
@@ -141,12 +148,14 @@ public class TextInputPrologStream extends PrologStream
     }
   }
   
+  @Override
   public void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException
   {
     checkExists();
     PrologException.permissionError(outputAtom, streamAtom, streamTerm);
   }
 
+  @Override
   public Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException
   {
     checkExists();
@@ -181,18 +190,21 @@ public class TextInputPrologStream extends PrologStream
 
   }
   
+  @Override
   public void writeTerm(Term streamTerm, Interpreter interptreter, WriteOptions options, Term term) throws PrologException
   {
     checkExists();
     PrologException.permissionError(outputAtom, streamAtom, streamTerm);
   }
 
+  @Override
   public void flushOutput(Term streamTerm) throws PrologException
   {
     checkExists();
     PrologException.permissionError(outputAtom, streamAtom, streamTerm);
   }
   
+  @Override
   public void close(boolean force) throws PrologException
   {
     checkExists();
@@ -211,6 +223,7 @@ public class TextInputPrologStream extends PrologStream
     
   }
 
+  @Override
   public Term getEndOfStreamState() throws PrologException
   {
     try

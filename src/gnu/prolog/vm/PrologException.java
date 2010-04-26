@@ -23,6 +23,7 @@ import gnu.prolog.term.Term;
 /** a prolog exception */
 public class PrologException extends Exception
 {
+  private static final long serialVersionUID = 946127094875894543L;
   /** term of the exception */
   Term term;
   /** message of exception */
@@ -35,6 +36,7 @@ public class PrologException extends Exception
     this.term = term;
   }
   
+  @Override
   public String getMessage()
   {
     if (msg == null)

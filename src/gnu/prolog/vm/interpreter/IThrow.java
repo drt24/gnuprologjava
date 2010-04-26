@@ -28,6 +28,7 @@ public class IThrow extends Instruction
     * @return instruction to caller how to execute next instrcuction
     * @throw PrologException if code is throwng prolog exception
     */  
+  @Override
   public int execute(ExecutionState state, BacktrackInfo backtrackInfo) throws PrologException
   {
     Term term = state.popPushDown();
@@ -39,6 +40,7 @@ public class IThrow extends Instruction
   }
 
   /** convert instruction to string */
+  @Override
   public String toString()
   {
     return codePosition+": throw";

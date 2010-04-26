@@ -49,8 +49,8 @@ public class Predicate_retract implements PrologCode
     {
       super(-1,-1);
     }
-    Iterator iclauses;
-    HashMap clauseMap;
+    Iterator<Term> iclauses;
+    HashMap<Term,Term> clauseMap;
     int startUndoPosition;
     Term clause;
     Predicate pred;
@@ -137,11 +137,11 @@ public class Predicate_retract implements PrologCode
       {
         PrologException.permissionError(modifyAtom,staticProcedureAtom,predTag.getPredicateIndicator());
       }
-      HashMap map = new HashMap();
-      ArrayList list = new ArrayList(p.getClauses().size());
-      for (Iterator ic = p.getClauses().iterator();ic.hasNext();)
+      HashMap<Term,Term> map = new HashMap<Term,Term>();
+      ArrayList<Term> list = new ArrayList<Term>(p.getClauses().size());
+      for (Iterator<Term> ic = p.getClauses().iterator();ic.hasNext();)
       {
-        Term cl = (Term)ic.next();
+        Term cl = ic.next();
         Term cp = (Term)cl.clone();
         map.put(cp, cl);
         list.add(cp);
@@ -160,11 +160,11 @@ public class Predicate_retract implements PrologCode
   {
     while (bi.iclauses.hasNext())
     {
-      Term term = (Term)bi.iclauses.next();
+      Term term = bi.iclauses.next();
       int rc = interpreter.unify(bi.clause,term);
       if (rc == SUCCESS_LAST)
       {
-        bi.pred.removeClause((Term)bi.clauseMap.get(term));
+        bi.pred.removeClause(bi.clauseMap.get(term));
         interpreter.pushBacktrackInfo(bi);
         return SUCCESS;
       }

@@ -31,9 +31,10 @@ public class IJump extends Instruction
 
   /** execute call instruction within specified sate 
     * @param state state within which instruction will be executed
-    * @return instruction to caller how to execute next instrcuction
-    * @throw PrologException if code is throwng prolog exception
+    * @return instruction to caller how to execute next instruction
+    * @throw PrologException if code is throwing prolog exception
     */  
+  @Override
   public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
   {
     state.jumpPosition = jumpPosition;
@@ -41,6 +42,7 @@ public class IJump extends Instruction
   }
 
   /** convert instruction to string */
+  @Override
   public String toString()
   {
     return codePosition+": jump "+jumpPosition ;

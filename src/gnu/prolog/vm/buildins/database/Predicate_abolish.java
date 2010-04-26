@@ -62,8 +62,8 @@ public class Predicate_abolish implements PrologCode
     {
       PrologException.typeError(predicateIndicatorAtom,pi);
     }
-    Term tn = (Term)pi.args[0].dereference();
-    Term ta = (Term)pi.args[1].dereference();
+    Term tn = pi.args[0].dereference();
+    Term ta = pi.args[1].dereference();
     if (tn instanceof VariableTerm)
     {
       PrologException.instantiationError();

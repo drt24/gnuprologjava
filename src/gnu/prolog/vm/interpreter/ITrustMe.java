@@ -27,6 +27,7 @@ public class ITrustMe extends Instruction
     * @return instruction to caller how to execute next instrcuction
     * @throw PrologException if code is throwng prolog exception
     */  
+  @Override
   public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
   {
     bi.undo(state.interpreter); /* undo changes */
@@ -35,6 +36,7 @@ public class ITrustMe extends Instruction
   }
 
   /** convert instruction to string */
+  @Override
   public String toString()
   {
     return codePosition+": trust_me";

@@ -480,7 +480,7 @@ public class Evaluate
         if (arg0 instanceof IntegerTerm)
         {
           IntegerTerm i0 = (IntegerTerm)arg0;
-          return new FloatTerm((double)i0.value);
+          return new FloatTerm(i0.value);
         }
         else if (arg0 instanceof FloatTerm)
         {

@@ -31,6 +31,7 @@ public class IUnify extends Instruction
   }
 
   /** convert instruction to string */
+  @Override
   public String toString()
   {
     return codePosition+": unify";
@@ -41,6 +42,7 @@ public class IUnify extends Instruction
     * @return instruction to caller how to execute next instrcuction
     * @throw PrologException if code is throwng prolog exception
     */  
+  @Override
   public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
   {
     Term arg2 = state.popPushDown().dereference();

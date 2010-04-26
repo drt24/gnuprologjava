@@ -45,7 +45,7 @@ public class Predicate_findall implements PrologCode
   public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) 
          throws PrologException
   {
-    ArrayList list = new ArrayList(); 
+    ArrayList<Term> list = new ArrayList<Term>(); 
     checkList(args[2]);
     int rc = findall(interpreter, backtrackMode, args[0], args[1], list);
     if (rc == SUCCESS_LAST)
@@ -61,7 +61,7 @@ public class Predicate_findall implements PrologCode
     * @param args arguments of code
     * @return either SUCCESS, SUCCESS_LAST, or FAIL.
     */
-  public static int findall(Interpreter interpreter, boolean backtrackMode, Term template, Term goal, ArrayList list) 
+  public static int findall(Interpreter interpreter, boolean backtrackMode, Term template, Term goal, ArrayList<Term> list) 
          throws PrologException
   {
     int startUndoPosition = interpreter.getUndoPosition();
@@ -78,7 +78,7 @@ public class Predicate_findall implements PrologCode
           callBacktrackMode = true;
           if (rc != FAIL)
           {
-            list.add(template.clone());
+            list.add((Term)template.clone());
           }
         } while (rc != SUCCESS_LAST && rc != FAIL);
         if (rc == SUCCESS_LAST)
