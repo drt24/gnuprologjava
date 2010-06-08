@@ -32,7 +32,7 @@ import java.util.ListIterator;
 
 /** prolog code 
   */
-public abstract class Predicate_bagof implements PrologCode
+public class Predicate_bagof implements PrologCode
 {
   static final CompoundTermTag plusTag = CompoundTermTag.get("+",2);
 
@@ -139,7 +139,12 @@ public abstract class Predicate_bagof implements PrologCode
     return FAIL;
   }
 
-  protected abstract void processList(ArrayList<Term> curTList);
+  /**
+   * To be implemented by child classes. Not abstract as this class needs to be
+   * instantiatable.
+   * @param curTList
+   */
+  protected void processList(ArrayList<Term> curTList){}
   
 
   /** this method is called when code is installed to the environment

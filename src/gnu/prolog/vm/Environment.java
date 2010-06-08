@@ -286,12 +286,24 @@ public class Environment implements PredicateListener
           PrologCode code = (PrologCode)cls.newInstance();
           code.install(this);
           return code;
-        }
-        catch(/*ClassNotFound*/Exception ex) 
-        // mayby it will be needed to separate different cases later
+        } catch (ClassNotFoundException ex)
         {
-          ex.printStackTrace();
-          return getUndefinedPredicateCode(tag);
+            System.err.println("Trying to reflect: "
+                   + p.getJavaClassName());
+            ex.printStackTrace();
+            return getUndefinedPredicateCode(tag);
+        } catch (InstantiationException e)
+        {
+            System.err.println("Trying to reflect: "
+                    + p.getJavaClassName());
+            e.printStackTrace();
+            return getUndefinedPredicateCode(tag);
+        } catch (IllegalAccessException e)
+        {
+            System.err.println("Trying to reflect: "
+                    + p.getJavaClassName());
+            e.printStackTrace();
+            return getUndefinedPredicateCode(tag);
         }
       }
     case Predicate.USER_DEFINED:
