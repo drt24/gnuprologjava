@@ -45,7 +45,7 @@ public final class Interpreter
     return environment;
   }
 
-  // backtrack menthods
+  // backtrack methods
   ///** stack that contains backtrack info */
   //ArrayList backtrackInfoStack = new ArrayList(4096,4096);
   //int backtrackInfoStackSize = 0;

@@ -18,7 +18,8 @@
 /**
  * Running javacc on this file generates the parser in gnu.prolog.io.parser.gen
  *
- * The details of the arguments to javacc should be in build.xml.
+ * There is a generate-parser target in build.xml which runs javacc with the
+ * correct arguments.
  */
 options {
   STATIC = false;

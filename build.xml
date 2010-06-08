@@ -35,6 +35,7 @@ Ant Buildfile for GNU Prolog for Java.
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="build.dir" value="${basedir}/build"/>
     <property name="package.dir" value="${build.dir}/${name}"/>
+  	<property name="test.dir" value="${basedir}/test"/>
     <property name="classes" value="${build.dir}/classes"/>
     <property name="classpath" value=""/>
     <property name="manifest" value="manifest.mf"/>
@@ -153,6 +154,22 @@ Ant Buildfile for GNU Prolog for Java.
   		jdkversion="1.6"
   		javacchome="${javacc.home}"
   	/>
+  </target>
+
+  <target name="test" depends="build">
+  	<!-- Based on:
+  	cd vanilla
+    @attrib -R *.*
+  	java -jar ..\..\build\gnuprolog.jar -once gnuprolog.pl validate >..\suite.out 2>..\suite.err
+  	-->
+  	<java
+  	    dir="${test.dir}/vanilla"
+  	    jar="${build.dir}/${name}.jar"
+  	    fork="true"
+  	    failonerror="true"
+  	    >
+  		<arg line="-once gnuprolog.pl validate >../suite.out 2>../suite.err"/>
+  	</java>
   </target>
 
   <!-- =================================================================== -->
