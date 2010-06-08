@@ -22,6 +22,7 @@ Ant Buildfile for GNU Prolog for Java.
 <project name="gnuprolog" default="main" basedir=".">
 
   <target name="init">
+  	<property file="build.properties"/>
     <property name="Name" value="GNU Prolog for Java"/>
     <property name="name" value="gnuprolog"/>
     <property name="version" value="0.1.0"/>
@@ -146,7 +147,12 @@ Ant Buildfile for GNU Prolog for Java.
   </target>
 
   <target name="generate-parser" depends="init">
-  	<!-- TODO: convert this command line to ant: javacc -OUTPUT_DIRECTORY="gnu/prolog/io/parser/gen/" -JDK_VERSION=1.6 gnu/prolog/io/parser/TermParser.jj -->
+  	<javacc
+  	    target="${src.dir}/gnu/prolog/io/parser/TermParser.jj"
+  	    outputdirectory="${src.dir}/gnu/prolog/io/parser/gen/"
+  		jdkversion="1.6"
+  		javacchome="${javacc.home}"
+  	/>
   </target>
 
   <!-- =================================================================== -->

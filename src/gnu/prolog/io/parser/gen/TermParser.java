@@ -514,7 +514,7 @@ JAVACODE Term exp(ReadOptions options):
 
   final public Term char_code_list() throws ParseException {
     jj_consume_token(CHAR_CODE_LIST_TOKEN);
-    String val = TermParserUtils.convertQuotedString(token.image,'\"');
+    String val = TermParserUtils.convertQuotedString(token.image,'\u005c"');
     int i,n = val.length();
     Term rc = AtomTerm.emptyList;
     for (i=n-1; i>=0; i--)
@@ -669,16 +669,6 @@ JAVACODE Term exp(ReadOptions options):
     finally { jj_save(13, xla); }
   }
 
-  private boolean jj_3_4() {
-    if (jj_scan_token(VARIABLE_TOKEN)) return true;
-    return false;
-  }
-
-  private boolean jj_3_14() {
-    if (jj_scan_token(COMMA_TOKEN)) return true;
-    return false;
-  }
-
   private boolean jj_3_10() {
     if (jj_scan_token(OPEN_TOKEN)) return true;
     return false;
@@ -736,6 +726,16 @@ JAVACODE Term exp(ReadOptions options):
 
   private boolean jj_3_5() {
     if (jj_scan_token(INTEGER_TOKEN)) return true;
+    return false;
+  }
+
+  private boolean jj_3_4() {
+    if (jj_scan_token(VARIABLE_TOKEN)) return true;
+    return false;
+  }
+
+  private boolean jj_3_14() {
+    if (jj_scan_token(COMMA_TOKEN)) return true;
     return false;
   }
 
@@ -885,7 +885,7 @@ JAVACODE Term exp(ReadOptions options):
       return (jj_ntk = jj_nt.kind);
   }
 
-  private java.util.List jj_expentries = new java.util.ArrayList();
+  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
   private int[] jj_expentry;
   private int jj_kind = -1;
   private int[] jj_lasttokens = new int[100];
@@ -900,7 +900,7 @@ JAVACODE Term exp(ReadOptions options):
       for (int i = 0; i < jj_endpos; i++) {
         jj_expentry[i] = jj_lasttokens[i];
       }
-      jj_entries_loop: for (java.util.Iterator it = jj_expentries.iterator(); it.hasNext();) {
+      jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
         int[] oldentry = (int[])(it.next());
         if (oldentry.length == jj_expentry.length) {
           for (int i = 0; i < jj_expentry.length; i++) {
@@ -951,7 +951,7 @@ JAVACODE Term exp(ReadOptions options):
     jj_add_error_token(0, 0);
     int[][] exptokseq = new int[jj_expentries.size()][];
     for (int i = 0; i < jj_expentries.size(); i++) {
-      exptokseq[i] = (int[])jj_expentries.get(i);
+      exptokseq[i] = jj_expentries.get(i);
     }
     return new ParseException(token, exptokseq, tokenImage);
   }
