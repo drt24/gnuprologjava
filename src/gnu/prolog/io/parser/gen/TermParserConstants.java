@@ -51,23 +51,23 @@ public interface TermParserConstants {
   /** RegularExpression Id. */
   int CONTROL_ESCAPE_SEQUENCE = 20;
   /** RegularExpression Id. */
-  int SYMOLIC_CONTROL_CHAR = 21;
+  int SYMBOLIC_CONTROL_CHAR = 21;
   /** RegularExpression Id. */
-  int SYMOLIC_ALERT_CHAR = 22;
+  int SYMBOLIC_ALERT_CHAR = 22;
   /** RegularExpression Id. */
-  int SYMOLIC_BACKSPACE_CHAR = 23;
+  int SYMBOLIC_BACKSPACE_CHAR = 23;
   /** RegularExpression Id. */
-  int SYMOLIC_FORM_FEED_CHAR = 24;
+  int SYMBOLIC_FORM_FEED_CHAR = 24;
   /** RegularExpression Id. */
-  int SYMOLIC_NEW_LINE_CHAR = 25;
+  int SYMBOLIC_NEW_LINE_CHAR = 25;
   /** RegularExpression Id. */
-  int SYMOLIC_HORIZONTAL_TAB_CHAR = 26;
+  int SYMBOLIC_HORIZONTAL_TAB_CHAR = 26;
   /** RegularExpression Id. */
-  int SYMOLIC_VERTICAL_TAB_CHAR = 27;
+  int SYMBOLIC_VERTICAL_TAB_CHAR = 27;
   /** RegularExpression Id. */
-  int SYMOLIC_CARRIAGE_RETURN_CHAR = 28;
+  int SYMBOLIC_CARRIAGE_RETURN_CHAR = 28;
   /** RegularExpression Id. */
-  int SYMOLIC_HEXADECIMAL_CHAR = 29;
+  int SYMBOLIC_HEXADECIMAL_CHAR = 29;
   /** RegularExpression Id. */
   int OCTAL_ESCAPE_SEQUENCE = 30;
   /** RegularExpression Id. */
@@ -219,7 +219,7 @@ public interface TermParserConstants {
     "<NON_QUOTE_CHAR>",
     "<META_ESCAPE_SEQUENCE>",
     "<CONTROL_ESCAPE_SEQUENCE>",
-    "<SYMOLIC_CONTROL_CHAR>",
+    "<SYMBOLIC_CONTROL_CHAR>",
     "\"a\"",
     "\"b\"",
     "\"f\"",

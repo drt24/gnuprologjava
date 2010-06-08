@@ -669,11 +669,6 @@ JAVACODE Term exp(ReadOptions options):
     finally { jj_save(13, xla); }
   }
 
-  private boolean jj_3_10() {
-    if (jj_scan_token(OPEN_TOKEN)) return true;
-    return false;
-  }
-
   private boolean jj_3_9() {
     if (jj_scan_token(CHAR_CODE_LIST_TOKEN)) return true;
     return false;
@@ -736,6 +731,11 @@ JAVACODE Term exp(ReadOptions options):
 
   private boolean jj_3_14() {
     if (jj_scan_token(COMMA_TOKEN)) return true;
+    return false;
+  }
+
+  private boolean jj_3_10() {
+    if (jj_scan_token(OPEN_TOKEN)) return true;
     return false;
   }
 

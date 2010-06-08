@@ -153,6 +153,7 @@ Ant Buildfile for GNU Prolog for Java.
   	    outputdirectory="${src.dir}/gnu/prolog/io/parser/gen/"
   		jdkversion="1.6"
   		javacchome="${javacc.home}"
+  		debugparser="${javacc.debug}"
   	/>
   </target>
 
