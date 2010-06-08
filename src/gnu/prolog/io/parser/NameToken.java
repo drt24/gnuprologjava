@@ -27,7 +27,6 @@ public class NameToken extends Token
   public Operator xfOp; // postfix of infix operator
   public String   value; // converted value
 
-  @Override
   public String getValue()
   {
     if (value == null)
