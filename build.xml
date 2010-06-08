@@ -168,8 +168,10 @@ Ant Buildfile for GNU Prolog for Java.
   	    jar="${build.dir}/${name}.jar"
   	    fork="true"
   	    failonerror="true"
+  		output="${test.dir}/suite.out"
+  		error="${test.dir}/suite.err"
   	    >
-  		<arg line="-once gnuprolog.pl validate >../suite.out 2>../suite.err"/>
+  		<arg line="-once gnuprolog.pl validate"/>
   	</java>
   </target>
 
