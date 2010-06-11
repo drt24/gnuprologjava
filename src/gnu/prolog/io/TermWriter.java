@@ -367,7 +367,7 @@ public class TermWriter extends PrintWriter
   {
     Operator fxOp = set.lookupFx(term.value);
     Operator xfOp = set.lookupXf(term.value);
-    return fxOp != Operator.nonOperator || fxOp != Operator.nonOperator;
+    return fxOp != Operator.nonOperator || xfOp != Operator.nonOperator;
   }
 
 
