@@ -41,7 +41,7 @@ final public class CompoundTermTag implements java.io.Serializable
   public final static CompoundTermTag comma = get(",",2);
   /** clause tag */
   public final static CompoundTermTag clause = get(":-",2);
-  /** derective tag */
+  /** directive tag */
   public final static CompoundTermTag directive = get(":-",1);
   /** '{}'/1 tag */
   public final static CompoundTermTag curly1 = get("{}",1);

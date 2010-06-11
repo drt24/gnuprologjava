@@ -17,10 +17,16 @@
  */
 package gnu.prolog.term;
 import java.util.HashMap;
-/** Atom term. The object of this class represent prolog atom.
-  * @author Constantin Plotnikov
-  * @version 0.0.1
-  */
+
+/**
+ * Atom term. The object of this class represent prolog atom.
+ * 
+ * To get an instance use the {@link #get(String)} method with the String
+ * representation of the atom.
+ * 
+ * @author Constantin Plotnikov
+ * @version 0.0.1
+ */
 public class AtomTerm extends AtomicTerm
 {
   private static final long serialVersionUID = 3977202291132125939L;
@@ -33,7 +39,9 @@ public class AtomTerm extends AtomicTerm
   public final static AtomTerm emptyCurly = get("{}");
   /** cut atom */
   public final static AtomTerm cut = get("!");
+  
   /** get atom term
+   * If there is currently no {AtomTerm} of for that string then one is created. 
     * @param s string reprentation of atom.
     */
   public static AtomTerm get(String s)
@@ -75,7 +83,9 @@ public class AtomTerm extends AtomicTerm
   }
   /** value of atom */
   final public String value;
+  
   /** a constructor.
+   * Users should use {@link #get(String)}
     * @param value value of atom
     */
   private AtomTerm(String value) // constructor is private to package
@@ -92,6 +102,10 @@ public class AtomTerm extends AtomicTerm
     return ATOM;
   }
 
+  @Override
+public String toString(){
+      return value;
+  }
 
 }
 

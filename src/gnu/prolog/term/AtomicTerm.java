@@ -31,7 +31,7 @@ public abstract class AtomicTerm extends Term
   }
 
   @Override
-  public Object clone()
+  public Term clone()
   {
     return this;
   }

@@ -126,7 +126,7 @@ public class CompoundTerm extends Term
 
   /** get term with specified functor and arity
     * @param functor a functor of new term
-    * @param arity rity of new term
+    * @param arity arity of new term
     * @return new term
     */
   public CompoundTerm(String functor, int arity)
@@ -136,7 +136,7 @@ public class CompoundTerm extends Term
 
   /** get term with specified functor and arity
     * @param functor a functor of new term
-    * @param arity rity of new term
+    * @param arity arity of new term
     * @return new term
     */
   public CompoundTerm(AtomTerm functor, int arity)
@@ -158,7 +158,7 @@ public class CompoundTerm extends Term
 
   /** get term with specified term functor and arguments.
     * @param functor a functor of new term
-    * @param args argumetes of term, this array is directly assigned to
+    * @param args arguments of term, this array is directly assigned to
     *             term and any changes that are done to array change term.
     * @return new term
     */
@@ -169,10 +169,10 @@ public class CompoundTerm extends Term
 
   /** term tag */
   public final CompoundTermTag tag;
-  /** term argumets */
+  /** term arguments */
   public final Term   args[];
 
-  /** a contructor
+  /** a constructor
     * @param tag tag of term
     */
   public CompoundTerm(CompoundTermTag tag)
@@ -224,6 +224,14 @@ public class CompoundTerm extends Term
     return COMPOUND;
   }
 
+  @Override
+public String toString(){
+      String answer = tag.toString() + " : (";
+      for (Term t : args)
+          answer += " " + t.toString();
+      answer += ")";
+      return answer;
+  }
 }
 
 

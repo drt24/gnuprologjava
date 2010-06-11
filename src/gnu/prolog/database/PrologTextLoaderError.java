@@ -25,7 +25,6 @@ public class PrologTextLoaderError extends Exception
   String file;
   int    line;
   int    column;
-  //String message;
 
   public PrologTextLoaderError(String file,
                                int    line,
@@ -36,7 +35,6 @@ public class PrologTextLoaderError extends Exception
     this.file    = file   ;
     this.line    = line   ;
     this.column  = column ;
-    //this.message = message;
   }
 
 
