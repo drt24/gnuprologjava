@@ -259,9 +259,28 @@ public class PrologTextLoader
     prologTextLoaderState.addInitialization(this, term1);
   }
 
+  /**
+   * @see http://www.gprolog.org/manual/gprolog.html#char-conversion/2
+   * @param from
+   * @param to
+   */
   protected void processCharConversionDirective(Term from,Term to)
-  {
-    logError("char_conversion/2 directive was ignored");
+  {//TODO implement char_conversion/2
+      //TODO: work out why errors are being handled the way they are elsewhere in this class.
+      if ((from instanceof VariableTerm) | (to instanceof VariableTerm))
+      {
+          logError("instantiation_error: (" + from + ") or (" + to + ") is a variable");
+          //PrologException.instantiationError();
+      } else if (!(from instanceof AtomTerm))
+      {
+          logError("type_error(character, "+from+"): neither a variable nor a character");
+          //PrologException.typeError(AtomTerm.get("character"), from);
+      } else if (!(to instanceof AtomTerm))
+      {
+          logError("type_error(character, "+to+"): neither a variable nor a character");
+          //PrologException.typeError(AtomTerm.get("character"), to);
+      } else 
+          logError("char_conversion/2 directive was ignored: not implemented");
   }
 
   protected void processOpDirective(Term priority,Term specifier,Term operatorAtom)
