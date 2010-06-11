@@ -22,6 +22,7 @@ import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.interpreter.Predicate_call;
 /** This class represent interpreter, it should be used only from one thread
   * If you need to use interpreter from two threads, create new interpreter from 
   * Environment
@@ -418,7 +419,7 @@ public final class Interpreter
         {
           throw new IllegalStateException("The goal is already stopped");
         }
-        int rc = gnu.prolog.vm.interpreter.Predicate_call.staticExecute(this,!goal.firstTime,goal.goal);
+        int rc = Predicate_call.staticExecute(this,!goal.firstTime,goal.goal);
         switch (rc)
         {
         case PrologCode.SUCCESS_LAST:

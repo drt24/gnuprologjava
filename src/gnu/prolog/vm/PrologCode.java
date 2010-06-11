@@ -20,9 +20,9 @@ package gnu.prolog.vm;
   */
 public interface PrologCode
 {
-   /** predicate was returned with success, bactrack info was created, and reexcute is possible. */
+   /** predicate was returned with success, backtrack info was created, and re-excute is possible. */
    public final static int SUCCESS      = 0;
-   /** predicate was returned with success, bactrack info was not created */
+   /** predicate was returned with success, backtrack info was not created */
    public final static int SUCCESS_LAST = 1;
    /** predicate failed */
    public final static int FAIL         = -1;

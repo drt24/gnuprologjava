@@ -410,7 +410,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
     BacktrackInfo currentBacktrackInfo = null;
     BacktrackInfo startBacktrackInfo = null;
     int currentPosition;
-    BacktrackInfo bi = backtrackMode?interpreter.popBacktrackInfo():null;
+    BacktrackInfo bi = backtrackMode ? interpreter.popBacktrackInfo() : null;
     BacktrackInfo cur_bi = null;
     Term pds[] = new Term[16];
     int pdsSize = 0;
@@ -433,7 +433,6 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
       startBacktrackInfo = new EnterBacktrackInfo(interpreter.getUndoPosition());
       interpreter.pushBacktrackInfo(startBacktrackInfo);
       currentPosition = 0;
-      cur_bi = null;
     }
 
     interpreter_loop: while (true) // interpreter loop
