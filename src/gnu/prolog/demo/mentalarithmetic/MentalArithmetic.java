@@ -22,7 +22,12 @@ package gnu.prolog.demo.mentalarithmetic;
 
 import java.io.Console;
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.io.ParseException;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermReader;
@@ -56,7 +61,7 @@ public class MentalArithmetic
     private static Interpreter interpreter;
 
     /**
-     * @param args
+     * @param args @see #USAGE
      */
     public static void main(String[] args)
     {
@@ -104,9 +109,11 @@ public class MentalArithmetic
             }
         } catch (ParseException e)
         {
+            e.printStackTrace();
             // TODO
         } catch (PrologException e)
         {
+            e.printStackTrace();
             // TODO
         }
 
@@ -118,19 +125,20 @@ public class MentalArithmetic
         if (!issetup)
         {
             setup();
+            issetup = true;
         }
         String question = String.format("arithmetic(%d, %d, List, Answer)",
                 limit, length);
 
-        TermReader trd = new TermReader(new StringReader(question));
-
-        Term goalTerm = trd.readTermEof(rd_ops);
+        Term goalTerm = TermReader.stringToTerm(rd_ops,question);
 
         Interpreter.Goal goal = interpreter.prepareGoal(goalTerm);
 
+        debug();
+        
         int rc = interpreter.execute(goal);
 
-        if (rc == PrologCode.SUCCESS)
+        if (rc == PrologCode.SUCCESS || rc == PrologCode.SUCCESS_LAST)
         {
             interpreter.stop(goal);
 
@@ -153,11 +161,15 @@ public class MentalArithmetic
 
     }
 
-    private synchronized static void setup()
+    private synchronized static void setup() throws PrologException
     {
+        if (issetup)
+            return;//don't setup more than once
+        
         env = new Environment();
 
-        env.ensureLoaded(AtomTerm.get("mentalarithmetic.pro"));
+        //get the filename relative to the class file
+        env.ensureLoaded(AtomTerm.get((new MentalArithmetic()).getClass().getResource("mentalarithmetic.pro").getFile()));
 
         interpreter = env.createInterpreter();
         env.runIntialization(interpreter);
@@ -165,5 +177,18 @@ public class MentalArithmetic
         rd_ops = new ReadOptions();
         rd_ops.operatorSet = env.getOperatorSet();
 
+    }
+    
+    private static void debug(){
+        List<PrologTextLoaderError> errors = env.getLoadingErrors();
+        for (PrologTextLoaderError error : errors){
+            error.printStackTrace();
+        }
+        
+        Map<AtomTerm, Term> atom2flag = env.getPrologFlags();
+        Set<AtomTerm> atoms = atom2flag.keySet();
+        for(AtomTerm a : atoms)
+            System.out.println(a.toString() + " => " + atom2flag.get(a));
+        
     }
 }

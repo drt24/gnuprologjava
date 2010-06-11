@@ -90,7 +90,7 @@ public class Environment implements PredicateListener
   public final static AtomTerm modifyAtom = AtomTerm.get("modify");
   public final static AtomTerm flagAtom = AtomTerm.get("flag");
   public final static CompoundTermTag plusTag = CompoundTermTag.get("+",2);
-  /** atom to flag TODO: Check that flag means Term*/
+  /** atom to flag. flags are Terms*/
   HashMap<AtomTerm,Term> atom2flag = new HashMap<AtomTerm,Term> ();
   HashSet<AtomTerm> changableFlags = new HashSet<AtomTerm>();
   boolean initalizationRun = false;
@@ -119,7 +119,7 @@ public class Environment implements PredicateListener
     return new HashMap<AtomTerm,Term>(atom2flag);
   }
   
-  public void runIntialization(Interpreter interpreter)
+  public void runIntialization(Interpreter interpreter) throws PrologException
   {
     if (initalizationRun)
     {
@@ -130,17 +130,11 @@ public class Environment implements PredicateListener
     while (iterator.hasNext())
     {
       Term term = iterator.next();
-      try
+      Interpreter.Goal goal = interpreter.prepareGoal(term);
+      int rc = interpreter.execute(goal);
+      if (rc == PrologCode.SUCCESS)
       {
-        Interpreter.Goal goal = interpreter.prepareGoal(term);
-        int rc = interpreter.execute(goal);
-        if (rc == PrologCode.SUCCESS)
-        {
-          interpreter.stop(goal);
-        }
-      }
-      catch(PrologException ex)
-      {
+        interpreter.stop(goal);
       }
     }
   }
@@ -267,7 +261,7 @@ public class Environment implements PredicateListener
   /** load code for prolog */
   public synchronized PrologCode loadPrologCode(CompoundTermTag tag) throws PrologException
   {
-    //simple variant, later I will need to add compilation. 
+    //simple variant, later I will need TODO add compilation. 
     Predicate p = prologTextLoaderState.getModule().getDefinedPredicate(tag);
     if (p == null) // case of undefined predicate
     {

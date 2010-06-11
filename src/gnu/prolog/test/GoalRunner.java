@@ -27,6 +27,7 @@ import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
 
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
@@ -73,12 +74,16 @@ public class GoalRunner
       Environment env = new Environment();
       env.ensureLoaded(AtomTerm.get(textToLoad));
       Interpreter interpreter = env.createInterpreter();
-      env.runIntialization(interpreter);
+      try {
+          env.runIntialization(interpreter);
+      } catch (PrologException e){
+          e.printStackTrace();
+      }
       for (Iterator<PrologTextLoaderError> ierr = env.getLoadingErrors().iterator(); ierr.hasNext();)
       {
         PrologTextLoaderError err = ierr.next();
-        System.err.println(err);
-        //err.printStackTrace();
+        System.err.println();
+        err.printStackTrace();
       }
       LineNumberReader kin = new LineNumberReader(new InputStreamReader(System.in));
       StringReader rd = new StringReader(goalToRun);
