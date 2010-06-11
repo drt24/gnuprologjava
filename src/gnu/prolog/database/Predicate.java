@@ -59,7 +59,7 @@ public class Predicate
   /** class name for external predicate */
   String  javaClassName;
   /** set files where this predicate is defined */
-  HashSet files = new HashSet();
+  HashSet<String> files = new HashSet<String>();
   /** current module */
   Module module;
 

@@ -21,8 +21,6 @@
 package gnu.prolog.demo.mentalarithmetic;
 
 import java.io.Console;
-import java.io.StringReader;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

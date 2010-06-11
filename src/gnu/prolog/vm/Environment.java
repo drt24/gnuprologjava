@@ -350,18 +350,18 @@ public class Environment implements PredicateListener
   }
 
 
-  private static class PrologCodeListenerRef extends WeakReference
+  private static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
   {
     PrologCodeListenerRef(ReferenceQueue queue, PrologCodeListener listener, CompoundTermTag tag)
     {
-      super(listener, queue);
+      super(listener, queue);//TODO: possible type error.
       this.tag = tag;
     }
     CompoundTermTag tag;
   }
   
   
-  // this functioality will be needed later, but I need to think more ;-)
+  // this functionality will be needed later, but I need to think more ;-)
   /** add prolog code listener */
   public synchronized void addPrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
   {
@@ -386,7 +386,7 @@ public class Environment implements PredicateListener
       while (i.hasNext())
       {
         PrologCodeListenerRef ref = i.next();
-        PrologCodeListener lst = (PrologCodeListener)ref.get(); 
+        PrologCodeListener lst = ref.get(); 
         if (lst == null)
         {
           i.remove();
@@ -417,7 +417,7 @@ public class Environment implements PredicateListener
       while (i.hasNext())
       {
         PrologCodeListenerRef ref = i.next();
-        PrologCodeListener lst = (PrologCodeListener)ref.get(); 
+        PrologCodeListener lst = ref.get(); 
         if (lst == null)
         {
           i.remove();

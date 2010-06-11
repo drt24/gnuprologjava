@@ -141,7 +141,7 @@ public class Predicate_bagof implements PrologCode
 
   /**
    * To be implemented by child classes. Not abstract as this class needs to be
-   * instantiatable.
+   * instantiable.
    * @param curTList
    */
   protected void processList(ArrayList<Term> curTList){}
@@ -149,7 +149,7 @@ public class Predicate_bagof implements PrologCode
 
   /** this method is called when code is installed to the environment
     * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
+    * @param environment environment to install the predicate
     */
   public void install(Environment env)
   {
@@ -157,7 +157,7 @@ public class Predicate_bagof implements PrologCode
   }
 
   /** this method is called when code is uninstalled from the environment
-    * @param environment environemnt to install the predicate
+    * @param environment environment to install the predicate
     */
   public void uninstall(Environment env)
   {

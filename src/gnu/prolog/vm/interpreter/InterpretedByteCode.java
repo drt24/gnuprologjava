@@ -219,26 +219,27 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
     createCompoundTermTags.removeAll(callTags);
     tags = new CompoundTermTag[createCompoundTermTags.size()+callTags.size()];
     predicateCodes = new PrologCode[callTags.size()];
-    Iterator j = callTags.iterator();
-    //TODO: Possible type mismatch must be both AtomicTerm and CompoundTermTag
+    Iterator<CompoundTermTag> j = callTags.iterator();
+
     for (i=0; j.hasNext(); i++)
     {
-      CompoundTermTag tag = (CompoundTermTag)j.next();
+      CompoundTermTag tag = j.next();
       tags[i]=tag;
       tag2idx.put(tag, new Integer(i));
     }
     j = createCompoundTermTags.iterator();
     for (; j.hasNext(); i++)
     {
-      CompoundTermTag tag = (CompoundTermTag)j.next();
+      CompoundTermTag tag = j.next();
       tags[i]=tag;
       tag2idx.put(tag, new Integer(i));
     }
     constants = new AtomicTerm[constantSet.size()];
-    j = constantSet.iterator();
-    for (i=0; j.hasNext(); i++)
+    
+    Iterator<AtomicTerm> k = constantSet.iterator();
+    for (i=0; k.hasNext(); i++)
     {
-      AtomicTerm term = (AtomicTerm)j.next();
+      AtomicTerm term = k.next();
       constants[i] = term;
       constant2idx.put(term, new Integer(i));
     }
@@ -246,7 +247,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
   }
 
 
-  private void pass2(Instruction isrc[], int ipos[], HashMap tag2idx, HashMap constant2idx)
+  private void pass2(Instruction isrc[], int ipos[], HashMap<CompoundTermTag,Integer> tag2idx, HashMap<AtomicTerm,Integer> constant2idx)
   {
     int bytes = 0;
     int i,n = isrc.length;
@@ -264,7 +265,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
       else if (isrc[i] instanceof ICall)
       {
         ICall ii = (ICall)isrc[i];
-        int idx = ((Integer)tag2idx.get(ii.tag)).intValue();
+        int idx = tag2idx.get(ii.tag).intValue();
         instructions[bytes++] = (byte)(ICALL);
         instructions[bytes++] = (byte)((idx >> 8) & 255);
         instructions[bytes++] = (byte)((idx) & 255);
@@ -272,7 +273,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
       else if (isrc[i] instanceof ICreateCompoundTerm)
       {
         ICreateCompoundTerm ii = (ICreateCompoundTerm)isrc[i];
-        int idx = ((Integer)tag2idx.get(ii.tag)).intValue();
+        int idx = tag2idx.get(ii.tag).intValue();
         instructions[bytes++] = (byte)(ICREATE_COMPOUND);
         instructions[bytes++] = (byte)((idx >> 8) & 255);
         instructions[bytes++] = (byte)((idx) & 255);
