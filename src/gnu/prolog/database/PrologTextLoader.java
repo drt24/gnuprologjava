@@ -25,6 +25,8 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.PrologException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -141,15 +143,15 @@ public class PrologTextLoader
       else if (term instanceof CompoundTerm)
       {
         CompoundTerm cterm = (CompoundTerm)term;
-        if (cterm.tag != directiveTag)
+        if (cterm.tag != directiveTag)// not a :- at beginning
         {
           processClause(term);
         }
-        else
+        else //begins with :-
         {
-          if(!(cterm.args[0] instanceof CompoundTerm))
-          {
-            logError("invalid directive term");
+          if(!(cterm.args[0] instanceof CompoundTerm))//must be compound.
+          {//:- arity is 1
+            logError("invalid directive term: " + cterm);
             continue;
           }
           CompoundTerm dirTerm = (CompoundTerm)cterm.args[0];
@@ -204,7 +206,7 @@ public class PrologTextLoader
           }
           else
           {
-            logError("invalid directive");
+            logError("invalid directive: (" + dirTerm + ")");
           }
         }
       }
