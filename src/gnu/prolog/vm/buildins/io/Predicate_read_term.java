@@ -183,7 +183,7 @@ public class Predicate_read_term implements PrologCode, TermConstants
 
   }
 
-  private static Term mapToList(Map<String,Term> map)
+  private static Term mapToList(Map<String,VariableTerm> map)
   {
     Iterator<String> i = map.keySet().iterator();
     Term rc = emptyListAtom;
