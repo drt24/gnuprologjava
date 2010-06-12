@@ -99,5 +99,15 @@ public class VariableTerm extends Term
     return VARIABLE;
   }
 
+  @Override
+  public String toString()
+  {
+      if (value != null)
+      {
+          return value.toString();
+      } else {
+          return null;
+      }
+  }
 }
 

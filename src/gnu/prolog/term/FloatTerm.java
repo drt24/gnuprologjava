@@ -59,6 +59,10 @@ public class FloatTerm extends AtomicTerm
     return FLOAT;
   }
 
+  @Override
+  public String toString(){
+      return Double.toString(value);
+  }
 
 }
 

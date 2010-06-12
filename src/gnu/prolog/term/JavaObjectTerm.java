@@ -16,12 +16,13 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
-/** Term which is embeding JavaObject
-  * This term should never participate in text IO operations.
-  * It is always created as result of function calls.
-  * It could be unifed only with variable or other JavaObjectTerm that 
-  * has value identical (==) to value of this object.
-  */
+/**
+ * Term which is embedding JavaObject
+ * This term should never participate in text IO operations.
+ * It is always created as result of function calls.
+ * It could be unified only with variable or other JavaObjectTerm that
+ * has value identical (==) to value of this object.
+ */
 
 public class JavaObjectTerm extends AtomicTerm
 {
@@ -42,5 +43,11 @@ public class JavaObjectTerm extends AtomicTerm
   public int getTermType()
   {
     return JAVA_OBJECT;
+  }
+
+  @Override
+  public String toString()
+  {
+      return value.toString();
   }
 }

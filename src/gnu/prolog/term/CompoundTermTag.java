@@ -155,11 +155,12 @@ final public class CompoundTermTag implements java.io.Serializable
     arity   = a;
   }
 
-  /** Return an object to replace the object extracted from the stream.
-    * The object will be used in the graph in place of the original.
-    * @return resloved object
-    * @see java.io.Resolvable
-    */
+  /** 
+   * Return an object to replace the object extracted from the stream.
+   * The object will be used in the graph in place of the original.
+   * @return resolved object
+   * @see java.io.Resolvable
+   */
   public Object readResolve()
   {
     return get(functor,arity);
