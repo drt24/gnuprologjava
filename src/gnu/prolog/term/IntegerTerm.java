@@ -28,7 +28,7 @@ public class IntegerTerm extends AtomicTerm
   private static IntegerTerm cache[] = new IntegerTerm[64*1024];
 
   // often used integers
-  /** -2 interger term */
+  /** -2 integer term */
   public static final IntegerTerm int_m2 = get(-2);
   /** -1 integer term */
   public static final IntegerTerm int_m1 = get(-1);

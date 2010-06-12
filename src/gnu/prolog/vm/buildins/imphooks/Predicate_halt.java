@@ -62,7 +62,7 @@ public class Predicate_halt implements PrologCode
 
   /** this method is called when code is installed to the environment
     * code can be installed only for one environment.
-    * @param environment environemnt to install the predicate
+    * @param environment environment to install the predicate
     */
   public void install(Environment env)
   {

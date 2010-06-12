@@ -16,6 +16,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.vm;
+import java.util.Random;
+
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
@@ -55,6 +57,18 @@ public class Evaluate
   public final static CompoundTermTag band2 = CompoundTermTag.get("/\\",2);
   public final static CompoundTermTag bor2 = CompoundTermTag.get("\\/",2);
   public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\",1);
+  /**
+   * Implementation of the random/1 predicate defined in SWI-Prolog 
+ * {@link http://www.swi-prolog.org/man/arith.html#random/1}
+ * 
+ * random(+IntExpr)
+ * 
+ * Evaluates to a random integer i for which 0 =< i < IntExpr.
+ * 
+ * @author daniel
+   */
+  public final static CompoundTermTag random1 = CompoundTermTag.get("random",1);
+  private final static Random random = new Random();
 
   public final static CompoundTermTag evaluationError = CompoundTermTag.get("evaluation_error",1);
   public final static AtomTerm numberAtom = AtomTerm.get("number");
@@ -65,18 +79,22 @@ public class Evaluate
   public final static AtomTerm floatOverflowAtom = AtomTerm.get("float_overflow");
   public final static AtomTerm undefinedAtom = AtomTerm.get("undefined");
   public final static AtomTerm evaluableAtom  = AtomTerm.get("evaluable");
+  
   private static void zero_divizor() throws PrologException
   {
     throw PrologException.getError(new CompoundTerm(evaluationError,zeroDivizorAtom));
   }
+  
   private static void int_overflow() throws PrologException
   {
     throw PrologException.getError(new CompoundTerm(evaluationError,intOverflowAtom));
   }
+  
   private static void float_overflow() throws PrologException
   {
     throw PrologException.getError(new CompoundTerm(evaluationError,floatOverflowAtom));
   }
+  
   private static void undefined() throws PrologException
   {
     throw PrologException.getError(new CompoundTerm(evaluationError,undefinedAtom));
@@ -100,10 +118,10 @@ public class Evaluate
     {
       CompoundTerm ct = (CompoundTerm) term;
       CompoundTermTag tag = ct.tag;
-      int i,arity = tag.arity;
+      int arity = tag.arity;
       Term sargs[] = ct.args;
       Term args[] = new Term[arity];
-      for (i=0; i<arity; i++)
+      for (int i=0; i<arity; i++)
       {
         args[i] = evaluate(sargs[i].dereference());
       }
@@ -767,6 +785,21 @@ public class Evaluate
         }
         IntegerTerm i0 = (IntegerTerm)arg0;
         int res = ~i0.value;
+        return IntegerTerm.get(res);
+      }
+      else if ( tag == random1   ) // ***************************************
+      {
+        Term arg0 = args[0];
+        if (!(arg0 instanceof IntegerTerm))
+        {
+          undefined();
+        }
+        IntegerTerm limit = (IntegerTerm)arg0;
+        double rand;
+        synchronized(random){//avoid concurrency issues
+          rand = random.nextDouble();//rand is uniformly distributed from 0 to 1
+        }
+        int res = (int)(rand * limit.value);//scale it and cast it
         return IntegerTerm.get(res);
       }
       else // ***************************************
