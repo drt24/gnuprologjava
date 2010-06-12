@@ -30,7 +30,10 @@ import gnu.prolog.io.ParseException;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermReader;
 import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
@@ -113,12 +116,16 @@ public class MentalArithmetic
         {
             e.printStackTrace();
             // TODO
+        } catch (NoAnswerException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
     }
 
     public static Pair<String, Integer> generateQuestion(int limit, int length)
-            throws ParseException, PrologException
+            throws ParseException, PrologException, NoAnswerException
     {
         if (!issetup)
         {
@@ -142,15 +149,37 @@ public class MentalArithmetic
 
             Pair<String, Integer> answer = new Pair<String, Integer>(null, 0);
 
-            for (String name : rd_ops.variableNames.keySet())
+            VariableTerm list = rd_ops.variableNames.get("List");
+            VariableTerm value = rd_ops.variableNames.get("Answer");
+            if (list != null)
             {
-                Term res = (rd_ops.variableNames.get(name));
-                System.out.println(res);
-                if ("List".equals(name))
-                    answer.left = res.toString();
-                else if ("Answer".equals(name))
-                    answer.right = Integer.parseInt(res.toString());
+                if (list.value instanceof CompoundTerm)
+                {
+                    CompoundTerm cList = (CompoundTerm)list.value;
+                    if (cList.tag == CompoundTerm.listTag)//it is a list
+                    {
+                        answer.left = list.value.toString();
+                    } else
+                    {
+                        throw new NoAnswerException("List is not a list but is a CompoundTerm: " + list.value);
+                    }
+                } else
+                {
+                    throw new NoAnswerException("List is not a list: " + list.value);
+                }
             }
+            else
+                throw new NoAnswerException("List null when it should not be null");
+            if (value != null)
+            {
+                if (value.value instanceof IntegerTerm)
+                    answer.right = ((IntegerTerm)value.value).value;
+                else
+                    throw new NoAnswerException("Answer is not an integer: (" + value + ") but List is:" + list);
+            }
+            else
+                throw new NoAnswerException("Answer null when it should not be null");
+
             return answer;
         } else
         {
