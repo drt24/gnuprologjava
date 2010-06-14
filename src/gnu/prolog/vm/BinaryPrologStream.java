@@ -21,6 +21,7 @@ import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -28,26 +29,33 @@ public class BinaryPrologStream extends PrologStream
 {
   RandomAccessFile file;
   
-  public BinaryPrologStream(AtomTerm fileAtom, AtomTerm mode, OpenOptions options) throws PrologException
-  {
-    super(options);
-    String of = (mode == readAtom)?"r":"rw";
-    try
+    public BinaryPrologStream(AtomTerm fileAtom, AtomTerm mode,
+            OpenOptions options) throws PrologException
     {
-      file = new RandomAccessFile(fileAtom.value,of);
-      if (mode == appendAtom)
-      {
-        file.seek(file.length());
-      }
-      else if (mode == writeAtom)
-      {
-        file.setLength(0); // truncate
-      }
+        super(options);
+        String of = (mode == readAtom) ? "r" : "rw";
+        {
+            try
+            {
+                file = new RandomAccessFile(fileAtom.value, of);
+
+                if (mode == appendAtom)
+                {
+                    file.seek(file.length());
+                } else if (mode == writeAtom)
+                {
+                    file.setLength(0); // truncate
+                }
+            } catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
-    catch(Exception ex)//TODO: eww catch(Exception) is bad and wrong
-    {
-    }
-  }
 
   @Override
   public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
