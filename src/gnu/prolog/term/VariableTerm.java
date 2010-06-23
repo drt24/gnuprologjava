@@ -64,7 +64,7 @@ public class VariableTerm extends Term
   @Override
   public Term dereference()
   {
-    VariableTerm variable = this;
+    VariableTerm variable = this;//so that we can recursively dereference.
     do
     {
       Term val = variable.value;

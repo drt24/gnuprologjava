@@ -468,7 +468,6 @@ public class InterpretedCodeCompiler
         clauses.add(rdereferenced(iclauses.next())); 
       }
       // get number of reserved variables
-      numberOfReserved = 1; // init number of reserved variable, 1 is reserved for cut
       for (iclauses = clauses.iterator();iclauses.hasNext();)
       {
         Term term = iclauses.next();

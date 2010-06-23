@@ -508,7 +508,7 @@ JAVACODE Term exp(ReadOptions options):
 
   final public VariableTerm variable(ReadOptions options) throws ParseException {
     jj_consume_token(VARIABLE_TOKEN);
-    VariableTerm var = (VariableTerm)options.variableNames.get(token.image);
+    VariableTerm var = options.variableNames.get(token.image);
     if (var == null)
     {
       var = new VariableTerm();
