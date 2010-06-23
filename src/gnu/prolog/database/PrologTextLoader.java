@@ -58,6 +58,7 @@ public class PrologTextLoader
   // tags used in loader
   CompoundTermTag directiveTag       = CompoundTermTag.directive;
   CompoundTermTag clauseTag          = CompoundTermTag.clause;
+  CompoundTermTag commaTag           = CompoundTermTag.comma;
   CompoundTermTag includeTag         = CompoundTermTag.get("include",1);
   CompoundTermTag multifileTag       = CompoundTermTag.get("multifile",1);
   CompoundTermTag dynamicTag         = CompoundTermTag.get("dynamic",1);
@@ -152,60 +153,7 @@ public class PrologTextLoader
             logError("invalid directive term: " + cterm);
             continue;
           }
-          CompoundTerm dirTerm = (CompoundTerm)cterm.args[0];
-          CompoundTermTag dirTag = dirTerm.tag;
-          if (dirTag == includeTag)
-          {
-            processIncludeDirective(dirTerm.args[0]);
-          }
-          else if (dirTag == multifileTag       )
-          {
-            processMultifileDirective(dirTerm.args[0]);
-          }
-          else if (dirTag == dynamicTag         )
-          {
-            processDynamicDirective(dirTerm.args[0]);
-          }
-          else if (dirTag == discontiguousTag   )
-          {
-            processDiscontiguousDirective(dirTerm.args[0]);
-          }
-          else if (dirTag == opTag              )
-          {
-            processOpDirective(dirTerm.args[0],dirTerm.args[1],dirTerm.args[2]);
-          }
-          else if (dirTag == char_conversionTag )
-          {
-            processCharConversionDirective(dirTerm.args[0],dirTerm.args[1]);
-          }
-          else if (dirTag == initializationTag  )
-          {
-            processInitializationDirective(dirTerm.args[0]);
-          }
-          else if (dirTag == ensure_loadedTag   )
-          {
-            processEnsureLoadedDirective(dirTerm.args[0]);
-          }
-          else if (dirTag == set_prolog_flagTag )
-          {
-            processSetPrologFlagDirective(dirTerm.args[0],dirTerm.args[1]);
-          }
-          else if (dirTag == externalTag )
-          {
-            processExternalDirective(dirTerm.args[0],dirTerm.args[1]);
-          }
-          else if (dirTag == controlTag )
-          {
-            processControlDirective(dirTerm.args[0],dirTerm.args[1]);
-          }
-          else if (dirTag == build_inTag )
-          {
-            processBuildInDirective(dirTerm.args[0],dirTerm.args[1]);
-          }
-          else
-          {
-            logError("invalid directive: (" + dirTerm + ")");
-          }
+          processDirective((CompoundTerm)cterm.args[0]);
         }
       }
       else
@@ -215,7 +163,82 @@ public class PrologTextLoader
     }
   }
 
-  protected void processSetPrologFlagDirective(Term arg0, Term arg1)
+  /**
+   * Process the a term following a :-
+   * @param dirTerm
+   */
+    protected void processDirective(CompoundTerm dirTerm)
+    {
+        CompoundTermTag dirTag = dirTerm.tag;
+        if (dirTag == includeTag)
+        {
+            processIncludeDirective(dirTerm.args[0]);
+        } else if (dirTag == multifileTag)
+        {
+            processMultifileDirective(dirTerm.args[0]);
+        } else if (dirTag == dynamicTag)
+        {
+            processDynamicDirective(dirTerm.args[0]);
+        } else if (dirTag == discontiguousTag)
+        {
+            processDiscontiguousDirective(dirTerm.args[0]);
+        } else if (dirTag == opTag)
+        {
+            processOpDirective(dirTerm.args[0], dirTerm.args[1],
+                    dirTerm.args[2]);
+        } else if (dirTag == char_conversionTag)
+        {
+            processCharConversionDirective(dirTerm.args[0], dirTerm.args[1]);
+        } else if (dirTag == initializationTag)
+        {
+            processInitializationDirective(dirTerm.args[0]);
+        } else if (dirTag == ensure_loadedTag)
+        {
+            processEnsureLoadedDirective(dirTerm.args[0]);
+        } else if (dirTag == set_prolog_flagTag)
+        {
+            processSetPrologFlagDirective(dirTerm.args[0], dirTerm.args[1]);
+        } else if (dirTag == externalTag)
+        {
+            processExternalDirective(dirTerm.args[0], dirTerm.args[1]);
+        } else if (dirTag == controlTag)
+        {
+            processControlDirective(dirTerm.args[0], dirTerm.args[1]);
+        } else if (dirTag == build_inTag)
+        {
+            processBuildInDirective(dirTerm.args[0], dirTerm.args[1]);
+        } else if (dirTag == commaTag)
+        {
+            processCommaDirective(dirTerm.args[0], dirTerm.args[1]);
+        } else
+        {
+            logError("invalid directive: (" + dirTerm + ")");
+        }
+    }
+
+  /**
+   * Process comma separated directives by recursively processing the left and
+   * right parts.
+   *
+   * @param leftTerm
+   * @param rightTerm
+   */
+    protected void processCommaDirective(Term leftTerm, Term rightTerm)
+    {
+        if (leftTerm instanceof CompoundTerm
+                & rightTerm instanceof CompoundTerm)
+        {
+            processDirective((CompoundTerm) leftTerm);
+            processDirective((CompoundTerm) rightTerm);
+        } else
+        {
+            logError("Left and right terms of a comma should be CompoundTerms: ("
+                    + leftTerm + "), (" + rightTerm + ")");
+        }
+
+    }
+
+protected void processSetPrologFlagDirective(Term arg0, Term arg1)
   {
     //logError("set_prolog_flag/2 directive was ignored");
     prologTextLoaderState.addInitialization(this, new CompoundTerm(set_prolog_flagTag,arg0, arg1));
