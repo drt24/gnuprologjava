@@ -18,6 +18,7 @@
 package gnu.prolog.io;
 
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,20 +27,20 @@ import java.util.Map;
 
 /**
  * this class contains representation of ISO prolog read options.
- *
+ * 
  * @author Constantine Plotnikov
- * @versiom 0.0.1
+ * @version 0.0.1
  */
 public class ReadOptions
 {
 	/** 'variables' ISO Prolog options */
 	public final List<Term> variables = new ArrayList<Term>();
 	/** 'variable_names' ISO Prolog options */
-	public final Map<String, Term> variableNames = new HashMap<String, Term>();
+	public final Map<String, VariableTerm> variableNames = new HashMap<String, VariableTerm>();
 	/** operator set */
 	public OperatorSet operatorSet;
 	/*
 	 * 'sigletons' ISO Prolog options it is not used currently.
 	 */
-	public final Map<String, Term> singletons = new HashMap<String, Term>();
+	public final Map<String, VariableTerm> singletons = new HashMap<String, VariableTerm>();
 }

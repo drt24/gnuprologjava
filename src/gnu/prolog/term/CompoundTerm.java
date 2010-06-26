@@ -177,7 +177,7 @@ public class CompoundTerm extends Term
 	 * @param functor
 	 *          a functor of new term
 	 * @param arity
-	 *          rity of new term
+	 *          arity of new term
 	 * @return new term
 	 */
 	public CompoundTerm(String functor, int arity)
@@ -191,7 +191,7 @@ public class CompoundTerm extends Term
 	 * @param functor
 	 *          a functor of new term
 	 * @param arity
-	 *          rity of new term
+	 *          arity of new term
 	 * @return new term
 	 */
 	public CompoundTerm(AtomTerm functor, int arity)
@@ -205,7 +205,7 @@ public class CompoundTerm extends Term
 	 * @param functor
 	 *          a functor of new term
 	 * @param args
-	 *          argumetes of term, this array is directly assigned to term and any
+	 *          arguments of term, this array is directly assigned to term and any
 	 *          changes that are done to array change term.
 	 * @return new term
 	 */
@@ -220,7 +220,7 @@ public class CompoundTerm extends Term
 	 * @param functor
 	 *          a functor of new term
 	 * @param args
-	 *          argumetes of term, this array is directly assigned to term and any
+	 *          arguments of term, this array is directly assigned to term and any
 	 *          changes that are done to array change term.
 	 * @return new term
 	 */

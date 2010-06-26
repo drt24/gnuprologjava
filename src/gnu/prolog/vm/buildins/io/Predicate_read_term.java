@@ -189,10 +189,10 @@ public class Predicate_read_term implements PrologCode
 
 	}
 
-	private static Term mapToList(Map<String, Term> map)
+	private static Term mapToList(Map<String, VariableTerm> map)
 	{
 		Term rc = TermConstants.emptyListAtom;
-		for (Entry<String, Term> entry : map.entrySet())
+		for (Entry<String, VariableTerm> entry : map.entrySet())
 		{
 			rc = CompoundTerm.getList(
 					new CompoundTerm(TermConstants.unifyTag, AtomTerm.get(entry.getKey()), entry.getValue()), rc);
