@@ -25,6 +25,8 @@ import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 
+import java.util.Random;
+
 public class Evaluate
 {
 	public final static CompoundTermTag add2 = CompoundTermTag.get("+", 2);
@@ -56,6 +58,18 @@ public class Evaluate
 	public final static CompoundTermTag band2 = CompoundTermTag.get("/\\", 2);
 	public final static CompoundTermTag bor2 = CompoundTermTag.get("\\/", 2);
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
+	/**
+	 * Implementation of the random/1 predicate defined in SWI-Prolog {@link http
+	 * ://www.swi-prolog.org/man/arith.html#random/1}
+	 * 
+	 * random(+IntExpr)
+	 * 
+	 * Evaluates to a random integer i for which 0 =< i < IntExpr.
+	 * 
+	 * @author drt24
+	 */
+	public final static CompoundTermTag random1 = CompoundTermTag.get("random", 1);
+	private final static Random random = new Random();
 
 	public final static CompoundTermTag evaluationError = CompoundTermTag.get("evaluation_error", 1);
 	public final static AtomTerm floatAtom = AtomTerm.get("float");
@@ -754,6 +768,23 @@ public class Evaluate
 				typeTestInt(arg0);
 				IntegerTerm i0 = (IntegerTerm) arg0;
 				int res = ~i0.value;
+				return IntegerTerm.get(res);
+			}
+			else if (tag == random1) // ***************************************
+			{
+				Term arg0 = args[0];
+				if (!(arg0 instanceof IntegerTerm))
+				{
+					undefined();
+				}
+				IntegerTerm limit = (IntegerTerm) arg0;
+				double rand;
+				synchronized (random)
+				{// avoid concurrency issues
+					rand = random.nextDouble();// rand is uniformly distributed from 0 to
+																			// 1
+				}
+				int res = (int) (rand * limit.value);// scale it and cast it
 				return IntegerTerm.get(res);
 			}
 			else
