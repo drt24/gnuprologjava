@@ -43,18 +43,17 @@ test_call :-
 	error_test(cut_b(3),type_error(callable,(log(3),3))),
 	test_true((Z=!,call((Z=!,cut_a(X),Z)))),
 	test_true(call((Z=!,cut_a(X),Z))),
-        error_test(call((write(3), X)),instantiation_error),
-        error_test(call((write(3), 1)), type_error(callable, (write(3), 1))), 
+	error_test(call((write(3), X)),instantiation_error),
+	error_test(call((write(3), 1)), type_error(callable, (write(3), 1))), 
 	error_test(call(1),type_error(callable,1)),
 	error_test(call(X),instantiation_error),
 	error_test(call((fail,1)),type_error(callable,(fail,1))),
-	error_test((call((1,true))),type_error(callable,(1,true))).
-
-        
+	error_test((call((1,true))),type_error(callable,(1,true))).    
 
 test_call :-
 
 	log_nl, log( 'Call function not supported.'), log_nl.
+
 
 test_cut :-
 
@@ -62,11 +61,11 @@ test_cut :-
 	test_true(!),
 	test_false((!,fail;true)),
 	test_true((call(!),fail;true)),
-        log('Goal:(twice(_), !, write(''Forwards ''), fail)'),log_nl,
+        %log('Goal:(twice(_), !, write(''Forwards ''), fail)'),log_nl,
         log('Should now write: C forwards'), log_nl,
         test_false((twice(_), !, log('Forwards '), fail)),
         log_nl,
-        log('Goal: ((!; write(''No '')),write(''Cut Disjunction ''),fail)'),
+        %log('Goal: ((!; write(''No '')),write(''Cut Disjunction ''),fail)'),
         log_nl,
         log( 'Should now write:  Cut Disjunction'), log_nl, 
 	test_false(
@@ -76,7 +75,7 @@ test_cut :-
                    fail
                    )
                   ),log_nl,
-        log( 'Goal: (twice(_), (write(''No ''); !), write(''Cut ''),fail )'), 
+        %log( 'Goal: (twice(_), (write(''No ''); !), write(''Cut ''),fail )'), 
         log_nl, log( 'Should now write: C No Cut Cut '), log_nl,
         test_false((
                      twice(_),
@@ -84,25 +83,25 @@ test_cut :-
                      log('Cut '),
                      fail
                   )), log_nl,
-        log('Goal:(twice(_), (!, fail ; write(''No '')))'), log_nl, 
+        %log('Goal:(twice(_), (!, fail ; write(''No '')))'), log_nl, 
         log('Should now write: C ' ), log_nl,
         test_false((
                      twice(_),
                      (!, fail ; log('No '))
                   )), log_nl,
-       log('Goal:(twice(X), call(X),write(''Forwards ''),fail )'), log_nl,
+       %log('Goal:(twice(X), call(X),write(''Forwards ''),fail )'), log_nl,
        log('Should now write:  C Forwards Moss Forwards'), log_nl,
        test_false((
                    twice(X), call(X), 
                    log('Forwards '),
                    fail
                   )), log_nl,
-       log('Goal: (goal(X), call(X), write(''Forwards ''), fail)'), log_nl,
+       %log('Goal: (goal(X), call(X), write(''Forwards ''), fail)'), log_nl,
        log( 'Should now write: C Forwards Three Forwards'), log_nl,
        test_false((
 		    goal(X), call(X), log('Forwards '), fail
                  )), log_nl,
-       log( 'Goal: (twice(_), \\+(\\+(!)),write(''Forwards ''),fail)'), log_nl,
+       %log( 'Goal: (twice(_), \\+(\\+(!)),write(''Forwards ''),fail)'), log_nl,
        log( 'Should now write:  C Forwards Moss Forwards'), log_nl,
        test_false((
                     twice(_),
@@ -110,7 +109,7 @@ test_cut :-
                     log( 'Forwards '),
                     fail
                   )), log_nl,
-       log( 'Goal: (twice(_),call(!),write(''Forwards ''),fail)'), log_nl,
+       %log( 'Goal: (twice(_),call(!),write(''Forwards ''),fail)'), log_nl,
        log( 'Should now write:  C Forwards Moss Forwards'), log_nl,
        test_false((
                    twice(_),

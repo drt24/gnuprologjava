@@ -132,8 +132,8 @@ repeat_exists :-
 
 
 test_815 :-  log_nl,
-             log(' testing section 8.15'), log_nl,
-             log( 'testing not provable'),
+             log('testing section 8.15'), log_nl,
+             log('testing not provable'),
              log_nl,
              test_np,
              log_nl,
