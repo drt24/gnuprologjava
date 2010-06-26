@@ -114,11 +114,10 @@ public class GoalRunner
 					{
 						WriteOptions options = new WriteOptions();
 						options.operatorSet = new OperatorSet();
-						Iterator ivars2 = rd_ops.variableNames.keySet().iterator();
-						Iterator ivars = rd_ops.variableNames.keySet().iterator();
+						Iterator<String> ivars = rd_ops.variableNames.keySet().iterator();
 						while (ivars.hasNext())
 						{
-							String name = (String) ivars.next();
+							String name = ivars.next();
 							out.print(name + " = ");
 							out.print(options, (rd_ops.variableNames.get(name)).dereference());
 							out.print("; ");
@@ -149,10 +148,10 @@ public class GoalRunner
 					{
 						WriteOptions options = new WriteOptions();
 						options.operatorSet = new OperatorSet();
-						Iterator ivars2 = rd_ops.variableNames.keySet().iterator();
+						Iterator<String> ivars2 = rd_ops.variableNames.keySet().iterator();
 						while (ivars2.hasNext())
 						{
-							String name = (String) ivars2.next();
+							String name = ivars2.next();
 							out.print(name + " = ");
 							out.print(options, (rd_ops.variableNames.get(name)).dereference());
 							out.print("; ");

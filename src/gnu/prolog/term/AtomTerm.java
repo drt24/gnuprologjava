@@ -17,7 +17,6 @@
  */
 package gnu.prolog.term;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -27,7 +26,7 @@ import java.util.WeakHashMap;
  * @author Constantin Plotnikov
  * @version 0.0.1
  */
-public class AtomTerm extends AtomicTerm implements Serializable
+public class AtomTerm extends AtomicTerm
 {
 	private static final long serialVersionUID = -7013961090908432585L;
 

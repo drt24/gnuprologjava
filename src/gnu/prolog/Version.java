@@ -49,7 +49,7 @@ public class Version
 	}
 
 	/**
-	 * @return 10000 × Major + 100 × Minor + Revision
+	 * @return 10000 * Major + 100 * Minor + Revision
 	 */
 	public static int intEncoded()
 	{
@@ -70,10 +70,10 @@ public class Version
 	private static class VersionInternal
 	{
 
-		private static int major;
-		private static int minor;
-		private static int revision;
-		private static String type = null;
+		static int major;
+		static int minor;
+		static int revision;
+		static String type = null;
 
 		static
 		{
