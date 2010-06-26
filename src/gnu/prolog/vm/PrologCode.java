@@ -23,11 +23,11 @@ package gnu.prolog.vm;
 public interface PrologCode
 {
 	/**
-	 * predicate was returned with success, bactrack info was created, and
-	 * reexcute is possible.
+	 * predicate was returned with success, backtrack info was created, and
+	 * re-excute is possible.
 	 */
 	public final static int SUCCESS = 0;
-	/** predicate was returned with success, bactrack info was not created */
+	/** predicate was returned with success, backtrack info was not created */
 	public final static int SUCCESS_LAST = 1;
 	/** predicate failed */
 	public final static int FAIL = -1;
@@ -39,7 +39,7 @@ public interface PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -54,17 +54,17 @@ public interface PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          Environment to install the predicate
 	 */
 	public void install(Environment env);
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          Environment to install the predicate
 	 */
 	public void uninstall(Environment env);
 

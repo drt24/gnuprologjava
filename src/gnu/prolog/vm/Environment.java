@@ -107,7 +107,7 @@ public class Environment implements PredicateListener
 	/** PredicateTag to code mapping */
 	protected Map<CompoundTermTag, PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
 
-	// flag atmoms
+	// flag atoms
 	public final static AtomTerm boundedAtom = AtomTerm.get("bounded");
 	public final static AtomTerm integerRoundingFunctionAtom = AtomTerm.get("integer_rounding_function");
 	public final static AtomTerm downAtom = AtomTerm.get("down");
@@ -122,7 +122,7 @@ public class Environment implements PredicateListener
 	public final static AtomTerm doubleQuotesAtom = AtomTerm.get("double_quotes");
 	public final static AtomTerm dialectAtom = AtomTerm.get("dialect");
 	public final static AtomTerm versionAtom = AtomTerm.get("version");
-	// interger terms
+	// integer terms
 	public final static IntegerTerm maxIntegerTerm = IntegerTerm.get(Integer.MAX_VALUE);
 	public final static IntegerTerm minIntegerTerm = IntegerTerm.get(Integer.MIN_VALUE);
 	// The identifier string for this prolog engine
@@ -160,7 +160,7 @@ public class Environment implements PredicateListener
 		CompoundTerm term = new CompoundTerm(AtomTerm.get("resource"), new Term[] { AtomTerm
 				.get("/gnu/prolog/vm/buildins/buildins.pro") });
 		ensureLoaded(term);
-		// set flags for environemnt
+		// set flags for environment
 		setPrologFlag(boundedAtom, TermConstants.trueAtom, false);
 		setPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
 		setPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
@@ -192,7 +192,7 @@ public class Environment implements PredicateListener
 		return initalizationRun;
 	}
 
-	/** get get copy of current state of flags for this environemnt */
+	/** get get copy of current state of flags for this environment */
 	public synchronized Map<AtomTerm, Term> getPrologFlags()
 	{
 		return new HashMap<AtomTerm, Term>(atom2flag);
@@ -224,13 +224,13 @@ public class Environment implements PredicateListener
 		}
 	}
 
-	/** get flag for this environemnt */
+	/** get flag for this environment */
 	public synchronized Term getPrologFlag(AtomTerm term)
 	{
 		return atom2flag.get(term);
 	}
 
-	/** get flag for this environemnt */
+	/** get flag for this environment */
 	protected synchronized void setPrologFlag(AtomTerm term, Term newValue, boolean changable)
 	{
 		atom2flag.put(term, newValue);
@@ -373,7 +373,7 @@ public class Environment implements PredicateListener
 					return code;
 				}
 				catch (/* ClassNotFound */Exception ex)
-				// mayby it will be needed to separate different cases later
+				// Maybe it will be needed to separate different cases later
 				{
 					ex.printStackTrace();
 					return getUndefinedPredicateCode(tag);
@@ -390,7 +390,7 @@ public class Environment implements PredicateListener
 		}
 	}
 
-	/** get undefiend predicate code */
+	/** get undefined predicate code */
 	public PrologCode getUndefinedPredicateCode(CompoundTermTag tag)
 	{
 		// if (undefinedPredicate == null)
@@ -438,7 +438,7 @@ public class Environment implements PredicateListener
 		CompoundTermTag tag;
 	}
 
-	// this functioality will be needed later, but I need to think more ;-)
+	// this functionality will be needed later, but I need to think more ;-)
 	/** add prolog code listener */
 	public synchronized void addPrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{

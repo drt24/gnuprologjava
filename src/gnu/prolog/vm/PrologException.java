@@ -87,7 +87,7 @@ public class PrologException extends Exception
 		return msg;
 	}
 
-	/** get term of this excepion */
+	/** get term of this exception */
 	public Term getTerm()
 	{
 		return term;

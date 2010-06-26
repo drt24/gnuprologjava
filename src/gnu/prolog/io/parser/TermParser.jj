@@ -736,29 +736,29 @@ TOKEN :
 | <#META_ESCAPE_SEQUENCE: <BACKSLASH_CHAR> /* 6.5.5 */
                          <META_CHAR> /* 6.5.5 */ >
 | <#CONTROL_ESCAPE_SEQUENCE: <BACKSLASH_CHAR> /* 6.5.5 */
-                            <SYMOLIC_CONTROL_CHAR> /* 6.5.5 */ >
-| <#SYMOLIC_CONTROL_CHAR: <SYMOLIC_ALERT_CHAR>
-                       | <SYMOLIC_BACKSPACE_CHAR>
-                       | <SYMOLIC_FORM_FEED_CHAR>
-                       | <SYMOLIC_NEW_LINE_CHAR>
-                       | <SYMOLIC_HORIZONTAL_TAB_CHAR>
-                       | <SYMOLIC_VERTICAL_TAB_CHAR>
-                       | <SYMOLIC_CARRIAGE_RETURN_CHAR>>
-| <#SYMOLIC_ALERT_CHAR:          "a">
-| <#SYMOLIC_BACKSPACE_CHAR:      "b">
-| <#SYMOLIC_FORM_FEED_CHAR:      "f">
-| <#SYMOLIC_NEW_LINE_CHAR:       "n">
-| <#SYMOLIC_HORIZONTAL_TAB_CHAR: "t">
-| <#SYMOLIC_VERTICAL_TAB_CHAR:   "v">
-| <#SYMOLIC_CARRIAGE_RETURN_CHAR:"r">
-| <#SYMOLIC_HEXADECIMAL_CHAR:    "x">
+                            <SYMBOLIC_CONTROL_CHAR> /* 6.5.5 */ >
+| <#SYMBOLIC_CONTROL_CHAR: <SYMBOLIC_ALERT_CHAR>
+                       | <SYMBOLIC_BACKSPACE_CHAR>
+                       | <SYMBOLIC_FORM_FEED_CHAR>
+                       | <SYMBOLIC_NEW_LINE_CHAR>
+                       | <SYMBOLIC_HORIZONTAL_TAB_CHAR>
+                       | <SYMBOLIC_VERTICAL_TAB_CHAR>
+                       | <SYMBOLIC_CARRIAGE_RETURN_CHAR>>
+| <#SYMBOLIC_ALERT_CHAR:          "a">
+| <#SYMBOLIC_BACKSPACE_CHAR:      "b">
+| <#SYMBOLIC_FORM_FEED_CHAR:      "f">
+| <#SYMBOLIC_NEW_LINE_CHAR:       "n">
+| <#SYMBOLIC_HORIZONTAL_TAB_CHAR: "t">
+| <#SYMBOLIC_VERTICAL_TAB_CHAR:   "v">
+| <#SYMBOLIC_CARRIAGE_RETURN_CHAR:"r">
+| <#SYMBOLIC_HEXADECIMAL_CHAR:    "x">
 
 | <#OCTAL_ESCAPE_SEQUENCE: <BACKSLASH_CHAR> /* 6.5.5 */
                           (<OCTAL_DIGIT_CHAR>)+ /* 6.5.2 */
                           <BACKSLASH_CHAR> /* 6.5.5 */>
 
 | <#HEXADECIMAL_ESCAPE_SEQUENCE: <BACKSLASH_CHAR> /* 6.5.5 */
-                          <SYMOLIC_HEXADECIMAL_CHAR>
+                          <SYMBOLIC_HEXADECIMAL_CHAR>
                           (<HEXADECIMAL_DIGIT_CHAR>)+ /* 6.5.2 */
                           <BACKSLASH_CHAR> /* 6.5.5 */>
 // 6.4.3 Variables
