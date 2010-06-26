@@ -19,7 +19,7 @@ package gnu.prolog.term;
 
 /**
  * floating point number term
- *
+ * 
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
@@ -29,10 +29,10 @@ public class FloatTerm extends AtomicTerm
 
 	/**
 	 * get floating point number term
-	 *
+	 * 
 	 * @param str
-	 *          string reppresentation of float number
-	 * @retuns new floating point number term
+	 *          string representation of float number
+	 * @returns new floating point number term
 	 * @throw IllegalArgumentException when str is not valid string
 	 */
 	public FloatTerm(String str)
@@ -49,7 +49,7 @@ public class FloatTerm extends AtomicTerm
 
 	/**
 	 * a constructor
-	 *
+	 * 
 	 * @param val
 	 *          double value
 	 */
@@ -63,7 +63,7 @@ public class FloatTerm extends AtomicTerm
 
 	/**
 	 * get type of term
-	 *
+	 * 
 	 * @return type of term
 	 */
 	@Override
@@ -72,4 +72,9 @@ public class FloatTerm extends AtomicTerm
 		return FLOAT;
 	}
 
+	@Override
+	public String toString()
+	{
+		return Double.toString(value);
+	}
 }

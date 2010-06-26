@@ -235,4 +235,9 @@ public class IntegerTerm extends AtomicTerm
 		return INTEGER;
 	}
 
+	@Override
+	public String toString()
+	{
+		return Integer.toString(value);
+	}
 }

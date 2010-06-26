@@ -39,12 +39,18 @@ public class JavaObjectTerm extends AtomicTerm
 
 	/**
 	 * get type of term
-	 *
+	 * 
 	 * @return type of term
 	 */
 	@Override
 	public int getTermType()
 	{
 		return JAVA_OBJECT;
+	}
+
+	@Override
+	public String toString()
+	{
+		return value.toString();
 	}
 }
