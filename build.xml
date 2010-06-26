@@ -112,22 +112,5 @@
 		</java>
 	</target>
 
-	<!--
-		<target name="site" depends="javadoc">
-		<delete dir="${build.dir}/site" />
-		<delete file="${build.dir}/site.zip" />
-		<mkdir dir="${build.dir}/site" />
-		<filter token="version" value="${_version}" />
-		<copy file="${basedir}/site/index.html" todir="${build.dir}/site" filtering="on">
-		</copy>
-		<copy todir="${build.dir}/site/api">
-			<fileset dir="${build.dir}/api" />
-		</copy>
-		<zip zipfile="${build.dir}/site/vanila.zip" basedir="${basedir}/test" />
-		<zip zipfile="${build.dir}/site.zip" basedir="${build.dir}/site" />
-	</target>
-
--->
-
 </project>
 
