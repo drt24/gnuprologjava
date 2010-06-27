@@ -146,12 +146,12 @@ test_abolish_errors.
 
 test_89 :-
 	
-	log_nl, log( 'Starting tests for Section 8.9.'), log_nl,
-	log_nl, log( 'Starting tests of asserta.'), log_nl,
+	log( 'Starting tests for Section 8.9: Starting tests of asserta.'),
+	log_nl,	log_nl,
 
 	test_asserta,
 
-	log_nl, log( 'Tests of asserta completed, testing asserta errors.'), log_nl,
+	log( 'Tests of asserta completed, testing asserta errors.'), log_nl,
 
 	test_asserta_errors,
 
@@ -182,6 +182,5 @@ test_89 :-
 
 	test_abolish_errors,
 
-	log_nl, log( 'Tests of abolish errors completed.'), log_nl, 
-	log_nl, log( 'All testing completed for Section 8.9.'), 
-        log_nl, log_nl, !.
+	log_nl, log( 'Tests of abolish errors completed: All testing completed for Section 8.9.'),
+	log_nl,	log_nl, log_nl, !.

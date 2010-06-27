@@ -337,9 +337,75 @@ test_set_stream_position_errors :-
 
      
 test_set_stream_position_errors :-
-	log('Unable to test set_stream_position errors'), log_nl.        
-  
+	log('Unable to test set_stream_position errors'), log_nl.
 
+
+  
+test_cip :- 
+  
+   defined(current_input/1), !, 
+     
+      test_current_input, test_current_input_errors.
+test_cip:-
+     log_nl, log( 'current_input/1 not supported'), log_nl.
+
+
+test_cop:-
+    defined(current_output/1), !, 
+    test_current_output, test_current_output_errors.
+
+test_cop:- 
+    log_nl, log( 'current_output/1 not supported'), log_nl.
+
+
+test_ope :- 
+   defined(open/3), !,
+   test_open,test_open_errors.
+
+test_ope :-
+    log_nl, log( 'open/3 not supported'), log_nl.
+
+
+test_cl :- 
+    defined(close/1), !,
+    test_close,test_close_errors.
+
+test_cl :-
+    log_nl, log( 'close/1 not supported'), log_nl.
+
+
+test_fl_out :-
+    defined(flush_output/1), !, 
+     test_flush_output, test_flush_output_errors.
+
+test_fl_out:-
+    log_nl, log( 'flush_output/1 not supported'), log_nl.
+
+
+test_sp :-
+   defined(stream_property/2)
+    -> 
+   (test_stream_property, test_stream_property_errors)
+    ;
+    (log_nl, log( 'stream_property/2 not supported'), log_nl).
+
+% can't test for end_of_stream being defined 
+%  in the usual way since it will try to read from Current input
+
+test_eos :-
+     do_catch((end_of_stream(not/alias);true), B, error_is_not(existence_error,B)),
+     test_at_end_of_stream,test_at_end_of_stream_errors.
+
+test_eos:-     
+     log_nl, log( 'at_end_of_stream not supported'), log_nl.
+
+
+test_ssp :-
+    defined(set_stream_position/2)
+    ->
+     (test_set_stream_position, test_set_stream_position_errors)
+    ;
+    (log_nl, log('set_stream_position/2 not supported'), log_nl).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -347,7 +413,7 @@ test_set_stream_position_errors :-
 %
 
 test_811 :-
-        log_nl, log( 'testing at_end_of_stream'), log_nl,
+        log( 'Testing section 8.11: testing at_end_of_stream'), log_nl,
 	test_eos,
         log_nl, log( 'testing at_end_of_stream done '), log_nl,
         log_nl, log( 'testing current_input'), log_nl,
@@ -370,68 +436,5 @@ test_811 :-
         log_nl, log( 'testing stream_property done '), log_nl,
         log_nl, log( 'testing set_stream_position'), log_nl,
 	test_ssp,
-        log_nl, log( 'testing set_stream_position done '), log_nl,
-        log( 'testing section 8.11 done'), log_nl,log_nl, !. 
-
-test_cip :- 
-  
-   defined(current_input/1), !, 
-     
-      test_current_input, test_current_input_errors.
-test_cip:-
-     log_nl, log( 'current_input/1 not supported'), log_nl.
-    
-      
-test_cop:-
-    defined(current_output/1), !, 
-    test_current_output, test_current_output_errors.
-
-test_cop:- 
-    log_nl, log( 'current_output/1 not supported'), log_nl.
-   
-
-test_ope :- 
-   defined(open/3), !,
-   test_open,test_open_errors.
-
-test_ope :-
-    log_nl, log( 'open/3 not supported'), log_nl.
-
-test_cl :- 
-    defined(close/1), !,
-    test_close,test_close_errors.
-
-test_cl :-
-    log_nl, log( 'close/1 not supported'), log_nl.
-
-test_fl_out :-
-    defined(flush_output/1), !, 
-     test_flush_output, test_flush_output_errors.
-
-test_fl_out:-
-    log_nl, log( 'flush_output/1 not supported'), log_nl.
-
-test_sp :-
-   defined(stream_property/2)
-    -> 
-   (test_stream_property, test_stream_property_errors)
-    ;
-    (log_nl, log( 'stream_property/2 not supported'), log_nl).
-
-% can't test for end_of_stream being defined 
-%  in the usual way since it will try to read from Current input
-
-test_eos :-
-     do_catch((end_of_stream(not/alias);true), B, error_is_not(existence_error,B)),
-     test_at_end_of_stream,test_at_end_of_stream_errors.
-
-test_eos:-     
-     log_nl, log( 'at_end_of_stream not supported'), log_nl.
-
-test_ssp :-
-    defined(set_stream_position/2)
-    ->
-     (test_set_stream_position, test_set_stream_position_errors)
-    ;
-    (log_nl, log('set_stream_position/2 not supported'), log_nl).
-  
+        log_nl, log( 'testing set_stream_position done: Testing section 8.11 done'),
+        log_nl, log_nl, log_nl, !.

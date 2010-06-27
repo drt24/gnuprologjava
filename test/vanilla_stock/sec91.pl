@@ -21,13 +21,8 @@
 %                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
-test_91:-
-     	log_nl, log( 'Testing Arithmetic Operations + and -'), log_nl,
-     
-	test_val(X1 is +(7,35),X1,42),
+test_arithmetic_op_plus_minus :-
+     	test_val(X1 is +(7,35),X1,42),
      	test_val(X2 is +(0,+(3,11)),X2,14),
      	test_val(X3 is +(0,3.2+11),X3,14.2000),
      	error_test(X4 is +(77,N),instantiation_error),
@@ -41,13 +36,10 @@ test_91:-
      	test_val(X12 is -(20,3+11),X12,6),
      	test_val(X13 is -(0,3.2+11),X13,-14.2000),
      	error_test(X14 is -(77,N),instantiation_error),
-     	error_test(X15 is -(foo,77),type_error(evaluable, _)),
-     	
-	log_nl, log('Done Testing Arithmetic Operations +  and -'), log_nl,
-     
-       log_nl, log( 'Testing Arithmetic Operations * and /'), log_nl,
-     	
-	test_val(X16 is *(7,35),X16,245),
+     	error_test(X15 is -(foo,77),type_error(evaluable, _)).
+
+test_arithmetic_op_multiply_divide:- 
+     	test_val(X16 is *(7,35),X16,245),
      	test_val(X17 is *(0,3+11),X17,0),
      	test_val(X18 is *(1.5,3.2+11),X18,21.3000),
      	error_test(X19 is *(77,N),instantiation_error),
@@ -60,12 +52,9 @@ test_91:-
      	test_val(X26 is /(-7,3),X26,-2.3333333333333),
      	error_test(X27 is /(77,N),instantiation_error),
      	error_test(X28 is /(foo,77),type_error(evaluable, _)),
-     	error_test(X29 is /(3,0),evaluation_error(_)),
+     	error_test(X29 is /(3,0),evaluation_error(_)).
 
-     	log_nl, log( 'Done Testing Arithmetic Operations * and /'), 
-        log_nl,
-         log_nl, log('Testing Arithmetic Operations mod etc..'), log_nl,
-
+test_arithmetic_elementary_operations:-
      	test_val(X30 is mod(7,3),X30,1),
      	test_val(X31 is mod(0,3+11),X31,0),
      	test_val(X32 is mod(7,-2),X32,-1),
@@ -91,12 +80,19 @@ test_91:-
      	test_val(X48 is abs(3-11),X48,8),
      	test_val(X49 is abs(3.2-11.0),X49,7.8000),
      	error_test(X50 is abs(N),instantiation_error),
-     	error_test(X51 is abs(foo),type_error(evaluable, _)),
-        log_nl, log( 'Done Testing Elementary Arithmetic Operations'), log_nl, 
-        log_nl, !.
+     	error_test(X51 is abs(foo),type_error(evaluable, _)).
+
+test_91:-
+	log( 'Testing Section 9.1: Testing Arithmetic Operations + and -'), log_nl,
      
-   
-   
+	test_arithmetic_op_plus_minus,
+     	
+	log_nl, log('Done Testing + and -: Testing Arithmetic Operations * and /'), log_nl,
+     	
+	test_arithmetic_op_multiply_divide,
 
-
-
+	log_nl, log( 'Done Testing * and /: Testing mod, floor, round, ceiling, truncate, float, abs'), 
+	log_nl,
+	test_arithmetic_elementary_operations,
+	log_nl, log( 'Done mod, floor, round, ceiling, truncate, float, abs: Done testing Section 9.1'),
+	log_nl, log_nl, log_nl, !.

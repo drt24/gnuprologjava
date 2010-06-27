@@ -36,7 +36,7 @@ test_term_unification :-
 
 test_term_unification :-
 
-	log_nl, log('Term unification function not supported.'), log_nl.
+	log('Term unification function not supported.'), log_nl.
 
 test_unify_with_occurs_check :-
 
@@ -82,21 +82,20 @@ test_not_prolog_unify :-
 
 test_82:-  
 
-	log( 'Starting tests for Section 8.2'), log_nl,
-	log_nl, log( 'Testing Prolog unify.'), log_nl,
+	log( 'Starting tests for Section 8.2: Testing Prolog unify.'),
+	log_nl, log_nl,
 
 	test_term_unification,
 	
-	log_nl, log('Tests of unification complete, testing unify_with_occurs_check.'), 
-        log_nl, log_nl, 
+	log('Tests of unification complete, testing unify_with_occurs_check.'), 
+        log_nl, log_nl,
 	
 	test_unify_with_occurs_check,
 
 	log( 'Tests of unify_with_occurs_check completed, testing not Prolog unifiable.'), 
-        log_nl, log_nl,
+        log_nl,
 
 	test_not_prolog_unify,
 
-	log_nl, log( 'Testing of not Prolog unifiable completed.'), log_nl,
-	log_nl, log('All testing completed for Section 8.2.'), 
-        log_nl, log_nl, !.
+	log_nl, log( 'Testing of not Prolog unifiable completed: All testing completed for Section 8.2.'), 
+        log_nl, log_nl, log_nl, !.

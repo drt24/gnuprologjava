@@ -68,17 +68,14 @@ test_log_exp :-
 
 
 test_93 :-
-   log_nl, log('testing power  functor'),
-   log_nl, log_nl,
+   log('Testing section 9.3: testing power functor'),
+   log_nl,
    test_pow,
-   log('test power done, testing trig functors '),
+   log_nl, log('test power done, testing trig functors '),
    log_nl,
    test_trig,
-   log_nl, log('Done testing trig functors'), 
-   log_nl, log('testing log and exponential functions'),
+   log_nl, log('Done testing trig functors, testing log and exponential functions'),
    log_nl,
    test_log_exp,
-   log_nl, log('Done testing log and exponential functions'),
-   log_nl,
-   log('Done testing section 9.3'),
-   log_nl.
+   log_nl, log('Done testing log and exponential functions: Done testing section 9.3'),
+   log_nl, log_nl, log_nl, !.

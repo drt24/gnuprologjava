@@ -88,8 +88,8 @@ test_setof :-
 
 test_810:-
 
-	log_nl, log( 'Beginning tests for Section 8.10'), log_nl,
-	log_nl, log( 'Testing findall function.'), log_nl,
+	log_nl, log( 'Beginning tests for Section 8.10: Testing findall function.'),
+	log_nl, log_nl,
 
 	test_findall,
 
@@ -105,5 +105,5 @@ test_810:-
 
 	test_setof,
 
-	log_nl, log( 'Testing of setof completed.'), log_nl,
-	log( 'All testing completed for Section 8.10.'), log_nl.
+	log_nl, log( 'Testing of setof completed: All testing completed for Section 8.10.'),
+	log_nl, log_nl, log_nl, !.

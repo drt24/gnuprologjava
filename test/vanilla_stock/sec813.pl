@@ -194,18 +194,14 @@ validate_peek_byte :-
 	
 
 test_813 :-
-       log_nl,
-       log( 'testing byte io.'),
+       log( 'testing Section 8.13: testing byte io.'),
        log_nl, log_nl,
        test_gp_byte,
-       log_nl, log( 'testing byte io done, testing peek_byte.'),
-       log_nl,
+       log( 'testing byte io done, testing peek_byte.'),
+       log_nl, log_nl,
        validate_peek_byte,
-       log_nl,
-       log('testing  peek_byte done.'),
-       log_nl,
-       log('tests of  section 8.13 done.'),
-       !.		
+       log('testing  peek_byte done: tests of  section 8.13 done.'),
+       log_nl, log_nl, log_nl, !.
 
 
        

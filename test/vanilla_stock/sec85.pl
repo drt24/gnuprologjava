@@ -165,15 +165,13 @@ test_copyterm :-
 
 test_85:-
 
-	log('Starting tests for Section 8.5'), log_nl,
-	log_nl, log('Test starting for functor.'), 
-        log_nl, log_nl,
+	log('Starting tests for Section 8.5: Test starting for functor.'),
+	log_nl,	log_nl,
 
 	test_functor,
 
-	log_nl, 
-        log( 'Test of functor finished, starting test of arg'),
-        log_nl,
+	log( 'Test of functor finished, starting test of arg'),
+	log_nl,
 
 	test_arg,
 
@@ -189,19 +187,14 @@ test_85:-
 
 	test_copyterm,
 
+	test_copy_term, % more extensive testing
+
 	log_nl, 
-        log('Testing copy_term more extensively.'), 
+        log('Tests of copyterm completed, testing errors section 8.5'),
         log_nl,
-
-	test_copy_term,
-
-	log_nl, 
-        log('Tests of copyterm completed, testing errors secction 8.5'), 
-        log_nl, log_nl,
 
 	test_errors,
 
 	log_nl, 
-        log( 'Testing of error catching completed.'), log_nl,
-	log_nl, log('All tests finished for Section 8.5.'), 
-        log_nl, log_nl, !.
+        log( 'Testing of error catching completed: All tests finished for Section 8.5.'),
+        log_nl,	log_nl, log_nl, !.

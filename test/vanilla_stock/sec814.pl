@@ -267,23 +267,17 @@ test_cc :-
 
 
 test_814 :-
-        log_nl,
-        log( 'Testing read and write of terms'),
+        log( 'Testing of section 8.14: Testing read and write of terms'),
         log_nl, log_nl,
 	test_rw_term,
-        log_nl,
         log( 'Testing read and write of terms done, testing op/3'),
         log_nl, log_nl,
         test_op3,
-        log_nl,
         log( 'Testing op/3 done, testing char_conversion'),
         log_nl, log_nl,
         test_cc,
-        log_nl,
-        log( 'Testing char_conversion done.'),
-        log_nl, log_nl,
-        log( 'Testing of section 8.14 done. '),
-        log_nl, log_nl, !.
+        log( 'Testing char_conversion done: Testing of section 8.14 done. '),
+        log_nl, log_nl, log_nl, !.
 
 	
 

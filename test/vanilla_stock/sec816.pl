@@ -317,16 +317,17 @@ test_n_codes :-
         (test_number_codes,test_number_codes_errors)
         ;
         ( log_nl, log( 'number_codes/2 is not supported'), log_nl).
+
+
 test_816 :-
-        log_nl,
-        log( 'testing atom_length/2'),
+        log('Testing section 8.16: testing atom_length/2'),
         log_nl,
         test_al,
-         log_nl,
+        log_nl,
         log( 'testing atom_length/2 done, testing atom_concat/3'),
         log_nl,
 	test_ac,
-         log_nl,
+        log_nl,
         log( 'testing atom_concat/2 done,testing sub_atom/5'),
         log_nl,
 	test_sa,
@@ -351,7 +352,5 @@ test_816 :-
         log_nl,
         test_n_codes,
         log_nl,
-        log( 'testing number_codes/2 done'),
-        log_nl,
-        log( 'testing section 8.16 done'),
-        log_nl, !.
+        log( 'testing number_codes/2 done: Testing section 8.16 done'),
+        log_nl, log_nl, log_nl, !.

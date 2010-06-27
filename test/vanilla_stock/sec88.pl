@@ -73,24 +73,20 @@ test_current_predicate :-
 
 test_88 :-
 
-	log('Starting tests for Section 8.8.'), log_nl,
-	log_nl, log( 'Testing clause/1.'), log_nl,
+	log('Starting tests for Section 8.8: Testing clause/1.'),
+	log_nl, log_nl,
 
 	test_clause,
 
-	log_nl, log( 'Testing of clause finished, checking error values.'), 
-        log_nl,
+	log( 'Testing of clause finished, checking error values.'), log_nl,
 
 	test_clause_errors,
 
 	log_nl, 
-        log( 'Testing of error values finished, starting current_predicate tests.'),
-        log_nl,
+	log( 'Testing of error values finished, starting current_predicate tests.'),
+	log_nl,
 	
 	test_current_predicate,
 
-	log( 'Testing completed of current_predicate.'), log_nl,
-	log_nl, log( 'All testing completed for Section 8.8.'), 
-        log_nl, log_nl, !.
-		
-
+	log_nl, log( 'Testing completed of current_predicate: All testing completed for Section 8.8.'),
+	log_nl,	log_nl, log_nl, !.

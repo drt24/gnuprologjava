@@ -65,8 +65,7 @@ test_cut :-
         log('Should now write: C forwards'), log_nl,
         test_false((twice(_), !, log('Forwards '), fail)),
         log_nl,
-        %log('Goal: ((!; write(''No '')),write(''Cut Disjunction ''),fail)'),
-        log_nl,
+        %log('Goal: ((!; write(''No '')),write(''Cut Disjunction ''),fail)'),log_nl,
         log( 'Should now write:  Cut Disjunction'), log_nl, 
 	test_false(
                    (
@@ -75,8 +74,8 @@ test_cut :-
                    fail
                    )
                   ),log_nl,
-        %log( 'Goal: (twice(_), (write(''No ''); !), write(''Cut ''),fail )'), 
-        log_nl, log( 'Should now write: C No Cut Cut '), log_nl,
+        %log( 'Goal: (twice(_), (write(''No ''); !), write(''Cut ''),fail )'),log_nl,
+        log( 'Should now write: C No Cut Cut '), log_nl,
         test_false((
                      twice(_),
                      (log('No '); !), 
@@ -157,11 +156,11 @@ report_uncaught(B) :- log( 'Uncaught error: '), log( B), log_nl.
 catch_tests :-
 	test_true(catch_test(1,Y1)),
 	test_true(catch_test(2,Y2)),
-        test_true(catch_test(3,Y3)),
+	test_true(catch_test(3,Y3)),
 	test_true(catch_test(4,Y4)),
-        test_true(catch_test(5,Y5)),
+	test_true(catch_test(5,Y5)),
 	test_true(catch_test(6,Y6)),
-        test_true(catch_test(7,Y7)),
+	test_true(catch_test(7,Y7)),
 	test_true(catch_test(8,Y8)).
 
 
@@ -170,8 +169,8 @@ catch_tests :-
 
 test_78 :- 
 
-	log( 'Starting tests for Section 7.8'), log_nl,
-	log_nl, log( 'Beginning tests of common functions.'), log_nl, log_nl,
+	log( 'Starting tests for Section 7.8: Beginning tests of common functions.'),
+	log_nl,
 
 	test_common,
 
@@ -179,16 +178,13 @@ test_78 :-
 
 	test_call,
 	
-	log_nl, log( 'Tests of call are completed, beginning tests of cut.'), log_nl,
+	log_nl, log( 'Tests of call are completed, beginning tests of cut.'), log_nl, log_nl,
 	
 	test_cut,
 
-	log_nl, log( 'Tests of cut completed.'),
-        log_nl , 
-        log( 'Testing catch and throw'), log_nl, log_nl,
+	log_nl, log( 'Tests of cut completed, beginning testing catch and throw'),
+        log_nl ,
         catch_tests,
         log_nl,
-        log( 'Tests of catch and throw completed'),  log_nl, 
-        log_nl,
-        log_nl , log( 'All testing completed for Section 7.8.'),
-        log_nl, ! .
+        log( 'Tests of catch and throw completed: All testing completed for Section 7.8.'), 
+        log_nl, log_nl, log_nl, ! .

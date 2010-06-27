@@ -64,13 +64,10 @@ test_types :-
     
 test_83:-  
 
-	log( 'Starting tests for Section 8.3'), log_nl,
-	log_nl, log( 'Testing Type testing predicates.'), log_nl,
+	log( 'Starting tests for Section 8.3: Testing Type testing predicates.'),
+	log_nl,	log_nl,
 
 	test_types,
 	
-	log_nl, log('Tests of Type testing predicates complete.'), 
-	
-
-	log_nl, log('All testing completed for Section 8.3.'), 
-        log_nl, log_nl, !.
+	log('Tests of Type testing predicates complete.: All testing completed for Section 8.3.'),
+	log_nl, log_nl, log_nl, !.

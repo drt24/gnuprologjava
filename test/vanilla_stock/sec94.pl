@@ -113,19 +113,18 @@ test_shifts :-
 test_shifts:-
 	log_nl, log_nl,
         log('Shifts not supported'), log_nl, log_nl.
+
+
 test_94 :-
-   log_nl, log('testing bitwise  arithmetic functors'),
-   log_nl, log_nl,
+   log('Testing section 9.4: testing bitwise  arithmetic functors'),
+   log_nl,
    log('testing and or and 1s complement '),
    log_nl,
    test_and,
    test_or,
    test_ones_complement,
-   log_nl, log('Done testing and or and 1s complement'), 
-   log_nl, log('testing shift functions'),
+   log_nl, log('Done testing and or and 1s complement, testing shift functions'), 
    log_nl,
    test_shifts,
-   log_nl, log('Done testing shifts'),
-   log_nl,
-   log('Done testing section 9.4'),
-   log_nl.
+   log_nl, log('Done testing shiftstesting shift functions: Done testing section 9.4'),
+   log_nl, log_nl, log_nl, !.

@@ -31,13 +31,10 @@ test_is :-
 
 
 test_86 :-
-	log('Starting tests for Section 8.6'), 
-        log_nl,
-	log_nl, log('Testing Is/2'), 
-        log_nl,
+	log('Starting tests for Section 8.6: Testing is/2'),
+	log_nl, log_nl,
 
 	test_is,
 
-	log_nl, log('Testing of is complete.'), log_nl,
-	log_nl, log('All testing completed for Section 8.6.'), 
-        log_nl, log_nl, !.
+	log('Testing of is complete: All testing completed for Section 8.6.'),
+	log_nl,	log_nl, log_nl,!.

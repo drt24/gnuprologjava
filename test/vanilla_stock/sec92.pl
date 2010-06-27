@@ -26,7 +26,7 @@
 
 
 test_92 :- 
-        log('Testing max integer, section 9.2'), log_nl,
+        log('Testing Section 9.2: testing max integer.'), log_nl,
         (
         do_catch(get_current_prolog_flag(max_integer,MI),         
                  B,
@@ -44,4 +44,4 @@ test_92 :-
        ;
      true
      ),
-     log('Section 9.2 done.'), log_nl.
+     log('Section 9.2 done.'), log_nl, log_nl, log_nl, !.

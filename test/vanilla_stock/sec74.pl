@@ -86,13 +86,16 @@ test_char_conv :-
 	test_val(current_char_conversion('&', X), X, '%').
 test_flag :-
 	error_test(unknown, existence_error(procedure,unknown/0)).
-        
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %   perform the tests.
 %
 
-go_74:-  log( 'Testing directives Section 7.4'),
+:- ensure_loaded(direct2).
+
+test_74 :-
+      log( 'Testing directives Section 7.4'),
       log_nl,
       test_discontig,
       test_dyn,
@@ -101,17 +104,4 @@ go_74:-  log( 'Testing directives Section 7.4'),
       test_char_conv,
       test_flag,
       log( 'Done testing section 7.4.'),
-      log_nl.
-
-
-:- ensure_loaded(direct2).
-test_74 :-   
-      log( 'Testing directives Section 7.4'),
-      log_nl,
-      test_dyn,
-      test_multi,
-      test_op,
-      test_char_conv,
-      test_flag,
-      log( 'Done testing section 7.4.'),
-      log_nl, !.	 
+      log_nl, log_nl, log_nl, !.

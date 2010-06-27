@@ -127,11 +127,11 @@ test_halt1 :-
 
 
 test_817 :-
-        log('testing flags'), log_nl,
-	find_flags,
+        log('Testing section 8.17: testing flags'), log_nl,
+        find_flags,
         log_nl,
-        log('testing  halt/1'), log_nl,
+        log('testing  halt/1: All other tests completed'), log_nl,
         test_halt1,
         log_nl,
-        log('All tests completed').
+        log('FAIL: halt did not halt'), !.
         

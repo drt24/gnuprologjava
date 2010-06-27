@@ -39,13 +39,10 @@ test_term_comparision :-
 	test_false((_ == _)).
 
 test_84 :-
-	log( 'Starting tests for Section 8.4'), log_nl,
-	log_nl, log( 'Beginning tests of term comparisions.'), 
-        log_nl,
+	log( 'Starting tests for Section 8.4: Beginning tests of term comparisions.'),
+	log_nl,	log_nl,
 
 	test_term_comparision,
 
-	log_nl, 
-        log( 'Tests of term comparisions are completed.'), log_nl,
-	log_nl, log( 'All testing completed for Section 8.4.'), 
-        log_nl, log_nl, !.
+	log( 'Tests of term comparisions are completed: All testing completed for Section 8.4.'),
+	log_nl,	log_nl, log_nl, !.

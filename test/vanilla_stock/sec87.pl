@@ -50,18 +50,14 @@ test_math_error :-
 
 test_87:-
 
-        log( 'Starting tests for Section 8.7'), log_nl,
-        log_nl, log('Testing Mathematical Comparisons'), 
-        log_nl,
+        log( 'Starting tests for Section 8.7: Testing Mathematical Comparisons'),
+        log_nl, log_nl,
 
         test_math_comp,
 
-        log_nl, 
-        log('Mathematical Comparisons finished, testing errors.'), 
-        log_nl,
+        log('Mathematical Comparisons finished, testing errors.'), log_nl,
 
         test_math_error,
 
-        log_nl, log( 'Errors finished.'), log_nl,
-        log_nl, log('All testing completed for Section 8.7'), 
-        log_nl, log_nl, !.
+        log_nl, log( 'Testing errors finished: All testing completed for Section 8.7'),
+        log_nl, log_nl, log_nl, !.

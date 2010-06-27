@@ -446,23 +446,20 @@ test_pk_codes :-
 %
 
 
-test_812 :- log_nl, log('Testing section 8.12'),
-        log_nl, log( 'Testing get and put chars.'),
+test_812 :-
+        log('Testing section 8.12: Testing get and put chars.'),
         log_nl, log_nl,
         test_gp_chars,
-        log_nl,
         log( 'tests of char io done, testing code io.'),
-        log_nl, log_nl,
-	test_gp_codes,
+        log_nl,
+        test_gp_codes,
         log_nl,
         log( 'tests of code io done, testing peeks.'),
-        log_nl, log_nl,
+        log_nl,
         test_pk_chars,
         test_pk_codes,
         log_nl,
-        log( 'tests of peeks done.'),
-        log_nl, 
-        log( 'tests of section 8.12 done.'),
-        log_nl,!.
+        log( 'tests of peeks done: tests of section 8.12 done.'),
+        log_nl, log_nl, log_nl, !.
 
     
