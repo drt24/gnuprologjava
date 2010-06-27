@@ -127,11 +127,18 @@ Ant Buildfile for GNU Prolog for Java.
 
 	<target name="test-vanilla">
 		<echo>Verify output in test/test.out</echo>
-		<java jar="build/${ant.project.name}-${version}.jar" dir="test/vanilla_stock" fork="true" logerror="true" output="test/test.out">
+		<java jar="build/${ant.project.name}-${version}.jar" dir="test/vanilla_stock" fork="true" logerror="true" output="test/test-vanilla.out">
 			<arg value="-once" />
 			<arg value="gnuprologjava.pl" />
 			<arg value="validate" />
 		</java>
+	</target>
+	<target name="test-iriasuite">
+			<java jar="build/${ant.project.name}-${version}.jar" dir="test/inriasuite" fork="true" logerror="true" output="test/test-iria.out">
+				<arg value="-once" />
+				<arg value="inriasuite.pl" />
+				<arg value="run_all_tests" />
+			</java>
 	</target>
 
 </project>
