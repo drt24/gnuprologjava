@@ -6,7 +6,7 @@
 
 
 [(catch(true, C, write('something')), throw(blabla)), system_error]. 
-						% The system catchs 'blabla'
+						% The system catches 'blabla'
 
 [catch(number_chars(A,L), error(instantiation_error, _), fail), failure].
 

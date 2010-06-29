@@ -1,0 +1,12 @@
+/* file append */
+
+[append([],[],[]),success].
+[append([],[a],[a]),success].
+[append([],[a,b],[a,b]),success].
+[append([],[A],[A]),success].
+[append([a],[],[a]),success].
+[append([a],[a],[a,a]),success].
+[append([a],[a,b],[a,a,b]),success].
+[append([a],[A],[a,A]),success].
+
+/* end of append */

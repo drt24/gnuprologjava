@@ -26,6 +26,9 @@
 
 [bagof(X,1,L), type_error(callable, 1)].
 
+% TODO: This line causes gnuprologjava to bail out with a error(existence_error(procedure,. / 2),error)
+%[bagof([X,Y], t_foo(X,Y), S) , t_foo, success].
+
 [findall(X,call(4),S),type_error(callable, 4)].
 
 /* end of bagof */

@@ -1,0 +1,13 @@
+/* file vars_in_term */
+
+[vars_in_term(A,[A]),success].
+[vars_in_term(a,[]),success].
+[vars_in_term([],[]),success].
+[vars_in_term([A,B,c,d,E],[A,B,E]),success].
+[vars_in_term(foo(a,B,C,D,e),[B,C,D]),success].
+[vars_in_term(A,[]),failure].
+[vars_in_term(a,[_]),failure].
+[vars_in_term([],[_]),failure].
+[vars_in_term([A,B,c,d,E],[A,B,c,d,E]),failure].
+
+/* end of vars_in_term */

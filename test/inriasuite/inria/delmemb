@@ -1,0 +1,16 @@
+/* file delmemb */
+
+[delmemb(_,[],[]),success].
+[delmemb(_,[],[_]),failure].
+[delmemb(_ <-- _, [],[]),success].
+[delmemb(_ <-- _, [],[_]),failure].
+[delmemb(E <-- F, [E <-- F], []),success].
+[delmemb(E <-- F, [E <-- F], [_]),failure].
+[delmemb(E <-- F, [A,E <-- F],[A]),success].
+[delmemb(E <-- F, [_,E <-- F],[]),failure].
+[delmemb(E <-- F, [_,E <-- F],[_]),failure].
+[delmemb(E <-- F, [E <-- F,A],[A]),success].
+[delmemb(E <-- F, [E <-- F,_,_],[]),failure].
+[delmemb(E <-- F, [E <-- F,_,_],[_]),failure].
+
+/* end of delmemb */

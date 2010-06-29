@@ -1,0 +1,11 @@
+/* file already_appears */
+
+[already_appears(A,[A]),success].
+[already_appears(A,[_,_,A]),success].
+[already_appears(A,[_,A,_]),success].
+[already_appears(A,[A,_,_]),success].
+[already_appears(_,[]),failure].
+[already_appears(_,[_]),failure].
+[already_appears(_,[_,_]),failure].
+
+/* end of already_appears */

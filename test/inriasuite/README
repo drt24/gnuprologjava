@@ -6,10 +6,10 @@ of Pierre Deransart, Ali Ed-Dbali and Lurent Cervoni.
 The driver for the tests was written by Jonathan Hodgson.
 
 
-The suite cotains the following files.
+The suite contains the following files:
 
-README		      This file
-inriasuite.pl         The driver.
+README	        This file
+inriasuite.pl   The driver
 
 and a collection of files containing the tests.
 
@@ -118,5 +118,7 @@ true/0
 var/1
 write/1
 
+It also uses:
+append/3
 
 DATE   3 March 1999
