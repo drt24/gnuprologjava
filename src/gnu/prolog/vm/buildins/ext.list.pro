@@ -21,7 +21,13 @@
 % List extensions
 %
 
-% Fail if member is not part of the list
+% Fail if HeadList is not appended to TailList in the List
+% append(?HeadList, ?TailList, ?List)
+%:-build_in(append/3,'gnu.prolog.vm.buildins.list.Predicate_append').
+append([],X,X).
+append([X|Xs],Y,[X|Z]) :- append(Xs,Y,Z).
+
+% Fail if Elem is not part of the list
 % member(?Elem, ?List)
 :-build_in(member/2,'gnu.prolog.vm.buildins.list.Predicate_member').
 
