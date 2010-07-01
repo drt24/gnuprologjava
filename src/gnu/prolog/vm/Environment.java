@@ -131,6 +131,7 @@ public class Environment implements PredicateListener
 	public final static IntegerTerm versionTerm = IntegerTerm.get(Version.intEncoded());
 
 	public final static AtomTerm prologFlagAtom = AtomTerm.get("prolog_flag");
+	public final static AtomTerm flagValueAtom = AtomTerm.get("flag_value");
 	public final static AtomTerm modifyAtom = AtomTerm.get("modify");
 	public final static CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 	/** atom to flag */
@@ -251,7 +252,7 @@ public class Environment implements PredicateListener
 		{
 			if (newValue != TermConstants.trueAtom && newValue != TermConstants.falseAtom)
 			{
-				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
+				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		else if (flag == TermConstants.maxIntegerAtom)
@@ -272,21 +273,21 @@ public class Environment implements PredicateListener
 		{
 			if (newValue != downAtom && newValue != towardZeroAtom)
 			{
-				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
+				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		else if (flag == charConversionAtom)
 		{
 			if (newValue != onAtom && newValue != offAtom)
 			{
-				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
+				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		else if (flag == debugAtom)
 		{
 			if (newValue != onAtom && newValue != offAtom)
 			{
-				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
+				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		else if (flag == TermConstants.maxArityAtom)
@@ -300,7 +301,7 @@ public class Environment implements PredicateListener
 		{
 			if (newValue != errorAtom && newValue != TermConstants.failAtom && newValue != warningAtom)
 			{
-				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
+				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		else if (flag == doubleQuotesAtom)
@@ -308,7 +309,7 @@ public class Environment implements PredicateListener
 			if (newValue != TermConstants.charsAtom && newValue != TermConstants.codesAtom
 					&& newValue != TermConstants.atomAtom)
 			{
-				PrologException.domainError(prologFlagAtom, new CompoundTerm(plusTag, flag, newValue));
+				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
 		}
 		if (!changableFlags.contains(flag))

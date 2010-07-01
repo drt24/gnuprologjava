@@ -36,7 +36,7 @@ public class Predicate_atom_codes implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -82,7 +82,8 @@ public class Predicate_atom_codes implements PrologCode
 				}
 				IntegerTerm e = (IntegerTerm) head;
 				if (e.value < 0 || 0xffff < e.value)
-				{
+				{// EXTENSION: the max character code should be stored somewhere
+					// sensible.
 					PrologException.representationError(TermConstants.characterCodeAtom);
 				}
 				bu.append((char) e.value);
@@ -111,7 +112,7 @@ public class Predicate_atom_codes implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -122,7 +123,7 @@ public class Predicate_atom_codes implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */

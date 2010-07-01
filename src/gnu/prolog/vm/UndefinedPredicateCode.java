@@ -73,7 +73,7 @@ public class UndefinedPredicateCode implements PrologCode
 		else if (flg == warningAtom)
 		{
 			// later should be replaced by output to 'user'
-			System.err.println("predicate " + predicateTag.functor.value + "/" + predicateTag.arity + " does not exists.");
+			System.err.println("predicate " + predicateTag.functor.value + "/" + predicateTag.arity + " does not exist.");
 			return FAIL;
 		}
 		throw new PrologException(PrologException.systemErrorAtom, null);

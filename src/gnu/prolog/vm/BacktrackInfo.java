@@ -20,7 +20,14 @@ package gnu.prolog.vm;
 /** back track information base class */
 public class BacktrackInfo
 {
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param undoPosition
+	 *          {@link #undoPosition}
+	 * @param codePosition
+	 *          {@link #codePosition}
+	 * */
 	public BacktrackInfo(int undoPosition, int codePosition)
 	{
 		this.undoPosition = undoPosition;
@@ -35,12 +42,13 @@ public class BacktrackInfo
 
 	/**
 	 * A pointer to code position. This pointer is interpreted by function that
-	 * created backtrack information.
+	 * created backtrack information. TODO: what is the meaning of -1 here?
 	 */
 	public int codePosition;
 
 	/**
 	 * A position in undo stack. all actions will be undone up to this position.
+	 * TODO: what is the meaning of -1 here?
 	 */
 	public int undoPosition;
 }

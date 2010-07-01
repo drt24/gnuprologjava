@@ -22,9 +22,10 @@ package gnu.prolog.vm;
  */
 public interface PrologCode
 {
+	// EXTENSION: use an enum rather than ints
 	/**
 	 * predicate was returned with success, backtrack info was created, and
-	 * re-excute is possible.
+	 * re-execute is possible.
 	 */
 	public final static int SUCCESS = 0;
 	/** predicate was returned with success, backtrack info was not created */
@@ -32,7 +33,7 @@ public interface PrologCode
 	/** predicate failed */
 	public final static int FAIL = -1;
 	/**
-	 * returned by the interpreter when it was halted, shown never be returned by
+	 * returned by the interpreter when it was halted, should never be returned by
 	 * prolog code
 	 */
 	public static final int HALT = -2;

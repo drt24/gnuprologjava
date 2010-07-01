@@ -45,7 +45,7 @@ public final class TermConstants
 	public static final AtomTerm flagValueAtom = AtomTerm.get("flag_value");
 	public static final AtomTerm ioModeAtom = AtomTerm.get("io_mode");
 	public static final AtomTerm nonEmptyListAtom = AtomTerm.get("non_empty_list");
-	public static final AtomTerm notLessThanZeroAtom = AtomTerm.get("not_less_then_zero");
+	public static final AtomTerm notLessThanZeroAtom = AtomTerm.get("not_less_than_zero");
 	public static final AtomTerm operatorPriorityAtom = AtomTerm.get("operator_priority");
 	public static final AtomTerm operatorSpecifierAtom = AtomTerm.get("operator_specifier");
 	public static final AtomTerm prologFlagAtom = AtomTerm.get("prolog_flag");
