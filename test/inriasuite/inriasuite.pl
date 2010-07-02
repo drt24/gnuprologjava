@@ -73,6 +73,24 @@ test_all([F|Fs]) :-
 	run_tests(F),
         test_all(Fs).
 
+%%%%
+%
+%  sum_list(NumList, SumOfList) - binds SumOfList to the sum
+%  of the list NumList of numbers.
+%
+sum_list([], 0).
+sum_list([First | Rest], Sum) :-
+   sum_list(Rest, SumOfRest),
+   Sum is First + SumOfRest.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  total_score(-Total)
+% Compute the total from score/3
+
+total_score(Total) :- 
+        findall(FileTotal, score(_,_,wrong(FileTotal)), ListTotals),
+        sum_list(ListTotals, Total).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -89,7 +107,9 @@ write_results :-
         write('All bips passed -------------'), nl
         )
         ;
-        (nl, write('The following BIPs gave unexpected answers:'),nl,
+        (nl, write('The following *'), length(ErrorBips,NumErrors), write(NumErrors),
+        write('* BIPs gave a total of *'), total_score(Total), write(Total),
+        write('* unexpected answers:'),nl,
          write('The results should be examined carefully.'), nl,
         nl,
         display_list(ErrorBips))
@@ -815,6 +835,7 @@ fake_numbervars(T, N, M) :-
         T =.. [_F |Args],
         fake_numbervars(Args, N,M).
 
+dog.%for current_predicate
 
 % :-initialization((run_all_tests, halt)).
 %:- initialization(run_all_tests).

@@ -126,7 +126,8 @@ Ant Buildfile for GNU Prolog for Java.
 	</target>
 
 	<target name="test-vanilla">
-		<echo>Verify output in test/test-vanilla.out</echo>
+		<echo>Verify output in test/test-vanilla.out
+Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to happen.</echo>
 		<java jar="build/${ant.project.name}-${version}.jar" dir="test/vanilla_stock" fork="true" logerror="true" output="test/test-vanilla.out">
 			<arg value="-once" />
 			<arg value="gnuprologjava.pl" />
@@ -140,6 +141,10 @@ Ant Buildfile for GNU Prolog for Java.
 			<arg value="inriasuite.pl" />
 			<arg value="run_all_tests" />
 		</java>
+		<exec executable="grep">
+			<arg value="* BIPs gave"/>
+			<arg value="test/test-inria.out"/>
+		</exec>
 	</target>
 
 </project>
