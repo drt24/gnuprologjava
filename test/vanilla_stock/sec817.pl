@@ -121,7 +121,7 @@ find_flags :-
 
 
 test_halt1 :-
-	test_true(halt(7)).
+	test_true(halt(0)).
 
 
 
