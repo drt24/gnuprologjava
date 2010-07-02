@@ -37,6 +37,7 @@ import java.util.Set;
  */
 public class Predicate
 {
+	// TODO convert to proper enum as this is foul.
 	/** type of predicate is not yet set */
 	public static final int UNDEFINED = -1;
 	/**

@@ -107,6 +107,7 @@ public class Environment implements PredicateListener
 	/** PredicateTag to code mapping */
 	protected Map<CompoundTermTag, PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
 
+	// TODO move into TermConstants, possibly consider using enums.
 	// flag atoms
 	public final static AtomTerm boundedAtom = AtomTerm.get("bounded");
 	public final static AtomTerm integerRoundingFunctionAtom = AtomTerm.get("integer_rounding_function");

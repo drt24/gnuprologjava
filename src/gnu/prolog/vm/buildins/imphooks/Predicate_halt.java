@@ -35,13 +35,15 @@ public class Predicate_halt implements PrologCode
 	/**
 	 * this method is used for execution of code
 	 * 
+	 * Halts execution by throwing {@link PrologHalt} DO NOT catch this.
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
 	 *          true if predicate is called on backtracking and false otherwise
 	 * @param args
 	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * 
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
