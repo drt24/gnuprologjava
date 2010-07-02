@@ -82,9 +82,9 @@
 %                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-required_flags([bounded, max_integer, min_integer, 
-                integer_rounding_function, char_conversion,
-                debug, max_arity, unknown, double_quotes]).
+required_flags([bounded, char_conversion, debug, double_quotes,
+        integer_rounding_function, max_arity, max_integer,
+        min_integer, unknown]).
 
 
 
