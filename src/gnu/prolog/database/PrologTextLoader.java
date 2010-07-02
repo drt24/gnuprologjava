@@ -250,8 +250,9 @@ public class PrologTextLoader
 						processBuildInDirective(dirTerm.args[0], dirTerm.args[1]);
 					}
 					else
-					{
-						logError("invalid directive: " + dirTag);
+					{// treat it as a goal to run at runtime not in ISO but common
+						// (NONISO)
+						processInitializationDirective(new CompoundTerm(initializationTag, dirTerm));
 					}
 				}
 			}
