@@ -89,6 +89,12 @@ public class Predicate_abolish implements PrologCode
 		{
 			PrologException.domainError(TermConstants.notLessThanZeroAtom, ta);
 		}
+		// check that something that big can exist
+		IntegerTerm maxArityTerm = (IntegerTerm) interpreter.getEnvironment().getPrologFlag(TermConstants.maxArityAtom);
+		if (a.value > maxArityTerm.value)
+		{
+			PrologException.representationError(TermConstants.maxArityAtom);
+		}
 		CompoundTermTag tag = CompoundTermTag.get(n, a.value);
 		Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
 		if (p != null)

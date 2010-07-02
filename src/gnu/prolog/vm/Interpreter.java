@@ -82,7 +82,7 @@ public final class Interpreter
 	}
 
 	/** get environment */
-	protected Environment getEnvironment()
+	public Environment getEnvironment()
 	{
 		return environment;
 	}

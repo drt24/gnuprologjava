@@ -40,7 +40,7 @@ public class Predicate_functor implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -118,6 +118,13 @@ public class Predicate_functor implements PrologCode
 				}
 				AtomTerm functor = (AtomTerm) name;
 				int n = iarity.value;
+				// check that we can make something that big
+				IntegerTerm maxArityTerm = (IntegerTerm) interpreter.getEnvironment().getPrologFlag(TermConstants.maxArityAtom);
+				if (n > maxArityTerm.value)
+				{
+					PrologException.representationError(TermConstants.maxArityAtom);
+				}
+
 				Term targs[] = new Term[n];
 				for (int i = 0; i < n; i++)
 				{
@@ -149,7 +156,7 @@ public class Predicate_functor implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -160,7 +167,7 @@ public class Predicate_functor implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
