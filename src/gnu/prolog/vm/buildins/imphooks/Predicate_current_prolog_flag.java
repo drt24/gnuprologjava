@@ -19,11 +19,13 @@ package gnu.prolog.vm.buildins.imphooks;
 
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -76,9 +78,14 @@ public class Predicate_current_prolog_flag implements PrologCode
 				Term val = interpreter.environment.getPrologFlag((AtomTerm) flag);
 				if (val == null)
 				{
-					return FAIL;
+					PrologException.domainError(TermConstants.prologFlagAtom, flag);
+					return FAIL;// fake return.
 				}
 				return interpreter.unify(value, val.dereference());
+			}
+			else if (!(flag instanceof VariableTerm))
+			{
+				PrologException.typeError(TermConstants.atomAtom, flag);
 			}
 			CurrentPrologFlagBacktrackInfo bi = new CurrentPrologFlagBacktrackInfo();
 			bi.map = interpreter.environment.getPrologFlags();
@@ -119,7 +126,7 @@ public class Predicate_current_prolog_flag implements PrologCode
 	 * installed only for one environment.
 	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          Environment to install the predicate
 	 */
 	public void install(Environment env)
 	{
@@ -130,7 +137,7 @@ public class Predicate_current_prolog_flag implements PrologCode
 	 * this method is called when code is uninstalled from the environment
 	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          Environment to install the predicate
 	 */
 	public void uninstall(Environment env)
 	{}

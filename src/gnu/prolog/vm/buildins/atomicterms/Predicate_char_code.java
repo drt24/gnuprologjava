@@ -35,7 +35,7 @@ public class Predicate_char_code implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -79,6 +79,12 @@ public class Predicate_char_code implements PrologCode
 				PrologException.typeError(TermConstants.characterAtom, achar);
 			}
 			IntegerTerm code = IntegerTerm.get(achar.value.charAt(0));
+
+			if (!(tcode instanceof IntegerTerm | tcode instanceof VariableTerm))
+			{
+				PrologException.typeError(TermConstants.integerAtom, tcode);
+			}
+
 			return interpreter.unify(code, tcode);
 		}
 		else
@@ -91,7 +97,7 @@ public class Predicate_char_code implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
@@ -102,7 +108,7 @@ public class Predicate_char_code implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environemnt to install the predicate
 	 */
