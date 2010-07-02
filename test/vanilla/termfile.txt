@@ -1,2 +1,0 @@
-abcdef.  'Now is the time'. 
-program(logic + control).
