@@ -1,0 +1,12 @@
+/*
+This test is wrong as the testsuite uses a catch clause which matches
+on any error in order to see whether or not this is a system_error
+which means that by 7.8.10.3 of the standard which is the section being tested here:
+b) B does not unify with the C argument of any call
+of catch / 3
+— system error.
+However since it does unify a system_error is not thrown. TODO: better test
+*/
+
+%[(catch(true, C, write('something')), throw(blabla)), system_error]. 
+						% The system catches 'blabla'

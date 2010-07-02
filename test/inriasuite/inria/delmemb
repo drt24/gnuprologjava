@@ -5,10 +5,10 @@
 [delmemb(_ <-- _, [],[]),success].
 [delmemb(_ <-- _, [],[_]),failure].
 [delmemb(E <-- F, [E <-- F], []),success].
-[delmemb(E <-- F, [E <-- F], [_]),failure].
-[delmemb(E <-- F, [A,E <-- F],[A]),success].
+[(delmemb(E <-- F, [E <-- F], [C]), C \= (E <-- F)),failure].
+[(delmemb(E <-- F, [a,E <-- F],[a])),success].
 [delmemb(E <-- F, [_,E <-- F],[]),failure].
-[delmemb(E <-- F, [_,E <-- F],[_]),failure].
+[(delmemb(E <-- F, [C,E <-- F],[D]), C \= D),failure].
 [delmemb(E <-- F, [E <-- F,A],[A]),success].
 [delmemb(E <-- F, [E <-- F,_,_],[]),failure].
 [delmemb(E <-- F, [E <-- F,_,_],[_]),failure].

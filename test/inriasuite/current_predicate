@@ -12,5 +12,12 @@
 
 [current_predicate(0/dog), type_error(predicate_indicator, 0/dog)].
 
+[current_predicate(dog/0), success]. 
+
+[current_predicate(file/Arity), [[Arity <-- 1]]].
+
+[current_predicate(foobarbazundef/A), failure].
+
+
 /* end of current_predicate */
 
