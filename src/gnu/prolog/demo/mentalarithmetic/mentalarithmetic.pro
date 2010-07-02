@@ -32,7 +32,7 @@ mental(I, L, C, [O,N|T], A) :- pickOperation(I, C, O, N, NC), NL is L-1 , mental
 pickOperation(I, C, '+', N, A) :- N is random(I), A is C + N, A < I.
 pickOperation(I, C, '-', N, A) :- N is random(I), A is C - N, A > 0.
 pickOperation(I, C, '*', N, A) :- N is random(I), A is C * N, A < I.
-pickOperation(_, C, '/', N, A) :- factors(C,L), member(N, L), A is C / N.
+pickOperation(_, C, '/', N, A) :- factors(C,L), member(N, L), A is C // N.
 
 %factors(+N, -List) list of factors of N
 factors(N, List) :- S is ceiling(N / 2), recFactors(N, S, List).

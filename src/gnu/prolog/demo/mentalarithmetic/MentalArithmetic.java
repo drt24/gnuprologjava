@@ -37,8 +37,6 @@ import gnu.prolog.vm.TermConstants;
 
 import java.io.Console;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This is the main class of the mentalarithemtic program. It is runnable as a
@@ -232,12 +230,10 @@ public class MentalArithmetic
 			error.printStackTrace();
 		}
 
-		Map<AtomTerm, Term> atom2flag = env.getPrologFlags();
-		Set<AtomTerm> atoms = atom2flag.keySet();
-		for (AtomTerm a : atoms)
-		{
-			System.out.println(a.toString() + " => " + atom2flag.get(a));
-		}
-
+		/*
+		 * Map<AtomTerm, Term> atom2flag = env.getPrologFlags(); Set<AtomTerm> atoms
+		 * = atom2flag.keySet(); for (AtomTerm a : atoms) {
+		 * System.out.println(a.toString() + " => " + atom2flag.get(a)); }
+		 */
 	}
 }
