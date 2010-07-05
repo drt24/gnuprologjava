@@ -133,11 +133,11 @@ public abstract class PrologStream
 		list.add(new CompoundTerm(typeTag, type));
 	}
 
-	public abstract int getByte(Term streamTerm, Interpreter interptreter) throws PrologException;
+	public abstract int getByte(Term streamTerm, Interpreter interpreter) throws PrologException;
 
-	public abstract int peekByte(Term streamTerm, Interpreter interptreter) throws PrologException;
+	public abstract int peekByte(Term streamTerm, Interpreter interpreter) throws PrologException;
 
-	public abstract void putByte(Term streamTerm, Interpreter interptreter, int _byte) throws PrologException;
+	public abstract void putByte(Term streamTerm, Interpreter interpreter, int _byte) throws PrologException;
 
 	public Term getEndOfStreamState() throws PrologException
 	{
@@ -145,21 +145,21 @@ public abstract class PrologStream
 		return endOfStream;
 	}
 
-	public abstract Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException;
+	public abstract Term getPosition(Term streamTerm, Interpreter interpreter) throws PrologException;
 
-	public abstract void setPosition(Term streamTerm, Interpreter interptreter, Term pos) throws PrologException;
+	public abstract void setPosition(Term streamTerm, Interpreter interpreter, Term pos) throws PrologException;
 
-	public abstract int getCode(Term streamTerm, Interpreter interptreter) throws PrologException;
+	public abstract int getCode(Term streamTerm, Interpreter interpreter) throws PrologException;
 
-	public abstract int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException;
+	public abstract int peekCode(Term streamTerm, Interpreter interpreter) throws PrologException;
 
-	public abstract void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException;
+	public abstract void putCode(Term streamTerm, Interpreter interpreter, int code) throws PrologException;
 
-	public abstract void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException;
+	public abstract void putCodeSequence(Term streamTerm, Interpreter interpreter, String seq) throws PrologException;
 
-	public abstract Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException;
+	public abstract Term readTerm(Term streamTerm, Interpreter interpreter, ReadOptions options) throws PrologException;
 
-	public abstract void writeTerm(Term streamTerm, Interpreter interptreter, WriteOptions options, Term term)
+	public abstract void writeTerm(Term streamTerm, Interpreter interpreter, WriteOptions options, Term term)
 			throws PrologException;
 
 	public abstract void flushOutput(Term streamTerm) throws PrologException;
