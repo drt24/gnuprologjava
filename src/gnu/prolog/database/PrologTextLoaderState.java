@@ -49,7 +49,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 	protected CharConversionTable convTable = new CharConversionTable();
 	protected List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
 
-	// arguments of ensure_loaded/1 and include/2 derectived
+	// arguments of ensure_loaded/1 and include/2 directive
 	protected final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
 	protected final static CompoundTermTag urlTag = CompoundTermTag.get("url", 1);
 	protected final static CompoundTermTag fileTag = CompoundTermTag.get("file", 1);

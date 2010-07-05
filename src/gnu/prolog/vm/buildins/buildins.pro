@@ -55,7 +55,7 @@
 :-build_in(number/1,  'gnu.prolog.vm.buildins.typetesting.Predicate_number'). 
 :-build_in(java_object/1, 'gnu.prolog.vm.buildins.typetesting.Predicate_java_object'). 
                                      
-% 8.4 term comparsion
+% 8.4 term comparison
 :-build_in((==)/2,  'gnu.prolog.vm.buildins.termcomparsion.Predicate_term_identical'). 
 :-build_in((\==)/2, 'gnu.prolog.vm.buildins.termcomparsion.Predicate_term_not_identical'). 
 :-build_in((@<)/2,  'gnu.prolog.vm.buildins.termcomparsion.Predicate_term_less_then'). 
@@ -72,7 +72,7 @@
 % 8.6 arithmetics evaluation
 :-build_in((is)/2,'gnu.prolog.vm.buildins.arithmetics.Predicate_is'). 
 
-% 8.7 arithmetic comparsion
+% 8.7 arithmetic comparison
 :-build_in((=:=)/2,'gnu.prolog.vm.buildins.arithmetics.Predicate_equal'). 
 :-build_in((=\=)/2,'gnu.prolog.vm.buildins.arithmetics.Predicate_not_equal'). 
 :-build_in((<)/2,  'gnu.prolog.vm.buildins.arithmetics.Predicate_less_than'). 
@@ -90,12 +90,12 @@
 :-build_in(retract/1,  'gnu.prolog.vm.buildins.database.Predicate_retract'). 
 :-build_in(abolish/1,  'gnu.prolog.vm.buildins.database.Predicate_abolish'). 
 
-% 8.10 All solusions
+% 8.10 All solutions
 :-build_in(findall/3, 'gnu.prolog.vm.buildins.allsolutions.Predicate_findall'). 
 :-build_in(bagof/3,   'gnu.prolog.vm.buildins.allsolutions.Predicate_bagof'). 
 :-build_in(setof/3,   'gnu.prolog.vm.buildins.allsolutions.Predicate_setof'). 
 
-% 8.11 stream slection and control
+% 8.11 stream selection and control
 :-build_in(current_input/1,  'gnu.prolog.vm.buildins.io.Predicate_current_input'). 
 :-build_in(current_output/1, 'gnu.prolog.vm.buildins.io.Predicate_current_output'). 
 :-build_in(set_input/1,      'gnu.prolog.vm.buildins.io.Predicate_set_input'). 
@@ -178,12 +178,12 @@ write_canonical(S,Term):-write_term(S,Term,[quoted(true),ignore_ops(true)]).
 :-build_in(op/3, 'gnu.prolog.vm.buildins.io.Predicate_op').
 :-build_in(current_op/3, 'gnu.prolog.vm.buildins.io.Predicate_current_op').
 
-% char conversions are not yet supported
+% TODO char conversions are not yet supported
 % Note: even though these are accepted the conversion is not performed during reading
 :-build_in(char_conversion/2, 'gnu.prolog.vm.buildins.io.Predicate_char_conversion').
 :-build_in(current_char_conversion/2, 'gnu.prolog.vm.buildins.io.Predicate_current_char_conversion').
 
-% 8.15 logic and cotrol
+% 8.15 logic and control
 
 '\\+'(Goal) :- call(Goal),!,fail.
 '\\+'(Goal).
@@ -217,3 +217,6 @@ halt:-halt(0).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.java.pro')).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.uuid.pro')).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.dialogs.pro')).
+
+% Directives used outside of their normal directive context.
+:-build_in(ensure_loaded/1, 'gnu.prolog.vm.buildins.io.Predicate_ensure_loaded').
