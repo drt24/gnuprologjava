@@ -64,6 +64,7 @@
 
 run_all_tests :-
 	findall(F, file(F), Files),
+	write('Testing: '), write(Files),
         test_all(Files),
         write_results, !.
 
@@ -751,15 +752,19 @@ file('term_lt=').
 file(true).
 file(unify).
 
+file(F) :- extra(N), atom_concat('extra/',N,F).
+file(F) :- inria(N), atom_concat('inria/',N,F).
+
+
 % extras
-file('extra/append').
-%file('extra/').
+extra(append).
+
 
 % self test
-file('inria/already_appears').
-file('inria/vars_in_term').
-file('inria/delmemb').
-%file('inria/').
+inria(already_appears).
+inria(vars_in_term).
+inria(delmemb).
+
 
 %%%%%%%%%%%
 %
