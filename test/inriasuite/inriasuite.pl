@@ -18,10 +18,6 @@
 %   report on them one by one. Output results
 %   only when the result is not the expected one.
 %
-%    A more readable output can be obtained if the processor
-%   supports numbervars/3 by  restoring the commented out
-%   line in  write_if_wrong/5.
-%
 %    Revised April 8 1999.
 %
 %   Matching of solutions is not yet  perfected.
@@ -641,7 +637,7 @@ test(F, [G, ProgFile, Expected]) :-
 % an appropriate message.
 %
 %  A more elegant output is possible if the processor supports
-%  numbervars/3, insert ther commented out line.
+%  numbervars/3, switch fake_numbervars to numbervars.
 %
 
 write_if_wrong(_,_,_,[],[]):- !.
@@ -754,7 +750,17 @@ file(unify).
 
 file(F) :- extra(N), atom_concat('extra/',N,F).
 file(F) :- inria(N), atom_concat('inria/',N,F).
+file(F) :- file(F,IF), ensure_loaded(IF).
 
+% file(+TestFile,+IncludeFile) a TestFile which depends on an IncludeFile
+
+file(TF,IF) :-
+	io(NTF,NIF),
+	atom_concat('io/',NTF,TF),
+	atom_concat('io/', NIF, IF).
+
+% io
+io(char_conversion,'char_conversion.pl').
 
 % extras
 extra(append).
@@ -824,7 +830,7 @@ make_list1(N, [_|L1]) :-
 %
 %   fake_numbervars/3
 %
-%  Like numbervars
+%  Like numbervars/3
 %
 
 fake_numbervars(X,N,M) :-

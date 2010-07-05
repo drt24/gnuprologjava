@@ -14,7 +14,7 @@
 
 [current_predicate(dog/0), success]. 
 
-[current_predicate(file/Arity), [[Arity <-- 1]]].
+[current_predicate(file/Arity), [[Arity <-- 1],[Arity <-- 2]]].
 
 [current_predicate(foobarbazundef/A), failure].
 
