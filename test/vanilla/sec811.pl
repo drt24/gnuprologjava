@@ -393,8 +393,8 @@ test_sp :-
 %  in the usual way since it will try to read from Current input
 
 test_eos :-
-     do_catch((end_of_stream(not/alias);true), B, error_is_not(existence_error,B)),
-     test_at_end_of_stream,test_at_end_of_stream_errors.
+     test_at_end_of_stream, test_at_end_of_stream_errors,
+     do_catch((end_of_stream(not/alias);true), B, error_is_not(existence_error,B)).
 
 test_eos:-     
      log_nl, log( 'at_end_of_stream not supported'), log_nl.
