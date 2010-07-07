@@ -60,7 +60,7 @@
 
 run_all_tests :-
 	findall(F, file(F), Files),
-	write('Testing: '), write(Files),
+	write('Testing: '), write(Files), nl, nl,
         test_all(Files),
         write_results, !.
 
@@ -607,7 +607,7 @@ loop_through(F, S) :-
 %
 %   test(+File, +TermRead)
 %
-%  do the tests. Handles syntax erros in input and end_of_file
+%  do the tests. Handles syntax errors in input and end_of_file
 %
 
 test(_,end_of_file).
@@ -750,7 +750,9 @@ file(unify).
 
 file(F) :- extra(N), atom_concat('extra/',N,F).
 file(F) :- inria(N), atom_concat('inria/',N,F).
+file(F) :- io(N), atom_concat('io/',N,F).
 file(F) :- file(F,IF), ensure_loaded(IF).
+
 
 % file(+TestFile,+IncludeFile) a TestFile which depends on an IncludeFile
 
@@ -761,6 +763,7 @@ file(TF,IF) :-
 
 % io
 io(char_conversion,'char_conversion.pl').
+io(at_end_of_stream).
 
 % extras
 extra(append).

@@ -1,0 +1,12 @@
+/* file at_end_of_stream */
+
+[(open('README', read, S3), get_char(S3, X), \+(at_end_of_stream(S3)),
+        close(S3)),success].
+
+[at_end_of_stream(not/stream),domain_error(stream_or_alias, not/stream)].
+[(open('at_end_of_stream.tmp', write, Sout), put_char(Sout, a),
+        write(Sout, '.'), nl(Sout), close(Sout),
+        open('at_end_of_stream.tmp', read, Sin), read(Sin, a),
+        at_end_of_stream(Sin), close(Sin)),success].
+
+/* end of at_end_of_stream */
