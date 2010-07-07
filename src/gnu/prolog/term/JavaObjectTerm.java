@@ -18,9 +18,9 @@
 package gnu.prolog.term;
 
 /**
- * Term which is embeding JavaObject This term should never participate in text
+ * Term which is embedding JavaObject This term should never participate in text
  * IO operations. It is always created as result of function calls. It could be
- * unifed only with variable or other JavaObjectTerm that has value identical
+ * unified only with variable or other JavaObjectTerm that has value identical
  * (==) to value of this object.
  */
 
