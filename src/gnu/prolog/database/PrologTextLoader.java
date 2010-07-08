@@ -252,7 +252,7 @@ public class PrologTextLoader
 					else
 					{// treat it as a goal to run at runtime not in ISO but common
 						// (NONISO)
-						processInitializationDirective(new CompoundTerm(initializationTag, dirTerm));
+						processInitializationDirective(dirTerm);
 					}
 				}
 			}
@@ -300,9 +300,9 @@ public class PrologTextLoader
 		prologTextLoaderState.defineExternal(this, pi, ((AtomTerm) className).value, Predicate.EXTERNAL);
 	}
 
-	protected void processInitializationDirective(Term term1)
+	protected void processInitializationDirective(Term term)
 	{
-		prologTextLoaderState.addInitialization(this, term1);
+		prologTextLoaderState.addInitialization(this, term);
 	}
 
 	protected void processCharConversionDirective(Term from, Term to)
