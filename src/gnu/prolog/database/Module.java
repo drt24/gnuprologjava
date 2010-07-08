@@ -38,7 +38,7 @@ public class Module
 	protected Map<CompoundTermTag, Predicate> tag2predicate = new HashMap<CompoundTermTag, Predicate>();
 
 	/** initialization */
-	protected List<Term> initialization = new ArrayList<Term>();
+	protected List<Pair<PrologTextLoaderError, Term>> initialization = new ArrayList<Pair<PrologTextLoaderError, Term>>();
 
 	/**
 	 * create new predicate defined in this module
@@ -85,13 +85,13 @@ public class Module
 	}
 
 	/** add term to initialization list */
-	public synchronized void addInitialization(Term term)
+	public synchronized void addInitialization(PrologTextLoaderError prologTextLoaderError, Term term)
 	{
-		initialization.add(term);
+		initialization.add(new Pair<PrologTextLoaderError, Term>(prologTextLoaderError, term));
 	}
 
 	/** get initaliztion */
-	public synchronized List<Term> getInitialization()
+	public synchronized List<Pair<PrologTextLoaderError, Term>> getInitialization()
 	{
 		return initialization;
 	}

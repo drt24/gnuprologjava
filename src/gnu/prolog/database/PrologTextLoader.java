@@ -154,6 +154,23 @@ public class PrologTextLoader
 	}
 
 	/**
+	 * Get a PrologTextLoaderError for the position the PrologTextLoader is at to
+	 * use later if something goes wrong caused by an error here.
+	 * 
+	 * The message is null.
+	 * 
+	 * This is mainly intended for use during initialisation.
+	 * 
+	 * @see PrologTextLoaderState#addInitialization()
+	 * 
+	 * @return a partially filled in PrologTextLoaderError (missing a message)
+	 */
+	public PrologTextLoaderError getCurrentPartialLoaderError()
+	{
+		return new PrologTextLoaderError(getCurrentFile(), getCurrentLine(), getCurrentColumn(), null);
+	}
+
+	/**
 	 * @return the prologTextLoaderState
 	 */
 	public PrologTextLoaderState getPrologTextLoaderState()

@@ -339,9 +339,25 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		errorList.add(new PrologTextLoaderError(loader, message));
 	}
 
+	/**
+	 * To be used for errors during initialisation
+	 * 
+	 * @see #logError(PrologTextLoader,String)
+	 * @see Environment#runInitialization(Interpreter)
+	 * 
+	 * @param partialError
+	 *          the partially filled in error (missing message)
+	 * @param message
+	 *          the message to add
+	 */
+	public void logError(PrologTextLoaderError partialError, String message)
+	{
+		errorList.add(new PrologTextLoaderError(partialError, message));
+	}
+
 	public void addInitialization(PrologTextLoader loader, Term term)
 	{
-		module.addInitialization(term);
+		module.addInitialization(loader.getCurrentPartialLoaderError(), term);
 	}
 
 	public void ensureLoaded(Term term)

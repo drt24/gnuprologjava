@@ -46,6 +46,17 @@ public class PrologTextLoaderError extends Exception
 		this(loader.getCurrentFile(), ex.getLine(), ex.getColumn(), "syntax error: " + ex.getMessage());
 	}
 
+	/**
+	 * @param partialError
+	 *          the partially filled in error lacking a message
+	 * @param message
+	 *          the message to use
+	 */
+	public PrologTextLoaderError(PrologTextLoaderError partialError, String message)
+	{
+		this(partialError.file, partialError.line, partialError.column, message);
+	}
+
 	public String getFile()
 	{
 		return file;

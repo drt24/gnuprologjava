@@ -19,6 +19,7 @@ package gnu.prolog.vm;
 
 import gnu.prolog.Version;
 import gnu.prolog.database.Module;
+import gnu.prolog.database.Pair;
 import gnu.prolog.database.Predicate;
 import gnu.prolog.database.PredicateListener;
 import gnu.prolog.database.PredicateUpdatedEvent;
@@ -203,6 +204,10 @@ public class Environment implements PredicateListener
 		return new HashMap<AtomTerm, Term>(atom2flag);
 	}
 
+	/**
+	 * 
+	 * @param interpreter
+	 */
 	public void runIntialization(Interpreter interpreter)
 	{
 		if (initalizationRun)
@@ -210,10 +215,9 @@ public class Environment implements PredicateListener
 			throw new IllegalStateException("initialization cannot be run again");
 		}
 		initalizationRun = true;
-		Iterator<Term> iterator = getModule().getInitialization().iterator();
-		while (iterator.hasNext())
+		for (Pair<PrologTextLoaderError, Term> loaderTerm : getModule().getInitialization())
 		{
-			Term term = iterator.next();
+			Term term = loaderTerm.right;
 			try
 			{
 				Interpreter.Goal goal = interpreter.prepareGoal(term);
@@ -222,9 +226,14 @@ public class Environment implements PredicateListener
 				{
 					interpreter.stop(goal);
 				}
+				else if (rc != PrologCode.SUCCESS_LAST)
+				{
+					prologTextLoaderState.logError(loaderTerm.left, "Goal Failed: " + term);
+				}
 			}
 			catch (PrologException ex)
 			{
+				prologTextLoaderState.logError(loaderTerm.left, ex.getMessage());
 			}
 		}
 	}

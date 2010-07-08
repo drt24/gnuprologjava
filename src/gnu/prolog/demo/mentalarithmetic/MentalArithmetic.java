@@ -20,6 +20,7 @@
  */
 package gnu.prolog.demo.mentalarithmetic;
 
+import gnu.prolog.database.Pair;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.io.ParseException;
 import gnu.prolog.io.ReadOptions;

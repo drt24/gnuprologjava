@@ -20,6 +20,8 @@
  */
 package gnu.prolog.vm.buildins.io;
 
+import gnu.prolog.database.PrologTextLoaderError;
+import gnu.prolog.database.PrologTextLoaderState;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
@@ -44,7 +46,14 @@ public class Predicate_ensure_loaded implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		interpreter.getEnvironment().getTextLoaderState().ensureLoaded(args[0]);
+		PrologTextLoaderState state = interpreter.getEnvironment().getTextLoaderState();
+		// TODO we need to do environment.runInitialization() here...
+		// loader errors could be generated and need to be displayed somewhere.
+		state.ensureLoaded(args[0]);
+		for (PrologTextLoaderError error : state.getErrors())
+		{
+			System.err.println(error.toString());
+		}
 		return SUCCESS_LAST;
 	}
 
