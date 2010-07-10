@@ -31,6 +31,9 @@ import java.io.Reader;
 
 public class TextInputPrologStream extends PrologStream
 {
+	// TODO put this in to a proper debugging framework.
+	private static final boolean DEBUG = false;
+
 	protected TermReader termReader;
 
 	protected RandomAccessFileReader fileReader;
@@ -251,7 +254,11 @@ public class TextInputPrologStream extends PrologStream
 			return term;
 		}
 		catch (IOException ex)
-		{
+		{// TODO there is useful debug information here which we are discarding
+			if (DEBUG)
+			{
+				System.err.println(ex.getMessage());
+			}
 			PrologException.syntaxError(inputAtom);
 			return null;
 		}
@@ -284,7 +291,7 @@ public class TextInputPrologStream extends PrologStream
 		catch (IOException ex)
 		{
 			if (!force)
-			{
+			{// TODO there is useful debug information here which we are discarding
 				PrologException.systemError(ex);
 			}
 		}
@@ -310,7 +317,7 @@ public class TextInputPrologStream extends PrologStream
 			}
 		}
 		catch (IOException ex)
-		{
+		{// TODO there is useful debug information here which we are discarding
 			PrologException.systemError(ex);
 		}
 		return super.getEndOfStreamState();

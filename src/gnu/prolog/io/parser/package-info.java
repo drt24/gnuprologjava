@@ -9,6 +9,8 @@
  * {@link ReaderCharStream} and {@link TermParserUtils} which contain some of
  * the code needed to integrate the generated parser with the rest of the
  * codebase.
+ * 
+ * TODO: parser does not properly handle unicode even in comments
  */
 package gnu.prolog.io.parser;
 

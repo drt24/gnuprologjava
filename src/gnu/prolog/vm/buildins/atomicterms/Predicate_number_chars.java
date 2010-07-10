@@ -67,7 +67,7 @@ public class Predicate_number_chars implements PrologCode
 				res = TermReader.stringToTerm(numStr);
 			}
 			catch (ParseException ex)
-			{
+			{// TODO there is useful debug information here which we are discarding
 				PrologException.syntaxError(ex);
 			}
 			if (!(res instanceof IntegerTerm || res instanceof FloatTerm))

@@ -67,7 +67,7 @@ public class Predicate_number_codes implements PrologCode
 				res = TermReader.stringToTerm(numStr);
 			}
 			catch (ParseException ex)
-			{
+			{// TODO there is useful debug information here which we are discarding
 				PrologException.syntaxError(ex);
 			}
 			if (!(res instanceof IntegerTerm || res instanceof FloatTerm))
@@ -88,7 +88,7 @@ public class Predicate_number_codes implements PrologCode
 		}
 	}
 
-	/** returns null if illegal chracter sequenca */
+	/** returns null if illegal character sequence */
 	private static String getNumberString(Term list, boolean numberIsVariable) throws PrologException
 	{
 		StringBuffer bu = new StringBuffer();
