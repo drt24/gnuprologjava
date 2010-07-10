@@ -56,7 +56,7 @@ public final class Interpreter
 
 	/**
 	 * Used to store context information for the lifespan of a goal. The context
-	 * is cleared everytime a new goal is prepared. Can be used by predicates to
+	 * is cleared every time a new goal is prepared. Can be used by predicates to
 	 * store information based on goals.
 	 */
 	protected Map<String, Object> context;
@@ -194,50 +194,50 @@ public final class Interpreter
 	public int getUndoPosition()
 	{
 		undoPositionAsked = true;
-		return undoData_amount;
+		return undoDataAmount;
 	}
 
 	/** undo changes until this position */
 	public void undo(int position)
 	{
 		// System.err.println("undo "+position+" current="+undoData_amount);
-		for (int i = undoData_amount - 1; i >= position; i--)
+		for (int i = undoDataAmount - 1; i >= position; i--)
 		{
 			undoData[i].undo();
 			undoData[i] = null;
 		}
-		undoData_amount = position;
+		undoDataAmount = position;
 		undoPositionAsked = true;
 	}
 
 	/** add variable undo */
 	public void addVariableUndo(VariableTerm variable)
 	{
-		if (undoPositionAsked || !(undoData[undoData_amount - 1] instanceof VariableUndoData))
+		if (undoPositionAsked || !(undoData[undoDataAmount - 1] instanceof VariableUndoData))
 		{
 			addSpecialUndo(new VariableUndoData());
 		}
-		if (variables_amount == variables.length)
+		if (variablesAmount == variables.length)
 		{
 			VariableTerm tmp[] = new VariableTerm[growSize + variables.length];
-			System.arraycopy(variables, 0, tmp, 0, variables_amount);
+			System.arraycopy(variables, 0, tmp, 0, variablesAmount);
 			variables = tmp;
 		}
-		variables[variables_amount] = variable;
-		variables_amount++;
+		variables[variablesAmount] = variable;
+		variablesAmount++;
 	}
 
 	/** add special undo */
 	public void addSpecialUndo(UndoData undoDatum)
 	{
-		if (undoData_amount == undoData.length)
+		if (undoDataAmount == undoData.length)
 		{
 			UndoData tmp[] = new UndoData[growSize + undoData.length];
-			System.arraycopy(undoData, 0, tmp, 0, undoData_amount);
+			System.arraycopy(undoData, 0, tmp, 0, undoDataAmount);
 			undoData = tmp;
 		}
-		undoData[undoData_amount] = undoDatum;
-		undoData_amount++;
+		undoData[undoDataAmount] = undoDatum;
+		undoDataAmount++;
 	}
 
 	// final static int maxStackSize = 0x1000000; // is not used
@@ -245,10 +245,10 @@ public final class Interpreter
 	protected final static int growSize = 0x4096;
 
 	protected VariableTerm variables[] = new VariableTerm[4096];
-	protected int variables_amount = 0;
+	protected int variablesAmount = 0;
 
 	protected UndoData undoData[] = new UndoData[4096];
-	protected int undoData_amount = 0;
+	protected int undoDataAmount = 0;
 	protected boolean undoPositionAsked = true;
 
 	protected class VariableUndoData implements UndoData
@@ -258,17 +258,17 @@ public final class Interpreter
 
 		protected VariableUndoData()
 		{
-			startPosion = variables_amount;
+			startPosion = variablesAmount;
 		}
 
 		public void undo()
 		{
-			for (int i = variables_amount - 1; i >= startPosion; i--)
+			for (int i = variablesAmount - 1; i >= startPosion; i--)
 			{
 				variables[i].value = null;
 				variables[i] = null;
 			}
-			variables_amount = startPosion;
+			variablesAmount = startPosion;
 		}
 	}
 
@@ -448,17 +448,69 @@ public final class Interpreter
 
 	protected Goal currentGoal;
 
+	/**
+	 * Used to store the current state so that we can support
+	 * {@link gnu.prolog.vm.buildins.io.Predicate_ensure_loaded}
+	 * 
+	 * @see #prepareGoal(Term)
+	 * @see #stop(Goal)
+	 * 
+	 *      WARNING: may result in obscure bugs, if so sorry.
+	 * 
+	 * @author Daniel Thomas
+	 */
+	protected class ReturnPoint
+	{
+		public Map<String, Object> context;
+
+		public BacktrackInfo backtrackInfoStack[];
+		public int backtrackInfoAmount;
+		public int backtrackInfoMax;
+		public int backtrackInfoGrow;
+
+		public VariableTerm variables[];
+		public int variablesAmount;
+
+		public UndoData undoData[];
+		public int undoDataAmount;
+		public boolean undoPositionAsked;
+
+		public Goal currentGoal;
+	}
+
+	/**
+	 * Map of Goals to ReturnPoints so that we can save the state in a return
+	 * point if in {@link #prepareGoal(Term)} we discover that we need to execute
+	 * another goal first before finishing executing the {@link #currentGoal}.
+	 */
+	private Map<Goal, ReturnPoint> returnPoints = new HashMap<Goal, ReturnPoint>();
+
 	/** prepare goal for execution */
 	public Goal prepareGoal(Term term) throws PrologException
 	{
+		ReturnPoint rp = null;
 		if (currentGoal != null)
-		{
-			throw new IllegalStateException("There is currently active goal");
+		{// Take a copy of the current state into a Return point
+			rp = new ReturnPoint();
+			rp.context = context;
+			rp.backtrackInfoStack = backtrackInfoStack.clone();
+			rp.backtrackInfoAmount = backtrackInfoAmount;
+			rp.backtrackInfoMax = backtrackInfoMax;
+			rp.variables = variables.clone();
+			rp.variablesAmount = variablesAmount;
+			rp.undoData = undoData.clone();
+			rp.undoDataAmount = undoDataAmount;
+			rp.undoPositionAsked = undoPositionAsked;
+			rp.currentGoal = currentGoal;
 		}
 		currentGoal = new Goal();
 		currentGoal.goal = term;
 		currentGoal.args = new Term[] { term };
 		context.clear();
+		if (rp != null)
+		{// save the return point so that we can jump back later
+			returnPoints.put(currentGoal, rp);
+		}
 		return currentGoal;
 	}
 
@@ -545,6 +597,23 @@ public final class Interpreter
 		}
 		backtrackInfoAmount = 0;
 		currentGoal = null;
+
+		// We have just finished with a goal we originally forced another goal out
+		// to do so pull that state back so that we can finish that goal
+		ReturnPoint rp = returnPoints.get(goal);
+		if (rp != null)
+		{
+			context = rp.context;
+			backtrackInfoStack = rp.backtrackInfoStack;
+			backtrackInfoAmount = rp.backtrackInfoAmount;
+			backtrackInfoMax = rp.backtrackInfoMax;
+			backtrackInfoGrow = rp.backtrackInfoGrow;
+			variables = rp.variables;
+			undoData = rp.undoData;
+			undoDataAmount = rp.undoDataAmount;
+			undoPositionAsked = rp.undoPositionAsked;
+			currentGoal = rp.currentGoal;
+		}
 	}
 
 	/**

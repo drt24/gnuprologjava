@@ -46,10 +46,14 @@ public class Predicate_ensure_loaded implements PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		PrologTextLoaderState state = interpreter.getEnvironment().getTextLoaderState();
-		// TODO we need to do environment.runInitialization() here...
+		Environment environment = interpreter.getEnvironment();
+		PrologTextLoaderState state = environment.getTextLoaderState();
+
+		state.ensureLoaded(args[0]);// actually do the loading
+		// ensure that any initializations are run.
+		environment.runIntialization(interpreter);
+
 		// loader errors could be generated and need to be displayed somewhere.
-		state.ensureLoaded(args[0]);
 		for (PrologTextLoaderError error : state.getErrors())
 		{
 			System.err.println(error.toString());

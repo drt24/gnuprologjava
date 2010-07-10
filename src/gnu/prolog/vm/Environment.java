@@ -139,7 +139,6 @@ public class Environment implements PredicateListener
 	/** atom to flag */
 	protected Map<AtomTerm, Term> atom2flag = new HashMap<AtomTerm, Term>();
 	protected Set<AtomTerm> changableFlags = new HashSet<AtomTerm>();
-	protected boolean initalizationRun = false;
 
 	/** constructor of environment, it loads buildins to database at start. */
 	public Environment()
@@ -195,7 +194,7 @@ public class Environment implements PredicateListener
 	/** true if the environment was already initialized */
 	public boolean isInitialized()
 	{
-		return initalizationRun;
+		return getModule().getInitialization().size() == 0;
 	}
 
 	/** get get copy of current state of flags for this environment */
@@ -210,31 +209,32 @@ public class Environment implements PredicateListener
 	 */
 	public void runIntialization(Interpreter interpreter)
 	{
-		if (initalizationRun)
+		Module module = getModule();
+		synchronized (module)// we are using synchronized methods but this is a
+		// transaction
 		{
-			throw new IllegalStateException("initialization cannot be run again");
-		}
-		initalizationRun = true;
-		for (Pair<PrologTextLoaderError, Term> loaderTerm : getModule().getInitialization())
-		{
-			Term term = loaderTerm.right;
-			try
+			for (Pair<PrologTextLoaderError, Term> loaderTerm : module.getInitialization())
 			{
-				Interpreter.Goal goal = interpreter.prepareGoal(term);
-				int rc = interpreter.execute(goal);
-				if (rc == PrologCode.SUCCESS)
+				Term term = loaderTerm.right;
+				try
 				{
-					interpreter.stop(goal);
+					Interpreter.Goal goal = interpreter.prepareGoal(term);
+					int rc = interpreter.execute(goal);
+					if (rc == PrologCode.SUCCESS)
+					{
+						interpreter.stop(goal);
+					}
+					else if (rc != PrologCode.SUCCESS_LAST)
+					{
+						prologTextLoaderState.logError(loaderTerm.left, "Goal Failed: " + term);
+					}
 				}
-				else if (rc != PrologCode.SUCCESS_LAST)
+				catch (PrologException ex)
 				{
-					prologTextLoaderState.logError(loaderTerm.left, "Goal Failed: " + term);
+					prologTextLoaderState.logError(loaderTerm.left, ex.getMessage());
 				}
 			}
-			catch (PrologException ex)
-			{
-				prologTextLoaderState.logError(loaderTerm.left, ex.getMessage());
-			}
+			module.clearInitialization();
 		}
 	}
 
@@ -342,13 +342,16 @@ public class Environment implements PredicateListener
 		return prologTextLoaderState;
 	}
 
-	/** ensure that prolog text designated by term is loaded */
+	/**
+	 * ensure that prolog text designated by term is loaded
+	 * 
+	 * You must use {@link #runInitialization()} after using this and before
+	 * expecting answers.
+	 * 
+	 * @see src.gnu.prolog.vm.buildins.io.Predicate_ensure_loaded
+	 * */
 	public synchronized void ensureLoaded(Term term)
 	{
-		if (initalizationRun)
-		{
-			throw new IllegalStateException("no files can be loaded after inializtion was run");
-		}
 		prologTextLoaderState.ensureLoaded(term);
 	}
 
@@ -629,6 +632,10 @@ public class Environment implements PredicateListener
 			{
 				PrologException.existenceError(PrologStream.streamAtom, stream_or_alias);
 			}
+			else
+			{
+				stream.checkExists();
+			}
 			return stream;
 		}
 		else if (stream_or_alias instanceof JavaObjectTerm)
@@ -743,16 +750,22 @@ public class Environment implements PredicateListener
 		return stream.streamTerm;
 	}
 
-	public synchronized void close(PrologStream stream) throws PrologException
+	/**
+	 * 
+	 * @param stream
+	 * @return true if we closed and false if we did not close.
+	 * @throws PrologException
+	 */
+	public synchronized boolean close(PrologStream stream) throws PrologException
 	{
 		if (stream == userInput)
 		{
-			return;
+			return false;
 		}
 		if (stream == userOutput)
 		{
 			userOutput.flushOutput(null);
-			return;
+			return false;
 		}
 		Iterator<AtomTerm> aliases = stream.aliases.iterator();
 		while (aliases.hasNext())
@@ -768,6 +781,7 @@ public class Environment implements PredicateListener
 		{
 			currentOutput = userOutput;
 		}
+		return true;
 	}
 
 	/**

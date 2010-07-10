@@ -96,6 +96,21 @@ public class Module
 		return initialization;
 	}
 
+	/**
+	 * Intended to be run from {@link Environment#runInitialization()} and from
+	 * nowhere else.
+	 * 
+	 * Resets the initialization list to the empty list so that they can be
+	 * iterated through again later.
+	 * 
+	 * Should be called in a synchronized block which read out the initiaization
+	 * list using {@link #getInitialization()}
+	 */
+	public synchronized void clearInitialization()
+	{
+		initialization = new ArrayList<Pair<PrologTextLoaderError, Term>>();
+	}
+
 	/** get predicate tags */
 	public synchronized Set<CompoundTermTag> getPredicateTags()
 	{
