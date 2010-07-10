@@ -166,6 +166,9 @@ public abstract class PrologStream
 
 	public void close(boolean force) throws PrologException
 	{
-		environment.close(this);
+		if (environment.close(this))// if we managed to close
+		{
+			closed = true;
+		}
 	}
 }

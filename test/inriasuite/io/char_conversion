@@ -1,6 +1,5 @@
 /* file char_conversion */
 
-[defined(char_conversion/2),success].
 [rw_char_conver(a,b,b),success].
 [rw_char_conver(a,b,a),failure].
 

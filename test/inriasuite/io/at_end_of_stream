@@ -7,6 +7,6 @@
 [(open('at_end_of_stream.tmp', write, Sout), put_char(Sout, a),
         write(Sout, '.'), nl(Sout), close(Sout),
         open('at_end_of_stream.tmp', read, Sin), read(Sin, a),
-        at_end_of_stream(Sin), close(Sin)),success].
+        at_end_of_stream(Sin), close(Sin)),[[Sout <-- _, Sin <-- _]]].
 
 /* end of at_end_of_stream */

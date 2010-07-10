@@ -763,6 +763,7 @@ file(TF,IF) :-
 
 % io
 io(char_conversion,'char_conversion.pl').
+io(read_term,'read_term.pl').
 io(at_end_of_stream).
 
 % extras

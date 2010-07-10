@@ -1,0 +1,49 @@
+/* file read_term */
+
+%Test for errors (8.14.1.3)
+[read_term(X,T,[]),instantiation_error].
+[(get_stream_for_read_term(S),read_term(S,T,[E])),instantiation_error].
+[read_term(a/b,T,[]),domain_error(stream_or_alias, a/b)].
+[read_term(a,T,[]),existence_error(stream, a)].
+[(get_stream_for_read_term(S),read_term(S,T,a)),type_error(list, a)].
+[(get_stream_for_read_term(S),read_term(S,T,[a])),domain_error(read_option, a)].
+
+%After this the stream S will be closed so don't try to use it for non-closed
+[(close_stream_for_read_term, get_stream_for_read_term(S), read_term(S,T,[])),
+        existence_error(stream, S)].
+
+[(open('io/read_term.tmp',write,S),read_term(S,T,[])),
+        permission_error(input, stream, S)].
+[(open('io/read_term.tmp',read, S, [type(binary)]),read_term(S,T,[])),
+        permission_error(input, binary_stream, S)].
+
+/*
+TODO: we probably want some sort of setup and tear down first
+j) The read-term Term breaches an implementation defined limit specified by 
+Flag where Flag is the flag (7.11) max arity, max integer, or min integer
+- representation error(Flag).
+*/
+
+[(open('io/read_term_syntax_error.txt',read, S, []), read_term(S,T,[])),
+        syntax_error(_)].
+
+
+
+% Tests based one examples (8.14.1.4)
+[(set_read_term_file_contents('term1. term2.'), get_read_term_file(S),
+        set_input(S), read(T), close(S)),
+        [[S <-- _, T <-- term1]]].
+[(set_read_term_file_contents('term1. term2.'), get_read_term_file(S),
+        read(S,T), close(S)),
+        [[S <-- _, T <-- term1]]].
+[(set_read_term_file_contents('foo(A+Roger, A+_). term2.'),
+        get_read_term_file(S),
+        read_term(S, T, [variables(VL), variable_names(VN), singletons(VS)]), close(S)),
+        [[S <-- _, T <-- foo(X1+X2, X1+X3), VL <-- [X1, X2, X3],
+        VN <-- ['Roger' = X2, 'A' = X1],
+        VS <-- ['Roger' = X2]]]].
+
+
+
+
+/* end of read_term */
