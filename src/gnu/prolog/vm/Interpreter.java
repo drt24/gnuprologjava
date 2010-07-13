@@ -41,7 +41,11 @@ public final class Interpreter
 	 */
 	static final double FLOAT_EPSILON = 0.0000001d;
 
-	/** environment for this interpreter */
+	/**
+	 * Environment for this interpreter
+	 * 
+	 * TODO: this should not be public.
+	 * */
 	public Environment environment;
 
 	/**
@@ -461,21 +465,21 @@ public final class Interpreter
 	 */
 	protected class ReturnPoint
 	{
-		public Map<String, Object> context;
+		public Map<String, Object> rContext;
 
-		public BacktrackInfo backtrackInfoStack[];
-		public int backtrackInfoAmount;
-		public int backtrackInfoMax;
-		public int backtrackInfoGrow;
+		public BacktrackInfo rBacktrackInfoStack[];
+		public int rBacktrackInfoAmount;
+		public int rBacktrackInfoMax;
+		public int rBacktrackInfoGrow;
 
-		public VariableTerm variables[];
-		public int variablesAmount;
+		public VariableTerm rVariables[];
+		public int rVariablesAmount;
 
-		public UndoData undoData[];
-		public int undoDataAmount;
-		public boolean undoPositionAsked;
+		public UndoData rUndoData[];
+		public int rUndoDataAmount;
+		public boolean rUndoPositionAsked;
 
-		public Goal currentGoal;
+		public Goal rCurrentGoal;
 	}
 
 	/**
@@ -492,16 +496,16 @@ public final class Interpreter
 		if (currentGoal != null)
 		{// Take a copy of the current state into a Return point
 			rp = new ReturnPoint();
-			rp.context = context;
-			rp.backtrackInfoStack = backtrackInfoStack.clone();
-			rp.backtrackInfoAmount = backtrackInfoAmount;
-			rp.backtrackInfoMax = backtrackInfoMax;
-			rp.variables = variables.clone();
-			rp.variablesAmount = variablesAmount;
-			rp.undoData = undoData.clone();
-			rp.undoDataAmount = undoDataAmount;
-			rp.undoPositionAsked = undoPositionAsked;
-			rp.currentGoal = currentGoal;
+			rp.rContext = context;
+			rp.rBacktrackInfoStack = backtrackInfoStack.clone();
+			rp.rBacktrackInfoAmount = backtrackInfoAmount;
+			rp.rBacktrackInfoMax = backtrackInfoMax;
+			rp.rVariables = variables.clone();
+			rp.rVariablesAmount = variablesAmount;
+			rp.rUndoData = undoData.clone();
+			rp.rUndoDataAmount = undoDataAmount;
+			rp.rUndoPositionAsked = undoPositionAsked;
+			rp.rCurrentGoal = currentGoal;
 		}
 		currentGoal = new Goal();
 		currentGoal.goal = term;
@@ -603,16 +607,17 @@ public final class Interpreter
 		ReturnPoint rp = returnPoints.get(goal);
 		if (rp != null)
 		{
-			context = rp.context;
-			backtrackInfoStack = rp.backtrackInfoStack;
-			backtrackInfoAmount = rp.backtrackInfoAmount;
-			backtrackInfoMax = rp.backtrackInfoMax;
-			backtrackInfoGrow = rp.backtrackInfoGrow;
-			variables = rp.variables;
-			undoData = rp.undoData;
-			undoDataAmount = rp.undoDataAmount;
-			undoPositionAsked = rp.undoPositionAsked;
-			currentGoal = rp.currentGoal;
+			returnPoints.remove(rp.rCurrentGoal);// garbage collect
+			context = rp.rContext;
+			backtrackInfoStack = rp.rBacktrackInfoStack;
+			backtrackInfoAmount = rp.rBacktrackInfoAmount;
+			backtrackInfoMax = rp.rBacktrackInfoMax;
+			backtrackInfoGrow = rp.rBacktrackInfoGrow;
+			variables = rp.rVariables;
+			undoData = rp.rUndoData;
+			undoDataAmount = rp.rUndoDataAmount;
+			undoPositionAsked = rp.rUndoPositionAsked;
+			currentGoal = rp.rCurrentGoal;
 		}
 	}
 
