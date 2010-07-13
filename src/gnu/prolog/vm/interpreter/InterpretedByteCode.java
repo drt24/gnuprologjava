@@ -87,12 +87,11 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		Set<AtomicTerm> constantSet = new HashSet<AtomicTerm>();
 
 		int bytes = 0;
-		int i, n = isrc.length;
-		for (i = 0; i < n; i++)
+		int n = isrc.length;
+		for (int i = 0; i < n; i++)
 		{
 			if (isrc[i] instanceof IAllocate)
 			{
-				IAllocate ii = (IAllocate) isrc[i];
 				ipos[i] = bytes;
 				bytes += 5;
 			}
@@ -112,43 +111,36 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof ICreateVariable)
 			{
-				ICreateVariable ii = (ICreateVariable) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof ICut)
 			{
-				ICut ii = (ICut) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
 			else if (isrc[i] instanceof IDup)
 			{
-				IDup ii = (IDup) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof IFail)
 			{
-				IFail ii = (IFail) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof IJump)
 			{
-				IJump ii = (IJump) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
 			else if (isrc[i] instanceof IPop)
 			{
-				IPop ii = (IPop) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof IPushArgument)
 			{
-				IPushArgument ii = (IPushArgument) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
@@ -161,61 +153,51 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof IPushEnvironment)
 			{
-				IPushEnvironment ii = (IPushEnvironment) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
 			else if (isrc[i] instanceof IRetryMeElse)
 			{
-				IRetryMeElse ii = (IRetryMeElse) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
 			else if (isrc[i] instanceof IReturn)
 			{
-				IReturn ii = (IReturn) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof ISaveCut)
 			{
-				ISaveCut ii = (ISaveCut) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
 			else if (isrc[i] instanceof IStoreEnvironment)
 			{
-				IStoreEnvironment ii = (IStoreEnvironment) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
 			else if (isrc[i] instanceof IThrow)
 			{
-				IThrow ii = (IThrow) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof ITrue)
 			{
-				ITrue ii = (ITrue) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof ITrustMe)
 			{
-				ITrustMe ii = (ITrustMe) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
 			else if (isrc[i] instanceof ITryMeElse)
 			{
-				ITryMeElse ii = (ITryMeElse) isrc[i];
 				ipos[i] = bytes;
 				bytes += 3;
 			}
 			else if (isrc[i] instanceof IUnify)
 			{
-				IUnify ii = (IUnify) isrc[i];
 				ipos[i] = bytes;
 				bytes++;
 			}
@@ -224,22 +206,23 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		tags = new CompoundTermTag[createCompoundTermTags.size() + callTags.size()];
 		predicateCodes = new PrologCode[callTags.size()];
 		Iterator<CompoundTermTag> j = callTags.iterator();
-		for (i = 0; j.hasNext(); i++)
+		int k = 0;
+		for (; j.hasNext(); k++)
 		{
 			CompoundTermTag tag = j.next();
-			tags[i] = tag;
-			tag2idx.put(tag, Integer.valueOf(i));
+			tags[k] = tag;
+			tag2idx.put(tag, Integer.valueOf(k));
 		}
 		j = createCompoundTermTags.iterator();
-		for (; j.hasNext(); i++)
+		for (; j.hasNext(); k++)
 		{
 			CompoundTermTag tag = j.next();
-			tags[i] = tag;
-			tag2idx.put(tag, Integer.valueOf(i));
+			tags[k] = tag;
+			tag2idx.put(tag, Integer.valueOf(k));
 		}
 		constants = new AtomicTerm[constantSet.size()];
 		Iterator<AtomicTerm> j2 = constantSet.iterator();
-		for (i = 0; j2.hasNext(); i++)
+		for (int i = 0; j2.hasNext(); i++)
 		{
 			AtomicTerm term = j2.next();
 			constants[i] = term;
@@ -282,7 +265,6 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof ICreateVariable)
 			{
-				ICreateVariable ii = (ICreateVariable) isrc[i];
 				instructions[bytes++] = (byte) ICREATE_VARIABLE;
 			}
 			else if (isrc[i] instanceof ICut)
@@ -294,12 +276,10 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof IDup)
 			{
-				IDup ii = (IDup) isrc[i];
 				instructions[bytes++] = (byte) IDUP;
 			}
 			else if (isrc[i] instanceof IFail)
 			{
-				IFail ii = (IFail) isrc[i];
 				instructions[bytes++] = (byte) IFAIL;
 			}
 			else if (isrc[i] instanceof IJump)
@@ -311,7 +291,6 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof IPop)
 			{
-				IPop ii = (IPop) isrc[i];
 				instructions[bytes++] = (byte) IPOP;
 			}
 			else if (isrc[i] instanceof IPushArgument)
@@ -345,7 +324,6 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof IReturn)
 			{
-				IReturn ii = (IReturn) isrc[i];
 				instructions[bytes++] = (byte) IRETURN;
 			}
 			else if (isrc[i] instanceof ISaveCut)
@@ -364,17 +342,14 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof IThrow)
 			{
-				IThrow ii = (IThrow) isrc[i];
 				instructions[bytes++] = (byte) ITHROW;
 			}
 			else if (isrc[i] instanceof ITrue)
 			{
-				ITrue ii = (ITrue) isrc[i];
 				instructions[bytes++] = (byte) ITRUE;
 			}
 			else if (isrc[i] instanceof ITrustMe)
 			{
-				ITrustMe ii = (ITrustMe) isrc[i];
 				instructions[bytes++] = (byte) ITRUST_ME;
 			}
 			else if (isrc[i] instanceof ITryMeElse)
@@ -386,7 +361,6 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			else if (isrc[i] instanceof IUnify)
 			{
-				IUnify ii = (IUnify) isrc[i];
 				instructions[bytes++] = (byte) IUNIFY;
 			}
 		}
@@ -434,7 +408,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			LeaveByteCodeBacktrackInfo lbi = (LeaveByteCodeBacktrackInfo) bi;
 			environment = lbi.environment;
 			startBacktrackInfo = lbi.startBacktrackInfo;
-			currentPosition = 0; // fake assigment in order to fool compiler
+			currentPosition = 0; // fake assignment in order to fool compiler
 		}
 		else
 		// else create new execution state
@@ -442,7 +416,6 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			startBacktrackInfo = new EnterBacktrackInfo(interpreter.getUndoPosition());
 			interpreter.pushBacktrackInfo(startBacktrackInfo);
 			currentPosition = 0;
-			cur_bi = null;
 		}
 
 		interpreter_loop: while (true) // interpreter loop
