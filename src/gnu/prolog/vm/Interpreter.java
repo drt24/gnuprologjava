@@ -365,6 +365,7 @@ public final class Interpreter
 		{
 		}
 		else if (t1 instanceof VariableTerm)
+		// TODO check that we are avoiding dangling references
 		{
 			VariableTerm vt1 = (VariableTerm) t1;
 			addVariableUndo(vt1);

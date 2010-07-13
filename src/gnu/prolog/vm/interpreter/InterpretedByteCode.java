@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm.interpreter;
 
+import gnu.prolog.database.Pair;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.AtomicTerm;
 import gnu.prolog.term.CompoundTerm;
@@ -51,7 +52,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	protected CompoundTermTag tags[];
 	/** constants used by code */
 	protected AtomicTerm constants[];
-	/** predicate codes used by coie */
+	/** predicate codes used by code */
 	protected PrologCode predicateCodes[];
 	/** set of instructions */
 	protected byte instructions[];
@@ -764,7 +765,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 				{
 					// unchecked exception behaves as system_error
 					ex.printStackTrace();// TODO incorporate this into a proper debugging
-																// framework
+					// framework
 					PrologException.systemError(ex);
 				}
 			}
@@ -816,7 +817,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	 * installed only for one environment.
 	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          Environment to install the predicate
 	 */
 	public void install(Environment env)
 	{
@@ -830,7 +831,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	 * this method is called when code is uninstalled from the environment
 	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          Environment to install the predicate
 	 */
 	public void uninstall(Environment env)
 	{
@@ -849,155 +850,11 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		while (currentPosition < instructions.length)
 		{
 			int instr = instructions[currentPosition] & 255;
-			switch (instr)
-			{
-				case IALLOCATE:
-				{
-					int sz = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					int rs = ((instructions[currentPosition + 3] & 255) << 8) + (instructions[currentPosition + 4] & 255);
-					rc += currentPosition + ": allocate " + sz + ", " + rs;
-					currentPosition += 5;
-					break;
-				}
-				case ICALL:
-				{
-					int cd = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					CompoundTermTag tag = tags[cd];
-					rc += currentPosition + ": call " + tag;
-					currentPosition += 3;
-					break;
-				}
-				case ICREATE_COMPOUND:
-				{
-					int tg = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					CompoundTermTag tag = tags[tg];
-					rc += currentPosition + ": create_compound " + tag;
-					currentPosition += 3;
-					break;
-				}
-				case ICREATE_VARIABLE:
-				{
-					rc += currentPosition + ": create_variable";
-					currentPosition++;
-					break;
-				}
-				case ICUT:
-				{
-					int ep = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": cut " + ep;
-					currentPosition += 3;
-					break;
-				}
-				case IDUP:
-				{
-					rc += currentPosition + ": dup";
-					currentPosition++;
-					break;
-				}
-				case IFAIL:
-				{
-					rc += currentPosition + ": fail";
-					currentPosition++;
-					break;
-				}
-				case IJUMP:
-				{
-					int jp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": jump " + jp;
-					currentPosition += 3;
-					break;
-				}
-				case IPOP:
-				{
-					rc += currentPosition + ": pop";
-					currentPosition++;
-					break;
-				}
-				case IPUSH_ARGUMENT:
-				{
-					int ar = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": push_argument " + ar;
-					currentPosition += 3;
-					break;
-				}
-				case IPUSH_CONSTANT:
-				{
-					int cp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": push_constant " + TermWriter.toString(constants[cp]);
-					currentPosition += 3;
-					break;
-				}
-				case IPUSH_ENVIRONMENT:
-				{
-					int ep = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": push_environment " + ep;
-					currentPosition += 3;
-					break;
-				}
-				case IRETRY_ME_ELSE:
-				{
-					int rp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": retry_me_else " + rp;
-					currentPosition += 3;
-					break;
-				}
-				case IRETURN:
-				{
-					rc += currentPosition + ": return";
-					currentPosition++;
-					break;
-				}
-				case ISAVE_CUT:
-				{
-					int ep = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": save_cut " + ep;
-					currentPosition += 3;
-					break;
-				}
-				case ISTORE_ENVIRONMENT:
-				{
-					int ep = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": store_environment " + ep;
-					currentPosition += 3;
-					break;
-				}
-				case ITHROW:
-				{
-					rc += currentPosition + ": throw";
-					currentPosition += 1;
-					break;
-				}
-				case ITRUE:
-				{
-					rc += currentPosition + ": true";
-					currentPosition++;
-					break;
-				}
-				case ITRUST_ME:
-				{
-					rc += currentPosition + ": trust_me";
-					currentPosition++;
-					break;
-				}
-				case ITRY_ME_ELSE:
-				{
-					int rp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
-					rc += currentPosition + ": try_me_else " + rp;
-					currentPosition += 3;
-					break;
-				}
-				case IUNIFY:
-				{
-					rc += currentPosition + ": unify ";
-					currentPosition++;
-					break;
-				}
-				default:
-					rc += currentPosition + ": unknown";
-					currentPosition++;
-					break;
-			}
-			rc += "\n";
+
+			Pair<String, Integer> answer = instructionToString(instr, currentPosition);
+
+			rc += answer.left + "\n";
+			currentPosition = answer.right;
 		}
 		int i, n;
 		rc += "exceptions\n";
@@ -1010,11 +867,9 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		return rc;
 	}
 
-	/** convert code to string */
-	public String getIntruction(int currentPosition)
+	private Pair<String, Integer> instructionToString(int instr, int currentPosition)
 	{
 		String rc = "";
-		int instr = instructions[currentPosition] & 255;
 		switch (instr)
 		{
 			case IALLOCATE:
@@ -1163,9 +1018,18 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 				currentPosition++;
 				break;
 		}
-		return rc;
+		return new Pair<String, Integer>(rc, currentPosition);
 	}
 
+	/** convert code to string */
+	public String getIntruction(int currentPosition)
+	{
+		int instr = instructions[currentPosition] & 255;
+
+		return instructionToString(instr, currentPosition).left;
+	}
+
+	// TODO switch to using enums for this.
 	public final static int IALLOCATE = 0;
 	public final static int ICALL = 1;
 	public final static int ICREATE_COMPOUND = 2;
