@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm;
 
+import gnu.prolog.io.CharConversionTable;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermReader;
 import gnu.prolog.io.WriteOptions;
@@ -38,10 +39,16 @@ public class TextInputPrologStream extends PrologStream
 
 	protected RandomAccessFileReader fileReader;
 
+	private CharConversionTable charConversion;
+
 	public TextInputPrologStream(OpenOptions options, Reader rd) throws PrologException
 	{
 		super(options);
 		termReader = new TermReader(new BufferedReader(rd));
+		if (environment != null)
+		{
+			charConversion = environment.getPrologTextLoaderState().getConversionTable();
+		}
 	}
 
 	/**
@@ -53,8 +60,13 @@ public class TextInputPrologStream extends PrologStream
 		super(options);
 		fileReader = new RandomAccessFileReader(raf);
 		termReader = new TermReader(fileReader);
+		if (environment != null)
+		{
+			charConversion = environment.getPrologTextLoaderState().getConversionTable();
+		}
 	}
 
+	// TODO Deprecate unused arguments.
 	// byte io
 	@Override
 	public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
@@ -232,6 +244,7 @@ public class TextInputPrologStream extends PrologStream
 	public Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException
 	{
 		checkExists();
+
 		try
 		{
 			if (endOfStream == pastAtom)
@@ -250,6 +263,10 @@ public class TextInputPrologStream extends PrologStream
 			{
 				endOfStream = pastAtom;
 				term = PrologStream.endOfFileAtom;
+			}
+			else
+			{// apply char Conversion
+				term = charConversion.charConvert(term, environment);
 			}
 			return term;
 		}

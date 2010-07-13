@@ -1,7 +1,11 @@
 /* file char_conversion */
 
-[rw_char_conver(a,b,b),success].
+[rw_char_conver(a,b,A), [[A <-- b]]].
 [rw_char_conver(a,b,a),failure].
+%rw_char_conver_term(CharOut, ConvertTo, OutTerm, ReadIn)
+[rw_char_conver_term(a,b,'happy_birthday',A), [[A <-- 'hbppy_birthdby']]].
+[rw_char_conver_term(z,'Z','the_cat_on_the_matz', A), [[ A <--'the_cat_on_the_matZ']]].
+[rw_char_conver_term(c,d,'foo(bcr(bac(e)))', A),[[A <-- foo(bdr(bad(e)))]]].
 
 [char_conversion(X,a),instantiation_error].
 

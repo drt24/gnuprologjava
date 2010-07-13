@@ -19,6 +19,11 @@
  */
 package gnu.prolog.io;
 
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -26,8 +31,13 @@ import java.util.Set;
 import java.util.Map.Entry;
 
 /**
- * A conversion map, used by char_conversion and current_char_conversion
- *
+ * A conversion map, used by
+ * {@link gnu.prolog.vm.buildins.io.Predicate_char_conversion char_conversion}
+ * and {@link gnu.prolog.vm.buildins.io.Predicate_current_char_conversion
+ * current_char_conversion} and
+ * {@link gnu.prolog.vm.TextInputPrologStream#readTerm(Term,Interpreter,ReadOptions)}
+ * .
+ * 
  * @author Michiel Hendriks
  */
 public class CharConversionTable
@@ -49,7 +59,7 @@ public class CharConversionTable
 
 	/**
 	 * Set the conversion of a character
-	 *
+	 * 
 	 * @param from
 	 * @param to
 	 */
@@ -67,7 +77,7 @@ public class CharConversionTable
 
 	/**
 	 * Convert a character.
-	 *
+	 * 
 	 * @param input
 	 * @return
 	 */
@@ -82,7 +92,7 @@ public class CharConversionTable
 
 	/**
 	 * Returns the set of characters which are converted to this character
-	 *
+	 * 
 	 * @param from
 	 * @return
 	 */
@@ -102,5 +112,62 @@ public class CharConversionTable
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Apply {@link CharConversionTable} to term if this should happen.
+	 * 
+	 * @see gnu.prolog.vm.TextInputPrologStream#readTerm(Term,Interpreter,ReadOptions)
+	 * 
+	 * @param term
+	 * @return the converted term.
+	 */
+	public Term charConvert(Term term, Environment environment)
+	{
+		Term status = environment.getPrologFlag(Environment.charConversionAtom);
+		// skip if should not do it.
+		// TODO we should also skip "quoted character (6.4.2.1)" (but I don't have
+		// chapter 6)
+		if (status == Environment.onAtom)
+		{
+			term = term.dereference();
+			if (term instanceof AtomTerm)
+			{
+				AtomTerm aTerm = (AtomTerm) term;
+				term = AtomTerm.get(applyConversion(aTerm.value));
+			}
+			else if (term instanceof CompoundTerm)
+			{
+				CompoundTerm cTerm = (CompoundTerm) term;
+
+				AtomTerm convertedFunctor = (AtomTerm) charConvert(cTerm.tag.functor, environment);
+
+				Term[] convertedArgs = new Term[cTerm.args.length];
+				for (int i = 0; i < cTerm.args.length; ++i)
+				{
+					convertedArgs[i] = charConvert(cTerm.args[i], environment);
+				}
+				term = new CompoundTerm(convertedFunctor, convertedArgs);
+			}// else we don't need to do anything
+		}
+		return term;
+	}
+
+	/**
+	 * Apply this {@link CharConversionTable} to fromString
+	 * 
+	 * @param fromString
+	 *          the string to apply the conversion to
+	 * @return the converted string
+	 */
+	public String applyConversion(String fromString)
+	{
+		char[] fromCharacters = fromString.toCharArray();
+		char[] toCharacters = new char[fromCharacters.length];
+		for (int i = 0; i < fromCharacters.length; ++i)
+		{
+			toCharacters[i] = convert(fromCharacters[i]);
+		}
+		return new String(toCharacters);
 	}
 }

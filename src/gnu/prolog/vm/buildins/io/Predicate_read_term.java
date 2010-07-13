@@ -17,7 +17,6 @@
  */
 package gnu.prolog.vm.buildins.io;
 
-import gnu.prolog.io.CharConversionTable;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
@@ -38,18 +37,6 @@ import java.util.Map.Entry;
 
 /**
  * prolog code
- * 
- * TODO: use the {@link CharConversionTable} to do the conversions as per
- * 8.14.1.1:
- * 
- * d) If the value associated with the flag char conversion (7.11.2.1) is off,
- * or C is a quoted character (6.4.2.1), then sets C next to C, and proceeds to
- * 8.14.1.1 f,
- * 
- * e) Else sets C next to apply mappingC (C; ConvC ) (4.3) where ConvC (3.46) is
- * the character-conversion mapping,
- * 
- * f) Appends C next to C Seq,
  */
 public class Predicate_read_term implements PrologCode
 {
@@ -67,10 +54,11 @@ public class Predicate_read_term implements PrologCode
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		Environment environment = interpreter.getEnvironment();
+		PrologStream stream = environment.resolveStream(args[0]);
 		Term optionsList = args[2];
 		ReadOptions options = new ReadOptions();
-		options.operatorSet = interpreter.environment.getOperatorSet();
+		options.operatorSet = environment.getOperatorSet();
 
 		List<Term> singletons = new ArrayList<Term>();
 		List<Term> variableLists = new ArrayList<Term>();
