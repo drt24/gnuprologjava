@@ -93,6 +93,12 @@ public class Predicate_clause implements PrologCode
 			{
 				PrologException.typeError(TermConstants.callableAtom, head);
 			}
+
+			if (!isCallable(body))
+			{
+				PrologException.typeError(TermConstants.callableAtom, body);
+			}
+
 			Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
 			if (p == null) // if predicate not found
 			{
@@ -105,10 +111,7 @@ public class Predicate_clause implements PrologCode
 				PrologException.permissionError(TermConstants.accessAtom, TermConstants.privateProcedureAtom, tag
 						.getPredicateIndicator());
 			}
-			if (!isCallable(body))
-			{
-				PrologException.typeError(TermConstants.callableAtom, body);
-			}
+
 			List<Term> clauses = new ArrayList<Term>();
 			for (Term term : p.getClauses())
 			{
