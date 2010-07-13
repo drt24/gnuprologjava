@@ -294,7 +294,12 @@ public class PrologTextLoader
 			logError("class name should be atom term");
 			return;
 		}
-		prologTextLoaderState.defineExternal(this, pi, ((AtomTerm) className).value, Predicate.BUILD_IN);
+		if (!(pi instanceof CompoundTerm))
+		{
+			logError("predicate indicator should be a compound term");
+			return;
+		}
+		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value, Predicate.BUILD_IN);
 	}
 
 	protected void processControlDirective(Term pi, Term className)
@@ -304,7 +309,12 @@ public class PrologTextLoader
 			logError("class name should be atom term");
 			return;
 		}
-		prologTextLoaderState.defineExternal(this, pi, ((AtomTerm) className).value, Predicate.CONTROL);
+		if (!(pi instanceof CompoundTerm))
+		{
+			logError("predicate indicator should be a compound term");
+			return;
+		}
+		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value, Predicate.CONTROL);
 	}
 
 	protected void processExternalDirective(Term pi, Term className)
@@ -314,7 +324,12 @@ public class PrologTextLoader
 			logError("class name should be atom term");
 			return;
 		}
-		prologTextLoaderState.defineExternal(this, pi, ((AtomTerm) className).value, Predicate.EXTERNAL);
+		if (!(pi instanceof CompoundTerm))
+		{
+			logError("predicate indicator should be a compound term");
+			return;
+		}
+		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value, Predicate.EXTERNAL);
 	}
 
 	protected void processInitializationDirective(Term term)
@@ -429,7 +444,8 @@ public class PrologTextLoader
 			logError("the predicate indicator is not valid.");
 			return;
 		}
-		CompoundTermTag tag = CompoundTermTag.get(pi);
+		// pi is a CompoundTerm as isPredicateIndicator checks that
+		CompoundTermTag tag = CompoundTermTag.get((CompoundTerm) pi);
 		prologTextLoaderState.declareDiscontiguous(this, tag);
 	}
 
@@ -440,7 +456,8 @@ public class PrologTextLoader
 			logError("the predicate indicator is not valid.");
 			return;
 		}
-		CompoundTermTag tag = CompoundTermTag.get(pi);
+		// pi is a CompoundTerm as isPredicateIndicator checks that
+		CompoundTermTag tag = CompoundTermTag.get((CompoundTerm) pi);
 		prologTextLoaderState.declareMultifile(this, tag);
 	}
 
@@ -451,7 +468,8 @@ public class PrologTextLoader
 			logError("the predicate indicator is not valid.");
 			return;
 		}
-		CompoundTermTag tag = CompoundTermTag.get(pi);
+		// pi is a CompoundTerm as isPredicateIndicator checks that
+		CompoundTermTag tag = CompoundTermTag.get((CompoundTerm) pi);
 		prologTextLoaderState.declareDynamic(this, tag);
 	}
 

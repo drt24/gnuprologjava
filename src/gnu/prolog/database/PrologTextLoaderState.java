@@ -300,7 +300,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 
 	}
 
-	public void defineExternal(PrologTextLoader loader, Term pi, String javaClassName, int type)
+	public void defineExternal(PrologTextLoader loader, CompoundTerm pi, String javaClassName, int type)
 	{
 		if (!CompoundTermTag.isPredicateIndicator(pi))
 		{

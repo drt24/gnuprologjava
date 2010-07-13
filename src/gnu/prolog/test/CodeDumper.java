@@ -25,6 +25,7 @@ import gnu.prolog.io.TermReader;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
@@ -69,7 +70,7 @@ public class CodeDumper
 			rd_ops.operatorSet = new OperatorSet();
 			WriteOptions wr_ops = new WriteOptions();
 			Term goalTerm = trd.readTermEof(rd_ops);
-			PrologCode code = env.getPrologCode(CompoundTermTag.get(goalTerm));
+			PrologCode code = env.getPrologCode(CompoundTermTag.get((CompoundTerm) goalTerm));
 			System.out.println(code);
 		}
 		catch (Exception ex)

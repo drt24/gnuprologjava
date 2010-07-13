@@ -186,6 +186,7 @@ public class Environment implements PredicateListener
 		prologTextLoaderState = new PrologTextLoaderState();
 	}
 
+	@Deprecated
 	public PrologTextLoaderState getTextLoaderState()
 	{
 		return prologTextLoaderState;
@@ -337,7 +338,7 @@ public class Environment implements PredicateListener
 		return prologTextLoaderState.getErrors();
 	}
 
-	protected PrologTextLoaderState getPrologTextLoaderState()
+	public PrologTextLoaderState getPrologTextLoaderState()
 	{
 		return prologTextLoaderState;
 	}

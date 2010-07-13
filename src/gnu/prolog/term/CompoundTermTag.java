@@ -63,13 +63,8 @@ final public class CompoundTermTag implements java.io.Serializable
 	 * @throws IllegalArgumentException
 	 *           if term is not a valid predicate indicator
 	 */
-	public static CompoundTermTag get(Term t)
+	public static CompoundTermTag get(CompoundTerm ct)
 	{
-		if (!(t instanceof CompoundTerm))
-		{
-			throw new IllegalArgumentException();
-		}
-		CompoundTerm ct = (CompoundTerm) t;
 		if (!(ct.args[0] instanceof AtomTerm) || !(ct.args[1] instanceof IntegerTerm))
 		{
 			throw new IllegalArgumentException();
