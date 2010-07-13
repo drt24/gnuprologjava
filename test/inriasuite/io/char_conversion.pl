@@ -1,11 +1,11 @@
 
 rw_char_conver(CharOut, ConvertTo, ReadIn) :-
         set_prolog_flag(char_conversion, on),
-        open('charconv.tmp', write, Sout),
+        open('io/charconv.tmp', write, Sout),
         put_char(Sout, CharOut), write(Sout, '.'), nl(Sout),
         close(Sout),
         char_conversion(CharOut, ConvertTo),
-        open('charconv.tmp', read, Sin),
+        open('io/charconv.tmp', read, Sin),
         read(Sin, ReadIn),
         char_conversion(CharOut, CharOut),
         set_prolog_flag(char_conversion, off),
@@ -18,11 +18,11 @@ rw_char_conver(CharOut, _, _) :-
 
 rw_char_conver_term(CharOut, ConvertTo, OutTerm, ReadIn) :-
         set_prolog_flag(char_conversion, on),
-        open('charconv.tmp', write, Sout),
+        open('io/charconv.tmp', write, Sout),
         write(Sout, OutTerm), write(Sout, '.'), nl(Sout),
         close(Sout),
         char_conversion(CharOut, ConvertTo),
-        open('charconv.tmp', read, Sin),
+        open('io/charconv.tmp', read, Sin),
         read(Sin, ReadIn),
         char_conversion(CharOut, CharOut),
         set_prolog_flag(char_conversion, off),

@@ -330,11 +330,9 @@ get_all_subs(G, AllSubs) :-
 %
 
 call_result(G,R) :-
-       
 	vars_in_term(G, GVars),
 	call(G),
-        
-        R = GVars.
+	R = GVars.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
