@@ -251,12 +251,26 @@ public final class ReaderCharStream implements CharStream
 
 	public final int getEndColumn()
 	{
-		return bufcolumn[bufpos];
+		if (bufpos > 0 & bufpos < bufcolumn.length)
+		{
+			return bufcolumn[bufpos];
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	public final int getEndLine()
 	{
-		return bufline[bufpos];
+		if (bufpos > 0 & bufpos < bufline.length)
+		{
+			return bufline[bufpos];
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	public final int getBeginColumn()

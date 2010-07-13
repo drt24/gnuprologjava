@@ -763,6 +763,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 				catch (RuntimeException ex)
 				{
 					// unchecked exception behaves as system_error
+					ex.printStackTrace();// TODO incorporate this into a proper debugging
+																// framework
 					PrologException.systemError(ex);
 				}
 			}

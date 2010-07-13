@@ -32,9 +32,6 @@ import java.io.Reader;
 
 public class TextInputPrologStream extends PrologStream
 {
-	// TODO put this in to a proper debugging framework.
-	private static final boolean DEBUG = false;
-
 	protected TermReader termReader;
 
 	protected RandomAccessFileReader fileReader;
@@ -104,6 +101,7 @@ public class TextInputPrologStream extends PrologStream
 			}
 			catch (IOException ex)
 			{
+				debug(ex);
 				PrologException.systemError(ex);
 				return null;
 			}
@@ -146,6 +144,7 @@ public class TextInputPrologStream extends PrologStream
 			}
 			catch (IOException ex)
 			{
+				debug(ex);
 				PrologException.systemError(ex);
 			}
 			return;
@@ -183,6 +182,7 @@ public class TextInputPrologStream extends PrologStream
 		}
 		catch (IOException ex)
 		{
+			debug(ex);
 			PrologException.systemError(ex);
 			return -1;
 		}
@@ -221,6 +221,7 @@ public class TextInputPrologStream extends PrologStream
 		}
 		catch (IOException ex)
 		{
+			debug(ex);
 			PrologException.systemError(ex);
 			return -1;
 		}
@@ -272,10 +273,7 @@ public class TextInputPrologStream extends PrologStream
 		}
 		catch (IOException ex)
 		{// TODO there is useful debug information here which we are discarding
-			if (DEBUG)
-			{
-				System.err.println(ex.getMessage());
-			}
+			debug(ex);
 			PrologException.syntaxError(inputAtom);
 			return null;
 		}
@@ -307,6 +305,7 @@ public class TextInputPrologStream extends PrologStream
 		}
 		catch (IOException ex)
 		{
+			debug(ex);
 			if (!force)
 			{// TODO there is useful debug information here which we are discarding
 				PrologException.systemError(ex);
@@ -335,9 +334,22 @@ public class TextInputPrologStream extends PrologStream
 		}
 		catch (IOException ex)
 		{// TODO there is useful debug information here which we are discarding
+			debug(ex);
 			PrologException.systemError(ex);
 		}
 		return super.getEndOfStreamState();
+	}
+
+	@Override
+	public int getCurrentLine()
+	{
+		return termReader.getCurrentLine();
+	}
+
+	@Override
+	public int getCurrentColumn()
+	{
+		return termReader.getCurrentColumn();
 	}
 
 }

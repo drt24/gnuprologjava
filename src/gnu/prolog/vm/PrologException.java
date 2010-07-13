@@ -113,7 +113,14 @@ public class PrologException extends Exception
 
 	static PrologException getError(Term term, Throwable inner)
 	{
-		return new PrologException(new CompoundTerm(errorTag, term, errorAtom), inner);
+		if (inner != null)
+		{
+			return new PrologException(new CompoundTerm(errorTag, term, AtomTerm.get(inner.toString())), inner);
+		}
+		else
+		{
+			return new PrologException(new CompoundTerm(errorTag, term, errorAtom), inner);
+		}
 	}
 
 	public static void systemError() throws PrologException

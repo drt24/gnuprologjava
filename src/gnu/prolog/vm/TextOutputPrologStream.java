@@ -87,6 +87,7 @@ public class TextOutputPrologStream extends PrologStream
 			}
 			catch (IOException ex)
 			{
+				debug(ex);
 				PrologException.systemError(ex);
 				return null;
 			}
@@ -129,6 +130,7 @@ public class TextOutputPrologStream extends PrologStream
 			}
 			catch (IOException ex)
 			{
+				debug(ex);
 				PrologException.systemError(ex);
 			}
 			return;
@@ -193,6 +195,7 @@ public class TextOutputPrologStream extends PrologStream
 		}
 		catch (Exception ex)
 		{
+			debug(ex);
 			if (!force)
 			{
 				PrologException.systemError(ex);
@@ -200,4 +203,5 @@ public class TextOutputPrologStream extends PrologStream
 		}
 		super.close(force);
 	}
+
 }

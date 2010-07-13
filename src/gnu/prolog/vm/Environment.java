@@ -571,6 +571,7 @@ public class Environment implements PredicateListener
 		}
 		catch (Exception ex)
 		{
+			ex.printStackTrace();
 			throw new IllegalStateException("unable to intialize standard streams");
 		}
 	}
@@ -649,6 +650,12 @@ public class Environment implements PredicateListener
 			PrologStream stream = (PrologStream) jt.value;
 			if (stream.closed)
 			{
+				// TODO: put this into a proper debugging framework
+				// String info = stream.filename.value + ":" + stream.getCurrentLine() +
+				// ":" + stream.getCurrentColumn()
+				// + ": Stream closed";
+				// System.err.println(info);
+
 				PrologException.existenceError(PrologStream.streamAtom, stream_or_alias);
 			}
 			return stream;
@@ -798,6 +805,7 @@ public class Environment implements PredicateListener
 			}
 			catch (PrologException e)
 			{
+				e.printStackTrace();// TODO do something more useful with this.
 			}
 		}
 	}

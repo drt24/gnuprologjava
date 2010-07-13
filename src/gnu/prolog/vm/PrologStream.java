@@ -31,6 +31,8 @@ import java.util.Set;
 
 public abstract class PrologStream
 {
+	protected static final boolean DEBUG = false;
+
 	public static class OpenOptions
 	{
 		public AtomTerm mode;
@@ -100,6 +102,7 @@ public abstract class PrologStream
 	{
 		if (closed)
 		{
+			System.err.println(filename.value);
 			PrologException.existenceError(streamAtom, streamTerm);
 		}
 	}
@@ -169,6 +172,25 @@ public abstract class PrologStream
 		if (environment.close(this))// if we managed to close
 		{
 			closed = true;
+		}
+	}
+
+	public int getCurrentLine()
+	{
+		return -1;
+	}
+
+	public int getCurrentColumn()
+	{
+		return -1;
+	}
+
+	protected void debug(Exception ex)
+	{
+		if (DEBUG)
+		{
+			System.err.println(filename.value + ":" + getCurrentLine() + ":" + getCurrentColumn());
+			System.err.println(ex.toString());
 		}
 	}
 }

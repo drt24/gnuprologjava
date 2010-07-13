@@ -353,7 +353,7 @@ protect_call_result(G,R) :-
 %  extract_error(+Ball, -Error)
 %
 
-extract_error(error(R, _), R) :- !.
+extract_error(error(R, I), R) :- write_debug_impdef_error(I),!.
 extract_error(B, unexpected_ball(B)).
 
 
@@ -611,8 +611,9 @@ loop_through(F, S) :-
 %
 
 test(_,end_of_file).
-test(F, error(R, _)) :- !,
-        write('Error in Input: '), write(R), nl,nl,
+test(F, error(R, I)) :- !,
+        write('Error in Input file: '), write(F), write(': '), write(R), nl,
+        write_debug_impdef_error(I),nl,
         update_score(F, non_null, non_null).
 
 test(F,[G,Expected]) :-	
@@ -628,6 +629,14 @@ test(F, [G, ProgFile, Expected]) :-
         write_if_wrong(F, G, Expected, Extra, Missing),
         update_score(F, Missing, Extra).
 
+%%%%%
+%
+% write_debug_impdef_error(+ImpDefError)
+%  writes the implementation defined part of the error
+%  if it contains something more interesting than 'error'.
+%
+write_debug_impdef_error(error) :-!.
+write_debug_impdef_error(I) :- write(I),nl.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -644,7 +653,7 @@ write_if_wrong(_,_,_,[],[]):- !.
 write_if_wrong(F, G,Expected, Extra, Missing) :-
         fake_numbervars([G,Expected, Missing], 0, _),
         write('In file: '), write(F), nl,
-        write('possible error in Goal: '), 
+        write('possible error in Goal: '),
         write(G), nl,
         write('Expected: '), write(Expected), nl,
         write('Extra Solutions found: '), write(Extra), nl,
