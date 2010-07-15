@@ -45,6 +45,32 @@ public class CompoundTerm extends Term
 		}
 	}
 
+	/**
+	 * get list pair
+	 * 
+	 * @param head
+	 *          head term
+	 * @param tail
+	 *          tail term
+	 * @return '.'(head, tail) term
+	 */
+	public static CompoundTerm getList(Term head, Term tail)
+	{
+		CompoundTerm rc = new CompoundTerm(TermConstants.listTag, head, tail);
+		return rc;
+	}
+
+	/** get prolog list by java array */
+	public static Term getList(Term[] list)
+	{
+		Term tlist = TermConstants.emptyListAtom;
+		for (int i = list.length - 1; i >= 0; i--)
+		{
+			tlist = getList(list[i], tlist);
+		}
+		return tlist;
+	}
+
 	/** get prolog list by java list */
 	public static Term getList(List<Term> list)
 	{
@@ -108,21 +134,6 @@ public class CompoundTerm extends Term
 	public static CompoundTerm getDisjunction(Term head, Term tail)
 	{
 		CompoundTerm rc = new CompoundTerm(TermConstants.disjunctionTag, head, tail);
-		return rc;
-	}
-
-	/**
-	 * get list pair
-	 * 
-	 * @param head
-	 *          head term
-	 * @param tail
-	 *          tail term
-	 * @return '.'(head, tail) term
-	 */
-	public static CompoundTerm getList(Term head, Term tail)
-	{
-		CompoundTerm rc = new CompoundTerm(TermConstants.listTag, head, tail);
 		return rc;
 	}
 
