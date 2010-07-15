@@ -132,11 +132,9 @@ public class MentalArithmetic
 	public static Pair<String, Integer> generateQuestion(int limit, int length) throws ParseException, PrologException,
 			NoAnswerException
 	{
-		if (!issetup)
-		{
-			setup();
-			issetup = true;
-		}
+
+		setup();
+
 		String question = String.format("arithmetic(%d, %d, List, Answer)", limit, length);
 
 		Term goalTerm = TermReader.stringToTerm(rd_ops, question);
@@ -221,6 +219,7 @@ public class MentalArithmetic
 		rd_ops = new ReadOptions();
 		rd_ops.operatorSet = env.getOperatorSet();
 
+		issetup = true;
 	}
 
 	private static void debug()
