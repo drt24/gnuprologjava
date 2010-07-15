@@ -36,15 +36,14 @@ import java.util.Map;
 /**
  * compiler from predicate to interpreted code This version assume following
  * <ul>
- * <li>All variables are stored in environment
- * <li>Environemt is not reused for different branches
- * <li>
+ * <li>All variables are stored in environment</li>
+ * <li>Environment is not reused for different branches</li>
  * </ul>
  */
 
 public class InterpretedCodeCompiler
 {
-	// constant used in analisys and comilation
+	// constant used in analysis and compilation
 	/** unify tag */
 	public static final CompoundTermTag unifyTag = CompoundTermTag.get("=", 2);
 	/** throw tag */
@@ -70,7 +69,7 @@ public class InterpretedCodeCompiler
 	/** this predicate tag */
 	protected CompoundTermTag codeTag;
 
-	// analisys variables
+	// Analysis variables
 	/** number of reserved fields, one position for saving cut */
 	protected int numberOfReserved = 1;
 
@@ -323,8 +322,8 @@ public class InterpretedCodeCompiler
 	 * get reserved environment size for body term
 	 * 
 	 * @param term
-	 *          term to analize
-	 * @return amount of allocated environement
+	 *          term to analyse
+	 * @return amount of allocated environment
 	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
 	 */
 	int getReservedEnvironemt(Term body) throws PrologException
@@ -375,10 +374,10 @@ public class InterpretedCodeCompiler
 	 * get all variables from term and populate variableToEnvironmentIndex map
 	 * 
 	 * @param term
-	 *          to analize
+	 *          to analyse
 	 * @param currentEnvPositon
 	 *          current position in environment
-	 * @return current position in environemt after call
+	 * @return current position in environment after call
 	 */
 	int getAllVariables(Term term, int currentEnvPositon)
 	{
@@ -448,7 +447,7 @@ public class InterpretedCodeCompiler
 	 * 
 	 * @param passedClauses
 	 *          clauses passed to compiler
-	 * @return instance of inerpreted code
+	 * @return instance of interpreted code
 	 * @throw PrologException
 	 */
 	public static PrologCode compile(List<Term> clauses) throws PrologException
@@ -461,7 +460,7 @@ public class InterpretedCodeCompiler
 	 * 
 	 * @param passedClauses
 	 *          clauses passed to compiler
-	 * @return instance of inerpreted code
+	 * @return instance of interpreted code
 	 * @throw PrologException
 	 */
 	PrologCode compilePredicate() throws PrologException
@@ -477,7 +476,7 @@ public class InterpretedCodeCompiler
 		else
 		{
 			Iterator<Term> iclauses;
-			// dereference all clauses, it will simplify analisys a bit
+			// dereference all clauses, it will simplify analysis a bit
 			for (iclauses = passedClauses.iterator(); iclauses.hasNext();)
 			{
 				clauses.add(rdereferenced(iclauses.next()));
@@ -725,7 +724,7 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add exeption handler */
+	/** add exception handler */
 	void addExceptionHandler(ExceptionHandlerInfo eh)
 	{
 		exceptionHandlers.add(eh);

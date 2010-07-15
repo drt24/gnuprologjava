@@ -163,20 +163,20 @@ public class Environment implements PredicateListener
 				.get("/gnu/prolog/vm/buildins/buildins.pro") });
 		ensureLoaded(term);
 		// set flags for environment
-		setPrologFlag(boundedAtom, TermConstants.trueAtom, false);
-		setPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
-		setPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
-		setPrologFlag(integerRoundingFunctionAtom, downAtom, false);
-		setPrologFlag(charConversionAtom, offAtom, true);
-		setPrologFlag(debugAtom, offAtom, true);
+		setNewPrologFlag(boundedAtom, TermConstants.trueAtom, false);
+		setNewPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
+		setNewPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
+		setNewPrologFlag(integerRoundingFunctionAtom, downAtom, false);
+		setNewPrologFlag(charConversionAtom, offAtom, true);
+		setNewPrologFlag(debugAtom, offAtom, true);
 		// we can't have a Term with an arity higher than the available memory
 		long maxMemory = Runtime.getRuntime().maxMemory();
 		IntegerTerm maxArity = (maxMemory < maxIntegerTerm.value) ? IntegerTerm.get((int) maxMemory) : maxIntegerTerm;
-		setPrologFlag(TermConstants.maxArityAtom, maxArity, false);
-		setPrologFlag(unknownAtom, errorAtom, true);
-		setPrologFlag(doubleQuotesAtom, TermConstants.codesAtom, true);
-		setPrologFlag(dialectAtom, dialectTerm, false);
-		setPrologFlag(versionAtom, versionTerm, false);
+		setNewPrologFlag(TermConstants.maxArityAtom, maxArity, false);
+		setNewPrologFlag(unknownAtom, errorAtom, true);
+		setNewPrologFlag(doubleQuotesAtom, TermConstants.codesAtom, true);
+		setNewPrologFlag(dialectAtom, dialectTerm, false);
+		setNewPrologFlag(versionAtom, versionTerm, false);
 
 		EnvInitializer.runInitializers(this);
 	}
@@ -245,13 +245,13 @@ public class Environment implements PredicateListener
 		return atom2flag.get(term);
 	}
 
-	/** get flag for this environment */
-	protected synchronized void setPrologFlag(AtomTerm term, Term newValue, boolean changable)
+	/** set flag for this environment */
+	protected synchronized void setNewPrologFlag(AtomTerm flag, Term newValue, boolean changable)
 	{
-		atom2flag.put(term, newValue);
+		atom2flag.put(flag, newValue);
 		if (changable)
 		{
-			changableFlags.add(term);
+			changableFlags.add(flag);
 		}
 	}
 

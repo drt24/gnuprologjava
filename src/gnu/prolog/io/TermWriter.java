@@ -45,14 +45,14 @@ public class TermWriter extends PrintWriter
 	protected static final CompoundTermTag numbervarsTag = CompoundTermTag.get("$VAR", 1);
 	protected static final CompoundTermTag curly1Tag = CompoundTermTag.get("{}", 1);
 	protected static final OperatorSet defaultOperatorSet = new OperatorSet();
-	protected static final WriteOptions defaultWrteOptions = new WriteOptions();
+	protected static final WriteOptions defaultWriteOptions = new WriteOptions();
 
 	static
 	{
-		defaultWrteOptions.ignoreOps = false;
-		defaultWrteOptions.operatorSet = defaultOperatorSet;
-		defaultWrteOptions.quoted = true;
-		defaultWrteOptions.numbervars = false;
+		defaultWriteOptions.ignoreOps = false;
+		defaultWriteOptions.operatorSet = defaultOperatorSet;
+		defaultWriteOptions.quoted = true;
+		defaultWriteOptions.numbervars = false;
 	}
 
 	/**
@@ -63,7 +63,8 @@ public class TermWriter extends PrintWriter
 	 * @return String representation of the term
 	 */
 	public static String toString(Term term)
-	{
+	{// TODO use this to do the toString operations in Term subclasses (or switch
+		// the other way)
 		try
 		{
 			StringWriter sout = new StringWriter();
@@ -133,7 +134,7 @@ public class TermWriter extends PrintWriter
 	 */
 	public void print(Term term)
 	{
-		print((WriteOptions) defaultWrteOptions.clone(), term);
+		print((WriteOptions) defaultWriteOptions.clone(), term);
 	}
 
 	/**
