@@ -8,7 +8,7 @@
 [number_chars(3.3,['3','.','3','E','+','0']), success].
 [number_chars(A,['-','2','5']), [[A <-- (-25)]]].
 [number_chars(A,['\n',' ','3']), [[A <-- 3]]]. 
-[number_chars(A,['3',' ']), syntax_error(_)].
+[number_chars(A,['3','_']), syntax_error(_)].
 [number_chars(A,['0',x,f]), [[A <-- 15]]].
 [number_chars(A,['0','''','A']), [[A <-- 65]]].
 [number_chars(A,['4','.','2']), [[A <-- 4.2]]].

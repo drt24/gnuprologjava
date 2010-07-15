@@ -803,6 +803,8 @@ display_list([H|T]) :-
 % This is why fail is the first test.
 
 reset_flags :-
+    current_prolog_flag(unknown, error),!.%only set it if unset.
+reset_flags :-
 	set_prolog_flag(unknown, error).
 
 

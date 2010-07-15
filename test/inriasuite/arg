@@ -4,6 +4,8 @@
 
 [arg(1,foo(a,b),X), [[X <-- a]]].
 
+[arg(1,foo(X),a), [[X <-- a]]].
+
 [arg(1,foo(X,b),a), [[X <-- a]]].
 
 [arg(2,foo(a, f(X,b), c), f(a, Y)), [[X <-- a, Y <-- b]]].

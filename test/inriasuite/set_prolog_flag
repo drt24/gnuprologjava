@@ -10,13 +10,22 @@
 
 /* swindles to get tests of double quotes flag to work. */
 
-[set_prolog_flag(double_quotes, atom), success].
+[(set_prolog_flag(double_quotes, atom),current_prolog_flag(double_quotes, atom)), success].
 [X = "fred", [[X <-- fred]]].
+[X = "a", [[X <-- a]]].
+[X = "abcdefghijklmnopqrstuvwxyz0123456789_",
+        [[X <-- abcdefghijklmnopqrstuvwxyz0123456789_]]].
 
-[set_prolog_flag(double_quotes, codes), success].
+[(set_prolog_flag(double_quotes, codes),current_prolog_flag(double_quotes, codes)), success].
+[X = "f", [[X <-- [102]]]].
 [X = "fred", [[X <-- [102,114,101,100]]]].
+%TODO: do a test using the whole alphabet+numbers+underscore
 
-[set_prolog_flag(double_quotes, chars), success].
+[(set_prolog_flag(double_quotes, chars),current_prolog_flag(double_quotes, chars)), success].
+[X = "a", [[X <-- [a]]]].
 [X = "fred", [[X <-- [f,r,e,d]]]].
+[X = "abcdefghijklmnopqrstuvwxyz0123456789_",
+        [[X <-- [a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,0,1,2,3,4,
+                5,6,7,8,9,'_']]]].
 
 /* end of current_prolog_flag */
