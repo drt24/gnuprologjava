@@ -82,7 +82,7 @@ public class Predicate_number_chars implements PrologCode
 			Term res = TermConstants.emptyListAtom;
 			for (int i = numStr.length() - 1; i >= 0; i--)
 			{
-				res = CompoundTerm.getList(AtomTerm.getChar(numStr.charAt(i)), res);
+				res = CompoundTerm.getList(AtomTerm.get(numStr.charAt(i)), res);
 			}
 			return interpreter.unify(list, res);
 		}

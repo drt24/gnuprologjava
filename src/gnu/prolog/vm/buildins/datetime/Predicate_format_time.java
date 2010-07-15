@@ -189,7 +189,7 @@ public class Predicate_format_time extends DateTimePrologCode
 				case OF_CHARS:
 					for (int i = result.length() - 1; i >= 0; i--)
 					{
-						res = CompoundTerm.getList(AtomTerm.getChar(result.charAt(i)), res);
+						res = CompoundTerm.getList(AtomTerm.get(result.charAt(i)), res);
 					}
 					break;
 				case OF_CODES:

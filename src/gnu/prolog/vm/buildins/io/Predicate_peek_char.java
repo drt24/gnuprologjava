@@ -78,7 +78,7 @@ public class Predicate_peek_char implements PrologCode
 		}
 		else
 		{
-			rc = AtomTerm.getChar((char) inch);
+			rc = AtomTerm.get((char) inch);
 		}
 		return interpreter.unify(inchar, rc);
 	}

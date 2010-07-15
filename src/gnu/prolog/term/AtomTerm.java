@@ -58,10 +58,10 @@ public class AtomTerm extends AtomicTerm
 	/**
 	 * get atom term
 	 * 
-	 * @param s
-	 *          string reprentation of atom.
+	 * @param ch
+	 *          string representation of atom.
 	 */
-	public static final AtomTerm getChar(char ch)
+	public static final AtomTerm get(char ch)
 	{
 		synchronized (chbu)
 		{
