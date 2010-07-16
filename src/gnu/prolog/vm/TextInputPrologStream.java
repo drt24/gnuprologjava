@@ -316,31 +316,6 @@ public class TextInputPrologStream extends PrologStream
 	}
 
 	@Override
-	public Term getEndOfStreamState() throws PrologException
-	{
-		try
-		{
-			if (termReader.ready())
-			{
-				endOfStream = notAtom;
-			}
-			if (endOfStream != pastAtom)
-			{
-				if (eofAction == resetAtom || eofAction == eofCodeAtom)
-				{
-					endOfStream = atAtom;
-				}
-			}
-		}
-		catch (IOException ex)
-		{// TODO there is useful debug information here which we are discarding
-			debug(ex);
-			PrologException.systemError(ex);
-		}
-		return super.getEndOfStreamState();
-	}
-
-	@Override
 	public int getCurrentLine()
 	{
 		return termReader.getCurrentLine();
