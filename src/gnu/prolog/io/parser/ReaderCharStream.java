@@ -26,6 +26,8 @@ import gnu.prolog.io.parser.gen.CharStream;
 /**
  * An implementation of interface CharStream, where the stream is assumed to
  * contain only ASCII characters (without unicode processing).
+ * 
+ * TODO: add unicode support.
  */
 
 public final class ReaderCharStream implements CharStream
