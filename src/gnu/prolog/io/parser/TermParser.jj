@@ -18,9 +18,8 @@
 options {
   STATIC = false;
   USER_CHAR_STREAM = true;
-  OPTIMIZE_TOKEN_MANAGER = true;
-  //OPTIMIZE_TOKEN_MANAGER = false;
   //DEBUG_TOKEN_MANAGER = true;
+  FORCE_LA_CHECK = true;
 }
 
 PARSER_BEGIN(TermParser)
@@ -28,6 +27,7 @@ package gnu.prolog.io.parser.gen;
 import gnu.prolog.io.parser.*;
 import gnu.prolog.term.*;
 import gnu.prolog.io.*;
+import gnu.prolog.vm.TermConstants;
 import java.util.*;
 
 public final class TermParser
@@ -202,7 +202,7 @@ Term readTerm(ReadOptions options):
 JAVACODE void skipToDot()
 {
   Token tok = getToken(0);
-  while (tok.kind != END_TOKEN && tok.kind != EOF) {
+  while ((tok.kind != END_TOKEN) && (tok.kind != EOF)) {
     tok = getNextToken();
   }
 }
@@ -312,7 +312,7 @@ CompoundTermTag op2(ReadOptions options, int priority):
     LOOKAHEAD(<COMMA_TOKEN>,{priority >= 1000})
     comma()
     {
-      f = CompoundTermTag.comma;
+      f = TermConstants.conjunctionTag;
       return f;
     }
   |
@@ -457,19 +457,18 @@ Term list_term(ReadOptions options):
   (
     LOOKAHEAD(<CLOSE_LIST_TOKEN>)
     {
-      rc = null;
     }
   | [
       t1 = exp(options)
       {
-        t1 = createTerm(CompoundTermTag.list,t1,null);
+        t1 = createTerm(TermConstants.listTag,t1,null);
         rc = t1;
       }
       (
          LOOKAHEAD(<COMMA_TOKEN>)
          comma() t2 = exp(options)
          {
-           t2 = createTerm(CompoundTermTag.list,t2,null);
+           t2 = createTerm(TermConstants.listTag,t2,null);
            ((CompoundTerm)t1).args[1] = t2;
            t1 = t2;
          }
@@ -482,7 +481,7 @@ Term list_term(ReadOptions options):
         }
       ]
     ]
-  ) 
+  )
   close_list()
   {
     if (rc == null)
@@ -507,7 +506,7 @@ Term curly_term(ReadOptions options):
   {
     if (t == null)
     {
-      return AtomTerm.emptyCurly;
+      return TermConstants.emptyCurlyAtom;
     }
     else
     {
@@ -571,6 +570,7 @@ VariableTerm variable(ReadOptions options):
       var = new VariableTerm();
       if (!"_".equals(token.image))
       {
+        var.name = token.image;
         options.variableNames.put(token.image, var);
         options.singletons.put(token.image, var);
       }

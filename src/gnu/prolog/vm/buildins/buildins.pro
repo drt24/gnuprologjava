@@ -25,14 +25,16 @@
 % 7.8 control constructs rules for control constructs are not the same as for
 % predicates, as result following declarations are not needed, but they are 
 % left for some future reason.
-:-control(true/0,  'gnu.prolog.vm.buildin.control.Control_true'). 
-:-control(fail/0,  'gnu.prolog.vm.buildin.control.Control_fail'). 
-:-control(!/0,     'gnu.prolog.vm.buildin.control.Control_cut'). 
-:-control((',')/2, 'gnu.prolog.vm.buildin.control.Control_and'). 
-:-control((';')/2, 'gnu.prolog.vm.buildin.control.Control_or'). 
-:-control(('->')/2,'gnu.prolog.vm.buildin.control.Control_if_then'). 
-:-control(catch/3, 'gnu.prolog.vm.buildin.control.Control_catch'). 
-:-control(throw/1, 'gnu.prolog.vm.buildin.control.Control_throw'). 
+/*
+:-control(true/0,  'gnu.prolog.vm.buildin.control.Control_true').
+:-control(fail/0,  'gnu.prolog.vm.buildin.control.Control_fail').
+:-control(!/0,     'gnu.prolog.vm.buildin.control.Control_cut').
+:-control((',')/2, 'gnu.prolog.vm.buildin.control.Control_and').
+:-control((';')/2, 'gnu.prolog.vm.buildin.control.Control_or').
+:-control(('->')/2,'gnu.prolog.vm.buildin.control.Control_if_then').
+:-control(catch/3, 'gnu.prolog.vm.buildin.control.Control_catch').
+:-control(throw/1, 'gnu.prolog.vm.buildin.control.Control_throw').
+*/
 % the only used is call/1
 %:-control(call/1, 'gnu.prolog.vm.interpreter.Predicate_call'). 
 :-build_in(call/1, 'gnu.prolog.vm.interpreter.Predicate_call'). 
