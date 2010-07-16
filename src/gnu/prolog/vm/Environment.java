@@ -122,6 +122,76 @@ public class Environment implements PredicateListener
 	public final static AtomTerm errorAtom = AtomTerm.get("error");
 	public final static AtomTerm warningAtom = AtomTerm.get("warning");
 	public final static AtomTerm doubleQuotesAtom = AtomTerm.get("double_quotes");
+
+	/**
+	 * The possible values of the {@link #doubleQuotesAtom double_quotes flag}
+	 * 
+	 * @author Daniel Thomas
+	 */
+	public static enum DoubleQuotesValue implements HasAtom
+	{
+		DQ_CODES
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.codesAtom;
+			}
+		},
+		DQ_CHARS
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.charsAtom;
+			}
+		},
+		DQ_ATOM
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.atomAtom;
+			}
+		};
+
+		/**
+		 * @return the AtomTerm for this value for the double_quotes flag.
+		 */
+		public abstract AtomTerm getAtom();
+
+		/**
+		 * @param value
+		 *          the AtomTerm to be converted into a DoubleQuotesValue
+		 * @return the DoubleQuotesValue for the value or null if it does not match.
+		 */
+		public static DoubleQuotesValue fromAtom(AtomTerm value)
+		{
+			if (TermConstants.codesAtom == value)
+			{
+				return DQ_CODES;
+			}
+			else if (TermConstants.charsAtom == value)
+			{
+				return DQ_CHARS;
+			}
+			else if (TermConstants.atomAtom == value)
+			{
+				return DQ_ATOM;
+			}
+			return null;
+		}
+
+		/**
+		 * @return the default value for the {@link #doubleQuotesAtom double_quotes
+		 *         flag}.
+		 */
+		public static DoubleQuotesValue getDefault()
+		{
+			return DQ_CODES;
+		}
+	}
+
 	public final static AtomTerm dialectAtom = AtomTerm.get("dialect");
 	public final static AtomTerm versionAtom = AtomTerm.get("version");
 	// integer terms
@@ -174,7 +244,7 @@ public class Environment implements PredicateListener
 		IntegerTerm maxArity = (maxMemory < maxIntegerTerm.value) ? IntegerTerm.get((int) maxMemory) : maxIntegerTerm;
 		setNewPrologFlag(TermConstants.maxArityAtom, maxArity, false);
 		setNewPrologFlag(unknownAtom, errorAtom, true);
-		setNewPrologFlag(doubleQuotesAtom, TermConstants.codesAtom, true);
+		setNewPrologFlag(doubleQuotesAtom, DoubleQuotesValue.getDefault().getAtom(), true);
 		setNewPrologFlag(dialectAtom, dialectTerm, false);
 		setNewPrologFlag(versionAtom, versionTerm, false);
 
@@ -320,8 +390,9 @@ public class Environment implements PredicateListener
 		}
 		else if (flag == doubleQuotesAtom)
 		{
-			if (newValue != TermConstants.charsAtom && newValue != TermConstants.codesAtom
-					&& newValue != TermConstants.atomAtom)
+			DoubleQuotesValue newState = null;
+			// assignment inside if because then type checking has happened.
+			if (!(newValue instanceof AtomTerm) || ((newState = DoubleQuotesValue.fromAtom((AtomTerm) newValue)) == null))
 			{
 				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
