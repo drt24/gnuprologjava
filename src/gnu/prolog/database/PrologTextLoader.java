@@ -27,14 +27,16 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.CanSetDoubleQuotes;
 import gnu.prolog.vm.TermConstants;
+import gnu.prolog.vm.Environment.DoubleQuotesValue;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Stack;
 
-public class PrologTextLoader
+public class PrologTextLoader implements CanSetDoubleQuotes
 {
 	/** root file */
 	protected String rootFile;
@@ -75,6 +77,8 @@ public class PrologTextLoader
 	protected PrologTextLoader(PrologTextLoaderState prologTextLoaderState)
 	{
 		this.prologTextLoaderState = prologTextLoaderState;
+		// So that we can be told about changes to double_quotes or similar
+		prologTextLoaderState.register(this);
 	}
 
 	public PrologTextLoader(PrologTextLoaderState prologTextLoaderState, Term root)
@@ -85,6 +89,7 @@ public class PrologTextLoader
 		try
 		{
 			currentReader = new TermReader(new InputStreamReader(prologTextLoaderState.getInputStream(root)));
+			currentReader.setDoubleQuotesState(prologTextLoaderState.getDoubleQuotesState());
 		}
 		catch (Exception ex)
 		{
@@ -92,6 +97,8 @@ public class PrologTextLoader
 			return;
 		}
 		processFile();
+		// so we don't get told about future double quotes changes (or similar)
+		// prologTextLoaderState.deregister(this);
 	}
 
 	/**
@@ -121,6 +128,7 @@ public class PrologTextLoader
 		try
 		{
 			currentReader = new TermReader(stream);
+			currentReader.setDoubleQuotesState(prologTextLoaderState.getDoubleQuotesState());
 		}
 		catch (Exception ex)
 		{
@@ -128,6 +136,8 @@ public class PrologTextLoader
 			return;
 		}
 		processFile();
+		// so we don't get told about future double quotes changes (or similar)
+		// prologTextLoaderState.deregister(this);
 	}
 
 	public String getCurrentFile()
@@ -190,7 +200,6 @@ public class PrologTextLoader
 			}
 			catch (ParseException ex)
 			{
-				// ex.printStackTrace();
 				logError(ex);
 				continue;
 			}
@@ -283,7 +292,6 @@ public class PrologTextLoader
 
 	protected void processSetPrologFlagDirective(Term arg0, Term arg1)
 	{
-		// logError("set_prolog_flag/2 directive was ignored");
 		prologTextLoaderState.addInitialization(this, new CompoundTerm(set_prolog_flagTag, arg0, arg1));
 	}
 
@@ -487,6 +495,7 @@ public class PrologTextLoader
 			readerStack.push(currentReader);
 			fileStack.push(currentFile);
 			currentReader = reader;
+			currentReader.setDoubleQuotesState(prologTextLoaderState.getDoubleQuotesState());
 			currentFile = prologTextLoaderState.getInputName(argument);
 		}
 		catch (Exception ex)
@@ -533,5 +542,24 @@ public class PrologTextLoader
 	public void logError(ParseException ex)
 	{
 		prologTextLoaderState.logError(this, ex);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.vm.CanSetDoubleQuotes#setDoubleQuotesState(gnu.prolog.vm.Environment
+	 * .DoubleQuotesValue)
+	 */
+	public void setDoubleQuotesState(DoubleQuotesValue value)
+	{
+		for (TermReader reader : readerStack)
+		{
+			reader.setDoubleQuotesState(value);
+		}
+		if (currentReader != null)
+		{
+			currentReader.setDoubleQuotesState(value);
+		}
 	}
 }

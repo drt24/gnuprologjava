@@ -245,6 +245,7 @@ public class Environment implements PredicateListener
 		setNewPrologFlag(TermConstants.maxArityAtom, maxArity, false);
 		setNewPrologFlag(unknownAtom, errorAtom, true);
 		setNewPrologFlag(doubleQuotesAtom, DoubleQuotesValue.getDefault().getAtom(), true);
+		prologTextLoaderState.setDoubleQuotesState(DoubleQuotesValue.getDefault());
 		setNewPrologFlag(dialectAtom, dialectTerm, false);
 		setNewPrologFlag(versionAtom, versionTerm, false);
 
@@ -396,6 +397,7 @@ public class Environment implements PredicateListener
 			{
 				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
+			prologTextLoaderState.setDoubleQuotesState(newState);
 		}
 		if (!changableFlags.contains(flag))
 		{

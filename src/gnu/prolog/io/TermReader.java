@@ -19,12 +19,14 @@ package gnu.prolog.io;
 
 import gnu.prolog.io.parser.gen.TermParser;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.CanSetDoubleQuotes;
+import gnu.prolog.vm.Environment.DoubleQuotesValue;
 
 import java.io.FilterReader;
 import java.io.Reader;
 import java.io.StringReader;
 
-public class TermReader extends FilterReader
+public class TermReader extends FilterReader implements CanSetDoubleQuotes
 {
 	protected static OperatorSet defaultOperatorSet = new OperatorSet();
 	TermParser parser;
@@ -119,6 +121,18 @@ public class TermReader extends FilterReader
 	public int getCurrentColumn()
 	{
 		return parser.getCurrentColumn();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.vm.CanSetDoubleQuotes#setDoubleQuotesState(gnu.prolog.vm.Environment
+	 * .DoubleQuotesValue)
+	 */
+	public void setDoubleQuotesState(DoubleQuotesValue value)
+	{
+		parser.setDoubleQuotesState(value);
 	}
 
 }

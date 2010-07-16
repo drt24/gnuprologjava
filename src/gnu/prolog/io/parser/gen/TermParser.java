@@ -30,13 +30,16 @@ import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.CanSetDoubleQuotes;
 import gnu.prolog.vm.TermConstants;
+import gnu.prolog.vm.Environment.DoubleQuotesValue;
 
 import java.util.ArrayList;
 
-public final class TermParser implements TermParserConstants
+public final class TermParser implements TermParserConstants, CanSetDoubleQuotes
 {
 	CharStream stream;
+	private DoubleQuotesValue doubleQuotesState = DoubleQuotesValue.getDefault();
 
 	public int getCurrentLine()
 	{
@@ -169,6 +172,18 @@ public final class TermParser implements TermParserConstants
 	{
 		this(str);
 		stream = str;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.vm.CanSetDoubleQuotes#setDoubleQuotesState(gnu.prolog.vm.Environment
+	 * .DoubleQuotesValue)
+	 */
+	public void setDoubleQuotesState(DoubleQuotesValue value)
+	{
+		doubleQuotesState = value;
 	}
 
 	final public Term readTerm(ReadOptions options) throws ParseException
@@ -656,7 +671,7 @@ public final class TermParser implements TermParserConstants
 	final public VariableTerm variable(ReadOptions options) throws ParseException
 	{
 		jj_consume_token(VARIABLE_TOKEN);
-		VariableTerm var = (VariableTerm) options.variableNames.get(token.image);
+		VariableTerm var = options.variableNames.get(token.image);
 		if (var == null)
 		{
 			var = new VariableTerm();
@@ -709,19 +724,33 @@ public final class TermParser implements TermParserConstants
 	{
 		jj_consume_token(CHAR_CODE_LIST_TOKEN);
 		String val = TermParserUtils.convertQuotedString(token.image, '\"');
-		int i, n = val.length();
-		Term rc = TermConstants.emptyListAtom;
-		for (i = n - 1; i >= 0; i--)
+		switch (doubleQuotesState)
 		{
-			rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);
-		}
-		{
-			if (true)
+			case DQ_ATOM:
+				return AtomTerm.get(val);
+			case DQ_CHARS:
 			{
+				char[] valChars = val.toCharArray();
+				AtomTerm[] valAtoms = new AtomTerm[valChars.length];
+				int i, n = valChars.length;
+				for (i = n - 1; i >= 0; --i)
+				{
+					valAtoms[i] = AtomTerm.get(valChars[i]);
+				}
+				return CompoundTerm.getList(valAtoms);
+			}
+			case DQ_CODES:
+			default:
+			{
+				int i, n = val.length();
+				Term rc = TermConstants.emptyListAtom;
+				for (i = n - 1; i >= 0; i--)
+				{
+					rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);
+				}
 				return rc;
 			}
 		}
-		throw new Error("Missing return statement in function");
 	}
 
 	final public void open() throws ParseException

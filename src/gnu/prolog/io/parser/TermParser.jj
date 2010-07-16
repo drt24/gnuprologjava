@@ -28,11 +28,14 @@ import gnu.prolog.io.parser.*;
 import gnu.prolog.term.*;
 import gnu.prolog.io.*;
 import gnu.prolog.vm.TermConstants;
+import gnu.prolog.vm.Environment.DoubleQuotesValue;
+import gnu.prolog.vm.CanSetDoubleQuotes;
 import java.util.*;
 
-public final class TermParser
+public final class TermParser implements CanSetDoubleQuotes
 {
   CharStream stream;
+  private DoubleQuotesValue doubleQuotesState = DoubleQuotesValue.getDefault();
 
   public int getCurrentLine()
   {
@@ -163,6 +166,18 @@ public final class TermParser
     this(str);
     stream = str;
   }
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gnu.prolog.vm.CanSetDoubleQuotes#setDoubleQuotesState(gnu.prolog.vm.Environment
+	 * .DoubleQuotesValue)
+	 */
+	public void setDoubleQuotesState(DoubleQuotesValue value)
+	{
+		doubleQuotesState = value;
+	}
 
 }
 
@@ -606,13 +621,33 @@ Term char_code_list():
   <CHAR_CODE_LIST_TOKEN>      // 6.4.6
   {
     String val = TermParserUtils.convertQuotedString(token.image,'\"');
-    int i,n = val.length();
-    Term rc = TermConstants.emptyListAtom;
-    for (i=n-1; i>=0; i--)
-    {
-      rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);
-    }
-    return rc;
+    switch (doubleQuotesState)
+		{
+			case DQ_ATOM:
+				return AtomTerm.get(val);
+			case DQ_CHARS:
+			{
+				char[] valChars = val.toCharArray();
+				AtomTerm[] valAtoms = new AtomTerm[valChars.length];
+				int i, n = valChars.length;
+				for (i = n - 1; i >= 0; --i)
+				{
+					valAtoms[i] = AtomTerm.get(valChars[i]);
+				}
+				return CompoundTerm.getList(valAtoms);
+			}
+			case DQ_CODES:
+			default:
+			{
+				int i, n = val.length();
+				Term rc = TermConstants.emptyListAtom;
+				for (i = n - 1; i >= 0; i--)
+				{
+					rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);
+				}
+				return rc;
+			}
+		}
   }
 }
 

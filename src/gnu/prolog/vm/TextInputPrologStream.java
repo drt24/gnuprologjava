@@ -60,6 +60,7 @@ public class TextInputPrologStream extends PrologStream
 		if (environment != null)
 		{
 			charConversion = environment.getPrologTextLoaderState().getConversionTable();
+			termReader.setDoubleQuotesState(environment.getPrologTextLoaderState().getDoubleQuotesState());
 		}
 	}
 

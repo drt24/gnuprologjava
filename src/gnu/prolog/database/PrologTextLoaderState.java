@@ -24,7 +24,10 @@ import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.CanSetDoubleQuotes;
+import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.TermConstants;
+import gnu.prolog.vm.Environment.DoubleQuotesValue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PrologTextLoaderState implements PrologTextLoaderListener
+public class PrologTextLoaderState implements PrologTextLoaderListener, CanSetDoubleQuotes
 {
 	protected Module module = new Module();
 	protected Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
@@ -48,6 +51,9 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 	protected Set<String> loadedFiles = new HashSet<String>();
 	protected CharConversionTable convTable = new CharConversionTable();
 	protected List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
+
+	private DoubleQuotesValue doubleQuotesState = DoubleQuotesValue.getDefault();
+	private HashSet<PrologTextLoader> loaders = new HashSet<PrologTextLoader>();
 
 	// arguments of ensure_loaded/1 and include/2 directive
 	protected final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
@@ -550,6 +556,43 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 		{
 			listener.beforeProcessFile(loader);
 		}
+	}
+
+	/**
+	 * @param doubleQuotesState
+	 *          the doubleQuotesState to set
+	 */
+	public void setDoubleQuotesState(DoubleQuotesValue doubleQuotesState)
+	{
+		this.doubleQuotesState = doubleQuotesState;
+		for (PrologTextLoader loader : loaders)
+		{
+			loader.setDoubleQuotesState(doubleQuotesState);
+		}
+	}
+
+	/**
+	 * @return the doubleQuotesState
+	 */
+	public DoubleQuotesValue getDoubleQuotesState()
+	{
+		return doubleQuotesState;
+	}
+
+	/**
+	 * @param prologTextLoader
+	 */
+	public void register(PrologTextLoader prologTextLoader)
+	{
+		loaders.add(prologTextLoader);
+	}
+
+	/**
+	 * @param prologTextLoader
+	 */
+	public void deregister(PrologTextLoader prologTextLoader)
+	{
+		loaders.remove(prologTextLoader);
 	}
 
 }
