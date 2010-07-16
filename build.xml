@@ -29,6 +29,8 @@ Ant Buildfile for GNU Prolog for Java.
 				<deletecharacters chars=" \t" />
 			</filterchain>
 		</loadproperties>
+		
+		<property file="build.properties"/>
 
 		<property name="name.friendly" value="GNU Prolog for Java" />
 		<property name="url.website" value="http://www.gnu.org/software/gnuprologjava/" />
@@ -122,7 +124,7 @@ Ant Buildfile for GNU Prolog for Java.
 		</javadoc>
 	</target>
 
-	<target name="test" depends="build,test-vanilla,test-inriasuite" description="Execute tests">
+	<target name="test" depends="build,test-inriasuite,test-vanilla" description="Execute tests">
 	</target>
 
 	<target name="test-vanilla">
@@ -147,5 +149,16 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 		</exec>
 	</target>
 
+	<!-- Dangerous -->
+	<target name="regenerate-parser" depends="init"
+		description="Regenerate the parser. WARNING: This may BREAK the parser. Use with Care.">
+		<javacc
+		    target="src/gnu/prolog/io/parser/TermParser.jj"
+		    outputdirectory="src/gnu/prolog/io/parser/gen/"
+			jdkversion="1.6"
+			javacchome="${javacc.home}"
+			debugparser="${javacc.debug}"
+		/>
+	</target>
 </project>
 
