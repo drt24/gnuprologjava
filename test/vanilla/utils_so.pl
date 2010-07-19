@@ -92,11 +92,15 @@ defined(P/A) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  error_is_not(+Error, +Thrown)
+%
+%   Thrown is a term in the standard Prolog error format of 
+%     error(StandardErrorPart,ImplementationDefinedPart)
+%   Error is the StandardErrorPart of a Prolog error.
 %  
 
 error_is_not(Error, Thrown) :-
 	Thrown =.. [error, StdError | _],
-        ( StdError =.. [existence_error |_]  -> fail ; true).
+        ( StdError = Error  -> fail ; true).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
