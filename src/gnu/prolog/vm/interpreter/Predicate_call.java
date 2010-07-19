@@ -29,7 +29,9 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * prolog code
@@ -76,7 +78,7 @@ public class Predicate_call implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -93,7 +95,7 @@ public class Predicate_call implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -115,22 +117,24 @@ public class Predicate_call implements PrologCode
 			{
 				PrologException.instantiationError();
 			}
-			List<VariableTerm> argumentVariables = new ArrayList<VariableTerm>();
-			List<Term> arguments = new ArrayList<Term>();
+			// This was originally done using two Lists by keeping their sizes in sync
+			// but I (Daniel) refactored this to a map. (This may have broken
+			// something).
+			Map<Term, VariableTerm> argumentsToArgumentVariables = new HashMap<Term, VariableTerm>();
 			Term body;
 			try
 			{
-				body = getClause(callTerm, argumentVariables, arguments);
+				body = getClause(callTerm, argumentsToArgumentVariables);
 			}
 			catch (IllegalArgumentException ex) // term not callable
 			{
 				PrologException.typeError(TermConstants.callableAtom, callTerm);
-				return -1; // fake return
+				return FAIL; // fake return
 			}
-			Term headArgs[] = argumentVariables.toArray(termArrayType);
+			Term headArgs[] = argumentsToArgumentVariables.values().toArray(termArrayType);
 			Term head = new CompoundTerm(headFunctor, headArgs);
 			Term clause = new CompoundTerm(TermConstants.clauseTag, head, body);
-			args = arguments.toArray(termArrayType);
+			args = argumentsToArgumentVariables.keySet().toArray(termArrayType);
 			List<Term> clauses = new ArrayList<Term>(1);
 			clauses.add(clause);
 			code = InterpretedCodeCompiler.compile(clauses);
@@ -166,7 +170,7 @@ public class Predicate_call implements PrologCode
 	}
 
 	/** convert callable term to clause */
-	public static Term getClause(Term term, List<VariableTerm> argumentVariables, List<Term> arguments)
+	public static Term getClause(Term term, Map<Term, VariableTerm> argumentsToArgumentVariables)
 	{
 		if (term instanceof AtomTerm)
 		{
@@ -174,14 +178,13 @@ public class Predicate_call implements PrologCode
 		}
 		else if (term instanceof VariableTerm)
 		{
-			if (!arguments.contains(term))
+			if (!argumentsToArgumentVariables.containsKey(term))
 			{
 				VariableTerm var1 = new VariableTerm();
-				argumentVariables.add(var1);
-				arguments.add(term);
+				argumentsToArgumentVariables.put(term, var1);
 				return var1;
 			}
-			return argumentVariables.get(arguments.indexOf(term));
+			return argumentsToArgumentVariables.get(term);
 		}
 		else if (term instanceof CompoundTerm)
 		{
@@ -189,22 +192,21 @@ public class Predicate_call implements PrologCode
 			if (ct.tag == TermConstants.ifTag || ct.tag == TermConstants.conjunctionTag
 					|| ct.tag == TermConstants.disjunctionTag)
 			{
-				return new CompoundTerm(ct.tag, getClause(ct.args[0].dereference(), argumentVariables, arguments), getClause(
-						ct.args[1].dereference(), argumentVariables, arguments));
+				return new CompoundTerm(ct.tag, getClause(ct.args[0].dereference(), argumentsToArgumentVariables), getClause(
+						ct.args[1].dereference(), argumentsToArgumentVariables));
 			}
 			Term newArgs[] = new Term[ct.tag.arity];
 			for (int i = 0; i < newArgs.length; i++)
 			{
 				Term arg = ct.args[i].dereference();
-				if (!arguments.contains(arg))
+				if (!argumentsToArgumentVariables.containsKey(arg))
 				{
 					newArgs[i] = new VariableTerm();
-					argumentVariables.add((VariableTerm) newArgs[i]);
-					arguments.add(arg);
+					argumentsToArgumentVariables.put(arg, (VariableTerm) newArgs[i]);
 				}
 				else
 				{
-					newArgs[i] = argumentVariables.get(arguments.indexOf(arg));
+					newArgs[i] = argumentsToArgumentVariables.get(arg);
 				}
 			}
 			return new CompoundTerm(ct.tag, newArgs);
@@ -218,7 +220,7 @@ public class Predicate_call implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environment to install the predicate
 	 */
@@ -229,7 +231,7 @@ public class Predicate_call implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environment to install the predicate
 	 */
