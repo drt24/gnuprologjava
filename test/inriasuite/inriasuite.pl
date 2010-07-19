@@ -758,7 +758,11 @@ file(unify).
 file(F) :- extra(N), atom_concat('extra/',N,F).
 file(F) :- inria(N), atom_concat('inria/',N,F).
 file(F) :- io(N), atom_concat('io/',N,F).
-file(F) :- file(F,IF), ensure_loaded(IF).
+file(F) :-
+	file(F,IF),
+	catch(ensure_loaded(IF),error(existence_error(procedure,ensure_loaded/1),_),
+		(write('Optional ensure_loaded/1 predicate not supported cannot test: '),
+		write(F),nl, fail)).
 
 
 % file(+TestFile,+IncludeFile) a TestFile which depends on an IncludeFile
