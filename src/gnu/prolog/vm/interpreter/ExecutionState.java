@@ -29,6 +29,7 @@ import java.util.List;
 /** execution state class */
 public class ExecutionState
 {
+	// TODO: use an enum here.
 	/** instruction return code indicating need for backtracking */
 	public final static int BACKTRACK = -1;
 	/**
@@ -61,19 +62,19 @@ public class ExecutionState
 	/** arguments */
 	public Term args[];
 
-	/** pop backtrack infor from stack */
+	/** pop backtrack info from stack */
 	public BacktrackInfo popBacktrackInfo()
 	{
 		return interpreter.popBacktrackInfo();
 	}
 
-	/** peek backtrack info w/o poping it */
+	/** peek backtrack info w/o popping it */
 	public BacktrackInfo peekBacktrackInfo()
 	{
 		return interpreter.peekBacktrackInfo();
 	}
 
-	/** push backteack info to stack */
+	/** push backtrack info to stack */
 	public void pushBacktrackInfo(BacktrackInfo cbi)
 	{
 		interpreter.pushBacktrackInfo(cbi);

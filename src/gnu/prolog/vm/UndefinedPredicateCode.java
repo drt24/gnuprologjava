@@ -84,7 +84,7 @@ public class UndefinedPredicateCode implements PrologCode
 	 * installed only for one environment.
 	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          environment to install the predicate
 	 */
 	public void install(Environment env)
 	{
@@ -95,7 +95,7 @@ public class UndefinedPredicateCode implements PrologCode
 	 * this method is called when code is uninstalled from the environment
 	 * 
 	 * @param environment
-	 *          environemnt to install the predicate
+	 *          environment to install the predicate
 	 */
 	public void uninstall(Environment env)
 	{}

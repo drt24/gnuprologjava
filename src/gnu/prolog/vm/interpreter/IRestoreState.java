@@ -27,7 +27,7 @@ import gnu.prolog.vm.PrologException;
 public class IRestoreState extends Instruction
 {
 	/**
-	 * environemt index where state was saved
+	 * environment index where state was saved
 	 */
 	public int environmentIndex;
 
@@ -36,8 +36,8 @@ public class IRestoreState extends Instruction
 	 *
 	 * @param state
 	 *          state within which instruction will be executed
-	 * @return instruction to caller how to execute next instrcuction
-	 * @throw PrologException if code is throwng prolog exception
+	 * @return instruction to caller how to execute next instruction
+	 * @throw PrologException if code is throwing prolog exception
 	 */
 	@Override
 	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException

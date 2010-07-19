@@ -35,7 +35,7 @@ public class PrologCodeUpdatedEvent extends java.util.EventObject
 		this.tag = tag;
 	}
 
-	/** get environemnt */
+	/** get environment */
 	public Environment getEnvironment()
 	{
 		return (Environment) getSource();

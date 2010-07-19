@@ -34,8 +34,8 @@ public class ITryMeElse extends RetryInstruction
 	 *
 	 * @param state
 	 *          state within which instruction will be executed
-	 * @return instruction to caller how to execute next instrcuction
-	 * @throw PrologException if code is throwng prolog exception
+	 * @return instruction to caller how to execute next instruction
+	 * @throw PrologException if code is throwing prolog exception
 	 */
 	@Override
 	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException

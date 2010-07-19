@@ -24,7 +24,7 @@ import gnu.prolog.vm.PrologException;
 /** base call for instruction */
 public abstract class Instruction
 {
-	/** code postion of instruction */
+	/** code position of instruction */
 	public int codePosition;
 
 	/** execute instruction */

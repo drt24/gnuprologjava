@@ -20,10 +20,10 @@ package gnu.prolog.vm.interpreter;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
 
-/** save top of pushdown list in environemnt */
+/** save top of pushdown list in environment */
 public class IStoreEnvironment extends Instruction
 {
-	/** index in environemt where term is kept */
+	/** index in environment where term is kept */
 	public int environmentIndex;
 
 	/** a constructor */
@@ -37,8 +37,8 @@ public class IStoreEnvironment extends Instruction
 	 *
 	 * @param state
 	 *          state within which instruction will be executed
-	 * @return instruction to caller how to execute next instrcuction
-	 * @throw PrologException if code is throwng prolog exception
+	 * @return instruction to caller how to execute next instruction
+	 * @throw PrologException if code is throwing prolog exception
 	 */
 	@Override
 	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
