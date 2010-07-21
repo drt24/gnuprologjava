@@ -32,7 +32,9 @@ import gnu.prolog.io.parser.gen.CharStream;
 
 public final class ReaderCharStream implements CharStream
 {
-	public static final boolean staticFlag = false;
+	private static final int DEFAULTBUFFERSIZE = 4096;
+	private static final int DEFAULTBUFFERINCREMENT = DEFAULTBUFFERSIZE / 2;
+
 	int bufsize;
 	int available;
 	int tokenBegin;
@@ -52,11 +54,11 @@ public final class ReaderCharStream implements CharStream
 	private int maxNextCharInd = 0;
 	private int inBuf = 0;
 
-	private final void ExpandBuff(boolean wrapAround)
+	private final void expandBuff(boolean wrapAround)
 	{
-		char[] newbuffer = new char[bufsize + 2048];
-		int newbufline[] = new int[bufsize + 2048];
-		int newbufcolumn[] = new int[bufsize + 2048];
+		char[] newbuffer = new char[bufsize + DEFAULTBUFFERINCREMENT];
+		int newbufline[] = new int[bufsize + DEFAULTBUFFERINCREMENT];
+		int newbufcolumn[] = new int[bufsize + DEFAULTBUFFERINCREMENT];
 
 		try
 		{
@@ -95,18 +97,18 @@ public final class ReaderCharStream implements CharStream
 			throw new Error(t.getMessage());
 		}
 
-		bufsize += 2048;
+		bufsize += DEFAULTBUFFERINCREMENT;
 		available = bufsize;
 		tokenBegin = 0;
 	}
 
-	private final void FillBuff() throws java.io.IOException
+	private final void fillBuff() throws java.io.IOException
 	{
 		if (maxNextCharInd == available)
 		{
 			if (available == bufsize)
 			{
-				if (tokenBegin > 2048)
+				if (tokenBegin > DEFAULTBUFFERINCREMENT)
 				{
 					bufpos = maxNextCharInd = 0;
 					available = tokenBegin;
@@ -117,16 +119,16 @@ public final class ReaderCharStream implements CharStream
 				}
 				else
 				{
-					ExpandBuff(false);
+					expandBuff(false);
 				}
 			}
 			else if (available > tokenBegin)
 			{
 				available = bufsize;
 			}
-			else if (tokenBegin - available < 2048)
+			else if (tokenBegin - available < DEFAULTBUFFERINCREMENT)
 			{
-				ExpandBuff(true);
+				expandBuff(true);
 			}
 			else
 			{
@@ -169,14 +171,15 @@ public final class ReaderCharStream implements CharStream
 		return c;
 	}
 
-	private final void UpdateLineColumn(char c)
+	private final void updateLineColumn(char c)
 	{
 		column++;
 
 		if (prevCharIsLF)
 		{
 			prevCharIsLF = false;
-			line += column = 1;
+			column = 1;
+			++line;
 		}
 		else if (prevCharIsCR)
 		{
@@ -187,7 +190,8 @@ public final class ReaderCharStream implements CharStream
 			}
 			else
 			{
-				line += column = 1;
+				column = 1;
+				++line;
 			}
 		}
 
@@ -220,12 +224,12 @@ public final class ReaderCharStream implements CharStream
 
 		if (++bufpos >= maxNextCharInd)
 		{
-			FillBuff();
+			fillBuff();
 		}
 
 		char c = buffer[bufpos];
 
-		UpdateLineColumn(c);
+		updateLineColumn(c);
 		return c;
 	}
 
@@ -233,7 +237,6 @@ public final class ReaderCharStream implements CharStream
 	 * @deprecated
 	 * @see #getEndColumn
 	 */
-
 	@Deprecated
 	public final int getColumn()
 	{
@@ -244,7 +247,6 @@ public final class ReaderCharStream implements CharStream
 	 * @deprecated
 	 * @see #getEndLine
 	 */
-
 	@Deprecated
 	public final int getLine()
 	{
@@ -297,29 +299,15 @@ public final class ReaderCharStream implements CharStream
 
 	public ReaderCharStream(java.io.Reader dstream, int startline, int startcolumn, int buffersize)
 	{
-		reader = dstream;
-		line = startline;
-		column = startcolumn - 1;
-
-		available = bufsize = buffersize;
-		buffer = new char[buffersize];
-		bufline = new int[buffersize];
-		bufcolumn = new int[buffersize];
+		reInit(dstream, startline, startcolumn, buffersize);
 	}
 
 	public ReaderCharStream(java.io.Reader dstream, int startline, int startcolumn)
 	{
-		reader = dstream;
-		line = startline;
-		column = startcolumn - 1;
-
-		available = bufsize = 4096;
-		buffer = new char[4096];
-		bufline = new int[4096];
-		bufcolumn = new int[4096];
+		this(dstream, startline, startcolumn, DEFAULTBUFFERSIZE);
 	}
 
-	public void ReInit(java.io.Reader dstream, int startline, int startcolumn, int buffersize)
+	public void reInit(java.io.Reader dstream, int startline, int startcolumn, int buffersize)
 	{
 		reader = dstream;
 		line = startline;
@@ -337,23 +325,9 @@ public final class ReaderCharStream implements CharStream
 		bufpos = -1;
 	}
 
-	public void ReInit(java.io.Reader dstream, int startline, int startcolumn)
+	public void reInit(java.io.Reader dstream, int startline, int startcolumn)
 	{
-		reader = dstream;
-		line = startline;
-		column = startcolumn - 1;
-
-		if (buffer == null || 4096 != buffer.length)
-		{
-			available = bufsize = 4096;
-			buffer = new char[4096];
-			bufline = new int[4096];
-			bufcolumn = new int[4096];
-			available = bufsize = 4096;
-		}
-		prevCharIsLF = prevCharIsCR = false;
-		tokenBegin = inBuf = maxNextCharInd = 0;
-		bufpos = -1;
+		reInit(dstream, startline, startcolumn, DEFAULTBUFFERSIZE);
 	}
 
 	public final String GetImage()
