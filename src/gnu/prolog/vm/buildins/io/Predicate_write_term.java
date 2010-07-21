@@ -36,10 +36,10 @@ public class Predicate_write_term extends ExecuteOnlyCode
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term optionsList = args[2];
 		WriteOptions options = new WriteOptions();
-		options.operatorSet = interpreter.environment.getOperatorSet();
+		options.operatorSet = interpreter.getEnvironment().getOperatorSet();
 
 		// parse options
 		Term cur = optionsList;

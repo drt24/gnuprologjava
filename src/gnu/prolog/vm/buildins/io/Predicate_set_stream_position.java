@@ -31,7 +31,7 @@ public class Predicate_set_stream_position extends ExecuteOnlyCode
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		stream.setPosition(args[0], interpreter, args[1]);
 		return SUCCESS_LAST;
 	}

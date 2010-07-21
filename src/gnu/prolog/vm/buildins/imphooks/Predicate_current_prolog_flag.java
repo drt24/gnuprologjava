@@ -64,7 +64,7 @@ public class Predicate_current_prolog_flag extends ExecuteOnlyCode
 			Term value = args[1];
 			if (flag instanceof AtomTerm)
 			{
-				Term val = interpreter.environment.getPrologFlag((AtomTerm) flag);
+				Term val = interpreter.getEnvironment().getPrologFlag((AtomTerm) flag);
 				if (val == null)
 				{
 					PrologException.domainError(TermConstants.prologFlagAtom, flag);
@@ -77,7 +77,7 @@ public class Predicate_current_prolog_flag extends ExecuteOnlyCode
 				PrologException.typeError(TermConstants.atomAtom, flag);
 			}
 			CurrentPrologFlagBacktrackInfo bi = new CurrentPrologFlagBacktrackInfo();
-			bi.map = interpreter.environment.getPrologFlags();
+			bi.map = interpreter.getEnvironment().getPrologFlags();
 			bi.keys = bi.map.keySet().iterator();
 			bi.startUndoPosition = interpreter.getUndoPosition();
 			bi.flag = flag;

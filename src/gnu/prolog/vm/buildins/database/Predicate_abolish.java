@@ -85,14 +85,14 @@ public class Predicate_abolish extends ExecuteOnlyCode
 			PrologException.representationError(TermConstants.maxArityAtom);
 		}
 		CompoundTermTag tag = CompoundTermTag.get(n, a.value);
-		Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
+		Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
 		if (p != null)
 		{
 			if (p.getType() != Predicate.USER_DEFINED || !p.isDynamic())
 			{
 				PrologException.permissionError(TermConstants.modifyAtom, TermConstants.staticProcedureAtom, pi);
 			}
-			interpreter.environment.getModule().removeDefinedPredicate(tag);
+			interpreter.getEnvironment().getModule().removeDefinedPredicate(tag);
 		}
 		return SUCCESS_LAST;
 	}

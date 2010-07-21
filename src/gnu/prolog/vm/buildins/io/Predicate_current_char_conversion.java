@@ -100,13 +100,13 @@ public class Predicate_current_char_conversion extends ExecuteOnlyCode
 				CharConvBacktrackInfo bi = new CharConvBacktrackInfo();
 				bi.startUndoPosition = interpreter.getUndoPosition();
 				bi.arg0 = args[0];
-				bi.charIt = interpreter.environment.getConversionTable().convertsTo(((AtomTerm) args[1]).value.charAt(0))
+				bi.charIt = interpreter.getEnvironment().getConversionTable().convertsTo(((AtomTerm) args[1]).value.charAt(0))
 						.iterator();
 				return nextSolution(interpreter, bi);
 			}
 			else if (args[1] instanceof VariableTerm)
 			{
-				Term res = AtomTerm.get(Character.toString(interpreter.environment.getConversionTable().convert(
+				Term res = AtomTerm.get(Character.toString(interpreter.getEnvironment().getConversionTable().convert(
 						((AtomTerm) args[0]).value.charAt(0))));
 				return interpreter.unify(args[1], res);
 			}
@@ -150,7 +150,7 @@ public class Predicate_current_char_conversion extends ExecuteOnlyCode
 					interpreter.undo(bi.startUndoPosition);
 					continue;
 				}
-				Term res2 = AtomTerm.get(Character.toString(interpreter.environment.getConversionTable().convert(bi.counter)));
+				Term res2 = AtomTerm.get(Character.toString(interpreter.getEnvironment().getConversionTable().convert(bi.counter)));
 				rc = interpreter.unify(bi.arg1, res2);
 				if (rc == FAIL)
 				{

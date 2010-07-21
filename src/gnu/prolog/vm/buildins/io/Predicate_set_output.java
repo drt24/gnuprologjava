@@ -32,12 +32,12 @@ public class Predicate_set_output extends ExecuteOnlyCode
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		if (stream.getMode() != TermConstants.outputAtom)
 		{
 			PrologException.permissionError(TermConstants.outputAtom, TermConstants.streamAtom, args[0]);
 		}
-		interpreter.environment.setCurrentOutput(stream);
+		interpreter.getEnvironment().setCurrentOutput(stream);
 		return SUCCESS_LAST;
 	}
 }

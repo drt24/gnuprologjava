@@ -91,7 +91,7 @@ public class Predicate_current_predicate extends ExecuteOnlyCode
 			{
 				PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
 			}
-			Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.environment.getModule().getPredicateTags());
+			Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.getEnvironment().getModule().getPredicateTags());
 			CurrentPredicateBacktrackInfo bi = new CurrentPredicateBacktrackInfo();
 			bi.startUndoPosition = interpreter.getUndoPosition();
 			bi.pi = pi;
@@ -106,7 +106,7 @@ public class Predicate_current_predicate extends ExecuteOnlyCode
 		while (bi.tagsIterator.hasNext())
 		{
 			CompoundTermTag tag = bi.tagsIterator.next();
-			Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
+			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
 			if (p == null) // if was destroyed
 			{
 				continue;

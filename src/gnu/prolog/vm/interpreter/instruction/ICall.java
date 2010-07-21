@@ -91,7 +91,7 @@ public class ICall extends Instruction implements PrologCodeListener
 			}
 			// System.err.println();
 			/* ensure that predicate is loaded from stack */
-			ensureLoaded(state.interpreter.environment);
+			ensureLoaded(state.interpreter.getEnvironment());
 			code = this.code;
 		}
 		/* call code, with last backtrack info if applicable */

@@ -113,7 +113,7 @@ public class Predicate_retract extends ExecuteOnlyCode
 			{
 				PrologException.typeError(TermConstants.callableAtom, head);
 			}
-			Predicate p = interpreter.environment.getModule().getDefinedPredicate(predTag);
+			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(predTag);
 			if (p == null)
 			{
 				return FAIL;

@@ -88,7 +88,7 @@ public class Predicate_clause extends ExecuteOnlyCode
 				PrologException.typeError(TermConstants.callableAtom, body);
 			}
 
-			Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
+			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
 			if (p == null) // if predicate not found
 			{
 				return FAIL;

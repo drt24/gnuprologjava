@@ -504,7 +504,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 								code = predicateCodes[cd];
 								if (code == null)
 								{
-									code = interpreter.environment.getPrologCode(tag);
+									code = interpreter.getEnvironment().getPrologCode(tag);
 									predicateCodes[cd] = code;
 								}
 							}

@@ -127,7 +127,7 @@ public class Predicate_call extends ExecuteOnlyCode
 			List<Term> clauses = new ArrayList<Term>(1);
 			clauses.add(clause);
 			code = InterpretedCodeCompiler.compile(clauses);
-			code.install(interpreter.environment);
+			code.install(interpreter.getEnvironment());
 			// System.err.println("converted clause");
 			// System.err.println(gnu.prolog.io.TermWriter.toString(clause));
 			// System.err.println("converted code");
@@ -144,12 +144,12 @@ public class Predicate_call extends ExecuteOnlyCode
 		if (rc == SUCCESS) // redo is possible
 		{
 			cbi = new CallTermBacktrackInfo(interpreter, code, args, callTerm);
-			cbi.environment = interpreter.environment;
+			cbi.environment = interpreter.getEnvironment();
 			interpreter.pushBacktrackInfo(cbi);
 		}
 		else
 		{
-			code.uninstall(interpreter.environment);
+			code.uninstall(interpreter.getEnvironment());
 			if (cbi != null)
 			{
 				cbi.code = null;

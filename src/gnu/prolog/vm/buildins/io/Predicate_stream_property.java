@@ -159,7 +159,7 @@ public class Predicate_stream_property extends ExecuteOnlyCode
 			}
 			StreamPropertyBacktrackInfo bi = new StreamPropertyBacktrackInfo();
 			bi.startUndoPosition = interpreter.getUndoPosition();
-			bi.stream2option = interpreter.environment.getStreamProperties();
+			bi.stream2option = interpreter.getEnvironment().getStreamProperties();
 			bi.streams = bi.stream2option.keySet().iterator();
 			bi.stream = args[0];
 			bi.property = args[1];

@@ -72,7 +72,7 @@ public class Predicate_char_conversion extends ExecuteOnlyCode
 		}
 		char cfrom = ((AtomTerm) from).value.charAt(0);
 		char cto = ((AtomTerm) to).value.charAt(0);
-		interpreter.environment.getConversionTable().setConversion(cfrom, cto);
+		interpreter.getEnvironment().getConversionTable().setConversion(cfrom, cto);
 		return SUCCESS_LAST;
 	}
 }

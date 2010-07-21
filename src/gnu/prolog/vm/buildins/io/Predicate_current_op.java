@@ -104,7 +104,7 @@ public class Predicate_current_op extends ExecuteOnlyCode
 			List<AtomTerm> specifiers = new ArrayList<AtomTerm>();
 			List<IntegerTerm> priorities = new ArrayList<IntegerTerm>();
 
-			Iterator<Operator> i = interpreter.environment.getOperatorSet().getOperators().iterator();
+			Iterator<Operator> i = interpreter.getEnvironment().getOperatorSet().getOperators().iterator();
 			while (i.hasNext())
 			{
 				Operator o = i.next();

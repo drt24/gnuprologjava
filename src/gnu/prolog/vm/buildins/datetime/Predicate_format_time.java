@@ -69,7 +69,7 @@ public class Predicate_format_time extends DateTimePrologCode
 		}
 		else if (args[0] instanceof AtomTerm)
 		{
-			outstream = interpreter.environment.resolveStream(args[0]);
+			outstream = interpreter.getEnvironment().resolveStream(args[0]);
 			if (outstream == null)
 			{
 				PrologException.domainError(TermConstants.streamAtom, args[0]);

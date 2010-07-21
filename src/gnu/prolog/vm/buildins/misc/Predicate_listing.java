@@ -47,11 +47,11 @@ public class Predicate_listing extends ExecuteOnlyCode
 		}
 		WriteOptions options = new WriteOptions();
 		options.declaredVariableNames = true;
-		options.operatorSet = interpreter.environment.getOperatorSet();
+		options.operatorSet = interpreter.getEnvironment().getOperatorSet();
 		options.numbervars = true;
 		options.quoted = true;
-		PrologStream stream = interpreter.environment.getCurrentOutput();
-		for (CompoundTermTag tag : interpreter.environment.getModule().getPredicateTags())
+		PrologStream stream = interpreter.getEnvironment().getCurrentOutput();
+		for (CompoundTermTag tag : interpreter.getEnvironment().getModule().getPredicateTags())
 		{
 			if (filter != null)
 			{
@@ -67,7 +67,7 @@ public class Predicate_listing extends ExecuteOnlyCode
 					}
 				}
 			}
-			Predicate p = interpreter.environment.getModule().getDefinedPredicate(tag);
+			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
 			if (p.getType() != Predicate.USER_DEFINED)
 			{
 				stream.putCodeSequence(null, interpreter, "% Foreign: ");

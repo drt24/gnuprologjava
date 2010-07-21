@@ -44,7 +44,7 @@ public class Predicate_set_prolog_flag extends ExecuteOnlyCode
 		{
 			PrologException.typeError(TermConstants.atomAtom, flag);
 		}
-		interpreter.environment.setPrologFlag((AtomTerm) flag, value);
+		interpreter.getEnvironment().setPrologFlag((AtomTerm) flag, value);
 		return SUCCESS_LAST;
 	}
 }

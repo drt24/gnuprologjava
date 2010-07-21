@@ -146,8 +146,8 @@ public class Predicate_open extends ExecuteOnlyCode
 		}
 		options.filename = source_sink;
 		options.mode = mode;
-		options.environment = interpreter.environment;
-		vstream.value = interpreter.environment.open(source_sink, mode, options);
+		options.environment = interpreter.getEnvironment();
+		vstream.value = interpreter.getEnvironment().open(source_sink, mode, options);
 		interpreter.addVariableUndo(vstream);
 		return SUCCESS_LAST;
 	}

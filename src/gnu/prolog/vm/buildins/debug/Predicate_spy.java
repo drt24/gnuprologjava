@@ -121,7 +121,7 @@ public class Predicate_spy extends ExecuteOnlyCode
 		CompoundTermTag tag = getTag(args[0]);
 		if (tag.arity == -1)
 		{
-			for (CompoundTermTag ptag : interpreter.environment.getModule().getPredicateTags())
+			for (CompoundTermTag ptag : interpreter.getEnvironment().getModule().getPredicateTags())
 			{
 				if (ptag.functor.equals(tag.functor))
 				{

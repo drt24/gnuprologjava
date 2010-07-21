@@ -35,7 +35,7 @@ public class Predicate_put_byte extends ExecuteOnlyCode
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term in_byte = args[1];
 		int b = 0;
 		if (in_byte instanceof VariableTerm)

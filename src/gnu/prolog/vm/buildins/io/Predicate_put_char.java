@@ -35,7 +35,7 @@ public class Predicate_put_char extends ExecuteOnlyCode
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		PrologStream stream = interpreter.environment.resolveStream(args[0]);
+		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term outchar = args[1];
 		char ch = 0;
 		if (outchar instanceof VariableTerm)

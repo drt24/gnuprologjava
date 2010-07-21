@@ -75,12 +75,12 @@ public class Predicate_close extends ExecuteOnlyCode
 			force = e.args[0];
 		}
 
-		PrologStream stream = interpreter.environment.resolveStream(args[0]);
-		if (stream == interpreter.environment.getUserInput())
+		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
+		if (stream == interpreter.getEnvironment().getUserInput())
 		{
 			return SUCCESS_LAST;
 		}
-		if (stream == interpreter.environment.getUserOutput())
+		if (stream == interpreter.getEnvironment().getUserOutput())
 		{
 			return SUCCESS_LAST;
 		}

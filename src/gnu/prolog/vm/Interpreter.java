@@ -43,10 +43,8 @@ public final class Interpreter
 
 	/**
 	 * Environment for this interpreter
-	 * 
-	 * TODO: this should not be public.
-	 * */
-	public Environment environment;
+	 */
+	protected Environment environment;
 
 	/**
 	 * Keeps track of prolog call/return traces

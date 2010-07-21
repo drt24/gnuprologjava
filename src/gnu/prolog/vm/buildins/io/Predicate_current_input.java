@@ -51,6 +51,6 @@ public class Predicate_current_input extends ExecuteOnlyCode
 		{
 			PrologException.domainError(TermConstants.streamAtom, stream);
 		}
-		return interpreter.unify(stream, interpreter.environment.getCurrentInput().getStreamTerm());
+		return interpreter.unify(stream, interpreter.getEnvironment().getCurrentInput().getStreamTerm());
 	}
 }

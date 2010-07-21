@@ -51,7 +51,7 @@ public class Predicate_op extends ExecuteOnlyCode
 		int priority = 0; // parsed priority
 		int opspec = -1; // parsed operator specifier
 		Set<AtomTerm> ops = new HashSet<AtomTerm>(); // set of operators
-		OperatorSet opSet = interpreter.environment.getOperatorSet();
+		OperatorSet opSet = interpreter.getEnvironment().getOperatorSet();
 
 		// parse arguments
 		// priority

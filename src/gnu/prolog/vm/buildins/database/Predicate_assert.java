@@ -88,10 +88,10 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 		{
 			PrologException.typeError(TermConstants.callableAtom, head);
 		}
-		Predicate p = interpreter.environment.getModule().getDefinedPredicate(predTag);
+		Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(predTag);
 		if (p == null)
 		{
-			p = interpreter.environment.getModule().createDefinedPredicate(predTag);
+			p = interpreter.getEnvironment().getModule().createDefinedPredicate(predTag);
 			p.setType(Predicate.USER_DEFINED);
 			p.setDynamic();
 		}
