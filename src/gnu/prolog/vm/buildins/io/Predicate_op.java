@@ -51,9 +51,6 @@ public class Predicate_op extends ExecuteOnlyCode
 		int priority = 0; // parsed priority
 		int opspec = -1; // parsed operator specifier
 		Set<AtomTerm> ops = new HashSet<AtomTerm>(); // set of operators
-		boolean fx = false;
-		boolean xf = false;
-		boolean xfx = false;
 		OperatorSet opSet = interpreter.environment.getOperatorSet();
 
 		// parse arguments
@@ -84,37 +81,30 @@ public class Predicate_op extends ExecuteOnlyCode
 		if (topspec == TermConstants.xfxAtom)
 		{
 			opspec = Operator.XFX;
-			xfx = true;
 		}
 		else if (topspec == TermConstants.xfyAtom)
 		{
 			opspec = Operator.XFY;
-			xfx = true;
 		}
 		else if (topspec == TermConstants.yfxAtom)
 		{
 			opspec = Operator.YFX;
-			xfx = true;
 		}
 		else if (topspec == TermConstants.fxAtom)
 		{
 			opspec = Operator.FX;
-			fx = true;
 		}
 		else if (topspec == TermConstants.fyAtom)
 		{
 			opspec = Operator.FY;
-			fx = true;
 		}
 		else if (topspec == TermConstants.xfAtom)
 		{
 			opspec = Operator.XF;
-			xf = true;
 		}
 		else if (topspec == TermConstants.yfAtom)
 		{
 			opspec = Operator.YF;
-			xf = true;
 		}
 		else
 		{
