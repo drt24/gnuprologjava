@@ -20,7 +20,7 @@ package gnu.prolog.vm;
 /**
  * prolog code
  */
-public interface PrologCode
+public interface PrologCode extends Installable
 {
 	// EXTENSION: use an enum rather than ints
 	/**
@@ -51,22 +51,5 @@ public interface PrologCode
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException;
-
-	/**
-	 * this method is called when code is installed to the environment code can be
-	 * installed only for one environment.
-	 * 
-	 * @param environment
-	 *          Environment to install the predicate
-	 */
-	public void install(Environment env);
-
-	/**
-	 * this method is called when code is uninstalled from the environment
-	 * 
-	 * @param environment
-	 *          Environment to install the predicate
-	 */
-	public void uninstall(Environment env);
 
 }
