@@ -19,7 +19,7 @@ package gnu.prolog.term;
 
 /**
  * base class for all terms.
- *
+ * 
  * @author Constantine Plotniokov
  * @version 0.0.1
  */
@@ -27,6 +27,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
 {
 	private static final long serialVersionUID = -5388107925239494079L;
 
+	// TODO use an enum or similar as this is foul.
 	public static final int UNKNOWN = -1;
 	public static final int VARIABLE = 1;
 	public static final int JAVA_OBJECT = 2;
@@ -37,7 +38,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * clone the term.
-	 *
+	 * 
 	 * @return cloned term
 	 */
 	@Override
@@ -49,7 +50,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * clone the object using clone context
-	 *
+	 * 
 	 * @param context
 	 *          clone context
 	 * @return cloned term
@@ -58,7 +59,11 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * dereference term.
-	 *
+	 * 
+	 * Necessary because of {@link VariableTerm}. It means that the term which is
+	 * eventually pointed to by however long a chain of intermediate terms is the
+	 * one which you get.
+	 * 
 	 * @return dereferenced term
 	 */
 	public Term dereference()
@@ -68,7 +73,7 @@ public abstract class Term implements java.io.Serializable, Cloneable
 
 	/**
 	 * get type of term
-	 *
+	 * 
 	 * @return type of term
 	 */
 	public int getTermType()

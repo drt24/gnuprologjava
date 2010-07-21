@@ -27,11 +27,14 @@ public class IntegerTerm extends AtomicTerm
 {
 	private static final long serialVersionUID = 4778268363190379033L;
 
+	private static final int CACHESIZE = 64 * 1024;
+	private static final int HALFCACHESIZE = CACHESIZE / 2;
+
 	// terms from -32k to +32k are cached
-	protected static IntegerTerm cache[] = new IntegerTerm[64 * 1024];
+	protected static IntegerTerm cache[] = new IntegerTerm[CACHESIZE];
 
 	// often used integers
-	/** -2 interger term */
+	/** -2 integer term */
 	public static final IntegerTerm int_m2 = get(-2);
 	/** -1 integer term */
 	public static final IntegerTerm int_m1 = get(-1);
@@ -55,9 +58,9 @@ public class IntegerTerm extends AtomicTerm
 	 */
 	public static IntegerTerm get(int val)
 	{
-		int idx = val + 32 * 1024;
+		int idx = val + HALFCACHESIZE;
 		IntegerTerm rc;
-		if (0 <= idx && idx < 64 * 1024)
+		if (0 <= idx && idx < CACHESIZE)
 		{
 			rc = cache[idx];
 			if (rc == null)

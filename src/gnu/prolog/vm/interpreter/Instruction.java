@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm.interpreter;
 
+//TODO move all Instruction subclasses into a separate package.
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.PrologException;

@@ -396,7 +396,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		BacktrackInfo cur_bi = null;
 		Term pds[] = new Term[16];
 		int pdsSize = 0;
-		int pdsMaxSize = 16;
+		int pdsMaxSize = pds.length;
 		final int pdsInc = 16;
 
 		if (bi != null) // if redo, restore execution state
