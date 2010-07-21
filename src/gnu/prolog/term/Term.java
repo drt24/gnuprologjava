@@ -17,6 +17,8 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.io.TermWriter;
+
 /**
  * base class for all terms.
  * 
@@ -81,4 +83,9 @@ public abstract class Term implements java.io.Serializable, Cloneable
 		return UNKNOWN;
 	}
 
+	@Override
+	public String toString()
+	{
+		return TermWriter.toString(this);
+	}
 }

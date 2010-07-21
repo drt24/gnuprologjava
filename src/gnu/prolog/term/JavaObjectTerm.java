@@ -47,10 +47,4 @@ public class JavaObjectTerm extends AtomicTerm
 	{
 		return JAVA_OBJECT;
 	}
-
-	@Override
-	public String toString()
-	{
-		return value.toString();
-	}
 }

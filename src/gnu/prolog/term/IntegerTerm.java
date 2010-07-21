@@ -17,6 +17,7 @@
  */
 package gnu.prolog.term;
 
+
 /**
  * 32bit Integer term.
  * 
@@ -236,11 +237,5 @@ public class IntegerTerm extends AtomicTerm
 	public int getTermType()
 	{
 		return INTEGER;
-	}
-
-	@Override
-	public String toString()
-	{
-		return Integer.toString(value);
 	}
 }

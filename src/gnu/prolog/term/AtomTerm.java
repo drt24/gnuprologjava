@@ -156,10 +156,4 @@ public class AtomTerm extends AtomicTerm
 		}
 		return true;
 	}
-
-	@Override
-	public String toString()
-	{
-		return value;
-	}
 }

@@ -17,6 +17,7 @@
  */
 package gnu.prolog.term;
 
+
 /**
  * floating point number term
  * 
@@ -70,11 +71,5 @@ public class FloatTerm extends AtomicTerm
 	public int getTermType()
 	{
 		return FLOAT;
-	}
-
-	@Override
-	public String toString()
-	{
-		return Double.toString(value);
 	}
 }

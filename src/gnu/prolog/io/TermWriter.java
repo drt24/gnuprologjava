@@ -63,8 +63,7 @@ public class TermWriter extends PrintWriter
 	 * @return String representation of the term
 	 */
 	public static String toString(Term term)
-	{// TODO use this to do the toString operations in Term subclasses (or switch
-		// the other way)
+	{
 		try
 		{
 			StringWriter sout = new StringWriter();
@@ -172,7 +171,7 @@ public class TermWriter extends PrintWriter
 		if (term == null)
 		{
 			print("<<NULL>>");
-			// term = new VariableTerm(); // cretate anonimous variable
+			// term = new VariableTerm(); // create anonymous variable
 		}
 		else
 		{

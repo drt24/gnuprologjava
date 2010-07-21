@@ -307,16 +307,4 @@ public class CompoundTerm extends Term
 	{
 		return COMPOUND;
 	}
-
-	@Override
-	public String toString()
-	{
-		String answer = tag.toString() + " : (";
-		for (Term t : args)
-		{
-			answer += " " + t.toString();
-		}
-		answer += ")";
-		return answer;
-	}
 }
