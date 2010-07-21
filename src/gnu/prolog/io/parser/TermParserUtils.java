@@ -24,7 +24,7 @@ public class TermParserUtils
 
 	public final static int EOF_TOKEN = TermParserConstants.EOF;
 
-	// TODO lots of duplicated code between this function and the function below
+	// lots of duplicated code between this function and the function below
 	public static String convertQuotedString(String str, char quote)
 	{
 		int i, n = str.length();

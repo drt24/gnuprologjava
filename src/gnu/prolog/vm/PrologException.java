@@ -69,7 +69,7 @@ public class PrologException extends Exception
 	 * a constructor
 	 * 
 	 * @param inner
-	 *          TODO
+	 *          The cause of the exception.
 	 */
 	public PrologException(Term term, Throwable inner)
 	{

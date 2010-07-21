@@ -272,7 +272,7 @@ public class TextInputPrologStream extends PrologStream
 			return term;
 		}
 		catch (IOException ex)
-		{// TODO there is useful debug information here which we are discarding
+		{
 			debug(ex);
 			PrologException.syntaxError(inputAtom);
 			return null;
@@ -307,7 +307,7 @@ public class TextInputPrologStream extends PrologStream
 		{
 			debug(ex);
 			if (!force)
-			{// TODO there is useful debug information here which we are discarding
+			{
 				PrologException.systemError(ex);
 			}
 		}

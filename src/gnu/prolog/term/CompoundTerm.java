@@ -84,7 +84,6 @@ public class CompoundTerm extends Term
 
 	public static boolean toCollection(Term term, Collection<Term> col)
 	{
-		// TODO check for proper compound.. list? ..
 		term = term.dereference();
 		if (term instanceof CompoundTerm)
 		{

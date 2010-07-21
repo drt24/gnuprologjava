@@ -162,7 +162,7 @@ public class Predicate_clause implements PrologCode
 			{
 				return isCallable(ct.args[0].dereference()) && isCallable(ct.args[1].dereference());
 			}
-			return true;// FIXME: this is not necessarily true.
+			return true;// TODO: this is not necessarily true.
 		}
 		else if (body instanceof AtomTerm)
 		{

@@ -78,7 +78,7 @@ public final class Interpreter
 		}
 		catch (PrologException e)
 		{
-			// TODO Auto-generated catch block
+			System.err.println("Could not get an output stream:");
 			e.printStackTrace();
 		}
 		tracer = new Tracer(outstream);

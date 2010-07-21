@@ -10,7 +10,7 @@
  * the code needed to integrate the generated parser with the rest of the
  * codebase.
  * 
- * TODO: parser does not properly handle unicode even in comments
+ * TODO: parser does not properly handle unicode even in comments @see ReaderCharStream
  */
 package gnu.prolog.io.parser;
 
