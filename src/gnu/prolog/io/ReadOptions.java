@@ -39,8 +39,8 @@ public class ReadOptions
 	public final Map<String, VariableTerm> variableNames = new HashMap<String, VariableTerm>();
 	/** operator set */
 	public OperatorSet operatorSet;
-	/*
-	 * 'sigletons' ISO Prolog options it is not used currently.
+	/**
+	 * 'singletons' ISO Prolog options it is not used currently.
 	 */
 	public final Map<String, VariableTerm> singletons = new HashMap<String, VariableTerm>();
 }

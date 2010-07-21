@@ -66,7 +66,7 @@ public class WriteOptions implements Cloneable
 	/**
 	 * If true print the name of the variables as they were declared
 	 */
-	public boolean declaredVariableNames;
+	public boolean declaredVariableNames = true;
 
 	/**
 	 * Include JavaObjects in the output
