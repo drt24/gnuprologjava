@@ -275,6 +275,14 @@ public class Environment implements PredicateListener
 	}
 
 	/**
+	 * Run the initialization.
+	 * 
+	 * This executes any goals loaded into the initailization list by the
+	 * :-initialization(Goal). directive or by the use of the NONISO abbreviation
+	 * :- Goal.
+	 * 
+	 * This should be run after {@link #ensureLoaded(Term)} with the
+	 * {@link Interpreter} obtained from {@link #createInterpreter()}.
 	 * 
 	 * @param interpreter
 	 */
@@ -415,7 +423,7 @@ public class Environment implements PredicateListener
 	}
 
 	/**
-	 * ensure that prolog text designated by term is loaded
+	 * Ensure that prolog text designated by term is loaded
 	 * 
 	 * You must use {@link #runInitialization()} after using this and before
 	 * expecting answers.
