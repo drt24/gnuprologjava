@@ -70,9 +70,9 @@ public class Predicate_atom_codes extends ExecuteOnlyCode
 					PrologException.representationError(TermConstants.characterCodeAtom);
 				}
 				IntegerTerm e = (IntegerTerm) head;
-				if (e.value < 0 || 0xffff < e.value)
-				{// EXTENSION: the max character code should be stored somewhere
-					// sensible.
+				if (e.value < 0 || Character.MAX_VALUE < e.value)
+				{// TODO: the max character code should be stored in a
+					// max_character_code flag.
 					PrologException.representationError(TermConstants.characterCodeAtom);
 				}
 				bu.append((char) e.value);
