@@ -38,7 +38,7 @@ public class Predicate_findall implements PrologCode
 {
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -62,7 +62,7 @@ public class Predicate_findall implements PrologCode
 
 	/**
 	 * this method is used for execution of code
-	 *
+	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
@@ -90,7 +90,7 @@ public class Predicate_findall implements PrologCode
 					{
 						list.add((Term) template.clone());
 					}
-				} while (rc != SUCCESS_LAST && rc != FAIL);
+				} while (rc == SUCCESS);
 				if (rc == SUCCESS_LAST)
 				{
 					interpreter.undo(startUndoPosition);
@@ -111,6 +111,15 @@ public class Predicate_findall implements PrologCode
 		}
 	}
 
+	/**
+	 * Check that list is a valid Prolog list (including an uninstantiated
+	 * variable)
+	 * 
+	 * @param list
+	 *          the term to check to see if it is a list
+	 * @throws PrologException
+	 *           for the various errors when it is not a list.
+	 */
 	public static void checkList(Term list) throws PrologException
 	{
 		Term exArg = list;
@@ -136,7 +145,7 @@ public class Predicate_findall implements PrologCode
 	/**
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
-	 *
+	 * 
 	 * @param environment
 	 *          environment to install the predicate
 	 */
@@ -147,7 +156,7 @@ public class Predicate_findall implements PrologCode
 
 	/**
 	 * this method is called when code is uninstalled from the environment
-	 *
+	 * 
 	 * @param environment
 	 *          environment to install the predicate
 	 */
