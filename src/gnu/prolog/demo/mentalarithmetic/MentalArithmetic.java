@@ -22,9 +22,7 @@ package gnu.prolog.demo.mentalarithmetic;
 
 import gnu.prolog.database.Pair;
 import gnu.prolog.database.PrologTextLoaderError;
-import gnu.prolog.io.ParseException;
-import gnu.prolog.io.ReadOptions;
-import gnu.prolog.io.TermReader;
+import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.IntegerTerm;
@@ -36,14 +34,16 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
-import java.io.Console;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.List;
 
 /**
  * This is the main class of the mentalarithemtic program. It is runnable as a
- * stand alone
+ * stand alone program.
  * 
- * @author daniel
+ * @author Daniel Thomas
  * 
  */
 public class MentalArithmetic
@@ -58,7 +58,6 @@ public class MentalArithmetic
 	private static boolean issetup = false;
 
 	private static Environment env;
-	private static ReadOptions rd_ops;
 	private static Interpreter interpreter;
 
 	/**
@@ -96,8 +95,9 @@ public class MentalArithmetic
 			Pair<String, Integer> question = generateQuestion(limit, length);
 			System.out.print(question.left + ": ");
 
-			Console console = System.console();
-			String answer = console.readLine();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+			String answer = reader.readLine();
 			try
 			{
 				int value = Integer.parseInt(answer);
@@ -111,17 +111,17 @@ public class MentalArithmetic
 				System.err.println(String.format("Not a number: (%s)", answer));
 			}
 		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-			// TODO
-		}
 		catch (PrologException e)
 		{
 			e.printStackTrace();
-			// TODO
+			// TODO Auto-generated catch block
 		}
 		catch (NoAnswerException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,15 +129,15 @@ public class MentalArithmetic
 
 	}
 
-	public static Pair<String, Integer> generateQuestion(int limit, int length) throws ParseException, PrologException,
-			NoAnswerException
+	public static Pair<String, Integer> generateQuestion(int limit, int length) throws PrologException, NoAnswerException
 	{
 
 		setup();
 
-		String question = String.format("arithmetic(%d, %d, List, Answer)", limit, length);
-
-		Term goalTerm = TermReader.stringToTerm(rd_ops, question);
+		VariableTerm listTerm = new VariableTerm("List");
+		VariableTerm answerTerm = new VariableTerm("Answer");
+		Term[] args = { new IntegerTerm(limit), new IntegerTerm(length), listTerm, answerTerm };
+		CompoundTerm goalTerm = new CompoundTerm(AtomTerm.get("arithmetic"), args);
 
 		Interpreter.Goal goal = interpreter.prepareGoal(goalTerm);
 
@@ -151,25 +151,25 @@ public class MentalArithmetic
 
 			Pair<String, Integer> answer = new Pair<String, Integer>(null, 0);
 
-			VariableTerm list = rd_ops.variableNames.get("List");
-			VariableTerm value = rd_ops.variableNames.get("Answer");
+			Term list = listTerm.dereference();
+			Term value = answerTerm.dereference();
 			if (list != null)
 			{
-				if (list.value instanceof CompoundTerm)
+				if (list instanceof CompoundTerm)
 				{
-					CompoundTerm cList = (CompoundTerm) list.value;
+					CompoundTerm cList = (CompoundTerm) list;
 					if (cList.tag == TermConstants.listTag)// it is a list
 					{
-						answer.left = list.value.toString();
+						answer.left = TermWriter.toString(list);
 					}
 					else
 					{
-						throw new NoAnswerException("List is not a list but is a CompoundTerm: " + list.value);
+						throw new NoAnswerException("List is not a list but is a CompoundTerm: " + list);
 					}
 				}
 				else
 				{
-					throw new NoAnswerException("List is not a list: " + list.value);
+					throw new NoAnswerException("List is not a list: " + list);
 				}
 			}
 			else
@@ -178,9 +178,9 @@ public class MentalArithmetic
 			}
 			if (value != null)
 			{
-				if (value.value instanceof IntegerTerm)
+				if (value instanceof IntegerTerm)
 				{
-					answer.right = ((IntegerTerm) value.value).value;
+					answer.right = ((IntegerTerm) value).value;
 				}
 				else
 				{
@@ -196,12 +196,16 @@ public class MentalArithmetic
 		}
 		else
 		{
-			throw new PrologException(PrologException.errorAtom, null);
+			throw new NoAnswerException("Goal failed");
 		}
 
 	}
 
-	private synchronized static void setup() throws PrologException
+	/**
+	 * Ensure that we have an environment and have loaded the prolog code and have
+	 * an interpreter to use.
+	 */
+	private synchronized static void setup()
 	{
 		if (issetup)
 		{
@@ -211,17 +215,19 @@ public class MentalArithmetic
 		env = new Environment();
 
 		// get the filename relative to the class file
-		env.ensureLoaded(AtomTerm.get((new MentalArithmetic()).getClass().getResource("mentalarithmetic.pro").getFile()));
+		env.ensureLoaded(AtomTerm.get(MentalArithmetic.class.getResource("mentalarithmetic.pro").getFile()));
 
 		interpreter = env.createInterpreter();
 		env.runIntialization(interpreter);
 
-		rd_ops = new ReadOptions();
-		rd_ops.operatorSet = env.getOperatorSet();
-
 		issetup = true;
 	}
 
+	/**
+	 * Collect debugging information if something has gone wrong in particular get
+	 * any {@link PrologTextLoaderError PrologTextLoaderErrors} which were created
+	 * during loading.
+	 */
 	private static void debug()
 	{
 		List<PrologTextLoaderError> errors = env.getLoadingErrors();

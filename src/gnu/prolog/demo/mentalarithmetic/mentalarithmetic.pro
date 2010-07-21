@@ -29,14 +29,16 @@ mental(_, 0, C, [], C) :- !. % Length is 0 and so we are done.
 mental(I, L, C, [O,N|T], A) :- pickOperation(I, C, O, N, NC), NL is L-1 , mental(I,NL, NC, T, A). 
 
 %pickOperation(+Limit, +CurrentAnswer, -Operation, -Number, -Answer) Pick an operation and number
-pickOperation(I, C, '+', N, A) :- N is random(I), A is C + N, A < I.
-pickOperation(I, C, '-', N, A) :- N is random(I), A is C - N, A > 0.
-pickOperation(I, C, '*', N, A) :- N is random(I), A is C * N, A < I.
-pickOperation(_, C, '/', N, A) :- factors(C,L), member(N, L), A is C // N.
+
+%I*2 to reduce probability of operation being picked and I//2 to increase probability.
+pickOperation(I, C, '+', N, A) :- L is I*2,N is random(L), A is C + N, A < I.
+pickOperation(I, C, '-', N, A) :- L is I*2,N is random(L), A is C - N, A > 0.
+pickOperation(I, C, '*', N, A) :- L is I//2, N is random(L), A is C * N, A < I.
+pickOperation(_, C, '/', N, A) :- factors(C,L), member(N, L), N > 1, A is C // N.
 
 %factors(+N, -List) list of factors of N
 factors(N, List) :- S is ceiling(N / 2), recFactors(N, S, List).
-recFactors(_, C, []) :- C =< 1. %No more factors
+recFactors(_, C, []) :- C =< 1,!. %No more factors
 recFactors(N, C, [C|T]) :- 0 is N mod C, !, NC is C -1, recFactors(N,NC,T).
 %we could perhaps gain 2 factors here and speed things up
 recFactors(N, C, L) :- NC is C -1, recFactors(N, NC, L).%case where C is not a factor.

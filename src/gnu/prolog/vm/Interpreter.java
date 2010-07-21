@@ -594,8 +594,13 @@ public final class Interpreter
 		{
 			throw new IllegalStateException("The goal is already stopped");
 		}
-		undo(0);
-		// backtrackInfoStack.removeRange(0, backtrackInfoStack.size()-1);
+
+		// This destroys information and means that this information is not
+		// available after stop(Goal) has been called. Hence I (Daniel) have
+		// commented it out. Hopefully this doesn't break anything (tests still pass
+		// fine).
+		// undo(0);
+
 		for (int i = 0; i < backtrackInfoAmount; i++)
 		{
 			backtrackInfoStack[i] = null;

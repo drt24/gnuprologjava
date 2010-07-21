@@ -30,6 +30,18 @@ public class VariableTerm extends Term
 	{}
 
 	/**
+	 * Create a new named variable term
+	 * 
+	 * @param name
+	 *          the name of the term.
+	 * @see #name
+	 */
+	public VariableTerm(String name)
+	{
+		this.name = name;
+	}
+
+	/**
 	 * a constructor
 	 * 
 	 * @param name
@@ -40,6 +52,8 @@ public class VariableTerm extends Term
 
 	/**
 	 * Name of the variable when it was declared
+	 * 
+	 * Used for display purposes
 	 */
 	public String name = null;
 
