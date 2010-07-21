@@ -21,27 +21,21 @@ package gnu.prolog.vm.buildins.list;
 
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 /**
- *
+ * 
  * @author Michiel Hendriks
  */
-public class Predicate_is_list implements PrologCode
+public class Predicate_is_list extends ExecuteOnlyCode
 {
 	public Predicate_is_list()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Term lst = args[0];
@@ -64,20 +58,4 @@ public class Predicate_is_list implements PrologCode
 		}
 		return FAIL;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
 }

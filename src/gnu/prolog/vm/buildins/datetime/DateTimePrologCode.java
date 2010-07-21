@@ -25,8 +25,7 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
-import gnu.prolog.vm.Environment;
-import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
@@ -38,7 +37,7 @@ import java.util.TimeZone;
  * 
  * @author Michiel Hendriks
  */
-public abstract class DateTimePrologCode implements PrologCode
+public abstract class DateTimePrologCode extends ExecuteOnlyCode
 {
 	public static final AtomTerm dateAtom = AtomTerm.get("date");
 	public static final AtomTerm timeAtom = AtomTerm.get("time");
@@ -162,21 +161,4 @@ public abstract class DateTimePrologCode implements PrologCode
 
 	public DateTimePrologCode()
 	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

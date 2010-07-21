@@ -36,12 +36,7 @@ public class Predicate_uuid4 extends Predicate_uuid
 	public Predicate_uuid4()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (!(args[0] instanceof VariableTerm))

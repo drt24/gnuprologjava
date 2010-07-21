@@ -17,39 +17,33 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found 
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.buildins.uuid;
-
-import gnu.prolog.term.AtomTerm;
-import gnu.prolog.term.Term;
-import gnu.prolog.term.VariableTerm;
-import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.TermConstants;
-
-import java.util.UUID;
+package gnu.prolog.vm;
 
 /**
+ * For Predicates which do not need to be installed or uninstalled. So that they
+ * don't all need to have empty methods.
  * 
- * @author Michiel Hendriks
+ * @author Daniel Thomas
  */
-public class Predicate_uuid3 extends Predicate_uuid
+public abstract class ExecuteOnlyCode implements PrologCode
 {
-	public Predicate_uuid3()
+
+	public abstract int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+			throws PrologException;
+
+	/**
+	 * Just an empty method as we don't need to do anything here.
+	 * 
+	 * @see gnu.prolog.vm.Installable#install(gnu.prolog.vm.Environment)
+	 */
+	public void install(Environment env)
 	{}
 
-	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
-	{
-		if (!(args[0] instanceof VariableTerm))
-		{
-			PrologException.instantiationError();
-		}
-		if (!(args[1] instanceof AtomTerm))
-		{
-			PrologException.typeError(TermConstants.atomAtom, args[1]);
-		}
-		Term uuidTerm = AtomTerm.get(UUID.nameUUIDFromBytes(((AtomTerm) args[1]).value.getBytes()).toString());
-		return interpreter.unify(args[0], uuidTerm);
-	}
-
+	/**
+	 * Just an empty method as we don't need to do anything here.
+	 * 
+	 * @see gnu.prolog.vm.Installable#uninstall(gnu.prolog.vm.Environment)
+	 */
+	public void uninstall(Environment env)
+	{}
 }

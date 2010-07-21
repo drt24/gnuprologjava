@@ -24,8 +24,8 @@ import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.database.PrologTextLoaderState;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
 /**
@@ -33,21 +33,16 @@ import gnu.prolog.vm.PrologException;
  * 
  * @author Daniel Thomas
  */
-public class Predicate_ensure_loaded implements PrologCode
+public class Predicate_ensure_loaded extends ExecuteOnlyCode
 {
 	public Predicate_ensure_loaded()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Environment environment = interpreter.getEnvironment();
-		PrologTextLoaderState state = environment.getTextLoaderState();
+		PrologTextLoaderState state = environment.getPrologTextLoaderState();
 
 		state.ensureLoaded(args[0]);// actually do the loading
 		// ensure that any initializations are run.
@@ -60,21 +55,4 @@ public class Predicate_ensure_loaded implements PrologCode
 		}
 		return SUCCESS_LAST;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

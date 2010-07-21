@@ -36,12 +36,7 @@ public class Predicate_prompt extends Predicate_dialog
 	public Predicate_prompt()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		DialogOptions options;

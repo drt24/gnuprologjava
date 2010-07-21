@@ -22,9 +22,8 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.TermUtils;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ import java.util.Set;
 /**
  * prolog code
  */
-public class Predicate_bagof implements PrologCode
+public class Predicate_bagof extends ExecuteOnlyCode
 {
 	static final CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 
@@ -53,17 +52,7 @@ public class Predicate_bagof implements PrologCode
 		Term instances;
 	}
 
-	/**
-	 * this method is used for execution of code
-	 * 
-	 * @param interpreter
-	 *          interpreter in which context code is executed
-	 * @param backtrackMode
-	 *          true if predicate is called on backtracking and false otherwise
-	 * @param args
-	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
@@ -150,27 +139,6 @@ public class Predicate_bagof implements PrologCode
 	}
 
 	protected void processList(List<Term> curTList)
-	{}
-
-	/**
-	 * this method is called when code is installed to the environment code can be
-	 * installed only for one environment.
-	 * 
-	 * @param environment
-	 *          Environment to install the predicate
-	 */
-	public void install(Environment env)
-	{
-
-	}
-
-	/**
-	 * this method is called when code is uninstalled from the environment
-	 * 
-	 * @param environment
-	 *          Environment to install the predicate
-	 */
-	public void uninstall(Environment env)
 	{}
 
 }

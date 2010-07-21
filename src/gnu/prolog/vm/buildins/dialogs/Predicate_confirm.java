@@ -67,12 +67,7 @@ public class Predicate_confirm extends Predicate_dialog
 	public Predicate_confirm()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		DialogOptions options;

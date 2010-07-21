@@ -23,9 +23,8 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
@@ -44,7 +43,7 @@ import gnu.prolog.vm.TermConstants;
  * 
  * @author Daniel Thomas based on Predicate_member by Michiel Hendriks
  */
-public class Predicate_append implements PrologCode
+public class Predicate_append extends ExecuteOnlyCode
 {
 	protected static class AppendBacktrackInfo extends BacktrackInfo
 	{
@@ -64,12 +63,7 @@ public class Predicate_append implements PrologCode
 	public Predicate_append()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		assert (args.length == 3);
@@ -152,21 +146,4 @@ public class Predicate_append implements PrologCode
 		}
 		return FAIL;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

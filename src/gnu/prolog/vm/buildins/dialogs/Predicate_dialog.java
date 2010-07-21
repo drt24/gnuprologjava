@@ -24,8 +24,7 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
-import gnu.prolog.vm.Environment;
-import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
@@ -39,7 +38,7 @@ import javax.swing.filechooser.FileFilter;
  * 
  * @author Michiel Hendriks
  */
-public abstract class Predicate_dialog implements PrologCode
+public abstract class Predicate_dialog extends ExecuteOnlyCode
 {
 	public static final AtomTerm DIALOG_OPTION_ATOM = AtomTerm.get("dialog_option");
 
@@ -84,22 +83,6 @@ public abstract class Predicate_dialog implements PrologCode
 	}
 
 	public Predicate_dialog()
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
 	{}
 
 	/**

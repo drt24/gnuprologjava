@@ -26,9 +26,8 @@ import gnu.prolog.term.Term;
 import gnu.prolog.term.TermComparator;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 import gnu.prolog.vm.interpreter.Predicate_call;
@@ -44,7 +43,7 @@ import java.util.Set;
  * 
  * @author Michiel Hendriks
  */
-public class Predicate_predsort implements PrologCode
+public class Predicate_predsort extends ExecuteOnlyCode
 {
 	static class ComparatorException extends RuntimeException
 	{
@@ -143,12 +142,7 @@ public class Predicate_predsort implements PrologCode
 
 	public static final CompoundTermTag COMPARE_TAG = CompoundTermTag.get("compare", 3);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (!CompoundTerm.isListPair(args[1]))
@@ -206,21 +200,4 @@ public class Predicate_predsort implements PrologCode
 		}
 		return new CallPredComparator(interpreter, call);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

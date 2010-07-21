@@ -42,12 +42,7 @@ public class Predicate_stamp_date_time extends DateTimePrologCode
 	public Predicate_stamp_date_time()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		// stamp_date_time(+TimeStamp, -DateTime, +TimeZone)

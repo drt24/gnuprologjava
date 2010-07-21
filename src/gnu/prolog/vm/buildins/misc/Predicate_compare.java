@@ -23,16 +23,15 @@ import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.TermComparator;
 import gnu.prolog.term.VariableTerm;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 
 /**
  * 
  * @author Michiel Hendriks
  */
-public class Predicate_compare implements PrologCode
+public class Predicate_compare extends ExecuteOnlyCode
 {
 	public static final AtomTerm EQ_ATOM = AtomTerm.get("=");
 	public static final AtomTerm LT_ATOM = AtomTerm.get("<");
@@ -43,12 +42,7 @@ public class Predicate_compare implements PrologCode
 	public Predicate_compare()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (!(args[0] instanceof VariableTerm))
@@ -70,21 +64,4 @@ public class Predicate_compare implements PrologCode
 		}
 		return FAIL;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

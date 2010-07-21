@@ -21,8 +21,7 @@ package gnu.prolog.vm.buildins.uuid;
 
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
-import gnu.prolog.vm.Environment;
-import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
@@ -32,7 +31,7 @@ import java.util.UUID;
  * 
  * @author Michiel Hendriks
  */
-public abstract class Predicate_uuid implements PrologCode
+public abstract class Predicate_uuid extends ExecuteOnlyCode
 {
 	public static final AtomTerm UUID_ATOM = AtomTerm.get("uuid");
 
@@ -62,21 +61,4 @@ public abstract class Predicate_uuid implements PrologCode
 
 	public Predicate_uuid()
 	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

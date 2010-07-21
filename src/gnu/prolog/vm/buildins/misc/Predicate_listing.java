@@ -23,9 +23,8 @@ import gnu.prolog.database.Predicate;
 import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.buildins.debug.Predicate_spy;
@@ -33,17 +32,12 @@ import gnu.prolog.vm.buildins.debug.Predicate_spy;
 /**
  * @author Michiel Hendriks
  */
-public class Predicate_listing implements PrologCode
+public class Predicate_listing extends ExecuteOnlyCode
 {
 	public Predicate_listing()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		CompoundTermTag filter = null;
@@ -95,20 +89,4 @@ public class Predicate_listing implements PrologCode
 		stream.flushOutput(null);
 		return SUCCESS_LAST;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#install(gnu.prolog.vm.Environment)
-	 */
-	public void install(Environment env)
-	{}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#uninstall(gnu.prolog.vm.Environment)
-	 */
-	public void uninstall(Environment env)
-	{}
 }

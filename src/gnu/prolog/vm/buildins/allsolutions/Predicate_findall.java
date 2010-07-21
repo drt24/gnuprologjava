@@ -21,9 +21,8 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 import gnu.prolog.vm.interpreter.Predicate_call;
@@ -34,19 +33,9 @@ import java.util.List;
 /**
  * prolog code
  */
-public class Predicate_findall implements PrologCode
+public class Predicate_findall extends ExecuteOnlyCode
 {
-	/**
-	 * this method is used for execution of code
-	 * 
-	 * @param interpreter
-	 *          interpreter in which context code is executed
-	 * @param backtrackMode
-	 *          true if predicate is called on backtracking and false otherwise
-	 * @param args
-	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
@@ -141,26 +130,4 @@ public class Predicate_findall implements PrologCode
 			list = ct.args[1].dereference();
 		}
 	}
-
-	/**
-	 * this method is called when code is installed to the environment code can be
-	 * installed only for one environment.
-	 * 
-	 * @param environment
-	 *          environment to install the predicate
-	 */
-	public void install(Environment env)
-	{
-
-	}
-
-	/**
-	 * this method is called when code is uninstalled from the environment
-	 * 
-	 * @param environment
-	 *          environment to install the predicate
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

@@ -21,9 +21,8 @@ import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
@@ -33,7 +32,7 @@ import java.util.Map;
 /**
  * prolog code
  */
-public class Predicate_current_prolog_flag implements PrologCode
+public class Predicate_current_prolog_flag extends ExecuteOnlyCode
 {
 	private static class CurrentPrologFlagBacktrackInfo extends BacktrackInfo
 	{
@@ -49,17 +48,7 @@ public class Predicate_current_prolog_flag implements PrologCode
 		Term value;
 	}
 
-	/**
-	 * this method is used for execution of code
-	 * 
-	 * @param interpreter
-	 *          interpreter in which context code is executed
-	 * @param backtrackMode
-	 *          true if predicate is called on backtracking and false otherwise
-	 * @param args
-	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
@@ -120,26 +109,4 @@ public class Predicate_current_prolog_flag implements PrologCode
 		}
 		return FAIL;
 	}
-
-	/**
-	 * this method is called when code is installed to the environment code can be
-	 * installed only for one environment.
-	 * 
-	 * @param environment
-	 *          Environment to install the predicate
-	 */
-	public void install(Environment env)
-	{
-
-	}
-
-	/**
-	 * this method is called when code is uninstalled from the environment
-	 * 
-	 * @param environment
-	 *          Environment to install the predicate
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

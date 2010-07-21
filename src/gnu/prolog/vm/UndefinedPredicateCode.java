@@ -25,9 +25,9 @@ import gnu.prolog.term.Term;
 /**
  * prolog code
  */
-public class UndefinedPredicateCode implements PrologCode
+public class UndefinedPredicateCode extends ExecuteOnlyCode
 {
-	/** predicate indicator for thuis precedure */
+	/** predicate indicator for this procedure */
 	protected CompoundTerm predicateIndicator;
 	/** predicate tag */
 	protected CompoundTermTag predicateTag;
@@ -43,17 +43,7 @@ public class UndefinedPredicateCode implements PrologCode
 		this.predicateTag = predicateTag;
 	}
 
-	/**
-	 * this method is used for execution of code
-	 * 
-	 * @param interpreter
-	 *          interpreter in which context code is executed
-	 * @param backtrackMode
-	 *          true if predicate is called on backtracking and false otherwise
-	 * @param args
-	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
@@ -78,26 +68,4 @@ public class UndefinedPredicateCode implements PrologCode
 		}
 		throw new PrologException(PrologException.systemErrorAtom, null);
 	}
-
-	/**
-	 * this method is called when code is installed to the environment code can be
-	 * installed only for one environment.
-	 * 
-	 * @param environment
-	 *          environment to install the predicate
-	 */
-	public void install(Environment env)
-	{
-
-	}
-
-	/**
-	 * this method is called when code is uninstalled from the environment
-	 * 
-	 * @param environment
-	 *          environment to install the predicate
-	 */
-	public void uninstall(Environment env)
-	{}
-
 }

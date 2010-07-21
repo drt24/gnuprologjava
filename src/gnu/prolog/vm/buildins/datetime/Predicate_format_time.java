@@ -48,12 +48,7 @@ public class Predicate_format_time extends DateTimePrologCode
 	public Predicate_format_time()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		// format_time(+Out, +Format, +StampOrDateTime)

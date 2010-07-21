@@ -39,12 +39,7 @@ public class Predicate_file_save extends Predicate_dialog
 	public Predicate_file_save()
 	{}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see gnu.prolog.vm.PrologCode#execute(gnu.prolog.vm.Interpreter, boolean,
-	 * gnu.prolog.term.Term[])
-	 */
+	@Override
 	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		JFileChooser choose = createFileDialog(args);
