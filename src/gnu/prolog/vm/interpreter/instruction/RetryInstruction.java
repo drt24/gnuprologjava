@@ -15,7 +15,8 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.interpreter;
+package gnu.prolog.vm.interpreter.instruction;
+
 
 /**
  * base calss to try_me_else and retry_me_else instructions. it exists only for

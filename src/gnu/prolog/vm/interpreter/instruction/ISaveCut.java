@@ -15,11 +15,12 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.interpreter;
+package gnu.prolog.vm.interpreter.instruction;
 
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.interpreter.ExecutionState;
 
 /** save latest choice point as cut position instruction */
 public class ISaveCut extends Instruction

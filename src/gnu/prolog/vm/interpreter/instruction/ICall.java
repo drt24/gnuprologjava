@@ -15,7 +15,7 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.interpreter;
+package gnu.prolog.vm.interpreter.instruction;
 
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
@@ -25,6 +25,8 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologCodeListener;
 import gnu.prolog.vm.PrologCodeUpdatedEvent;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.interpreter.CallBacktrackInfo;
+import gnu.prolog.vm.interpreter.ExecutionState;
 
 /**
  * call instruction.

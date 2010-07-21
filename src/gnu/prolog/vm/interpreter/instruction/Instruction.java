@@ -15,15 +15,16 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.interpreter;
+package gnu.prolog.vm.interpreter.instruction;
 
-//TODO move all Instruction subclasses into a separate package.
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Installable;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.interpreter.ExecutionState;
 
 /** base call for instruction */
-public abstract class Instruction
+public abstract class Instruction implements Installable
 {
 	/** code position of instruction */
 	public int codePosition;
