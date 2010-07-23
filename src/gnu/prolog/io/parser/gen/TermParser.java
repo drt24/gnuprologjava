@@ -26,10 +26,12 @@ import gnu.prolog.io.parser.TermParserUtils;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.term.DoubleQuotesTerm;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
@@ -656,7 +658,7 @@ public final class TermParser implements TermParserConstants
 	final public VariableTerm variable(ReadOptions options) throws ParseException
 	{
 		jj_consume_token(VARIABLE_TOKEN);
-		VariableTerm var = (VariableTerm) options.variableNames.get(token.image);
+		VariableTerm var = options.variableNames.get(token.image);
 		if (var == null)
 		{
 			var = new VariableTerm();
@@ -709,19 +711,24 @@ public final class TermParser implements TermParserConstants
 	{
 		jj_consume_token(CHAR_CODE_LIST_TOKEN);
 		String val = TermParserUtils.convertQuotedString(token.image, '\"');
+		// Get the Atom form
+		AtomTerm atomValue = AtomTerm.get(val);
+
 		int i, n = val.length();
-		Term rc = TermConstants.emptyListAtom;
-		for (i = n - 1; i >= 0; i--)
+		// get the codes form and chars form with one loop
+		Term codesValue = TermConstants.emptyListAtom;
+		char[] valChars = val.toCharArray();
+		AtomTerm[] valAtoms = new AtomTerm[valChars.length];
+		for (i = n - 1; i >= 0; --i)
 		{
-			rc = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), rc);
+			codesValue = CompoundTerm.getList(IntegerTerm.get(val.charAt(i)), codesValue);
+			valAtoms[i] = AtomTerm.get(valChars[i]);
 		}
-		{
-			if (true)
-			{
-				return rc;
-			}
-		}
-		throw new Error("Missing return statement in function");
+		Term charsValue = CompoundTerm.getList(valAtoms);
+
+		Environment environment = null;
+
+		return new DoubleQuotesTerm(environment, codesValue, charsValue, atomValue);
 	}
 
 	final public void open() throws ParseException
