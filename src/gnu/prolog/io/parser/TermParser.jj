@@ -526,7 +526,7 @@ Term curly_term(ReadOptions options):
 CompoundTerm compound(ReadOptions options):
 {
   AtomTerm functor;
-  ArrayList args = new ArrayList();
+  ArrayList<Term> args = new ArrayList<Term>();
   Term el;
   CompoundTerm rc;
 }
@@ -551,7 +551,7 @@ CompoundTerm compound(ReadOptions options):
     rc = new CompoundTerm(functor,n);
     for (int i=0; i<n; i++)
     {
-      rc.args[i] = (Term)args.get(i);
+      rc.args[i] = args.get(i);
     }
     return rc;
   }
@@ -572,13 +572,12 @@ VariableTerm variable(ReadOptions options):
 {
   <VARIABLE_TOKEN>         // 6.4.3
   {
-    VariableTerm var = (VariableTerm)options.variableNames.get(token.image);
+    VariableTerm var = options.variableNames.get(token.image);
     if (var == null)
     {
-      var = new VariableTerm();
+      var = new VariableTerm(token.image);
       if (!"_".equals(token.image))
       {
-        var.name = token.image;
         options.variableNames.put(token.image, var);
         options.singletons.put(token.image, var);
       }

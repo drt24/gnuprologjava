@@ -523,7 +523,6 @@ public final class TermParser implements TermParserConstants
 		open_list();
 		if (jj_2_13(2147483647))
 		{
-			rc = null;
 		}
 		else
 		{
@@ -610,7 +609,7 @@ public final class TermParser implements TermParserConstants
 	final public CompoundTerm compound(ReadOptions options) throws ParseException
 	{
 		AtomTerm functor;
-		ArrayList args = new ArrayList();
+		ArrayList<Term> args = new ArrayList<Term>();
 		Term el;
 		CompoundTerm rc;
 		functor = name();
@@ -636,7 +635,7 @@ public final class TermParser implements TermParserConstants
 		rc = new CompoundTerm(functor, n);
 		for (int i = 0; i < n; i++)
 		{
-			rc.args[i] = (Term) args.get(i);
+			rc.args[i] = args.get(i);
 		}
 		{
 			if (true)
@@ -667,10 +666,9 @@ public final class TermParser implements TermParserConstants
 		VariableTerm var = options.variableNames.get(token.image);
 		if (var == null)
 		{
-			var = new VariableTerm();
+			var = new VariableTerm(token.image);
 			if (!"_".equals(token.image))
 			{
-				var.name = token.image;
 				options.variableNames.put(token.image, var);
 				options.singletons.put(token.image, var);
 			}
