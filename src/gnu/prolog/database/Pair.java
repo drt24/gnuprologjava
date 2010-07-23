@@ -9,6 +9,8 @@ package gnu.prolog.database;
  * (Because java doesn't do tuples)
  * 
  * @author daniel
+ * @param <L>
+ * @param <R>
  * 
  */
 public class Pair<L, R>

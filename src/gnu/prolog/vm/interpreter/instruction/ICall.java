@@ -33,7 +33,11 @@ import gnu.prolog.vm.interpreter.ExecutionState;
  */
 public class ICall extends Instruction implements PrologCodeListener
 {
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param tag
+	 */
 	public ICall(CompoundTermTag tag)
 	{
 		this.tag = tag;
@@ -116,7 +120,7 @@ public class ICall extends Instruction implements PrologCodeListener
 		return rc;
 	}
 
-	/** notify instrcution that prolog code for predicate was updated */
+	/** notify instruction that prolog code for predicate was updated */
 	public void prologCodeUpdated(PrologCodeUpdatedEvent evt)
 	{
 		code = null; /* reset pointer */
@@ -136,7 +140,12 @@ public class ICall extends Instruction implements PrologCodeListener
 		env.removePrologCodeListener(tag, this);
 	}
 
-	/** ensure that code is loaded in predicate */
+	/**
+	 * ensure that code is loaded in predicate
+	 * 
+	 * @param env
+	 * @throws PrologException
+	 */
 	protected void ensureLoaded(Environment env) throws PrologException
 	{
 		if (code == null)

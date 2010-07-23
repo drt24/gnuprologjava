@@ -31,7 +31,11 @@ public class ISaveCut extends Instruction
 	 */
 	public int environmentIndex;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param environmentIndex
+	 */
 	public ISaveCut(int environmentIndex)
 	{
 		this.environmentIndex = environmentIndex;
@@ -39,7 +43,7 @@ public class ISaveCut extends Instruction
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction

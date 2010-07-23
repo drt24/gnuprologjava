@@ -24,7 +24,11 @@ import gnu.prolog.vm.interpreter.ExecutionState;
 /** try_me_else instruction */
 public class ITryMeElse extends RetryInstruction
 {
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param retryPosition
+	 */
 	public ITryMeElse(int retryPosition)
 	{
 		super(retryPosition);
@@ -32,7 +36,7 @@ public class ITryMeElse extends RetryInstruction
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction

@@ -37,7 +37,8 @@ public class AtomTerm extends AtomicTerm
 	 * get atom term
 	 * 
 	 * @param s
-	 *          string reprentation of atom.
+	 *          string representation of atom.
+	 * @return the AtomTerm for the String
 	 */
 	public static AtomTerm get(String s)
 	{
@@ -60,6 +61,7 @@ public class AtomTerm extends AtomicTerm
 	 * 
 	 * @param ch
 	 *          string representation of atom.
+	 * @return the atom term for the character
 	 */
 	public static final AtomTerm get(char ch)
 	{
@@ -75,7 +77,7 @@ public class AtomTerm extends AtomicTerm
 	 * Return an object to replace the object extracted from the stream. The
 	 * object will be used in the graph in place of the original.
 	 * 
-	 * @return resloved object
+	 * @return resolved object
 	 * @see java.io.Resolvable
 	 */
 	public Object readResolve()

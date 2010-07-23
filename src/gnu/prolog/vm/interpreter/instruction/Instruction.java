@@ -29,7 +29,17 @@ public abstract class Instruction implements Installable
 	/** code position of instruction */
 	public int codePosition;
 
-	/** execute instruction */
+	/**
+	 * execute instruction
+	 * 
+	 * @param state
+	 *          state within which instruction will be executed
+	 * @param bi
+	 * @return ExecutionState.{BACKTRACK,NEXT,JUMP,RETURN}: instruction to caller
+	 *         how to execute next instruction
+	 * @throws PrologException
+	 *           if code is throwing prolog exception
+	 */
 	public abstract int execute(ExecutionState state, BacktrackInfo bi) throws PrologException;
 
 	/** install instruction to environment */

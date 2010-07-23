@@ -36,7 +36,15 @@ public class CallBacktrackInfo extends BacktrackInfo
 
 	public CompoundTermTag tag;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param undoPosition
+	 * @param codePosition
+	 * @param args
+	 * @param code
+	 * @param tag
+	 */
 	public CallBacktrackInfo(int undoPosition, int codePosition, Term args[], PrologCode code, CompoundTermTag tag)
 	{
 		super(undoPosition, codePosition);

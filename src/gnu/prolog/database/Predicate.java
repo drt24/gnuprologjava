@@ -75,14 +75,23 @@ public class Predicate
 	/** current module */
 	protected Module module;
 
-	/** constructor of predicate */
+	/**
+	 * constructor of predicate
+	 * 
+	 * @param module
+	 * @param tag
+	 */
 	public Predicate(Module module, CompoundTermTag tag)
 	{
 		this.tag = tag;
 		this.module = module;
 	}
 
-	/** get clauses of predicate */
+	/**
+	 * get clauses of predicate
+	 * 
+	 * @return an unmodifiable list of the clauses of the {@link Predicate}
+	 * */
 	public List<Term> getClauses()
 	{
 		return Collections.unmodifiableList(clauses);
@@ -127,6 +136,9 @@ public class Predicate
 
 	/**
 	 * set java class name of the predicate.
+	 * 
+	 * @param javaClassName
+	 *          the class name to set
 	 */
 	public void setJavaClassName(String javaClassName)
 	{
@@ -148,19 +160,32 @@ public class Predicate
 		propertiesLocked = true;
 	}
 
-	/** get functor of predicate */
+	/**
+	 * get functor of predicate
+	 * 
+	 * @return the functor for the predicate. e.g. in foo(X,Y) the functor is
+	 *         'foo'
+	 * */
 	public AtomTerm getFunctor()
 	{
 		return tag.functor;
 	}
 
-	/** get arity of predicate */
+	/**
+	 * get arity of predicate
+	 * 
+	 * @return the arity of the {@link Predicate}
+	 */
 	public int getArity()
 	{
 		return tag.arity;
 	}
 
-	/** get tag of predicate */
+	/**
+	 * get tag of predicate
+	 * 
+	 * @return the tag of the predicate
+	 */
 	public CompoundTermTag getTag()
 	{
 		return tag;
@@ -246,7 +271,6 @@ public class Predicate
 	 * set "dynamic" property of predicate to true. This method should be called
 	 * first time before any clause was added.
 	 * 
-	 * @param new value of "dynamic" property of predicate
 	 * @throws IllegalStateException
 	 *           if there were clauses added to predicate and dynamic flag was not
 	 *           set before. See 7.4.2.1 clause of ISO Prolog.

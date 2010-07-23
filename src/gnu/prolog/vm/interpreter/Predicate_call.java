@@ -89,9 +89,10 @@ public class Predicate_call extends ExecuteOnlyCode
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
 	 *          true if predicate is called on backtracking and false otherwise
-	 * @param args
-	 *          arguments of code
+	 * @param arg
+	 *          argument of code
 	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * @throws PrologException
 	 */
 	public static int staticExecute(Interpreter interpreter, boolean backtrackMode, Term arg) throws PrologException
 	{
@@ -158,7 +159,13 @@ public class Predicate_call extends ExecuteOnlyCode
 		return rc;
 	}
 
-	/** convert callable term to clause */
+	/**
+	 * convert callable term to clause
+	 * 
+	 * @param term
+	 * @param argumentsToArgumentVariables
+	 * @return
+	 */
 	public static Term getClause(Term term, Map<Term, VariableTerm> argumentsToArgumentVariables)
 	{
 		if (term instanceof AtomTerm)

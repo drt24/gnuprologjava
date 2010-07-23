@@ -27,7 +27,11 @@ public class IStoreEnvironment extends Instruction
 	/** index in environment where term is kept */
 	public int environmentIndex;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param environmentIndex
+	 */
 	public IStoreEnvironment(int environmentIndex)
 	{
 		this.environmentIndex = environmentIndex;
@@ -35,7 +39,7 @@ public class IStoreEnvironment extends Instruction
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction

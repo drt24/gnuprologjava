@@ -19,6 +19,8 @@ package gnu.prolog.database;
 
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,21 +86,33 @@ public class Module
 		predicateUpdated(tag);
 	}
 
-	/** add term to initialization list */
+	/**
+	 * add term to initialization list
+	 * 
+	 * @param prologTextLoaderError
+	 *          the partial error to be used if this term throws an error
+	 * @param term
+	 *          the goal to execute at initialization
+	 */
 	public synchronized void addInitialization(PrologTextLoaderError prologTextLoaderError, Term term)
 	{
 		initialization.add(new Pair<PrologTextLoaderError, Term>(prologTextLoaderError, term));
 	}
 
-	/** get initaliztion */
+	/**
+	 * get initaliztion
+	 * 
+	 * @return the list of the goals with their corresponding partial
+	 *         {@link PrologTextLoaderError}s to be used if they throw an error.
+	 * */
 	public synchronized List<Pair<PrologTextLoaderError, Term>> getInitialization()
 	{
 		return initialization;
 	}
 
 	/**
-	 * Intended to be run from {@link Environment#runInitialization()} and from
-	 * nowhere else.
+	 * Intended to be run from {@link Environment#runIntialization(Interpreter)}
+	 * and from nowhere else.
 	 * 
 	 * Resets the initialization list to the empty list so that they can be
 	 * iterated through again later.
@@ -111,7 +125,11 @@ public class Module
 		initialization = new ArrayList<Pair<PrologTextLoaderError, Term>>();
 	}
 
-	/** get predicate tags */
+	/**
+	 * get predicate tags
+	 * 
+	 * @return the set of tags for {@link Predicate}s.
+	 * */
 	public synchronized Set<CompoundTermTag> getPredicateTags()
 	{
 		return tag2predicate.keySet();

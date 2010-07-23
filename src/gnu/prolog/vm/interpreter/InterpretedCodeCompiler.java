@@ -98,7 +98,11 @@ public class InterpretedCodeCompiler
 	/** clauses to compile */
 	protected List<Term> passedClauses;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param clauses
+	 */
 	public InterpretedCodeCompiler(List<Term> clauses)
 	{
 		passedClauses = clauses;
@@ -114,7 +118,8 @@ public class InterpretedCodeCompiler
 	 * 
 	 * @param term
 	 *          term to create
-	 * @throw PrologException.systemError() if term cannot be compiled
+	 * @throws PrologException
+	 *           #systemError() if term cannot be compiled
 	 */
 	void compileTermCreation(Term term) throws PrologException
 	{
@@ -145,9 +150,10 @@ public class InterpretedCodeCompiler
 	/**
 	 * compile head of clause
 	 * 
-	 * @param term
+	 * @param headTerm
 	 *          term to compile
-	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
+	 * @throws PrologException
+	 *           #typeError(callable,head) if term cannot be compiled
 	 */
 	void compileHead(Term headTerm) throws PrologException
 	{
@@ -182,9 +188,10 @@ public class InterpretedCodeCompiler
 	/**
 	 * compile body of clause
 	 * 
-	 * @param term
+	 * @param body
 	 *          term to compile
-	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
+	 * @throws PrologException
+	 *           #typeError(callable,head) if term cannot be compiled
 	 */
 	void compileBody(Term body) throws PrologException
 	{
@@ -317,7 +324,8 @@ public class InterpretedCodeCompiler
 	 *          term for then
 	 * @param elseTerm
 	 *          else term or atom fail if just "->"
-	 * @throw PrologException if one of terms cannot be compiled
+	 * @throws PrologException
+	 *           if one of terms cannot be compiled
 	 */
 	void compileIfThenElse(Term ifTerm, Term thenTerm, Term elseTerm) throws PrologException
 	{
@@ -341,10 +349,11 @@ public class InterpretedCodeCompiler
 	/**
 	 * get reserved environment size for body term
 	 * 
-	 * @param term
+	 * @param body
 	 *          term to analyse
 	 * @return amount of allocated environment
-	 * @throw PrologException.typeError(callable,head) if term cannot be compiled
+	 * @throws PrologException
+	 *           #typeError(callable,head) if term cannot be compiled
 	 */
 	int getReservedEnvironemt(Term body) throws PrologException
 	{
@@ -446,7 +455,12 @@ public class InterpretedCodeCompiler
 		return term;
 	}
 
-	/** compile one clause of predicate */
+	/**
+	 * compile one clause of predicate
+	 * 
+	 * @param clause
+	 * @throws PrologException
+	 */
 	void compileClause(Term clause) throws PrologException
 	{
 		if (clause instanceof CompoundTerm)
@@ -468,20 +482,18 @@ public class InterpretedCodeCompiler
 	 * @param passedClauses
 	 *          clauses passed to compiler
 	 * @return instance of interpreted code
-	 * @throw PrologException
+	 * @throws PrologException
 	 */
-	public static PrologCode compile(List<Term> clauses) throws PrologException
+	public static PrologCode compile(List<Term> passedClauses) throws PrologException
 	{
-		return new InterpretedCodeCompiler(clauses).compilePredicate();
+		return new InterpretedCodeCompiler(passedClauses).compilePredicate();
 	}
 
 	/**
 	 * compile set of clauses to interpreted code
 	 * 
-	 * @param passedClauses
-	 *          clauses passed to compiler
 	 * @return instance of interpreted code
-	 * @throw PrologException
+	 * @throws PrologException
 	 */
 	PrologCode compilePredicate() throws PrologException
 	{
@@ -568,32 +580,54 @@ public class InterpretedCodeCompiler
 		// return new InterpretedCode(codeTag, instr, ehs);
 	}
 
-	/** get index of variable in environment */
+	/**
+	 * get index of variable in environment
+	 * 
+	 * @param term
+	 * @return the index in the environment for the variable
+	 */
 	int getEnvironmentIndex(VariableTerm term)
 	{
 		return (variableToEnvironmentIndex.get(term)).intValue();
 	}
 
-	/** push cut position */
+	/**
+	 * push cut position
+	 * 
+	 * @param envPos
+	 */
 	void pushCutPosition(int envPos)
 	{
 		cutPositionStack.add(Integer.valueOf(envPos));
 	}
 
-	/** pop cut position */
+	/**
+	 * pop cut position
+	 * 
+	 * @return the popped position of the cut
+	 */
 	int popCutPosition()
 	{
 		return (cutPositionStack.remove(cutPositionStack.size() - 1)).intValue();
 	}
 
-	/** get current cut position */
+	/**
+	 * get current cut position
+	 * 
+	 * @return the current cut position
+	 */
 	int getCutPosition()
 	{
 		return (cutPositionStack.get(cutPositionStack.size() - 1)).intValue();
 	}
 
 	// instructions
-	/** add instruction */
+	/**
+	 * add instruction
+	 * 
+	 * @param i
+	 *          Instruction to add
+	 */
 	void addInstruction(Instruction i)
 	{
 		i.codePosition = currentCodePosition;
@@ -601,7 +635,13 @@ public class InterpretedCodeCompiler
 		currentCodePosition++;
 	}
 
-	/** add allocate instruction */
+	/**
+	 * add allocate instruction
+	 * 
+	 * @param environmentSize
+	 * @param numberOfReserved
+	 * @return instruction which has been added
+	 */
 	IAllocate iAllocate(int environmentSize, int numberOfReserved)
 	{
 		IAllocate rc = new IAllocate(environmentSize, numberOfReserved);
@@ -609,7 +649,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add call instruction */
+	/**
+	 * add call instruction
+	 * 
+	 * @param tag
+	 * @return instruction which has been added
+	 */
 	ICall iCall(CompoundTermTag tag)
 	{
 		ICall rc = new ICall(tag);
@@ -617,7 +662,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add create compound tag instruction */
+	/**
+	 * add create compound tag instruction
+	 * 
+	 * @param tag
+	 * @return instruction which has been added
+	 */
 	ICreateCompoundTerm iCreateCompoundTerm(CompoundTermTag tag)
 	{
 		ICreateCompoundTerm rc = new ICreateCompoundTerm(tag);
@@ -625,7 +675,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add cut instruction */
+	/**
+	 * add cut instruction
+	 * 
+	 * @param envPos
+	 * @return instruction which has been added
+	 */
 	ICut iCut(int envPos)
 	{
 		ICut rc = new ICut(envPos);
@@ -633,7 +688,11 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add fail instruction */
+	/**
+	 * add fail instruction
+	 * 
+	 * @return instruction which has been added
+	 */
 	IFail iFail()
 	{
 		IFail rc = new IFail();
@@ -641,7 +700,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add jump instruction */
+	/**
+	 * add jump instruction
+	 * 
+	 * @param pos
+	 * @return instruction which has been added
+	 */
 	IJump iJump(int pos)
 	{
 		IJump rc = new IJump(pos);
@@ -649,7 +713,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add push argument instruction */
+	/**
+	 * add push argument instruction
+	 * 
+	 * @param i
+	 * @return instruction which has been added
+	 */
 	IPushArgument iPushArgument(int i)
 	{
 		IPushArgument rc = new IPushArgument(i);
@@ -657,7 +726,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** push constant */
+	/**
+	 * push constant
+	 * 
+	 * @param term
+	 * @return instruction which has been added
+	 */
 	IPushConstant iPushConstant(AtomicTerm term)
 	{
 		IPushConstant rc = new IPushConstant(term);
@@ -665,7 +739,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** push term from environment */
+	/**
+	 * push term from environment
+	 * 
+	 * @param envIdx
+	 * @return instruction which has been added
+	 */
 	IPushEnvironment iPushEnvironment(int envIdx)
 	{
 		IPushEnvironment rc = new IPushEnvironment(envIdx);
@@ -673,7 +752,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add retry me else instruction */
+	/**
+	 * add retry me else instruction
+	 * 
+	 * @param retryPos
+	 * @return instruction which has been added
+	 */
 	IRetryMeElse iRetryMeElse(int retryPos)
 	{
 		IRetryMeElse rc = new IRetryMeElse(retryPos);
@@ -681,7 +765,11 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add return instruction */
+	/**
+	 * add return instruction
+	 * 
+	 * @return instruction which has been added
+	 */
 	IReturn iReturn()
 	{
 		IReturn rc = new IReturn();
@@ -689,7 +777,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add cut instruction */
+	/**
+	 * add cut instruction
+	 * 
+	 * @param envPos
+	 * @return instruction which has been added
+	 */
 	ISaveCut iSaveCut(int envPos)
 	{
 		ISaveCut rc = new ISaveCut(envPos);
@@ -704,7 +797,12 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add try me else instruction */
+	/**
+	 * add try me else instruction
+	 * 
+	 * @param retryPos
+	 * @return instruction which has been added
+	 */
 	ITryMeElse iTryMeElse(int retryPos)
 	{
 		ITryMeElse rc = new ITryMeElse(retryPos);
@@ -712,7 +810,11 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add throw instruction */
+	/**
+	 * add throw instruction
+	 * 
+	 * @return instruction which has been added
+	 */
 	IThrow iThrow()
 	{
 		IThrow rc = new IThrow();
@@ -720,7 +822,11 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add true instruction */
+	/**
+	 * add true instruction
+	 * 
+	 * @return instruction which has been added
+	 */
 	ITrue iTrue()
 	{
 		ITrue rc = new ITrue();
@@ -728,7 +834,11 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add true instruction */
+	/**
+	 * add true instruction
+	 * 
+	 * @return instruction which has been added
+	 */
 	ITrustMe iTrustMe()
 	{
 		ITrustMe rc = new ITrustMe();
@@ -736,7 +846,11 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add fail instruction */
+	/**
+	 * add fail instruction
+	 * 
+	 * @return instruction which has been added
+	 */
 	IUnify iUnify()
 	{
 		IUnify rc = new IUnify();
@@ -744,7 +858,11 @@ public class InterpretedCodeCompiler
 		return rc;
 	}
 
-	/** add exception handler */
+	/**
+	 * add exception handler
+	 * 
+	 * @param eh
+	 */
 	void addExceptionHandler(ExceptionHandlerInfo eh)
 	{
 		exceptionHandlers.add(eh);

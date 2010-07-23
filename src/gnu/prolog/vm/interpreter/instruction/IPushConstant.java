@@ -30,7 +30,11 @@ public class IPushConstant extends Instruction
 	/** term to push */
 	public AtomicTerm term;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param term
+	 */
 	public IPushConstant(AtomicTerm term)
 	{
 		this.term = term;

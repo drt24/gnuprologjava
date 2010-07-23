@@ -30,11 +30,15 @@ public interface PrologTextLoaderListener
 {
 	/**
 	 * Called right before the file is being processed
+	 * 
+	 * @param loader
 	 */
 	void beforeProcessFile(PrologTextLoader loader);
 
 	/**
 	 * Called right after the file has been processed
+	 * 
+	 * @param loader
 	 */
 	void afterProcessFile(PrologTextLoader loader);
 
@@ -42,6 +46,7 @@ public interface PrologTextLoaderListener
 	 * Called before an include file is being processed. The loader's currentFile
 	 * fields have not been updated yet.
 	 * 
+	 * @param loader
 	 * @param argument
 	 *          The argument passed to the include directive
 	 */
@@ -50,6 +55,8 @@ public interface PrologTextLoaderListener
 	/**
 	 * Called right after an include file has been processed and before the loader
 	 * returns to the previous file.
+	 * 
+	 * @param loader
 	 */
 	void afterIncludeFile(PrologTextLoader loader);
 }

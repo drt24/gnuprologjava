@@ -26,6 +26,7 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.HasEnvironment;
+import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.TermConstants;
 
 import java.io.File;
@@ -356,7 +357,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	 * To be used for errors during initialisation
 	 * 
 	 * @see #logError(PrologTextLoader,String)
-	 * @see Environment#runInitialization(Interpreter)
+	 * @see Environment#runIntialization(Interpreter)
 	 * 
 	 * @param partialError
 	 *          the partially filled in error (missing message)
@@ -386,7 +387,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	 * Resolve the input filename. Will add a .pl or .pro when needed.
 	 * 
 	 * @param filename
-	 * @return
+	 * @return the file object resolved from the filename
 	 */
 	protected File resolveInputFile(String filename)
 	{

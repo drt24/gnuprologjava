@@ -82,7 +82,7 @@ public class Tracer
 		 * Convert a string to an enum set
 		 * 
 		 * @param lvl
-		 * @return
+		 * @return the EnumSet(TraceLevel) for the string lvl
 		 */
 		public static EnumSet<TraceLevel> fromString(String lvl)
 		{
@@ -139,7 +139,8 @@ public class Tracer
 	protected int callStackMax = callStackGrow;
 
 	/**
-	 *
+	 * @param stdout
+	 * 
 	 */
 	public Tracer(PrologStream stdout)
 	{
@@ -190,7 +191,7 @@ public class Tracer
 	 * Set a trace point
 	 * 
 	 * @param pred
-	 * @param level
+	 * @param levels
 	 */
 	public void addTrace(CompoundTermTag pred, EnumSet<TraceLevel> levels)
 	{
@@ -213,7 +214,7 @@ public class Tracer
 
 	/**
 	 * @param pred
-	 * @param levels
+	 * @param level
 	 */
 	public void addTrace(CompoundTermTag pred, TraceLevel level)
 	{
@@ -235,7 +236,7 @@ public class Tracer
 	 * Remove a given level
 	 * 
 	 * @param pred
-	 * @param level
+	 * @param levels
 	 */
 	public void removeTrace(CompoundTermTag pred, EnumSet<TraceLevel> levels)
 	{
@@ -257,7 +258,7 @@ public class Tracer
 
 	/**
 	 * @param pred
-	 * @param levels
+	 * @param level
 	 */
 	public void removeTrace(CompoundTermTag pred, TraceLevel level)
 	{

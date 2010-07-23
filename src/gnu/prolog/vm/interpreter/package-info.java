@@ -1,6 +1,6 @@
 /**
  * {@link InterpretedCodeCompiler} uses the various classes beginning with I
- * and extending {@link Instruction} in the 
+ * and extending {@link gnu.prolog.vm.interpreter.instruction.Instruction Instruction} in the 
  * {@link gnu.prolog.vm.interpreter.instruction instruction} sub-package to 
  * compile clauses to {@link InterpretedByteCode}.
  * 

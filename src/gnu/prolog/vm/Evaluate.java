@@ -59,8 +59,9 @@ public class Evaluate
 	public final static CompoundTermTag bor2 = CompoundTermTag.get("\\/", 2);
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
 	/**
-	 * Implementation of the random/1 predicate defined in SWI-Prolog {@link http
-	 * ://www.swi-prolog.org/man/arith.html#random/1}
+	 * Implementation of the random/1 predicate <a
+	 * href="http://www.swi-prolog.org/man/arith.html#random/1">defined in
+	 * SWI-Prolog</a>
 	 * 
 	 * random(+IntExpr)
 	 * 
@@ -782,7 +783,7 @@ public class Evaluate
 				synchronized (random)
 				{// avoid concurrency issues
 					rand = random.nextDouble();// rand is uniformly distributed from 0 to
-																			// 1
+					// 1
 				}
 				int res = (int) (rand * limit.value);// scale it and cast it
 				return IntegerTerm.get(res);

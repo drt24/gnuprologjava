@@ -97,7 +97,8 @@ public class PrologTextLoader
 
 	/**
 	 * @param prologTextLoaderState
-	 * @param root
+	 * @param stream
+	 *          the input stream to read from.
 	 */
 	public PrologTextLoader(PrologTextLoaderState prologTextLoaderState, Reader stream)
 	{
@@ -162,7 +163,7 @@ public class PrologTextLoader
 	 * 
 	 * This is mainly intended for use during initialisation.
 	 * 
-	 * @see PrologTextLoaderState#addInitialization()
+	 * @see PrologTextLoaderState#addInitialization(PrologTextLoader,Term)
 	 * 
 	 * @return a partially filled in PrologTextLoaderError (missing a message)
 	 */

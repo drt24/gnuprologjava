@@ -47,7 +47,11 @@ final public class CompoundTermTag implements java.io.Serializable
 	/** '/'/2 tag */
 	public final static CompoundTermTag divide2 = get("/", 2);
 
-	/** get predicate indicator for this tag */
+	/**
+	 * get predicate indicator for this tag
+	 * 
+	 * @return the predicate indicator for this tag
+	 */
 	public CompoundTerm getPredicateIndicator()
 	{
 		return new CompoundTerm(divide2, functor, IntegerTerm.get(arity));
@@ -63,13 +67,13 @@ final public class CompoundTermTag implements java.io.Serializable
 	 * @throws IllegalArgumentException
 	 *           if term is not a valid predicate indicator
 	 */
-	public static CompoundTermTag get(CompoundTerm ct)
+	public static CompoundTermTag get(CompoundTerm predicateIndicator)
 	{
-		if (!(ct.args[0] instanceof AtomTerm) || !(ct.args[1] instanceof IntegerTerm))
+		if (!(predicateIndicator.args[0] instanceof AtomTerm) || !(predicateIndicator.args[1] instanceof IntegerTerm))
 		{
 			throw new IllegalArgumentException();
 		}
-		return get((AtomTerm) ct.args[0], ((IntegerTerm) ct.args[1]).value);
+		return get((AtomTerm) predicateIndicator.args[0], ((IntegerTerm) predicateIndicator.args[1]).value);
 	}
 
 	/**
@@ -173,7 +177,7 @@ final public class CompoundTermTag implements java.io.Serializable
 	 * Return an object to replace the object extracted from the stream. The
 	 * object will be used in the graph in place of the original.
 	 * 
-	 * @return resloved object
+	 * @return resolved object
 	 * @see java.io.Resolvable
 	 */
 	public Object readResolve()

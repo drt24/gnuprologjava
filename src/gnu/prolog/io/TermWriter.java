@@ -83,6 +83,8 @@ public class TermWriter extends PrintWriter
 	 * 
 	 * @param term
 	 *          a term to convert
+	 * @param options
+	 *          the WriteOptions to use for converting the term to a String
 	 * @return String representation of the term
 	 */
 	public static String toString(Term term, WriteOptions options)
@@ -400,22 +402,22 @@ public class TermWriter extends PrintWriter
 	 * @param variable
 	 *          variable to display
 	 */
-	protected void displayVariable(WriteOptions options, VariableTerm term)
+	protected void displayVariable(WriteOptions options, VariableTerm variable)
 	{
 		if (options.variable2name == null)
 		{
 			options.variable2name = new HashMap<Term, String>();
 		}
-		String name = options.variable2name.get(term);
+		String name = options.variable2name.get(variable);
 		if (options.declaredVariableNames && name == null)
 		{
-			name = term.name;
+			name = variable.name;
 		}
 		if (name == null)
 		{
 			int n = options.numberOfVariables++;
 			name = "_" + (char) (n % 26 + 'A') + n / 26;
-			options.variable2name.put(term, name);
+			options.variable2name.put(variable, name);
 		}
 		print(name);
 	}

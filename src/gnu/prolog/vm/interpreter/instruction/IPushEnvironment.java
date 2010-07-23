@@ -26,7 +26,11 @@ import gnu.prolog.vm.interpreter.ExecutionState;
  */
 public class IPushEnvironment extends Instruction
 {
-	/** push ter from environment */
+	/**
+	 * push ter from environment
+	 * 
+	 * @param environmentPosition
+	 */
 	public IPushEnvironment(int environmentPosition)
 	{
 		this.environmentPosition = environmentPosition;
@@ -37,7 +41,7 @@ public class IPushEnvironment extends Instruction
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction

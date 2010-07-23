@@ -29,7 +29,11 @@ public class IPushArgument extends Instruction
 	/** position of term in environment */
 	public int argumentPosition;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param argumentPosition
+	 */
 	public IPushArgument(int argumentPosition)
 	{
 		this.argumentPosition = argumentPosition;
@@ -37,7 +41,7 @@ public class IPushArgument extends Instruction
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction

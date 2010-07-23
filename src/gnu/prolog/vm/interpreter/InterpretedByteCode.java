@@ -811,7 +811,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	 * this method is called when code is installed to the environment code can be
 	 * installed only for one environment.
 	 * 
-	 * @param environment
+	 * @param env
 	 *          Environment to install the predicate
 	 */
 	public void install(Environment env)
@@ -825,7 +825,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	/**
 	 * this method is called when code is uninstalled from the environment
 	 * 
-	 * @param environment
+	 * @param env
 	 *          Environment to install the predicate
 	 */
 	public void uninstall(Environment env)

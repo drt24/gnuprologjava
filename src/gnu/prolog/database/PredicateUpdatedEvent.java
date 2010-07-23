@@ -32,13 +32,21 @@ public class PredicateUpdatedEvent extends java.util.EventObject
 		this.tag = tag;
 	}
 
-	/** get tag of changed predicate */
+	/**
+	 * get tag of changed predicate
+	 * 
+	 * @return the tag of the changed predicate
+	 */
 	public CompoundTermTag getTag()
 	{
 		return tag;
 	}
 
-	/** get module of changed predicate */
+	/**
+	 * get module of changed predicate
+	 * 
+	 * @return the module of the changed predicate
+	 */
 	public Module getModule()
 	{
 		return (Module) getSource();

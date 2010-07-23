@@ -80,49 +80,88 @@ public class ExecutionState
 		interpreter.pushBacktrackInfo(cbi);
 	}
 
-	/** get BacktrackInfo for call instruction. */
+	/**
+	 * get BacktrackInfo for call instruction.
+	 * 
+	 * @param codePosition
+	 * @param args
+	 * @param code
+	 * @param tag
+	 * @return
+	 */
 	public CallBacktrackInfo getCallBacktrackInfo(int codePosition, Term args[], PrologCode code, CompoundTermTag tag)
 	{
 		return new CallBacktrackInfo(interpreter.getUndoPosition(), codePosition, args, code, tag);
 	}
 
-	/** get BacktrackInfo for try family instructions. */
+	/**
+	 * get BacktrackInfo for try family instructions.
+	 * 
+	 * @param retryPosition
+	 * @return
+	 */
 	public RetryBacktrackInfo getRetryBacktrackInfo(int retryPosition)
 	{
 		return new RetryBacktrackInfo(interpreter.getUndoPosition(), retryPosition);
 	}
 
-	/** pop term from pushdown stack */
+	/**
+	 * pop term from pushdown stack
+	 * 
+	 * @return
+	 */
 	public Term popPushDown()
 	{
 		return pushdown.remove(pushdown.size() - 1);
 	}
 
-	/** push term to pushdown stack */
+	/**
+	 * push term to pushdown stack
+	 * 
+	 * @param term
+	 */
 	public void pushPushDown(Term term)
 	{
 		pushdown.add(term);
 	}
 
-	/** get term from environment */
+	/**
+	 * get term from environment
+	 * 
+	 * @param environmentIndex
+	 * @return
+	 */
 	public Term getEnvironment(int environmentIndex)
 	{
 		return environment[environmentIndex];
 	}
 
-	/** put term to environment */
+	/**
+	 * put term to environment
+	 * 
+	 * @param environmentIndex
+	 * @param term
+	 */
 	public void putEnvironment(int environmentIndex, Term term)
 	{
 		environment[environmentIndex] = term;
 	}
 
-	/** get leave backtrack info */
+	/**
+	 * get leave backtrack info
+	 * 
+	 * @return
+	 */
 	public LeaveBacktrackInfo getLeaveBacktrackInfo()
 	{
 		return new LeaveBacktrackInfo(interpreter.getUndoPosition(), this);
 	}
 
-	/** get enter backtrack info */
+	/**
+	 * get enter backtrack info
+	 * 
+	 * @return
+	 */
 	public EnterBacktrackInfo getEnterBacktrackInfo()
 	{
 		return new EnterBacktrackInfo(interpreter.getUndoPosition());

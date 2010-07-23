@@ -23,6 +23,7 @@ import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -79,7 +80,7 @@ public class CharConversionTable
 	 * Convert a character.
 	 * 
 	 * @param input
-	 * @return
+	 * @return the converted character
 	 */
 	public char convert(char input)
 	{
@@ -93,8 +94,8 @@ public class CharConversionTable
 	/**
 	 * Returns the set of characters which are converted to this character
 	 * 
-	 * @param from
-	 * @return
+	 * @param toChar
+	 * @return the set of characters which are converted to this character
 	 */
 	public Set<Character> convertsTo(char toChar)
 	{
@@ -120,6 +121,9 @@ public class CharConversionTable
 	 * @see gnu.prolog.vm.TextInputPrologStream#readTerm(Term,Interpreter,ReadOptions)
 	 * 
 	 * @param term
+	 *          the term to apply the conversion to
+	 * @param environment
+	 *          the environment this is happening in (provides the flag value)
 	 * @return the converted term.
 	 */
 	public Term charConvert(Term term, Environment environment)

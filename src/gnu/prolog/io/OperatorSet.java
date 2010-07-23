@@ -56,7 +56,11 @@ final public class OperatorSet
 		return op != null ? op : Operator.nonOperator;
 	}
 
-	/** get all oprators currently in the set */
+	/**
+	 * get all operators currently in the set
+	 * 
+	 * @return all the operators currently in the set
+	 */
 	public synchronized Set<Operator> getOperators()
 	{
 		Set<Operator> rc = new HashSet<Operator>();
@@ -65,7 +69,12 @@ final public class OperatorSet
 		return rc;
 	}
 
-	/** remove operator from oprator set */
+	/**
+	 * remove operator from operator set
+	 * 
+	 * @param specifier
+	 * @param name
+	 */
 	public synchronized void remove(int specifier, String name)
 	{
 		switch (specifier)
@@ -84,7 +93,14 @@ final public class OperatorSet
 		}
 	}
 
-	/** add operator to oprator set */
+	/**
+	 * add operator to operator set
+	 * 
+	 * @param priority
+	 * @param specifier
+	 * @param name
+	 * @return the added {@link Operator}
+	 */
 	public synchronized Operator add(int priority, int specifier, String name)
 	{
 		int i, n = priorityLevels.size();

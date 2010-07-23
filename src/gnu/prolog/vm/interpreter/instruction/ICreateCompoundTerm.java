@@ -32,7 +32,11 @@ public class ICreateCompoundTerm extends Instruction
 	/** position of term in environment */
 	public CompoundTermTag tag;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param tag
+	 */
 	public ICreateCompoundTerm(CompoundTermTag tag)
 	{
 		this.tag = tag;
@@ -47,7 +51,7 @@ public class ICreateCompoundTerm extends Instruction
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction

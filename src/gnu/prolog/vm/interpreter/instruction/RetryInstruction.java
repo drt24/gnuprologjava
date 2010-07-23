@@ -17,20 +17,23 @@
  */
 package gnu.prolog.vm.interpreter.instruction;
 
-
 /**
- * base calss to try_me_else and retry_me_else instructions. it exists only for
+ * base class to try_me_else and retry_me_else instructions. it exists only for
  * purposes of code generation.
  */
 public abstract class RetryInstruction extends Instruction
 {
-	/*
+	/**
 	 * position to go to on retry, it always points to either retry_me_else or to
 	 * trust_me instructions
 	 */
 	public int retryPosition;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param retryPosition
+	 */
 	public RetryInstruction(int retryPosition)
 	{
 		this.retryPosition = retryPosition;
