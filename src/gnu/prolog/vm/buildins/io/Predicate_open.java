@@ -41,10 +41,11 @@ public class Predicate_open extends ExecuteOnlyCode
 		Term tstream = args[2];
 		Term optionsList = args[3];
 
-		PrologStream.OpenOptions options = new PrologStream.OpenOptions();
 		AtomTerm source_sink = null;
 		AtomTerm mode = null;
 		VariableTerm vstream = null;
+		PrologStream.OpenOptions options = new PrologStream.OpenOptions(source_sink, mode, interpreter.getEnvironment());
+
 		// check source/sink
 		if (tsource_sink instanceof VariableTerm)
 		{
@@ -146,7 +147,6 @@ public class Predicate_open extends ExecuteOnlyCode
 		}
 		options.filename = source_sink;
 		options.mode = mode;
-		options.environment = interpreter.getEnvironment();
 		vstream.value = interpreter.getEnvironment().open(source_sink, mode, options);
 		interpreter.addVariableUndo(vstream);
 		return SUCCESS_LAST;

@@ -53,7 +53,7 @@ public class Predicate_number_codes extends ExecuteOnlyCode
 			Term res = null;
 			try
 			{
-				res = TermReader.stringToTerm(numStr);
+				res = TermReader.stringToTerm(numStr, interpreter.getEnvironment());
 			}
 			catch (ParseException ex)
 			{// TODO there is useful debug information here which we are discarding

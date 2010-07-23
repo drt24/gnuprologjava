@@ -24,6 +24,8 @@ import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.HasEnvironment;
 import gnu.prolog.vm.TermConstants;
 
 import java.io.File;
@@ -39,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PrologTextLoaderState implements PrologTextLoaderListener
+public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvironment
 {
 	protected Module module = new Module();
 	protected Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
@@ -48,11 +50,22 @@ public class PrologTextLoaderState implements PrologTextLoaderListener
 	protected Set<String> loadedFiles = new HashSet<String>();
 	protected CharConversionTable convTable = new CharConversionTable();
 	protected List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
+	private Environment environment;
 
 	// arguments of ensure_loaded/1 and include/2 directive
 	protected final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
 	protected final static CompoundTermTag urlTag = CompoundTermTag.get("url", 1);
 	protected final static CompoundTermTag fileTag = CompoundTermTag.get("file", 1);
+
+	public PrologTextLoaderState(Environment env)
+	{
+		environment = env;
+	}
+
+	public Environment getEnvironment()
+	{
+		return environment;
+	}
 
 	public List<PrologTextLoaderError> getErrors()
 	{

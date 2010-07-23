@@ -39,6 +39,7 @@ import java.util.ArrayList;
 public final class TermParser implements TermParserConstants
 {
 	CharStream stream;
+	protected Environment environment;
 
 	public int getCurrentLine()
 	{
@@ -162,15 +163,20 @@ public final class TermParser implements TermParserConstants
 		return new CompoundTerm(op, new Term[] { t1, t2 });
 	}
 
-	public TermParser(java.io.Reader r, int line, int col)
+	public TermParser(java.io.Reader r, int line, int col, Environment environment)
 	{
-		this(new ReaderCharStream(r, line, col), null);
+		this(new ReaderCharStream(r, line, col), environment);
 	}
 
-	public TermParser(ReaderCharStream str, Object obj)
+	public TermParser(ReaderCharStream str, Environment env)
 	{
 		this(str);
 		stream = str;
+		environment = env;
+		if (env == null)
+		{
+			throw new IllegalArgumentException("Environment cannot be null");
+		}
 	}
 
 	final public Term readTerm(ReadOptions options) throws ParseException
@@ -725,8 +731,6 @@ public final class TermParser implements TermParserConstants
 			valAtoms[i] = AtomTerm.get(valChars[i]);
 		}
 		Term charsValue = CompoundTerm.getList(valAtoms);
-
-		Environment environment = null;
 
 		return new DoubleQuotesTerm(environment, codesValue, charsValue, atomValue);
 	}

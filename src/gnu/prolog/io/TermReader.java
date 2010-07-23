@@ -19,6 +19,7 @@ package gnu.prolog.io;
 
 import gnu.prolog.io.parser.gen.TermParser;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
 
 import java.io.FilterReader;
 import java.io.Reader;
@@ -29,15 +30,15 @@ public class TermReader extends FilterReader
 	protected static OperatorSet defaultOperatorSet = new OperatorSet();
 	TermParser parser;
 
-	public TermReader(Reader r, int line, int col)
+	public TermReader(Reader r, int line, int col, Environment environment)
 	{
 		super(r);
-		parser = new TermParser(r, line, col);
+		parser = new TermParser(r, line, col, environment);
 	}
 
-	public TermReader(Reader r)
+	public TermReader(Reader r, Environment environment)
 	{
-		this(r, 1, 1);
+		this(r, 1, 1, environment);
 	}
 
 	public Term readTerm(ReadOptions options) throws ParseException
@@ -57,17 +58,17 @@ public class TermReader extends FilterReader
 		}
 	}
 
-	public static Term stringToTerm(ReadOptions options, String str) throws ParseException
+	public static Term stringToTerm(ReadOptions options, String str, Environment environment) throws ParseException
 	{
 		StringReader srd = new StringReader(str);
-		TermReader trd = new TermReader(srd);
+		TermReader trd = new TermReader(srd, environment);
 		return trd.readTermEof(options);
 	}
 
-	public static Term stringToTerm(String str) throws ParseException
+	public static Term stringToTerm(String str, Environment environment) throws ParseException
 	{
 		StringReader srd = new StringReader(str);
-		TermReader trd = new TermReader(srd);
+		TermReader trd = new TermReader(srd, environment);
 		return trd.readTermEof();
 	}
 

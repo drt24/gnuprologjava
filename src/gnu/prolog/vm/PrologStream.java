@@ -42,6 +42,17 @@ public abstract class PrologStream
 		public Set<AtomTerm> aliases = new HashSet<AtomTerm>();
 		public AtomTerm filename;
 		public Environment environment;
+
+		public OpenOptions(AtomTerm filename, AtomTerm mode, Environment environment)
+		{
+			this.mode = mode;
+			this.filename = filename;
+			this.environment = environment;
+			if (environment == null)
+			{
+				throw new IllegalArgumentException("Environment cannot be null");
+			}
+		}
 	}
 
 	// tags used to supply stream options

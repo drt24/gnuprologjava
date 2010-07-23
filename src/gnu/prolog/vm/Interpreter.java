@@ -34,7 +34,7 @@ import java.util.Map;
  * Environment
  */
 
-public final class Interpreter
+public final class Interpreter implements HasEnvironment
 {
 	/**
 	 * The "slack" used in float comparison

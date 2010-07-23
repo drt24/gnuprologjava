@@ -38,14 +38,16 @@ public class TextInputPrologStream extends PrologStream
 
 	private CharConversionTable charConversion;
 
-	public TextInputPrologStream(OpenOptions options, Reader rd) throws PrologException
+	private TextInputPrologStream(OpenOptions options)
 	{
 		super(options);
-		termReader = new TermReader(new BufferedReader(rd));
-		if (environment != null)
-		{
-			charConversion = environment.getPrologTextLoaderState().getConversionTable();
-		}
+		charConversion = environment.getPrologTextLoaderState().getConversionTable();
+	}
+
+	public TextInputPrologStream(OpenOptions options, Reader rd) throws PrologException
+	{
+		this(options);
+		termReader = new TermReader(new BufferedReader(rd), environment);
 	}
 
 	/**
@@ -54,13 +56,9 @@ public class TextInputPrologStream extends PrologStream
 	 */
 	public TextInputPrologStream(OpenOptions options, RandomAccessFile raf)
 	{
-		super(options);
+		this(options);
 		fileReader = new RandomAccessFileReader(raf);
-		termReader = new TermReader(fileReader);
-		if (environment != null)
-		{
-			charConversion = environment.getPrologTextLoaderState().getConversionTable();
-		}
+		termReader = new TermReader(fileReader, environment);
 	}
 
 	// TODO Deprecate unused arguments.

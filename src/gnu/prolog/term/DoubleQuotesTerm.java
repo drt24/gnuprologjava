@@ -66,10 +66,13 @@ public class DoubleQuotesTerm extends ChangeableTerm
 		{
 			case DQ_ATOM:
 				value = atomValue;
+				break;
 			case DQ_CHARS:
 				value = charsValue;
+				break;
 			case DQ_CODES:
 				value = codesValue;
+				break;
 		}
 		return value;
 	}

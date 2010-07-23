@@ -64,7 +64,7 @@ public class CodeDumper
 			}
 			LineNumberReader kin = new LineNumberReader(new InputStreamReader(System.in));
 			StringReader rd = new StringReader(goalToRun);
-			TermReader trd = new TermReader(rd);
+			TermReader trd = new TermReader(rd, env);
 			TermWriter out = new TermWriter(new OutputStreamWriter(System.out));
 			ReadOptions rd_ops = new ReadOptions();
 			rd_ops.operatorSet = new OperatorSet();

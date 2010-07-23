@@ -84,7 +84,8 @@ public class PrologTextLoader
 		currentFile = rootFile;
 		try
 		{
-			currentReader = new TermReader(new InputStreamReader(prologTextLoaderState.getInputStream(root)));
+			currentReader = new TermReader(new InputStreamReader(prologTextLoaderState.getInputStream(root)),
+					prologTextLoaderState.getEnvironment());
 		}
 		catch (Exception ex)
 		{
@@ -120,7 +121,7 @@ public class PrologTextLoader
 		currentFile = rootFile;
 		try
 		{
-			currentReader = new TermReader(stream);
+			currentReader = new TermReader(stream, prologTextLoaderState.getEnvironment());
 		}
 		catch (Exception ex)
 		{
@@ -483,7 +484,8 @@ public class PrologTextLoader
 		try
 		{
 			prologTextLoaderState.beforeIncludeFile(this, argument);
-			TermReader reader = new TermReader(new InputStreamReader(prologTextLoaderState.getInputStream(argument)));
+			TermReader reader = new TermReader(new InputStreamReader(prologTextLoaderState.getInputStream(argument)),
+					prologTextLoaderState.getEnvironment());
 			readerStack.push(currentReader);
 			fileStack.push(currentFile);
 			currentReader = reader;

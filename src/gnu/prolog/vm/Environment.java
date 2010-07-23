@@ -253,7 +253,7 @@ public class Environment implements PredicateListener
 
 	protected void createTextLoader()
 	{
-		prologTextLoaderState = new PrologTextLoaderState();
+		prologTextLoaderState = new PrologTextLoaderState(this);
 	}
 
 	@Deprecated
@@ -623,16 +623,14 @@ public class Environment implements PredicateListener
 	{
 		try
 		{
-			PrologStream.OpenOptions inops = new PrologStream.OpenOptions();
-			PrologStream.OpenOptions outops = new PrologStream.OpenOptions();
-			inops.filename = PrologStream.userInputAtom;
-			inops.mode = PrologStream.readAtom;
+			PrologStream.OpenOptions inops = new PrologStream.OpenOptions(PrologStream.userInputAtom, PrologStream.readAtom,
+					this);
+			PrologStream.OpenOptions outops = new PrologStream.OpenOptions(PrologStream.userOutputAtom,
+					PrologStream.appendAtom, this);
 			inops.aliases.add(PrologStream.userInputAtom);
 			inops.eofAction = PrologStream.resetAtom;
 			inops.reposition = TermConstants.falseAtom;
 			inops.type = PrologStream.textAtom;
-			outops.filename = PrologStream.userOutputAtom;
-			outops.mode = PrologStream.appendAtom;
 			outops.aliases.add(PrologStream.userOutputAtom);
 			outops.eofAction = PrologStream.resetAtom;
 			outops.reposition = TermConstants.falseAtom;
