@@ -31,8 +31,8 @@ public class DoubleQuotesTerm extends ChangeableTerm
 {
 	private static final long serialVersionUID = 4760147509009342072L;
 
-	private CompoundTerm codesValue;
-	private CompoundTerm charsValue;
+	private Term codesValue;
+	private Term charsValue;
 	private AtomTerm atomValue;
 
 	/**
@@ -41,13 +41,13 @@ public class DoubleQuotesTerm extends ChangeableTerm
 	 * @param environment
 	 *          the environment to be used to get the prolog flags from
 	 * @param codes
-	 *          the char codes representation e.g. [232,134]
+	 *          the char codes representation e.g. [232,134] or []
 	 * @param chars
-	 *          the chars representation e.g. [a,b]
+	 *          the chars representation e.g. [a,b] or []
 	 * @param atom
-	 *          the atom representation e.g. ab
+	 *          the atom representation e.g. ab or ''
 	 */
-	public DoubleQuotesTerm(Environment environment, CompoundTerm codes, CompoundTerm chars, AtomTerm atom)
+	public DoubleQuotesTerm(Environment environment, Term codes, Term chars, AtomTerm atom)
 	{
 		super(environment);
 

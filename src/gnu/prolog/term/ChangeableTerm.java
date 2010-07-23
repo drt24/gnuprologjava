@@ -42,7 +42,14 @@ public abstract class ChangeableTerm extends VariableTerm
 
 	protected ChangeableTerm(Environment env)
 	{
-		environment = env;
+		if (env != null)
+		{
+			environment = env;
+		}
+		else
+		{
+			throw new IllegalArgumentException("Environment cannot be null");
+		}
 	}
 
 	/**
