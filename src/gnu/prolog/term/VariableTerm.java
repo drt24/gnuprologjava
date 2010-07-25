@@ -72,8 +72,7 @@ public class VariableTerm extends Term
 			VariableTerm term = (VariableTerm) context.getTerm(this);
 			if (term == null)
 			{
-				term = new VariableTerm();
-				// term.name = name;
+				term = new VariableTerm(name);
 				context.putTerm(this, term);
 			}
 			return term;
