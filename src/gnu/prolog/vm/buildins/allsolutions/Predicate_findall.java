@@ -50,15 +50,16 @@ public class Predicate_findall extends ExecuteOnlyCode
 	}
 
 	/**
-	 * this method is used for execution of code
 	 * 
 	 * @param interpreter
 	 *          interpreter in which context code is executed
 	 * @param backtrackMode
 	 *          true if predicate is called on backtracking and false otherwise
-	 * @param args
-	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * @param template
+	 * @param goal
+	 * @param list
+	 * @return either {@link #SUCCESS_LAST} or {@link #FAIL}
+	 * @throws PrologException
 	 */
 	public static int findall(Interpreter interpreter, boolean backtrackMode, Term template, Term goal, List<Term> list)
 			throws PrologException
