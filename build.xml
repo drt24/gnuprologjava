@@ -80,35 +80,56 @@ Ant Buildfile for GNU Prolog for Java.
 		<javac srcdir="src" destdir="build/code" />
 	</target>
 
-	<target name="dist" depends="build,docs">
+	<target name="dist" depends="build,docs,generate-changelog" description="Produce a release zip file of the .jar and the api">
 		<zip destfile="dist/${ant.project.name}-${version}.zip">
 			<fileset dir="build">
 				<include name="${ant.project.name}-${version}.jar" />
 				<include name="api/**" />
+				<include name="demo/**" />
 			</fileset>
 			<fileset dir="docs">
 				<include name="readme.txt" />
-				<include name="copyleft.txt" />
+				<include name="COPYING.txt" />
+				<include name="COPYING.LIBRARY.txt" />
 			</fileset>
 			<fileset dir="${basedir}">
 				<include name="changes.txt" />
+				<include name="key-signing-key.asc" />
+				<include name="generate-ChangeLog.sh" />
+			</fileset>
+			<fileset dir="dist">
+				<include name="ChangeLog"/>
 			</fileset>
 		</zip>
 	</target>
 
-	<target name="dist-src" depends="init">
+	<target name="dist-src" depends="init,generate-changelog" description="Produce a zip of the source">
 		<zip destfile="dist/${ant.project.name}-${version}-src.zip">
 			<fileset dir="${basedir}">
 				<include name="src/**" />
 				<include name="build.xml" />
 				<include name="changes.txt" />
+				<include name="key-signing-key.asc" />
+				<include name="generate-ChangeLog.sh" />
 				<include name="docs/readme.txt" />
-				<include name="docs/copyleft.txt" />
+				<include name="docs/COPYING.txt" />
+				<include name="docs/COPYING.LIBRARY.txt" />
+			</fileset>
+			<fileset dir="dist">
+				<include name="ChangeLog"/>
 			</fileset>
 		</zip>
 	</target>
 
-	<target name="docs" depends="init">
+	<target name="generate-changelog" depends="init">
+		<copy file="ChangeLog" todir="dist"/>
+		<exec executable="./generate-ChangeLog.sh">
+			<arg value="./"/>
+			<arg value="dist"/>
+		</exec>
+	</target>
+
+	<target name="docs" depends="init" description="Make the javadoc api and copy the demo applications">
 		<mkdir dir="build/api" />
 		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes" use="yes">
 			<packageset dir="src">
@@ -120,12 +141,15 @@ Ant Buildfile for GNU Prolog for Java.
 			<footer>
 				&lt;a href="${url.website}" target="_top"&gt;${name.friendly}&lt;/a&gt;
 			</footer>
-			<link href="http://java.sun.com/j2se/1.5.0/docs/api/" />
+			<link href="http://java.sun.com/javase/6/docs/api/" />
 		</javadoc>
+		<mkdir dir="build/demo" />
+		<copy todir="build/demo/gnu/prolog/">
+			<fileset dir="src/gnu/prolog/demo"/>
+		</copy>
 	</target>
 
-	<target name="test" depends="build,test-inriasuite,test-vanilla" description="Execute tests">
-	</target>
+	<target name="test" depends="build,test-inriasuite,test-vanilla" description="Execute tests"/>
 
 	<target name="test-vanilla" depends="build">
 		<echo>Verify output in test/test-vanilla.out
@@ -149,9 +173,8 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 		</exec>
 	</target>
 
-	<!-- Dangerous -->
-	<target name="regenerate-parser" depends="init"
-		description="Regenerate the parser. WARNING: This may BREAK the parser. Use with Care.">
+	<!-- Dangerous Regenerate the parser. WARNING: This may BREAK the parser. Use with Care.-->
+	<target name="regenerate-parser" depends="init">
 		<javacc
 		    target="src/gnu/prolog/io/parser/TermParser.jj"
 		    outputdirectory="src/gnu/prolog/io/parser/gen/"
