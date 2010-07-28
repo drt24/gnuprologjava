@@ -29,11 +29,11 @@ public class Runner extends JFrame
 	 *
 	 */
 	private static final long serialVersionUID = 4536135999079155652L;
-	JButton prepareButton = new JButton("Prepare");
-	JButton executeButton = new JButton("Execute");
-	JButton stopButton = new JButton("Stop");
-	JTextArea goalTextArea = new JTextArea();
-	JTextArea resultTextArea = new JTextArea();
+	private JButton prepareButton = new JButton("Prepare");
+	private JButton executeButton = new JButton("Execute");
+	private JButton stopButton = new JButton("Stop");
+	private JTextArea goalTextArea = new JTextArea();
+	private JTextArea resultTextArea = new JTextArea();
 
 	public Runner()
 	{

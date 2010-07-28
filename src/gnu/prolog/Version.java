@@ -23,8 +23,14 @@ import java.util.Properties;
 /**
  * Version information for gnuprolog
  */
-public class Version
+public final class Version
 {
+	/**
+	 * Utility class: hide constructor
+	 */
+	private Version()
+	{}
+
 	/**
 	 * @return the version string
 	 */
@@ -84,8 +90,10 @@ public class Version
 	/**
 	 * Internal class responsible for loading
 	 */
-	private static class VersionInternal
+	private final static class VersionInternal
 	{
+		private VersionInternal()
+		{}
 
 		static int major;
 		static int minor;

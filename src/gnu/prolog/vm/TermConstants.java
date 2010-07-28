@@ -22,6 +22,9 @@ import gnu.prolog.term.CompoundTermTag;
 
 public final class TermConstants
 {
+	private TermConstants()
+	{}
+
 	// atoms used for errors
 	// valid types
 	public static final AtomTerm atomAtom = AtomTerm.get("atom");

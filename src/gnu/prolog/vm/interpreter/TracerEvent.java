@@ -27,7 +27,7 @@ import java.util.EventObject;
 
 /**
  * The event object send to TracerEventListeners
- *
+ * 
  * @author Michiel Hendriks
  */
 public class TracerEvent extends EventObject
@@ -43,7 +43,7 @@ public class TracerEvent extends EventObject
 		super(tracer);
 		this.level = level;
 		this.tag = tag;
-		this.args = args;
+		this.args = args.clone();
 	}
 
 	public Term[] getArgs()

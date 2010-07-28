@@ -189,8 +189,8 @@ public class Predicate_stream_property extends ExecuteOnlyCode
 				}
 			}
 			Term currentProp = bi.options.next();
-			if (interpreter.simple_unify(bi.stream, bi.currentStream) == SUCCESS_LAST
-					&& interpreter.simple_unify(bi.property, currentProp) == SUCCESS_LAST)
+			if (interpreter.simpleUnify(bi.stream, bi.currentStream) == SUCCESS_LAST
+					&& interpreter.simpleUnify(bi.property, currentProp) == SUCCESS_LAST)
 			{
 				interpreter.pushBacktrackInfo(bi);
 				return SUCCESS;

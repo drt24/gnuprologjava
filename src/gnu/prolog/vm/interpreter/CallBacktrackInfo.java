@@ -48,7 +48,7 @@ public class CallBacktrackInfo extends BacktrackInfo
 	public CallBacktrackInfo(int undoPosition, int codePosition, Term args[], PrologCode code, CompoundTermTag tag)
 	{
 		super(undoPosition, codePosition);
-		this.args = args;
+		this.args = args.clone();
 		this.code = code;
 		this.tag = tag;
 	}

@@ -26,7 +26,7 @@ public class ITrustMe extends Instruction
 {
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction
@@ -36,8 +36,7 @@ public class ITrustMe extends Instruction
 	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		bi.undo(state.interpreter); /* undo changes */
-		int rc = ExecutionState.NEXT; /* proceed to next instruction */
-		return rc;
+		return ExecutionState.NEXT; /* proceed to next instruction */
 	}
 
 	/** convert instruction to string */

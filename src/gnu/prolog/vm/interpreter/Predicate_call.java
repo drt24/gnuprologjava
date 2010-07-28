@@ -51,7 +51,7 @@ public class Predicate_call extends ExecuteOnlyCode
 		{
 			super(in.getUndoPosition(), -1);
 			this.code = code;
-			this.args = args;
+			this.args = args.clone();
 			this.callTerm = callTerm;
 		}
 
@@ -67,11 +67,11 @@ public class Predicate_call extends ExecuteOnlyCode
 		@Override
 		protected void finalize() throws Throwable
 		{
-			super.finalize();
 			if (code != null)
 			{
 				code.uninstall(environment);
 			}
+			super.finalize();
 		}
 	}
 

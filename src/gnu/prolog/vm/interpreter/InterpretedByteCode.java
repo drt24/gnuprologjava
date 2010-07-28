@@ -741,7 +741,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 							pds[pdsSize] = null;
 							Term t0 = pds[--pdsSize].dereference(); // pop argument from stack
 							pds[pdsSize] = null;
-							int rc = interpreter.simple_unify(t0, t1);
+							int rc = interpreter.simpleUnify(t0, t1);
 							if (rc == FAIL)
 							{
 								backtrackMode = true;

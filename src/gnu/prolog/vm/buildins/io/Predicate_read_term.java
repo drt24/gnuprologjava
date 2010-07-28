@@ -105,7 +105,7 @@ public class Predicate_read_term extends ExecuteOnlyCode
 
 		try
 		{
-			int rc = interpreter.simple_unify(args[1], readTerm);
+			int rc = interpreter.simpleUnify(args[1], readTerm);
 			if (rc == FAIL)
 			{
 				interpreter.undo(undoPos);
@@ -119,7 +119,7 @@ public class Predicate_read_term extends ExecuteOnlyCode
 				{
 					Term t = i.next();
 					t = t.dereference();
-					rc = interpreter.simple_unify(t, singletonsList);
+					rc = interpreter.simpleUnify(t, singletonsList);
 					if (rc == FAIL)
 					{
 						interpreter.undo(undoPos);
@@ -135,7 +135,7 @@ public class Predicate_read_term extends ExecuteOnlyCode
 				{
 					Term t = i.next();
 					t = t.dereference();
-					rc = interpreter.simple_unify(t, vnlist);
+					rc = interpreter.simpleUnify(t, vnlist);
 					if (rc == FAIL)
 					{
 						interpreter.undo(undoPos);
@@ -151,7 +151,7 @@ public class Predicate_read_term extends ExecuteOnlyCode
 				{
 					Term t = i.next();
 					t = t.dereference();
-					rc = interpreter.simple_unify(t, vnlist);
+					rc = interpreter.simpleUnify(t, vnlist);
 					if (rc == FAIL)
 					{
 						interpreter.undo(undoPos);

@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm;
 
+import gnu.prolog.database.Pair;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
@@ -29,6 +30,9 @@ import java.util.Random;
 
 public class Evaluate
 {
+	private Evaluate()
+	{}
+
 	public final static CompoundTermTag add2 = CompoundTermTag.get("+", 2);
 	public final static CompoundTermTag sub2 = CompoundTermTag.get("-", 2);
 	public final static CompoundTermTag mul2 = CompoundTermTag.get("*", 2);
@@ -59,7 +63,9 @@ public class Evaluate
 	public final static CompoundTermTag bor2 = CompoundTermTag.get("\\/", 2);
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
 	/**
-	 * Implementation of the random/1 predicate <a href="http://www.swi-prolog.org/man/arith.html#random/1">defined in SWI-Prolog</a> 
+	 * Implementation of the random/1 predicate <a
+	 * href="http://www.swi-prolog.org/man/arith.html#random/1">defined in
+	 * SWI-Prolog</a>
 	 * 
 	 * random(+IntExpr)
 	 * 
@@ -73,17 +79,17 @@ public class Evaluate
 	public final static CompoundTermTag evaluationError = CompoundTermTag.get("evaluation_error", 1);
 	public final static AtomTerm floatAtom = AtomTerm.get("float");
 
-	private static void zero_divizor() throws PrologException
+	private static void zeroDivizor() throws PrologException
 	{
 		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.zeroDivizorAtom));
 	}
 
-	private static void int_overflow() throws PrologException
+	private static void intOverflow() throws PrologException
 	{
 		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.intOverflowAtom));
 	}
 
-	private static void float_overflow() throws PrologException
+	private static void floatOverflow() throws PrologException
 	{
 		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.floatOverflowAtom));
 	}
@@ -91,6 +97,41 @@ public class Evaluate
 	private static void undefined() throws PrologException
 	{
 		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.undefinedAtom));
+	}
+
+	private static Pair<Double, Double> toDouble(Term arg0, Term arg1)
+	{
+		double d0 = 0;
+		double d1 = 0;
+		if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+		{
+			IntegerTerm i0 = (IntegerTerm) arg0;
+			IntegerTerm i1 = (IntegerTerm) arg1;
+			d0 = i0.value;
+			d1 = i1.value;
+		}
+		else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
+		{
+			FloatTerm f0 = (FloatTerm) arg0;
+			IntegerTerm i1 = (IntegerTerm) arg1;
+			d0 = f0.value;
+			d1 = i1.value;
+		}
+		else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
+		{
+			IntegerTerm i0 = (IntegerTerm) arg0;
+			FloatTerm f1 = (FloatTerm) arg1;
+			d0 = i0.value;
+			d1 = f1.value;
+		}
+		else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
+		{
+			FloatTerm f0 = (FloatTerm) arg0;
+			FloatTerm f1 = (FloatTerm) arg1;
+			d0 = f0.value;
+			d1 = f1.value;
+		}
+		return new Pair<Double, Double>(d0, d1);
 	}
 
 	public static Term evaluate(Term term) throws PrologException
@@ -129,7 +170,7 @@ public class Evaluate
 					long res = (long) i0.value + (long) i1.value;
 					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get((int) res);
 				}
@@ -140,7 +181,7 @@ public class Evaluate
 					double res = f0.value + i1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -151,7 +192,7 @@ public class Evaluate
 					double res = i0.value + f1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -162,7 +203,7 @@ public class Evaluate
 					double res = f0.value + f1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -178,7 +219,7 @@ public class Evaluate
 					long res = (long) i0.value - (long) i1.value;
 					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get((int) res);
 				}
@@ -189,7 +230,7 @@ public class Evaluate
 					double res = f0.value - i1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -200,7 +241,7 @@ public class Evaluate
 					double res = i0.value - f1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -211,7 +252,7 @@ public class Evaluate
 					double res = f0.value - f1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -227,7 +268,7 @@ public class Evaluate
 					long res = (long) i0.value * (long) i1.value;
 					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get((int) res);
 				}
@@ -238,7 +279,7 @@ public class Evaluate
 					double res = f0.value * i1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -249,7 +290,7 @@ public class Evaluate
 					double res = i0.value * f1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -260,7 +301,7 @@ public class Evaluate
 					double res = f0.value * f1.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -281,53 +322,25 @@ public class Evaluate
 				IntegerTerm i1 = (IntegerTerm) arg1;
 				if (i1.value == 0)
 				{
-					zero_divizor();
+					zeroDivizor();
 				}
 				int res = i0.value / i1.value;
 				return IntegerTerm.get(res);
 			}
 			else if (tag == div2) // ***************************************
 			{
-				double d0 = 0;
-				double d1 = 0;
-				Term arg0 = args[0];
-				Term arg1 = args[1];
-				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					d0 = i0.value;
-					d1 = i1.value;
-				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					d0 = f0.value;
-					d1 = i1.value;
-				}
-				else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					d0 = i0.value;
-					d1 = f1.value;
-				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					d0 = f0.value;
-					d1 = f1.value;
-				}
+				Pair<Double, Double> doubles = toDouble(args[0], args[1]);
+				double d0 = doubles.left;
+				double d1 = doubles.right;
+
 				if (d1 == 0)
 				{
-					zero_divizor();
+					zeroDivizor();
 				}
 				double res = d0 / d1;
 				if (Double.isInfinite(res))
 				{
-					float_overflow();
+					floatOverflow();
 				}
 				return new FloatTerm(res);
 			}
@@ -347,7 +360,7 @@ public class Evaluate
 				IntegerTerm i1 = (IntegerTerm) arg1;
 				if (i1.value == 0)
 				{
-					zero_divizor();
+					zeroDivizor();
 				}
 				int res = i0.value % i1.value;
 				return IntegerTerm.get(res);
@@ -368,7 +381,7 @@ public class Evaluate
 				IntegerTerm i1 = (IntegerTerm) arg1;
 				if (i1.value == 0)
 				{
-					zero_divizor();
+					zeroDivizor();
 				}
 				int res = i0.value - (int) Math.floor((double) i0.value / i1.value) * i1.value;
 				return IntegerTerm.get(res);
@@ -381,7 +394,7 @@ public class Evaluate
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					if (i0.value == Integer.MIN_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get(-i0.value);
 				}
@@ -391,7 +404,7 @@ public class Evaluate
 					double res = -f0.value;
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -404,7 +417,7 @@ public class Evaluate
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					if (i0.value == Integer.MIN_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get(Math.abs(i0.value));
 				}
@@ -414,7 +427,7 @@ public class Evaluate
 					double res = Math.abs(f0.value);
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
-						float_overflow();
+						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
@@ -436,7 +449,7 @@ public class Evaluate
 				double res = Math.sqrt(d0);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
-					float_overflow();
+					floatOverflow();
 				}
 				return new FloatTerm(res);
 			}
@@ -511,7 +524,7 @@ public class Evaluate
 					double res = Math.floor(f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
 				}
@@ -530,7 +543,7 @@ public class Evaluate
 					double res = sign * Math.floor(Math.abs(f0.value));
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
 				}
@@ -548,7 +561,7 @@ public class Evaluate
 					double res = Math.floor(f0.value + 0.5);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
 				}
@@ -566,49 +579,17 @@ public class Evaluate
 					double res = -Math.floor(-f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						int_overflow();
+						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
 				}
 			}
 			else if (tag == power2) // ***************************************
 			{
-				double d0 = 0;
-				double d1 = 0;
-				Term arg0 = args[0];
-				Term arg1 = args[1];
-				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					d0 = i0.value;
-					d1 = i1.value;
-				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					d0 = f0.value;
-					d1 = i1.value;
-				}
-				else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					d0 = i0.value;
-					d1 = f1.value;
-				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					d0 = f0.value;
-					if (d0 < 0)
-					{
-						undefined();
-					}
-					d1 = f1.value;
-				}
+				Pair<Double, Double> doubles = toDouble(args[0], args[1]);
+				double d0 = doubles.left;
+				double d1 = doubles.right;
+
 				if (d0 == 0 && d1 < 0)
 				{
 					undefined();
@@ -616,7 +597,7 @@ public class Evaluate
 				double res = Math.pow(d0, d1);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
-					float_overflow();
+					floatOverflow();
 				}
 				return new FloatTerm(res);
 			}
@@ -688,7 +669,7 @@ public class Evaluate
 				double res = Math.exp(d0);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
-					float_overflow();
+					floatOverflow();
 				}
 				return new FloatTerm(res);
 			}
@@ -713,7 +694,7 @@ public class Evaluate
 				double res = Math.log(d0);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
-					float_overflow();
+					floatOverflow();
 				}
 				return new FloatTerm(res);
 			}
@@ -781,7 +762,7 @@ public class Evaluate
 				synchronized (random)
 				{// avoid concurrency issues
 					rand = random.nextDouble();// rand is uniformly distributed from 0 to
-																			// 1
+					// 1
 				}
 				int res = (int) (rand * limit.value);// scale it and cast it
 				return IntegerTerm.get(res);

@@ -44,27 +44,29 @@ public final class Interpreter implements HasEnvironment
 	/**
 	 * Environment for this interpreter
 	 */
-	protected Environment environment;
+	private Environment environment;
 
 	/**
 	 * Keeps track of prolog call/return traces
 	 */
-	protected Tracer tracer;
+	private Tracer tracer;
 
 	/**
 	 * Contains an {@link PrologHalt} instance when the interpreter was halted.
 	 */
-	protected PrologHalt haltExitCode;
+	private PrologHalt haltExitCode;
 
 	/**
 	 * Used to store context information for the lifespan of a goal. The context
 	 * is cleared every time a new goal is prepared. Can be used by predicates to
 	 * store information based on goals.
 	 */
-	protected Map<String, Object> context;
+	private Map<String, Object> context;
 
 	/**
 	 * this constructor should not be used by client programs
+	 * 
+	 * @param environment
 	 */
 	protected Interpreter(Environment environment)
 	{
@@ -141,25 +143,35 @@ public final class Interpreter implements HasEnvironment
 	// return (BacktrackInfo)backtrackInfoStack.get(backtrackInfoStack.size()-1);
 	// }
 
-	protected BacktrackInfo backtrackInfoStack[] = new BacktrackInfo[4096];
-	protected int backtrackInfoAmount = 0;
-	protected int backtrackInfoMax = 4096;
-	protected int backtrackInfoGrow = 4096;
+	private static final int PAGESIZE = 4096;
+	private static final int GROWSIZE = PAGESIZE;
 
-	/** push backtrack information */
+	private BacktrackInfo backtrackInfoStack[] = new BacktrackInfo[PAGESIZE];
+	private int backtrackInfoAmount = 0;
+	private int backtrackInfoMax = backtrackInfoStack.length;
+
+	/**
+	 * push backtrack information
+	 * 
+	 * @param bi
+	 */
 	public void pushBacktrackInfo(BacktrackInfo bi)
 	{
 		if (backtrackInfoAmount == backtrackInfoMax)
 		{
-			BacktrackInfo tmp[] = new BacktrackInfo[backtrackInfoMax + backtrackInfoGrow];
+			BacktrackInfo tmp[] = new BacktrackInfo[backtrackInfoMax + GROWSIZE];
 			System.arraycopy(backtrackInfoStack, 0, tmp, 0, backtrackInfoAmount);
 			backtrackInfoStack = tmp;
-			backtrackInfoMax += backtrackInfoGrow;
+			backtrackInfoMax += GROWSIZE;
 		}
 		backtrackInfoStack[backtrackInfoAmount++] = bi;
 	}
 
-	/** pop backtrack information */
+	/**
+	 * pop backtrack information
+	 * 
+	 * @return the popped top backtrack information
+	 */
 	public BacktrackInfo popBacktrackInfo()
 	{
 		BacktrackInfo rc = backtrackInfoStack[--backtrackInfoAmount];
@@ -185,21 +197,33 @@ public final class Interpreter implements HasEnvironment
 		backtrackInfoAmount = pos + 1;
 	}
 
-	/** peek top backtrack information */
+	/**
+	 * peek top backtrack information
+	 * 
+	 * @return the top backtrack information
+	 */
 	public BacktrackInfo peekBacktrackInfo()
 	{
 		return backtrackInfoStack[backtrackInfoAmount - 1];
 	}
 
 	// Undo Stack methods
-	/** get current undo position */
+	/**
+	 * get current undo position
+	 * 
+	 * @return the current undo position
+	 */
 	public int getUndoPosition()
 	{
 		undoPositionAsked = true;
 		return undoDataAmount;
 	}
 
-	/** undo changes until this position */
+	/**
+	 * undo changes until this position
+	 * 
+	 * @param position
+	 */
 	public void undo(int position)
 	{
 		// System.err.println("undo "+position+" current="+undoData_amount);
@@ -212,7 +236,11 @@ public final class Interpreter implements HasEnvironment
 		undoPositionAsked = true;
 	}
 
-	/** add variable undo */
+	/**
+	 * add variable undo
+	 * 
+	 * @param variable
+	 */
 	public void addVariableUndo(VariableTerm variable)
 	{
 		if (undoPositionAsked || !(undoData[undoDataAmount - 1] instanceof VariableUndoData))
@@ -221,7 +249,7 @@ public final class Interpreter implements HasEnvironment
 		}
 		if (variablesAmount == variables.length)
 		{
-			VariableTerm tmp[] = new VariableTerm[growSize + variables.length];
+			VariableTerm tmp[] = new VariableTerm[GROWSIZE + variables.length];
 			System.arraycopy(variables, 0, tmp, 0, variablesAmount);
 			variables = tmp;
 		}
@@ -229,12 +257,16 @@ public final class Interpreter implements HasEnvironment
 		variablesAmount++;
 	}
 
-	/** add special undo */
+	/**
+	 * add special undo
+	 * 
+	 * @param undoDatum
+	 */
 	public void addSpecialUndo(UndoData undoDatum)
 	{
 		if (undoDataAmount == undoData.length)
 		{
-			UndoData tmp[] = new UndoData[growSize + undoData.length];
+			UndoData tmp[] = new UndoData[GROWSIZE + undoData.length];
 			System.arraycopy(undoData, 0, tmp, 0, undoDataAmount);
 			undoData = tmp;
 		}
@@ -242,18 +274,14 @@ public final class Interpreter implements HasEnvironment
 		undoDataAmount++;
 	}
 
-	// final static int maxStackSize = 0x1000000; // is not used
-	protected final static int pageSize = 0x4096;
-	protected final static int growSize = 0x4096;
-
-	protected VariableTerm variables[] = new VariableTerm[4096];
+	protected VariableTerm variables[] = new VariableTerm[PAGESIZE];
 	protected int variablesAmount = 0;
 
-	protected UndoData undoData[] = new UndoData[4096];
-	protected int undoDataAmount = 0;
-	protected boolean undoPositionAsked = true;
+	private UndoData undoData[] = new UndoData[PAGESIZE];
+	private int undoDataAmount = 0;
+	private boolean undoPositionAsked = true;
 
-	protected class VariableUndoData implements UndoData
+	private class VariableUndoData implements UndoData
 	// maybe later this class will be pooled
 	{
 		protected int startPosion;
@@ -274,8 +302,15 @@ public final class Interpreter implements HasEnvironment
 		}
 	}
 
-	/** unify two terms, no undo done */
-	public int simple_unify(Term t1, Term t2) throws PrologException
+	/**
+	 * unify two terms, no undo done
+	 * 
+	 * @param t1
+	 * @param t2
+	 * @return {@link PrologCode#SUCCESS_LAST} or {@link PrologCode#FAIL}
+	 * @throws PrologException
+	 */
+	public int simpleUnify(Term t1, Term t2) throws PrologException
 	{
 		int rc = PrologCode.SUCCESS_LAST;
 		if (t1 == t2)
@@ -312,7 +347,7 @@ public final class Interpreter implements HasEnvironment
 				// System.err.println("unify "+ct2.tag+" al1 = "+args1.length+" al2 = "+args2.length);
 				unify_loop: for (int i = args2.length - 1; i >= 0; i--)
 				{
-					rc = simple_unify(args1[i].dereference(), args2[i].dereference());
+					rc = simpleUnify(args1[i].dereference(), args2[i].dereference());
 					if (rc == PrologCode.FAIL)
 					{
 						break unify_loop;
@@ -354,85 +389,18 @@ public final class Interpreter implements HasEnvironment
 		return rc;
 	}
 
-	/** unify two terms */
+	/**
+	 * unify two terms
+	 * 
+	 * @param t1
+	 * @param t2
+	 * @return {@link PrologCode#SUCCESS_LAST} or {@link PrologCode#FAIL}
+	 * @throws PrologException
+	 */
 	public int unify(Term t1, Term t2) throws PrologException
 	{
 		int undoPos = getUndoPosition();
-		int rc = PrologCode.SUCCESS_LAST;
-		if (t1 == t2)
-		{
-		}
-		else if (t1 instanceof VariableTerm)
-		// TODO check that we are avoiding dangling references
-		{
-			VariableTerm vt1 = (VariableTerm) t1;
-			addVariableUndo(vt1);
-			vt1.value = t2;
-		}
-		else if (t2 instanceof VariableTerm)
-		{
-			VariableTerm vt2 = (VariableTerm) t2;
-			addVariableUndo(vt2);
-			vt2.value = t1;
-		}
-		else if (t1.getClass() != t2.getClass())
-		{
-			rc = PrologCode.FAIL;
-		}
-		else if (t1 instanceof CompoundTerm/* && t2 instanceof CompoundTerm */)
-		{
-			CompoundTerm ct1 = (CompoundTerm) t1;
-			CompoundTerm ct2 = (CompoundTerm) t2;
-			if (ct1.tag != ct2.tag)
-			{
-				rc = PrologCode.FAIL;
-			}
-			else
-			{
-				Term args1[] = ct1.args;
-				Term args2[] = ct2.args;
-				// System.err.println("unify "+ct2.tag+" al1 = "+args1.length+" al2 = "+args2.length);
-				unify_loop: for (int i = args2.length - 1; i >= 0; i--)
-				{
-					rc = simple_unify(args1[i].dereference(), args2[i].dereference());
-					if (rc == PrologCode.FAIL)
-					{
-						break unify_loop;
-					}
-				}
-			}
-		}
-		else if (t1 instanceof FloatTerm/* && t2 instanceof FloatTerm */)
-		{
-			FloatTerm ct1 = (FloatTerm) t1;
-			FloatTerm ct2 = (FloatTerm) t2;
-			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON)
-			{
-				rc = PrologCode.FAIL;
-			}
-		}
-		else if (t1 instanceof IntegerTerm /* && t2 instanceof IntegerTerm */)
-		{
-			IntegerTerm ct1 = (IntegerTerm) t1;
-			IntegerTerm ct2 = (IntegerTerm) t2;
-			if (ct1.value != ct2.value)
-			{
-				rc = PrologCode.FAIL;
-			}
-		}
-		else if (t1 instanceof JavaObjectTerm /* && t2 instanceof JavaObjectTerm */)
-		{
-			JavaObjectTerm ct1 = (JavaObjectTerm) t1;
-			JavaObjectTerm ct2 = (JavaObjectTerm) t2;
-			if (ct1.value != ct2.value)
-			{
-				rc = PrologCode.FAIL;
-			}
-		}
-		else
-		{
-			rc = PrologCode.FAIL;
-		}
+		int rc = simpleUnify(t1, t2);
 		if (rc == PrologCode.FAIL)
 		{
 			undo(undoPos);
@@ -462,14 +430,13 @@ public final class Interpreter implements HasEnvironment
 	 * 
 	 * @author Daniel Thomas
 	 */
-	protected class ReturnPoint
+	class ReturnPoint
 	{
 		public Map<String, Object> rContext;
 
 		public BacktrackInfo rBacktrackInfoStack[];
 		public int rBacktrackInfoAmount;
 		public int rBacktrackInfoMax;
-		public int rBacktrackInfoGrow;
 
 		public VariableTerm rVariables[];
 		public int rVariablesAmount;
@@ -488,8 +455,13 @@ public final class Interpreter implements HasEnvironment
 	 */
 	private Map<Goal, ReturnPoint> returnPoints = new HashMap<Goal, ReturnPoint>();
 
-	/** prepare goal for execution */
-	public Goal prepareGoal(Term term) throws PrologException
+	/**
+	 * prepare goal for execution
+	 * 
+	 * @param term
+	 * @return the prepared Goal
+	 */
+	public Goal prepareGoal(Term term)
 	{
 		ReturnPoint rp = null;
 		if (currentGoal != null)
@@ -616,7 +588,6 @@ public final class Interpreter implements HasEnvironment
 			backtrackInfoStack = rp.rBacktrackInfoStack;
 			backtrackInfoAmount = rp.rBacktrackInfoAmount;
 			backtrackInfoMax = rp.rBacktrackInfoMax;
-			backtrackInfoGrow = rp.rBacktrackInfoGrow;
 			variables = rp.rVariables;
 			undoData = rp.rUndoData;
 			undoDataAmount = rp.rUndoDataAmount;

@@ -56,8 +56,7 @@ public class CompoundTerm extends Term
 	 */
 	public static CompoundTerm getList(Term head, Term tail)
 	{
-		CompoundTerm rc = new CompoundTerm(TermConstants.listTag, head, tail);
-		return rc;
+		return new CompoundTerm(TermConstants.listTag, head, tail);
 	}
 
 	/** get prolog list by java array */
@@ -117,8 +116,7 @@ public class CompoundTerm extends Term
 	 */
 	public static CompoundTerm getConjunction(Term head, Term tail)
 	{
-		CompoundTerm rc = new CompoundTerm(TermConstants.conjunctionTag, head, tail);
-		return rc;
+		return new CompoundTerm(TermConstants.conjunctionTag, head, tail);
 	}
 
 	/**
@@ -132,8 +130,7 @@ public class CompoundTerm extends Term
 	 */
 	public static CompoundTerm getDisjunction(Term head, Term tail)
 	{
-		CompoundTerm rc = new CompoundTerm(TermConstants.disjunctionTag, head, tail);
-		return rc;
+		return new CompoundTerm(TermConstants.disjunctionTag, head, tail);
 	}
 
 	/**
@@ -267,7 +264,7 @@ public class CompoundTerm extends Term
 	public CompoundTerm(CompoundTermTag tag, Term args[])
 	{
 		this.tag = tag;
-		this.args = args;
+		this.args = args.clone();
 	}
 
 	/**

@@ -38,6 +38,9 @@ import java.util.Iterator;
 
 public class GoalRunner
 {
+	private GoalRunner()
+	{}
+
 	private static void usage()
 	{
 		System.out.println("usage: java gnu.prolog.test.GoalRunner [-once] <text to load> <goal to run>");
@@ -100,7 +103,7 @@ public class GoalRunner
 
 			Interpreter.Goal goal = interpreter.prepareGoal(goalTerm);
 			String response;
-			loop: do
+			do
 			{
 				long startTime = System.currentTimeMillis();
 				int rc = interpreter.execute(goal);

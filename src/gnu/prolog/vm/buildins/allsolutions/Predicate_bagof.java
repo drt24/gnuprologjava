@@ -96,7 +96,7 @@ public class Predicate_bagof extends ExecuteOnlyCode
 		{
 			CompoundTerm curInstance = (CompoundTerm) (bi.solutionList.remove(0)).dereference();
 			Term curWitness = curInstance.args[0].dereference();
-			int rc = interpreter.simple_unify(bi.witness, curWitness);
+			int rc = interpreter.simpleUnify(bi.witness, curWitness);
 			if (rc == FAIL)
 			{
 				throw new IllegalStateException("unexpected unify fail");
@@ -109,7 +109,7 @@ public class Predicate_bagof extends ExecuteOnlyCode
 				Term w = ct.args[0].dereference();
 				if (TermUtils.isVariant(curWitness, w))
 				{
-					rc = interpreter.simple_unify(bi.witness, w);
+					rc = interpreter.simpleUnify(bi.witness, w);
 					if (rc == FAIL)
 					{
 						throw new IllegalStateException("unexpected unify fail");

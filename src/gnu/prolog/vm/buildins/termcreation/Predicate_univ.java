@@ -63,8 +63,7 @@ public class Predicate_univ extends ExecuteOnlyCode
 				PrologException.typeError(TermConstants.atomicAtom, head);
 			}
 			Term t = CompoundTerm.getList(term, TermConstants.emptyListAtom);
-			int rc = interpreter.unify(t, list);
-			return rc;
+			return interpreter.unify(t, list);
 		}
 		else if (term instanceof CompoundTerm)
 		{

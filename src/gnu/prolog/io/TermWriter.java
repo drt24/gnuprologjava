@@ -349,7 +349,6 @@ public class TermWriter extends PrintWriter
 			// do nothing
 		}
 		else if (tail instanceof CompoundTerm && ((CompoundTerm) tail).tag == TermConstants.listTag)
-
 		{
 			print(",");
 			displayList(options, (CompoundTerm) tail);

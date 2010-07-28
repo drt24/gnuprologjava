@@ -39,6 +39,9 @@ import java.io.StringReader;
 
 public class CodeDumper
 {
+	private CodeDumper()
+	{}
+
 	public static void main(String args[])
 	{
 		try

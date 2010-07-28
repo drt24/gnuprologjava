@@ -158,9 +158,9 @@ public class Predicate_current_op extends ExecuteOnlyCode
 				Term op = bi.ops.next();
 				Term specifier = bi.specifiers.next();
 				Term priority = bi.priorities.next();
-				if (interpreter.simple_unify(op, bi.op) == SUCCESS_LAST
-						&& interpreter.simple_unify(specifier, bi.specifier) == SUCCESS_LAST
-						&& interpreter.simple_unify(priority, bi.priority) == SUCCESS_LAST)
+				if (interpreter.simpleUnify(op, bi.op) == SUCCESS_LAST
+						&& interpreter.simpleUnify(specifier, bi.specifier) == SUCCESS_LAST
+						&& interpreter.simpleUnify(priority, bi.priority) == SUCCESS_LAST)
 				{
 					interpreter.pushBacktrackInfo(bi);
 					return SUCCESS;

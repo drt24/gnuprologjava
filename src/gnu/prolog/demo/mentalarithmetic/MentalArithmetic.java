@@ -51,6 +51,9 @@ import java.util.List;
 public class MentalArithmetic
 {
 
+	private MentalArithmetic()
+	{}
+
 	/**
 	 * @see #main(String[])
 	 */

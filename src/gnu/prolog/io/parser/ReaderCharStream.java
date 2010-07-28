@@ -60,41 +60,34 @@ public final class ReaderCharStream implements CharStream
 		int newbufline[] = new int[bufsize + DEFAULTBUFFERINCREMENT];
 		int newbufcolumn[] = new int[bufsize + DEFAULTBUFFERINCREMENT];
 
-		try
+		if (wrapAround)
 		{
-			if (wrapAround)
-			{
-				System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
-				System.arraycopy(buffer, 0, newbuffer, bufsize - tokenBegin, bufpos);
-				buffer = newbuffer;
+			System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
+			System.arraycopy(buffer, 0, newbuffer, bufsize - tokenBegin, bufpos);
+			buffer = newbuffer;
 
-				System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
-				System.arraycopy(bufline, 0, newbufline, bufsize - tokenBegin, bufpos);
-				bufline = newbufline;
+			System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
+			System.arraycopy(bufline, 0, newbufline, bufsize - tokenBegin, bufpos);
+			bufline = newbufline;
 
-				System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
-				System.arraycopy(bufcolumn, 0, newbufcolumn, bufsize - tokenBegin, bufpos);
-				bufcolumn = newbufcolumn;
+			System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
+			System.arraycopy(bufcolumn, 0, newbufcolumn, bufsize - tokenBegin, bufpos);
+			bufcolumn = newbufcolumn;
 
-				maxNextCharInd = bufpos += bufsize - tokenBegin;
-			}
-			else
-			{
-				System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
-				buffer = newbuffer;
-
-				System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
-				bufline = newbufline;
-
-				System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
-				bufcolumn = newbufcolumn;
-
-				maxNextCharInd = bufpos -= tokenBegin;
-			}
+			maxNextCharInd = bufpos += bufsize - tokenBegin;
 		}
-		catch (Throwable t)
+		else
 		{
-			throw new Error(t.getMessage());
+			System.arraycopy(buffer, tokenBegin, newbuffer, 0, bufsize - tokenBegin);
+			buffer = newbuffer;
+
+			System.arraycopy(bufline, tokenBegin, newbufline, 0, bufsize - tokenBegin);
+			bufline = newbufline;
+
+			System.arraycopy(bufcolumn, tokenBegin, newbufcolumn, 0, bufsize - tokenBegin);
+			bufcolumn = newbufcolumn;
+
+			maxNextCharInd = bufpos -= tokenBegin;
 		}
 
 		bufsize += DEFAULTBUFFERINCREMENT;

@@ -27,7 +27,10 @@ import java.util.Set;
 
 public class TermUtils
 {
-	/** chaeck if one term is variant of another */
+	private TermUtils()
+	{}
+
+	/** Check if one term is variant of another */
 	public static boolean isVariant(Term term1, Term term2)
 	{
 		return isVariant(term1, term2, new HashMap<Term, Term>());

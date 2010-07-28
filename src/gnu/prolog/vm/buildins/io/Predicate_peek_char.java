@@ -37,24 +37,15 @@ public class Predicate_peek_char extends ExecuteOnlyCode
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term inchar = args[1];
-		if (inchar instanceof VariableTerm)
-		{
-		}
-		else if (inchar instanceof AtomTerm)
+		if (inchar instanceof AtomTerm)
 		{
 			AtomTerm ch = (AtomTerm) inchar;
-			if (ch == PrologStream.endOfFileAtom)
-			{
-			}
-			else if (ch.value.length() == 1)
-			{
-			}
-			else
+			if (!(ch == PrologStream.endOfFileAtom) & !(ch.value.length() == 1))
 			{
 				PrologException.typeError(TermConstants.inCharacterAtom, inchar);
 			}
 		}
-		else
+		else if (!(inchar instanceof VariableTerm))
 		{
 			PrologException.typeError(TermConstants.inCharacterAtom, inchar);
 		}

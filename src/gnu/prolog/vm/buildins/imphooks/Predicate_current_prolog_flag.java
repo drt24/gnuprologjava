@@ -92,13 +92,13 @@ public class Predicate_current_prolog_flag extends ExecuteOnlyCode
 		{
 			AtomTerm f = bi.keys.next();
 			Term v = bi.map.get(f);
-			int rc = interpreter.simple_unify(f, bi.flag);
+			int rc = interpreter.simpleUnify(f, bi.flag);
 			if (rc == FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
-			rc = interpreter.simple_unify(v, bi.value);
+			rc = interpreter.simpleUnify(v, bi.value);
 			if (rc == FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);

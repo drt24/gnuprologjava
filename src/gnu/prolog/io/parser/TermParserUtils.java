@@ -22,6 +22,9 @@ import gnu.prolog.io.parser.gen.TermParserConstants;
 public class TermParserUtils
 {
 
+	private TermParserUtils()
+	{}
+
 	public final static int EOF_TOKEN = TermParserConstants.EOF;
 
 	// lots of duplicated code between this function and the function below

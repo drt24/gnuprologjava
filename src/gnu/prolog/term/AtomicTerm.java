@@ -19,7 +19,7 @@ package gnu.prolog.term;
 
 /**
  * base class for all constant terms
- *
+ * 
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
