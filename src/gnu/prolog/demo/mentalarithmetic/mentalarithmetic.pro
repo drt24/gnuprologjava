@@ -29,12 +29,12 @@ mental(_, 0, C, [], C) :- !. % Length is 0 and so we are done.
 mental(I, L, C, [O,N|T], A) :- pickOperation(I, C, O, N, NC), NL is L-1 , mental(I,NL, NC, T, A). 
 
 %pickOperation(+Limit, +CurrentAnswer, -Operation, -Number, -Answer) Pick an operation and number
-
+pickOperation(L,C,O,N,A) :- repeat, P is random(4), innerPickOperation(P,L,C,O,N,A).
 %I*2 to reduce probability of operation being picked and I//2 to increase probability.
-pickOperation(I, C, '+', N, A) :- L is I*2,N is random(L), A is C + N, A < I.
-pickOperation(I, C, '-', N, A) :- L is I*2,N is random(L), A is C - N, A > 0.
-pickOperation(I, C, '*', N, A) :- L is I//2, N is random(L), A is C * N, A < I.
-pickOperation(_, C, '/', N, A) :- factors(C,L), member(N, L), N > 1, A is C // N.
+innerPickOperation(0,I, C, '+', N, A) :- N is random(I), A is C + N, A < I.
+innerPickOperation(1,I, C, '-', N, A) :- N is random(I), A is C - N, A > 0.
+innerPickOperation(2,I, C, '*', N, A) :- L is I//C, N is random(L), A is C * N, A < I, A > 0.
+innerPickOperation(3,_, C, '/', N, A) :- factors(C,L), member(N, L), N > 1, A is C // N.
 
 %factors(+N, -List) list of factors of N
 factors(N, List) :- S is ceiling(N / 2), recFactors(N, S, List).

@@ -248,8 +248,6 @@ public class MentalArithmetic
 			}
 			else
 			{
-				// Stop the goal we have finished with.
-				interpreter.stop(goal);
 				throw new NoAnswerException("Goal failed");
 			}
 		}
