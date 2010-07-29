@@ -284,7 +284,7 @@ public final class Interpreter implements HasEnvironment
 	private class VariableUndoData implements UndoData
 	// maybe later this class will be pooled
 	{
-		protected int startPosion;
+		private int startPosion;
 
 		protected VariableUndoData()
 		{
@@ -414,10 +414,9 @@ public final class Interpreter implements HasEnvironment
 		Term goal = null;
 		boolean firstTime = true;
 		boolean stopped = false;
-		Term args[] = null;
 	}
 
-	protected Goal currentGoal;
+	private Goal currentGoal;
 
 	/**
 	 * Used to store the current state so that we can support
@@ -430,7 +429,7 @@ public final class Interpreter implements HasEnvironment
 	 * 
 	 * @author Daniel Thomas
 	 */
-	class ReturnPoint
+	static class ReturnPoint
 	{
 		public Map<String, Object> rContext;
 
@@ -480,7 +479,6 @@ public final class Interpreter implements HasEnvironment
 		}
 		currentGoal = new Goal();
 		currentGoal.goal = term;
-		currentGoal.args = new Term[] { term };
 		context.clear();
 		if (rp != null)
 		{// save the return point so that we can jump back later

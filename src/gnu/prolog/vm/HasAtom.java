@@ -32,5 +32,5 @@ public interface HasAtom
 	 * 
 	 * @return the {@link AtomTerm} for this class.
 	 */
-	public AtomTerm getAtom();
+	AtomTerm getAtom();
 }

@@ -169,7 +169,6 @@ public class TermWriter extends PrintWriter
 	 */
 	protected void displayTerm(WriteOptions options, int priority, Term term)
 	{
-		term = term.dereference();
 		if (term == null)
 		{
 			print("<<NULL>>");
@@ -445,7 +444,7 @@ public class TermWriter extends PrintWriter
 				}
 				else
 				{
-					print(term.value.getClass().getName().toString());
+					print(term.value.getClass().getName());
 					print(" ");
 					print(System.identityHashCode(term.value));
 				}

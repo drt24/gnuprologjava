@@ -25,5 +25,5 @@ package gnu.prolog.vm;
  */
 public interface HasEnvironment
 {
-	public Environment getEnvironment();
+	Environment getEnvironment();
 }
