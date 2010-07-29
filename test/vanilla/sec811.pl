@@ -95,7 +95,7 @@ test_current_input_errors :-
 test_current_output :-
 	test_true(current_output(Stdout)),
         current_output(Stdout),
-        open('outchar.txt', write, S),
+        open('outchar.tmp', write, S),
         set_output(S),
         test_true(current_output(S)),
         test_false(current_output(Stdout)),

@@ -49,7 +49,7 @@ Ant Buildfile for GNU Prolog for Java.
 
 	</target>
 
-	<target name="clean" description="Clean all generated content">
+	<target name="clean" depends="clean-test" description="Clean all generated content">
 		<delete dir="build" />
 		<delete dir="dist" />
 	</target>
@@ -155,6 +155,7 @@ Ant Buildfile for GNU Prolog for Java.
 	</target>
 
 	<target name="test" depends="build,test-inriasuite,test-vanilla" description="Execute tests"/>
+	<target name="clean-test" depends="clean-vanilla,clean-inria"/>
 
 	<target name="test-vanilla" depends="build">
 		<echo>Verify output in test/test-vanilla.out
@@ -164,6 +165,12 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<arg value="gnuprologjava.pl" />
 			<arg value="validate" />
 		</java>
+	</target>
+	<target name="clean-vanilla">
+		<delete file="test/test-vanilla.out"/>
+		<delete>
+			<fileset dir="test/vanilla/" includes="*.tmp,*.bin,*.out"/>
+		</delete>
 	</target>
 	<target name="test-inriasuite" depends="build">
 		<echo>Verify output in test/test-inria.out</echo>
@@ -176,6 +183,12 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<arg value="* BIPs gave"/>
 			<arg value="test/test-inria.out"/>
 		</exec>
+	</target>
+	<target name="clean-inria">
+		<delete file="test/test-inria.out"/>
+		<delete>
+			<fileset dir="test/inriasuite/io/" includes="*.tmp"/>
+		</delete>
 	</target>
 
 	<!-- Dangerous Regenerate the parser. WARNING: This may BREAK the parser. Use with Care.-->

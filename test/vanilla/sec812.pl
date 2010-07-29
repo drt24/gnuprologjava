@@ -287,9 +287,9 @@ wpr_char2a(CharOut, File, CharPeeked, CharIn) :-
 %
 
 test_peek_char :-
-	test_true(wpr_char1('a', 'peekchar.txt', 'a', 'a')),
-        test_true(wpr_char2('b', 'peekchar.txt', 'b', 'b')),
-        test_true(wpr_char2a('c', 'peekchar.txt', 'c', 'c')).
+	test_true(wpr_char1('a', 'peekchar.tmp', 'a', 'a')),
+        test_true(wpr_char2('b', 'peekchar.tmp', 'b', 'b')),
+        test_true(wpr_char2a('c', 'peekchar.tmp', 'c', 'c')).
 
 	
 
@@ -307,7 +307,7 @@ test_peek_char_errors :-
         error_test(peek_char(nostream/noalias, Char3), 
                      domain_error(stream_or_alias,nostream/noalias)),
         (
-         do_catch(open('peekfile.txt', write, S1, [alias(outputstream)]),
+         do_catch(open('peekfile.tmp', write, S1, [alias(outputstream)]),
                   B,
                   (log('Unexpected Error '), log(B), log_nl, fail)
                  )
@@ -380,9 +380,9 @@ wpr_code2a(CodeOut, File, CodePeeked, CodeIn) :-
 %
 
 test_peek_code :-
-	test_true(wpr_code1(67, 'peekchar.txt', 67, 67)),
-        test_true(wpr_code2(56, 'peekchar.txt', 56, 56)),
-        test_true(wpr_code2a(101, 'peekchar.txt', 101, 101)).
+	test_true(wpr_code1(67, 'peekchar.tmp', 67, 67)),
+        test_true(wpr_code2(56, 'peekchar.tmp', 56, 56)),
+        test_true(wpr_code2a(101, 'peekchar.tmp', 101, 101)).
 
 	
 
@@ -400,7 +400,7 @@ test_peek_code_errors :-
         error_test(peek_code(nostream/noalias, Code3), 
                      domain_error(stream_or_alias,nostream/noalias)),
        (
-         do_catch( open('peekfile.txt', write, S1, [alias(outputstream)]),
+         do_catch( open('peekfile.tmp', write, S1, [alias(outputstream)]),
                   B,
                  (log('Unexpected Error '), log(B), log_nl, fail)
                )

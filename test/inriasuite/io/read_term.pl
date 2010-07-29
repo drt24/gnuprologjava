@@ -1,7 +1,8 @@
 :-dynamic(get_steam_for_read_term/1).
 
 
-:- open('io/read_term.tmp', read, S), asserta(get_stream_for_read_term(S)).
+:- F = 'io/read_term.tmp', open(F, write, W), write(W,'a.'), 
+        open(F, read, S), asserta(get_stream_for_read_term(S)).
 
 close_stream_for_read_term :- get_stream_for_read_term(S), close(S).
 
