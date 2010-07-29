@@ -1,3 +1,28 @@
+0.2.5 alpha 2010-07-28
+   Conforms to ISO/IEC DIS 13211-1 : 1995 bar two minor bugs.
+   The demo package now contains an example of the use of the API.
+   The public key of the key signing key is in the sources.
+   Term classes now have working .toString() functions (which use TermWriter.toString(Term))
+   The Inria test suite provides an easily extensible test suite for testing standards 
+     compliance.
+   This supplements the vanilla test suite both of which can be found here: http://pauillac.inria.fr/~deransar/prolog/suites.html
+   NONISO features added:
+       ensure_loaded/1 predicate can be used anywhere
+       If ':- term' is used and term is not a directive then this will be treated as 
+         ':- intiailization(term)'.
+       random(L) predicate evaluates to a random number i such that 0 =< i < L
+   GNU Prolog for Java is now licensed under the LGPLv3 rather than the LGPLv2.
+   Two outstanding bugs in standards compliance are:
+       #30568 (inria tests on findall's throwing of type_errors fails) and
+       #30335 (inria tests on arg's unification of variables inside the compound term fail)
+0.2.x
+   Michiel Hendriks wrote many additional features and added support for many more 
+   predicates as well as doing a lot of work towards ISO Prolog part 1 compliance.
+   This includes: get_time/1, stamp_date_time/3, date_time_stamp/2, date_time_value/3,
+   format_time/3, format_time/4, parse_time/2, parse_time/3, trace/0, notrace/0,
+   tracing/0, spy/2, nospy/1, nospyall/0, various predicates for dialogs,
+   java_to_string/2, java_classname/2, listing/0, listing/1, compare/3, stacktrace/1,
+   current_functor/2, uuid/1, uuid/2, uuid_compare/3, uuid_version/2, uuid_variant/2
 0.2.0 2009-03-04
    Various changes, bug fixes and additions.
    It now conforms to the "vanilla" test suite (with a few minor changes to some tests).
@@ -6,6 +31,6 @@
 0.1.0 2000-11-12 const
    Initial CVS release
 0.?.?
-   - A suite runner was updated. Temporary files created by suite 
+   - A suite runner was updated. Temporary files created by suite
      were removed from cvs.
    - "-once" argument was added to goal runner.
