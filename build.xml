@@ -39,6 +39,11 @@ Ant Buildfile for GNU Prolog for Java.
 		<property name="ant.build.javac.target" value="1.6" />
 		<property name="ant.build.javac.source" value="1.6" />
 
+		<property name="java.debug" value="off" />
+
+		<property name="javacc.debug" value="false" />
+		<property name="javacc.home" value="/usr/share/java" />
+
 		<mkdir dir="build" />
 		<mkdir dir="dist" />
 
@@ -77,7 +82,7 @@ Ant Buildfile for GNU Prolog for Java.
 
 	<target name="compile" depends="init">
 		<mkdir dir="build/code" />
-		<javac srcdir="src" destdir="build/code" />
+		<javac srcdir="src" destdir="build/code" debug="${java.debug}" debuglevel="lines,vars,source"/>
 	</target>
 
 	<target name="dist" depends="build,docs,generate-changelog" description="Produce a release zip file of the .jar and the api">
