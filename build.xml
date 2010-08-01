@@ -43,6 +43,9 @@ Ant Buildfile for GNU Prolog for Java.
 
 		<property name="javacc.debug" value="false" />
 		<property name="javacc.home" value="/usr/share/java" />
+		
+		<property name="test.concurrency.threads" value="1" />
+		<property name="test.concurrency.iterations" value="1" />
 
 		<mkdir dir="build" />
 		<mkdir dir="dist" />
@@ -160,10 +163,15 @@ Ant Buildfile for GNU Prolog for Java.
 	<target name="test-vanilla" depends="build">
 		<echo>Verify output in test/test-vanilla.out
 Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to happen.</echo>
-		<java jar="build/${ant.project.name}-${version}.jar" dir="test/vanilla" fork="true" logerror="true" output="test/test-vanilla.out">
-			<arg value="-once" />
+		<java classname="gnu.prolog.test.GoalRunner" dir="test/vanilla" fork="true" logerror="true" output="test/test-vanilla.out">
+			<arg value="--once" />
 			<arg value="gnuprologjava.pl" />
 			<arg value="validate" />
+			<classpath>
+				<pathelement location="build/code/"/>
+				<pathelement location="/usr/share/java/gnu-getopt.jar"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
 		</java>
 	</target>
 	<target name="clean-vanilla">
@@ -174,10 +182,18 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 	</target>
 	<target name="test-inriasuite" depends="build">
 		<echo>Verify output in test/test-inria.out</echo>
-		<java jar="build/${ant.project.name}-${version}.jar" dir="test/inriasuite" fork="true" logerror="true" output="test/test-inria.out">
-			<arg value="-once" />
+		<java classname="gnu.prolog.test.GoalRunner" dir="test/inriasuite" fork="true" logerror="true" output="test/test-inria.out">
+			<arg value="--once" />
+			<arg value="--threads=${test.concurrency.threads}" />
+			<!-- This results in rather messy output if set to >1 but is still useful. -->
+			<arg value="--iterations=${test.concurrency.iterations}" />
 			<arg value="inriasuite.pl" />
 			<arg value="run_all_tests" />
+			<classpath>
+				<pathelement location="build/code/"/>
+				<pathelement location="/usr/share/java/gnu-getopt.jar"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
 		</java>
 		<exec executable="grep">
 			<arg value="* BIPs gave"/>

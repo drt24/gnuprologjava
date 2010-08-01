@@ -17,9 +17,12 @@
  */
 package gnu.prolog.test;
 
+import gnu.getopt.Getopt;
+import gnu.getopt.LongOpt;
 import gnu.prolog.Version;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.io.OperatorSet;
+import gnu.prolog.io.ParseException;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermReader;
 import gnu.prolog.io.TermWriter;
@@ -29,7 +32,9 @@ import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologException;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.OutputStreamWriter;
@@ -43,7 +48,11 @@ public class GoalRunner
 
 	private static void usage()
 	{
-		System.out.println("usage: java gnu.prolog.test.GoalRunner [-once] <text to load> <goal to run>");
+		System.out.println("usage: java gnu.prolog.test.GoalRunner\n"
+				+ "                                      [-o|--once]\n"
+				+ "                                      [-t|--threads <threads>]\n"
+				+ "                                      [-i|--iterations <iterations>]\n"
+				+ "                                      <text to load> <goal to run>");
 		System.out.println("example: java gnu.prolog.test.GoalRunner append.pro append([a,b],[c,d],R)");
 		System.exit(-1);
 	}
@@ -54,36 +63,112 @@ public class GoalRunner
 		{
 			System.out.println("GNU Prolog for Java (" + Version.getVersion()
 					+ ") Goal runner (c) Constantine Plotnikov, 1997-1999.");
-			if (args.length < 2)
+			LongOpt[] longOptions = { new LongOpt("once", LongOpt.NO_ARGUMENT, null, 'o'),
+					new LongOpt("threads", LongOpt.REQUIRED_ARGUMENT, null, 't'),
+					new LongOpt("iterations", LongOpt.REQUIRED_ARGUMENT, null, 'i') };
+			Getopt opts = new Getopt("GoalRunner", args, "ot:i:", longOptions);
+			int c;
+			int threads = 1, iterations = 1;
+			boolean once = false;
+			while ((c = opts.getopt()) != -1)
+			{
+				switch (c)
+				{
+					case 'o':
+						once = true;
+						break;
+					case 't':
+					{
+						try
+						{
+							threads = Integer.parseInt(opts.getOptarg());
+						}
+						catch (NumberFormatException e)
+						{
+							System.err.println("-t|--threads takes an integer argument not" + opts.getOptarg());
+							usage();
+						}
+						break;
+					}
+					case 'i':
+					{
+						try
+						{
+							iterations = Integer.parseInt(opts.getOptarg());
+						}
+						catch (NumberFormatException e)
+						{
+							System.err.println("-i|--iterations takes an integer argument not" + opts.getOptarg());
+							usage();
+						}
+						break;
+					}
+					case '?':
+						System.err.println("The option '" + (char) opts.getOptopt() + "' is not valid");
+						usage();
+						break;
+					default:
+						System.err.println("getopt() returned " + (char) c);
+						usage();
+						break;
+				}
+			}
+			int argumentsStartIndex = opts.getOptind();
+			if ((args.length - argumentsStartIndex) != 2)
 			{
 				usage();
 			}
-			boolean once;
-			String textToLoad;
-			String goalToRun;
-			if ("-once".equals(args[0]))
-			{
-				if (args.length < 3)
-				{
-					usage();
-				}
-				once = true;
-				textToLoad = args[1];
-				goalToRun = args[2];
-			}
-			else
-			{
-				once = false;
-				textToLoad = args[0];
-				goalToRun = args[1];
-			}
+			String textToLoad = args[argumentsStartIndex];
+			String goalToRun = args[argumentsStartIndex + 1];
+
 			Environment env = new Environment();
 			env.ensureLoaded(AtomTerm.get(textToLoad));
-			Interpreter interpreter = env.createInterpreter();
-			env.runIntialization(interpreter);
-			for (Object element : env.getLoadingErrors())
+
+			Runner[] runners = new Runner[threads];
+			for (int j = 0; j < iterations; ++j)
 			{
-				PrologTextLoaderError err = (PrologTextLoaderError) element;
+				for (int i = 0; i < threads; ++i)
+				{
+					runners[i] = new Runner("it: " + j + " t:" + i, env, once, goalToRun);
+					runners[i].start();
+				}
+				for (int i = 0; i < threads; ++i)
+				{
+					runners[i].join();
+					runners[i] = null;
+				}
+			}
+			// runners.wait();// don't terminate TODO remove this.
+
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+		}
+	}
+
+	private static class Runner extends Thread
+	{
+		private Environment env;
+		private boolean once;
+		private String goalToRun;
+
+		public Runner(String name, Environment environment, boolean once, String goalToRun)
+		{
+			super(name);
+			env = environment;
+			this.once = once;
+			this.goalToRun = goalToRun;
+		}
+
+		@Override
+		public void run()
+		{
+			Interpreter interpreter = env.createInterpreter();
+			env.runInitialization(interpreter);
+			for (PrologTextLoaderError element : env.getLoadingErrors())
+			{
+				PrologTextLoaderError err = element;
 				System.err.println(err);
 				// err.printStackTrace();
 			}
@@ -95,91 +180,101 @@ public class GoalRunner
 			rd_ops.operatorSet = env.getOperatorSet();
 			WriteOptions wr_ops = new WriteOptions();
 			wr_ops.operatorSet = env.getOperatorSet();
-			Term goalTerm = trd.readTermEof(rd_ops);
-			// temp
-			// PrologCode code = env.getPrologCode(CompoundTermTag.get("append",3));
-			// System.err.println(code);
-			// end temp
-
-			Interpreter.Goal goal = interpreter.prepareGoal(goalTerm);
-			String response;
-			do
+			try
 			{
-				long startTime = System.currentTimeMillis();
-				int rc = interpreter.execute(goal);
-				long stopTime = System.currentTimeMillis();
-				env.getUserOutput().flushOutput(null);
-				System.out.println("time = " + (stopTime - startTime) + "ms");
-				response = "n";
-				switch (rc)
+				Term goalTerm = trd.readTermEof(rd_ops);
+
+				Interpreter.Goal goal = interpreter.prepareGoal(goalTerm);
+				String response;
+				do
 				{
-					case PrologCode.SUCCESS:
+					long startTime = System.currentTimeMillis();
+					int rc = interpreter.execute(goal);
+					long stopTime = System.currentTimeMillis();
+					env.getUserOutput().flushOutput(null);
+					System.out.println("time = " + (stopTime - startTime) + "ms");
+					response = "n";
+					switch (rc)
 					{
-						WriteOptions options = new WriteOptions();
-						options.operatorSet = new OperatorSet();
-						Iterator<String> ivars = rd_ops.variableNames.keySet().iterator();
-						while (ivars.hasNext())
+						case PrologCode.SUCCESS:
 						{
-							String name = ivars.next();
-							out.print(name + " = ");
-							out.print(options, (rd_ops.variableNames.get(name)).dereference());
-							out.print("; ");
+							WriteOptions options = new WriteOptions();
+							options.operatorSet = new OperatorSet();
+							Iterator<String> ivars = rd_ops.variableNames.keySet().iterator();
+							while (ivars.hasNext())
+							{
+								String name = ivars.next();
+								out.print(name + " = ");
+								out.print(options, (rd_ops.variableNames.get(name)).dereference());
+								out.print("; ");
+							}
+							out.println();
+							if (once)
+							{
+								out.print("SUCCESS. redo suppressed by command line option \"-once\"");
+								return;
+							}
+							out.print("SUCCESS. redo (y/n/a)?");
+							out.flush();
+							response = kin.readLine();
+
+							if ("a".equals(response))
+							{
+								interpreter.stop(goal);
+								goal = interpreter.prepareGoal(goalTerm);
+							}
+
+							if ("n".equals(response))
+							{
+								return;
+							}
+							break;
 						}
-						out.println();
-						if (once)
+						case PrologCode.SUCCESS_LAST:
 						{
-							out.print("SUCCESS. redo suppressed by command line option \"-once\"");
+							WriteOptions options = new WriteOptions();
+							options.operatorSet = new OperatorSet();
+							Iterator<String> ivars2 = rd_ops.variableNames.keySet().iterator();
+							while (ivars2.hasNext())
+							{
+								String name = ivars2.next();
+								out.print(name + " = ");
+								out.print(options, (rd_ops.variableNames.get(name)).dereference());
+								out.print("; ");
+							}
+							out.println();
+							out.println("SUCCESS LAST");
+							out.flush();
 							return;
 						}
-						out.print("SUCCESS. redo (y/n/a)?");
-						out.flush();
-						response = kin.readLine();
-
-						if ("a".equals(response))
-						{
-							interpreter.stop(goal);
-							goal = interpreter.prepareGoal(goalTerm);
-						}
-
-						if ("n".equals(response))
-						{
+						case PrologCode.FAIL:
+							out.println("FAIL");
+							out.flush();
 							return;
-						}
-						break;
+						case PrologCode.HALT:
+							env.closeStreams();
+							out.println("HALT");
+							out.flush();
+							System.exit(interpreter.getExitCode());
+							return;
 					}
-					case PrologCode.SUCCESS_LAST:
-					{
-						WriteOptions options = new WriteOptions();
-						options.operatorSet = new OperatorSet();
-						Iterator<String> ivars2 = rd_ops.variableNames.keySet().iterator();
-						while (ivars2.hasNext())
-						{
-							String name = ivars2.next();
-							out.print(name + " = ");
-							out.print(options, (rd_ops.variableNames.get(name)).dereference());
-							out.print("; ");
-						}
-						out.println();
-						out.println("SUCCESS LAST");
-						out.flush();
-						return;
-					}
-					case PrologCode.FAIL:
-						out.println("FAIL");
-						out.flush();
-						return;
-					case PrologCode.HALT:
-						env.closeStreams();
-						out.println("HALT");
-						out.flush();
-						System.exit(interpreter.getExitCode());
-						return;
-				}
-			} while (true);
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
+				} while (true);
+			}
+			catch (ParseException ex)
+			{
+				// TODO Auto-generated catch block
+				ex.printStackTrace();
+			}
+			catch (PrologException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }
