@@ -101,7 +101,7 @@ Ant Buildfile for GNU Prolog for Java.
 				<include name="COPYING.LIBRARY.txt" />
 			</fileset>
 			<fileset dir="${basedir}">
-				<include name="changes.txt" />
+				<include name="NEWS.txt" />
 				<include name="key-signing-key.asc" />
 				<include name="generate-ChangeLog.sh" />
 			</fileset>
@@ -116,7 +116,7 @@ Ant Buildfile for GNU Prolog for Java.
 			<fileset dir="${basedir}">
 				<include name="src/**" />
 				<include name="build.xml" />
-				<include name="changes.txt" />
+				<include name="NEWS.txt" />
 				<include name="key-signing-key.asc" />
 				<include name="generate-ChangeLog.sh" />
 				<include name="docs/readme.txt" />
