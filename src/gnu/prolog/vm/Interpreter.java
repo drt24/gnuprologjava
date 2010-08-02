@@ -96,11 +96,13 @@ public final class Interpreter implements HasEnvironment
 		return tracer;
 	}
 
+	@Deprecated
 	public Object putContext(String key, Object contextValue)
 	{
 		return context.put(key, contextValue);
 	}
 
+	@Deprecated
 	public Object getContext(String key)
 	{
 		return context.get(key);
