@@ -262,7 +262,11 @@ public class Environment implements PredicateListener
 		return prologTextLoaderState;
 	}
 
-	/** true if the environment was already initialized */
+	/**
+	 * true if the environment is currently initialized
+	 * 
+	 * @return if the environment is currently initialized
+	 */
 	public boolean isInitialized()
 	{
 		return getModule().getInitialization().size() == 0;
@@ -286,34 +290,37 @@ public class Environment implements PredicateListener
 	 * 
 	 * @param interpreter
 	 */
-	public void runIntialization(Interpreter interpreter)
+	public void runInitialization(Interpreter interpreter)
 	{
 		Module module = getModule();
-		synchronized (module)// we are using synchronized methods but this is a
-		// transaction
+		List<Pair<PrologTextLoaderError, Term>> initialization;
+		synchronized (module)
+		{// get the initialization list and then clear it so that it is no longer
+			// referenced from module so that it will not be modified while we are
+			// processing it
+			initialization = module.getInitialization();
+			module.clearInitialization();
+		}
+		for (Pair<PrologTextLoaderError, Term> loaderTerm : initialization)
 		{
-			for (Pair<PrologTextLoaderError, Term> loaderTerm : module.getInitialization())
+			Term term = loaderTerm.right;
+			try
 			{
-				Term term = loaderTerm.right;
-				try
+				Interpreter.Goal goal = interpreter.prepareGoal(term);
+				int rc = interpreter.execute(goal);
+				if (rc == PrologCode.SUCCESS)
 				{
-					Interpreter.Goal goal = interpreter.prepareGoal(term);
-					int rc = interpreter.execute(goal);
-					if (rc == PrologCode.SUCCESS)
-					{
-						interpreter.stop(goal);
-					}
-					else if (rc != PrologCode.SUCCESS_LAST)
-					{
-						prologTextLoaderState.logError(loaderTerm.left, "Goal Failed: " + term);
-					}
+					interpreter.stop(goal);
 				}
-				catch (PrologException ex)
+				else if (rc != PrologCode.SUCCESS_LAST)
 				{
-					prologTextLoaderState.logError(loaderTerm.left, ex.getMessage());
+					prologTextLoaderState.logError(loaderTerm.left, "Goal Failed: " + term);
 				}
 			}
-			module.clearInitialization();
+			catch (PrologException ex)
+			{
+				prologTextLoaderState.logError(loaderTerm.left, ex.getMessage());
+			}
 		}
 	}
 
@@ -425,10 +432,12 @@ public class Environment implements PredicateListener
 	/**
 	 * Ensure that prolog text designated by term is loaded
 	 * 
-	 * You must use {@link #runInitialization()} after using this and before
-	 * expecting answers.
+	 * You must use {@link #runInitialization(Interpreter)} after using this and
+	 * before expecting answers.
 	 * 
-	 * @see src.gnu.prolog.vm.buildins.io.Predicate_ensure_loaded
+	 * @param term
+	 * 
+	 * @see gnu.prolog.vm.buildins.io.Predicate_ensure_loaded
 	 * */
 	public synchronized void ensureLoaded(Term term)
 	{

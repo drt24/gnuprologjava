@@ -357,7 +357,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	 * To be used for errors during initialisation
 	 * 
 	 * @see #logError(PrologTextLoader,String)
-	 * @see Environment#runIntialization(Interpreter)
+	 * @see Environment#runInitialization(Interpreter)
 	 * 
 	 * @param partialError
 	 *          the partially filled in error (missing message)

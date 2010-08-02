@@ -46,7 +46,7 @@ public class Predicate_ensure_loaded extends ExecuteOnlyCode
 
 		state.ensureLoaded(args[0]);// actually do the loading
 		// ensure that any initializations are run.
-		environment.runIntialization(interpreter);
+		environment.runInitialization(interpreter);
 
 		// loader errors could be generated and need to be displayed somewhere.
 		for (PrologTextLoaderError error : state.getErrors())

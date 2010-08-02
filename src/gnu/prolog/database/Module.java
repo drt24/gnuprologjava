@@ -23,6 +23,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +41,8 @@ public class Module
 	protected Map<CompoundTermTag, Predicate> tag2predicate = new HashMap<CompoundTermTag, Predicate>();
 
 	/** initialization */
-	protected List<Pair<PrologTextLoaderError, Term>> initialization = new ArrayList<Pair<PrologTextLoaderError, Term>>();
+	protected List<Pair<PrologTextLoaderError, Term>> initialization = Collections
+			.synchronizedList(new ArrayList<Pair<PrologTextLoaderError, Term>>());
 
 	/**
 	 * create new predicate defined in this module
@@ -111,7 +113,7 @@ public class Module
 	}
 
 	/**
-	 * Intended to be run from {@link Environment#runIntialization(Interpreter)}
+	 * Intended to be run from {@link Environment#runInitialization(Interpreter)}
 	 * and from nowhere else.
 	 * 
 	 * Resets the initialization list to the empty list so that they can be
@@ -122,7 +124,7 @@ public class Module
 	 */
 	public synchronized void clearInitialization()
 	{
-		initialization = new ArrayList<Pair<PrologTextLoaderError, Term>>();
+		initialization = Collections.synchronizedList(new ArrayList<Pair<PrologTextLoaderError, Term>>());
 	}
 
 	/**

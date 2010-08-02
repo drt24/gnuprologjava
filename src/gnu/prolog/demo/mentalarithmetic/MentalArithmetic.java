@@ -273,7 +273,7 @@ public class MentalArithmetic
 		// Get the interpreter.
 		interpreter = env.createInterpreter();
 		// Run the initialization
-		env.runIntialization(interpreter);
+		env.runInitialization(interpreter);
 
 		// So that we don't repeat ourselves
 		issetup = true;
