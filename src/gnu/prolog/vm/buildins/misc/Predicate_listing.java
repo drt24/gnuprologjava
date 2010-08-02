@@ -45,11 +45,7 @@ public class Predicate_listing extends ExecuteOnlyCode
 		{
 			filter = Predicate_spy.getTag(args[0]);
 		}
-		WriteOptions options = new WriteOptions();
-		options.declaredVariableNames = true;
-		options.operatorSet = interpreter.getEnvironment().getOperatorSet();
-		options.numbervars = true;
-		options.quoted = true;
+		WriteOptions options = new WriteOptions(interpreter.getEnvironment().getOperatorSet(), true, true, true);
 		PrologStream stream = interpreter.getEnvironment().getCurrentOutput();
 		for (CompoundTermTag tag : interpreter.getEnvironment().getModule().getPredicateTags())
 		{

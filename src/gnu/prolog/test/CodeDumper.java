@@ -22,8 +22,6 @@ import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.io.OperatorSet;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermReader;
-import gnu.prolog.io.TermWriter;
-import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
@@ -32,9 +30,6 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.io.OutputStreamWriter;
 import java.io.StringReader;
 
 public class CodeDumper
@@ -65,13 +60,13 @@ public class CodeDumper
 				System.err.println(err);
 				// err.printStackTrace();
 			}
-			LineNumberReader kin = new LineNumberReader(new InputStreamReader(System.in));
+			// LineNumberReader kin = new LineNumberReader(new
+			// InputStreamReader(System.in));
 			StringReader rd = new StringReader(goalToRun);
 			TermReader trd = new TermReader(rd, env);
-			TermWriter out = new TermWriter(new OutputStreamWriter(System.out));
-			ReadOptions rd_ops = new ReadOptions();
-			rd_ops.operatorSet = new OperatorSet();
-			WriteOptions wr_ops = new WriteOptions();
+			// TermWriter out = new TermWriter(new OutputStreamWriter(System.out));
+			ReadOptions rd_ops = new ReadOptions(new OperatorSet());
+			// WriteOptions wr_ops = new WriteOptions();
 			Term goalTerm = trd.readTermEof(rd_ops);
 			PrologCode code = env.getPrologCode(CompoundTermTag.get((CompoundTerm) goalTerm));
 			System.out.println(code);

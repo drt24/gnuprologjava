@@ -27,7 +27,7 @@ import java.io.StringReader;
 
 public class TermReader extends FilterReader
 {
-	protected static OperatorSet defaultOperatorSet = new OperatorSet();
+	protected static final OperatorSet defaultOperatorSet = new OperatorSet();
 	TermParser parser;
 
 	public TermReader(Reader r, int line, int col, Environment environment)
@@ -90,15 +90,13 @@ public class TermReader extends FilterReader
 
 	public Term readTerm(OperatorSet set) throws ParseException
 	{
-		ReadOptions options = new ReadOptions();
-		options.operatorSet = set;
+		ReadOptions options = new ReadOptions(set);
 		return readTerm(options);
 	}
 
 	public Term readTermEof(OperatorSet set) throws ParseException
 	{
-		ReadOptions options = new ReadOptions();
-		options.operatorSet = set;
+		ReadOptions options = new ReadOptions(set);
 		return readTermEof(options);
 	}
 

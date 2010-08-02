@@ -27,7 +27,7 @@ import java.util.Map;
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
-public class WriteOptions implements Cloneable
+public class WriteOptions extends AbstractOptions implements Cloneable
 {
 	/**
 	 * If this option is true, each atom and functor is quoted if it would be
@@ -46,12 +46,6 @@ public class WriteOptions implements Cloneable
 	 * left for user.
 	 */
 	public boolean numbervars;
-
-	/**
-	 * Current operator set to use in write term. User need to set this variable
-	 * if ignore ops is true.
-	 */
-	public OperatorSet operatorSet;
 
 	/**
 	 * Number of used variables. This variable is used solely by Term Writer
@@ -77,6 +71,24 @@ public class WriteOptions implements Cloneable
 	 * Use .toString() in the output
 	 */
 	public boolean javaObjectsToString;
+
+	/**
+	 * 
+	 * @param opset
+	 *          the OperatorSet to use for this WriteOptions
+	 */
+	public WriteOptions(OperatorSet opset)
+	{
+		super(opset);
+	}
+
+	public WriteOptions(OperatorSet opset, boolean declaredVariableNames, boolean numbervars, boolean quoted)
+	{
+		super(opset);
+		this.declaredVariableNames = declaredVariableNames;
+		this.numbervars = numbervars;
+		this.quoted = quoted;
+	}
 
 	/*
 	 * (non-Javadoc)

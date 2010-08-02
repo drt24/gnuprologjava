@@ -176,10 +176,8 @@ public class GoalRunner
 			StringReader rd = new StringReader(goalToRun);
 			TermReader trd = new TermReader(rd, env);
 			TermWriter out = new TermWriter(new OutputStreamWriter(System.out));
-			ReadOptions rd_ops = new ReadOptions();
-			rd_ops.operatorSet = env.getOperatorSet();
-			WriteOptions wr_ops = new WriteOptions();
-			wr_ops.operatorSet = env.getOperatorSet();
+			ReadOptions rd_ops = new ReadOptions(env.getOperatorSet());
+			WriteOptions wr_ops = new WriteOptions(env.getOperatorSet());
 			try
 			{
 				Term goalTerm = trd.readTermEof(rd_ops);
@@ -198,8 +196,7 @@ public class GoalRunner
 					{
 						case PrologCode.SUCCESS:
 						{
-							WriteOptions options = new WriteOptions();
-							options.operatorSet = new OperatorSet();
+							WriteOptions options = new WriteOptions(new OperatorSet());
 							Iterator<String> ivars = rd_ops.variableNames.keySet().iterator();
 							while (ivars.hasNext())
 							{
@@ -232,8 +229,7 @@ public class GoalRunner
 						}
 						case PrologCode.SUCCESS_LAST:
 						{
-							WriteOptions options = new WriteOptions();
-							options.operatorSet = new OperatorSet();
+							WriteOptions options = new WriteOptions(new OperatorSet());
 							Iterator<String> ivars2 = rd_ops.variableNames.keySet().iterator();
 							while (ivars2.hasNext())
 							{

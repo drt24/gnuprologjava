@@ -45,12 +45,11 @@ public class TermWriter extends PrintWriter
 	protected static final CompoundTermTag numbervarsTag = CompoundTermTag.get("$VAR", 1);
 	protected static final CompoundTermTag curly1Tag = CompoundTermTag.get("{}", 1);
 	protected static final OperatorSet defaultOperatorSet = new OperatorSet();
-	protected static final WriteOptions defaultWriteOptions = new WriteOptions();
+	protected static final WriteOptions defaultWriteOptions = new WriteOptions(defaultOperatorSet);
 
 	static
 	{
 		defaultWriteOptions.ignoreOps = false;
-		defaultWriteOptions.operatorSet = defaultOperatorSet;
 		defaultWriteOptions.quoted = true;
 		defaultWriteOptions.numbervars = false;
 	}
@@ -148,9 +147,8 @@ public class TermWriter extends PrintWriter
 	 */
 	public void print(OperatorSet opSet, Term term)
 	{
-		WriteOptions options = new WriteOptions();
+		WriteOptions options = new WriteOptions(opSet);
 		options.ignoreOps = false;
-		options.operatorSet = opSet;
 		options.quoted = true;
 		options.numbervars = false;
 		print(options, term);

@@ -47,8 +47,7 @@ public class Predicate_read_term extends ExecuteOnlyCode
 		Environment environment = interpreter.getEnvironment();
 		PrologStream stream = environment.resolveStream(args[0]);
 		Term optionsList = args[2];
-		ReadOptions options = new ReadOptions();
-		options.operatorSet = environment.getOperatorSet();
+		ReadOptions options = new ReadOptions(environment.getOperatorSet());
 
 		List<Term> singletons = new ArrayList<Term>();
 		List<Term> variableLists = new ArrayList<Term>();

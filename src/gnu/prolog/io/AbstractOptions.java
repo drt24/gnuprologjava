@@ -1,5 +1,8 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
+ * Copyright (C) 2009       Michiel Hendriks
+ * Copyright (C) 2010       Daniel Thomas
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -12,41 +15,30 @@
  * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA. The text of license can be also found
+ * Boston, MA  02111-1307, USA. The text of license can be also found 
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.io;
 
-import gnu.prolog.term.Term;
-import gnu.prolog.term.VariableTerm;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
- * this class contains representation of ISO prolog read options.
  * 
- * @author Constantine Plotnikov
- * @version 0.0.1
+ * @author Daniel Thomas
  */
-public class ReadOptions extends AbstractOptions
+abstract class AbstractOptions
 {
 	/**
-	 * @param opSet
+	 * Current operator set to use in write term. User need to set this variable
+	 * if ignore ops is true.
 	 */
-	public ReadOptions(OperatorSet opSet)
-	{
-		super(opSet);
-	}
+	public OperatorSet operatorSet;
 
-	/** 'variables' ISO Prolog options */
-	public final List<Term> variables = new ArrayList<Term>();
-	/** 'variable_names' ISO Prolog options */
-	public final Map<String, VariableTerm> variableNames = new HashMap<String, VariableTerm>();
 	/**
-	 * 'singletons' ISO Prolog options it is not used currently.
+	 * 
+	 * @param opSet
+	 *          the OperatorSet to use for these Options
 	 */
-	public final Map<String, VariableTerm> singletons = new HashMap<String, VariableTerm>();
+	protected AbstractOptions(OperatorSet opSet)
+	{
+		operatorSet = opSet;
+	}
 }

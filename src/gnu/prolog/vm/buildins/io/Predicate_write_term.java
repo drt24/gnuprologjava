@@ -38,8 +38,7 @@ public class Predicate_write_term extends ExecuteOnlyCode
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term optionsList = args[2];
-		WriteOptions options = new WriteOptions();
-		options.operatorSet = interpreter.getEnvironment().getOperatorSet();
+		WriteOptions options = new WriteOptions(interpreter.getEnvironment().getOperatorSet());
 
 		// parse options
 		Term cur = optionsList;
