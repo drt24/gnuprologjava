@@ -486,7 +486,10 @@ public class InterpretedCodeCompiler
 	 */
 	public static PrologCode compile(List<Term> passedClauses) throws PrologException
 	{
-		return new InterpretedCodeCompiler(passedClauses).compilePredicate();
+		synchronized (passedClauses)
+		{
+			return new InterpretedCodeCompiler(passedClauses).compilePredicate();
+		}
 	}
 
 	/**

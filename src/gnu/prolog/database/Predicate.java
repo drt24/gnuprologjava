@@ -63,7 +63,7 @@ public class Predicate
 	/** a tag of predicate head */
 	protected CompoundTermTag tag;
 	/** list of clauses for this predicate */
-	protected List<Term> clauses = new ArrayList<Term>();
+	protected List<Term> clauses = Collections.synchronizedList(new ArrayList<Term>());
 	/** flag which indicate that clauses was added for this predicate */
 	protected boolean propertiesLocked = false;
 	/** dynamic property of predicate */
@@ -90,9 +90,13 @@ public class Predicate
 	/**
 	 * get clauses of predicate
 	 * 
+	 * You must synchronize on this class when iterating through this list as
+	 * although it is a synchronized list you are getting a unmodifiable view of
+	 * that list.
+	 * 
 	 * @return an unmodifiable list of the clauses of the {@link Predicate}
 	 * */
-	public List<Term> getClauses()
+	public synchronized List<Term> getClauses()
 	{
 		return Collections.unmodifiableList(clauses);
 	}
@@ -102,7 +106,7 @@ public class Predicate
 	 * 
 	 * @return type of predicate
 	 */
-	public int getType()
+	public synchronized int getType()
 	{
 		return type;
 	}
@@ -115,7 +119,7 @@ public class Predicate
 	 * @throws IllegalStateException
 	 *           if predicate type is already set
 	 */
-	public void setType(int type)
+	public synchronized void setType(int type)
 	{
 		if (this.type != UNDEFINED)
 		{
@@ -129,7 +133,7 @@ public class Predicate
 	 * 
 	 * @return true if predicate is external, false otherwise.
 	 */
-	public String getJavaClassName()
+	public synchronized String getJavaClassName()
 	{
 		return javaClassName;
 	}
@@ -140,7 +144,7 @@ public class Predicate
 	 * @param javaClassName
 	 *          the class name to set
 	 */
-	public void setJavaClassName(String javaClassName)
+	public synchronized void setJavaClassName(String javaClassName)
 	{
 		if (this.javaClassName != null)
 		{
@@ -166,7 +170,7 @@ public class Predicate
 	 * @return the functor for the predicate. e.g. in foo(X,Y) the functor is
 	 *         'foo'
 	 * */
-	public AtomTerm getFunctor()
+	public synchronized AtomTerm getFunctor()
 	{
 		return tag.functor;
 	}
@@ -176,7 +180,7 @@ public class Predicate
 	 * 
 	 * @return the arity of the {@link Predicate}
 	 */
-	public int getArity()
+	public synchronized int getArity()
 	{
 		return tag.arity;
 	}
@@ -186,7 +190,7 @@ public class Predicate
 	 * 
 	 * @return the tag of the predicate
 	 */
-	public CompoundTermTag getTag()
+	public synchronized CompoundTermTag getTag()
 	{
 		return tag;
 	}
@@ -198,7 +202,7 @@ public class Predicate
 	 * @param clause
 	 *          a clause to add
 	 */
-	public void addClauseLast(Term clause)
+	public synchronized void addClauseLast(Term clause)
 	{
 		if (type != USER_DEFINED)
 		{
@@ -216,13 +220,14 @@ public class Predicate
 	 * @param clause
 	 *          a clause to add
 	 */
-	public void addClauseFirst(Term clause)
+	public synchronized void addClauseFirst(Term clause)
 	{
 		if (type != USER_DEFINED)
 		{
 			throw new IllegalStateException("clauses could be added only to user defined predicate");
 		}
 		propertiesLocked = true;
+
 		if (clauses.size() == 0) // bug workaround
 		{
 			clauses.add(clause);
@@ -241,7 +246,7 @@ public class Predicate
 	 * @param clause
 	 *          a clause to remove
 	 */
-	public void removeClause(Term clause)
+	public synchronized void removeClause(Term clause)
 	{
 		clauses.remove(clause);
 		module.predicateUpdated(tag);
@@ -252,7 +257,7 @@ public class Predicate
 	 * 
 	 * @return true if properties of predicate could be changed at this moment
 	 */
-	public boolean arePropertiesLocked()
+	public synchronized boolean arePropertiesLocked()
 	{
 		return propertiesLocked;
 	}
@@ -262,7 +267,7 @@ public class Predicate
 	 * 
 	 * @return true if predicate is dynamic, false otherwise.
 	 */
-	public boolean isDynamic()
+	public synchronized boolean isDynamic()
 	{
 		return dynamicFlag;
 	}
@@ -275,7 +280,7 @@ public class Predicate
 	 *           if there were clauses added to predicate and dynamic flag was not
 	 *           set before. See 7.4.2.1 clause of ISO Prolog.
 	 */
-	public void setDynamic()
+	public synchronized void setDynamic()
 	{
 		if (type != USER_DEFINED)
 		{

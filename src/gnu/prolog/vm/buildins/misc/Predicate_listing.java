@@ -73,13 +73,16 @@ public class Predicate_listing extends ExecuteOnlyCode
 			}
 			else
 			{
-				for (Term t : p.getClauses())
+				synchronized (p)
 				{
-					stream.writeTerm(null, interpreter, options, t);
-					stream.putCode(null, interpreter, '.');
+					for (Term t : p.getClauses())
+					{
+						stream.writeTerm(null, interpreter, options, t);
+						stream.putCode(null, interpreter, '.');
+						stream.putCode(null, interpreter, '\n');
+					}
 					stream.putCode(null, interpreter, '\n');
 				}
-				stream.putCode(null, interpreter, '\n');
 			}
 		}
 		stream.flushOutput(null);

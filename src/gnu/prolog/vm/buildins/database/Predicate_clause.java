@@ -102,23 +102,26 @@ public class Predicate_clause extends ExecuteOnlyCode
 			}
 
 			List<Term> clauses = new ArrayList<Term>();
-			for (Term term : p.getClauses())
+			ClauseBacktrackInfo bi = new ClauseBacktrackInfo();
+			synchronized (p)
 			{
-				clauses.add((Term) (term).clone());
+				for (Term term : p.getClauses())
+				{
+					clauses.add((Term) (term).clone());
+				}
+				if (clauses.size() == 0)
+				{
+					return FAIL;
+				}
+				else
+				{
+					bi.startUndoPosition = interpreter.getUndoPosition();
+					bi.position = 0;
+					bi.clauses = clauses;
+					bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
+				}
 			}
-			if (clauses.size() == 0)
-			{
-				return FAIL;
-			}
-			else
-			{
-				ClauseBacktrackInfo bi = new ClauseBacktrackInfo();
-				bi.startUndoPosition = interpreter.getUndoPosition();
-				bi.position = 0;
-				bi.clauses = clauses;
-				bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
-				return nextSolution(interpreter, bi);
-			}
+			return nextSolution(interpreter, bi);
 
 		}
 	}

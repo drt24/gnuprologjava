@@ -132,21 +132,27 @@ public class Predicate_retract extends ExecuteOnlyCode
 						.getPredicateIndicator());
 			}
 			Map<Term, Term> map = new HashMap<Term, Term>();
-			List<Term> list = new ArrayList<Term>(p.getClauses().size());
-			for (Term term : p.getClauses())
-			{
-				Term cl = term;
-				Term cp = (Term) cl.clone();
-				map.put(cp, cl);
-				list.add(cp);
-			}
 			RetractBacktrackInfo bi = new RetractBacktrackInfo();
-			bi.iclauses = list.iterator();
-			bi.clauseMap = map;
-			bi.startUndoPosition = interpreter.getUndoPosition();
-			bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
-			bi.pred = p;
+			synchronized (p)
+			{
+				List<Term> clauses = p.getClauses();
+				List<Term> list = new ArrayList<Term>(clauses.size());
+				for (Term term : clauses)
+				{
+					Term cl = term;
+					Term cp = (Term) cl.clone();
+					map.put(cp, cl);
+					list.add(cp);
+				}
+
+				bi.iclauses = list.iterator();
+				bi.clauseMap = map;
+				bi.startUndoPosition = interpreter.getUndoPosition();
+				bi.clause = new CompoundTerm(TermConstants.clauseTag, head, body);
+				bi.pred = p;
+			}
 			return nextSolution(interpreter, bi);
+
 		}
 	}
 
