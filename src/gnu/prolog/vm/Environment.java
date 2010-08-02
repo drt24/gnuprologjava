@@ -63,42 +63,6 @@ import java.util.Set;
  */
 public class Environment implements PredicateListener
 {
-	private static InputStream defaultInputStream;
-	private static OutputStream defaultOutputStream;
-
-	/**
-	 * @return the defaultInputStream
-	 */
-	public static InputStream getDefaultInputStream()
-	{
-		return defaultInputStream == null ? System.in : defaultInputStream;
-	}
-
-	/**
-	 * @param defaultInputStream
-	 *          the defaultInputStream to set
-	 */
-	public static void setDefaultInputStream(InputStream defaultInputStream)
-	{
-		Environment.defaultInputStream = defaultInputStream;
-	}
-
-	/**
-	 * @return the defaultOutputStream
-	 */
-	public static OutputStream getDefaultOutputStream()
-	{
-		return defaultOutputStream == null ? System.out : defaultOutputStream;
-	}
-
-	/**
-	 * @param defaultOutputStream
-	 *          the defaultOutputStream to set
-	 */
-	public static void setDefaultOutputStream(OutputStream defaultOutputStream)
-	{
-		Environment.defaultOutputStream = defaultOutputStream;
-	}
 
 	protected OperatorSet opSet = new OperatorSet();
 	/** current state of loaded database */
@@ -233,20 +197,20 @@ public class Environment implements PredicateListener
 				.get("/gnu/prolog/vm/buildins/buildins.pro") });
 		ensureLoaded(term);
 		// set flags for environment
-		setNewPrologFlag(boundedAtom, TermConstants.trueAtom, false);
-		setNewPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
-		setNewPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
-		setNewPrologFlag(integerRoundingFunctionAtom, downAtom, false);
-		setNewPrologFlag(charConversionAtom, offAtom, true);
-		setNewPrologFlag(debugAtom, offAtom, true);
+		createNewPrologFlag(boundedAtom, TermConstants.trueAtom, false);
+		createNewPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
+		createNewPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
+		createNewPrologFlag(integerRoundingFunctionAtom, downAtom, false);
+		createNewPrologFlag(charConversionAtom, offAtom, true);
+		createNewPrologFlag(debugAtom, offAtom, true);
 		// we can't have a Term with an arity higher than the available memory
 		long maxMemory = Runtime.getRuntime().maxMemory();
 		IntegerTerm maxArity = (maxMemory < maxIntegerTerm.value) ? IntegerTerm.get((int) maxMemory) : maxIntegerTerm;
-		setNewPrologFlag(TermConstants.maxArityAtom, maxArity, false);
-		setNewPrologFlag(unknownAtom, errorAtom, true);
-		setNewPrologFlag(doubleQuotesAtom, DoubleQuotesValue.getDefault().getAtom(), true);
-		setNewPrologFlag(dialectAtom, dialectTerm, false);
-		setNewPrologFlag(versionAtom, versionTerm, false);
+		createNewPrologFlag(TermConstants.maxArityAtom, maxArity, false);
+		createNewPrologFlag(unknownAtom, errorAtom, true);
+		createNewPrologFlag(doubleQuotesAtom, DoubleQuotesValue.getDefault().getAtom(), true);
+		createNewPrologFlag(dialectAtom, dialectTerm, false);
+		createNewPrologFlag(versionAtom, versionTerm, false);
 
 		EnvInitializer.runInitializers(this);
 	}
@@ -270,12 +234,6 @@ public class Environment implements PredicateListener
 	public boolean isInitialized()
 	{
 		return getModule().getInitialization().size() == 0;
-	}
-
-	/** get get copy of current state of flags for this environment */
-	public synchronized Map<AtomTerm, Term> getPrologFlags()
-	{
-		return new HashMap<AtomTerm, Term>(atom2flag);
 	}
 
 	/**
@@ -324,14 +282,39 @@ public class Environment implements PredicateListener
 		}
 	}
 
-	/** get flag for this environment */
+	/**
+	 * get copy of current state of flags for this environment
+	 * 
+	 * @return copy of current state of flags for this environment
+	 */
+	public synchronized Map<AtomTerm, Term> getPrologFlags()
+	{
+		return new HashMap<AtomTerm, Term>(atom2flag);
+	}
+
+	/**
+	 * get flag for this environment
+	 * 
+	 * @param term
+	 *          the flag to get the value of
+	 * @return the value of the flag
+	 */
 	public synchronized Term getPrologFlag(AtomTerm term)
 	{
 		return atom2flag.get(term);
 	}
 
-	/** set flag for this environment */
-	protected synchronized void setNewPrologFlag(AtomTerm flag, Term newValue, boolean changable)
+	/**
+	 * create a new flag for this environment
+	 * 
+	 * @param flag
+	 *          the flag to add
+	 * @param newValue
+	 *          the value of the flag
+	 * @param changable
+	 *          whether the flag's value can be changed
+	 */
+	protected synchronized void createNewPrologFlag(AtomTerm flag, Term newValue, boolean changable)
 	{
 		atom2flag.put(flag, newValue);
 		if (changable)
@@ -405,9 +388,7 @@ public class Environment implements PredicateListener
 		}
 		else if (flag == doubleQuotesAtom)
 		{
-			DoubleQuotesValue newState = null;
-			// assignment inside if because then type checking has happened.
-			if (!(newValue instanceof AtomTerm) || ((newState = DoubleQuotesValue.fromAtom((AtomTerm) newValue)) == null))
+			if (!(newValue instanceof AtomTerm) || ((DoubleQuotesValue.fromAtom((AtomTerm) newValue)) == null))
 			{
 				PrologException.domainError(flagValueAtom, new CompoundTerm(plusTag, flag, newValue));
 			}
@@ -444,7 +425,14 @@ public class Environment implements PredicateListener
 		prologTextLoaderState.ensureLoaded(term);
 	}
 
-	/** create interpreter for this environment */
+	/**
+	 * create interpreter for this environment
+	 * 
+	 * Use this to create different {@link Interpreter Interpreters} for different
+	 * threads.
+	 * 
+	 * @return an interpreter for this environment.
+	 */
 	public Interpreter createInterpreter()
 	{
 		return new Interpreter(this);
@@ -455,7 +443,14 @@ public class Environment implements PredicateListener
 		return prologTextLoaderState.getModule();
 	}
 
-	/** load code for prolog */
+	/**
+	 * load code for prolog
+	 * 
+	 * @param tag
+	 *          the tag of the {@link PrologCode} to load
+	 * @return the loaded PrologCode
+	 * @throws PrologException
+	 */
 	public synchronized PrologCode loadPrologCode(CompoundTermTag tag) throws PrologException
 	{
 		// simple variant, later I will need to add compilation.
@@ -496,7 +491,12 @@ public class Environment implements PredicateListener
 		}
 	}
 
-	/** get undefined predicate code */
+	/**
+	 * get undefined predicate code
+	 * 
+	 * @param tag
+	 * @return
+	 */
 	public PrologCode getUndefinedPredicateCode(CompoundTermTag tag)
 	{
 		// if (undefinedPredicate == null)
@@ -507,7 +507,13 @@ public class Environment implements PredicateListener
 		return new UndefinedPredicateCode(tag);
 	}
 
-	/** get prolog code */
+	/**
+	 * get prolog code
+	 * 
+	 * @param tag
+	 * @return the {@link PrologCode} for the tag
+	 * @throws PrologException
+	 */
 	public synchronized PrologCode getPrologCode(CompoundTermTag tag) throws PrologException
 	{
 		PrologCode code = tag2code.get(tag);
@@ -545,7 +551,12 @@ public class Environment implements PredicateListener
 	}
 
 	// this functionality will be needed later, but I need to think more ;-)
-	/** add prolog code listener */
+	/**
+	 * add prolog code listener
+	 * 
+	 * @param tag
+	 * @param listener
+	 */
 	public synchronized void addPrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
 		pollPrologCodeListeners();
@@ -558,7 +569,12 @@ public class Environment implements PredicateListener
 		list.add(new PrologCodeListenerRef(prologCodeListenerReferenceQueue, listener, tag));
 	}
 
-	/** remove prolog code listener */
+	/**
+	 * remove prolog code listener
+	 * 
+	 * @param tag
+	 * @param listener
+	 */
 	public synchronized void removePrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
 		pollPrologCodeListeners();
@@ -612,6 +628,43 @@ public class Environment implements PredicateListener
 				}
 			}
 		}
+	}
+
+	private static InputStream defaultInputStream;
+	private static OutputStream defaultOutputStream;
+
+	/**
+	 * @return the defaultInputStream
+	 */
+	public static InputStream getDefaultInputStream()
+	{
+		return defaultInputStream == null ? System.in : defaultInputStream;
+	}
+
+	/**
+	 * @param defaultInputStream
+	 *          the defaultInputStream to set
+	 */
+	public static void setDefaultInputStream(InputStream defaultInputStream)
+	{
+		Environment.defaultInputStream = defaultInputStream;
+	}
+
+	/**
+	 * @return the defaultOutputStream
+	 */
+	public static OutputStream getDefaultOutputStream()
+	{
+		return defaultOutputStream == null ? System.out : defaultOutputStream;
+	}
+
+	/**
+	 * @param defaultOutputStream
+	 *          the defaultOutputStream to set
+	 */
+	public static void setDefaultOutputStream(OutputStream defaultOutputStream)
+	{
+		Environment.defaultOutputStream = defaultOutputStream;
 	}
 
 	// IO support
