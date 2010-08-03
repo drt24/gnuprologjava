@@ -1,0 +1,3 @@
+@set UPDATED 2010-08-03
+@set UPDATED-MONTH August 2010
+@set VERSION 0.2.5
