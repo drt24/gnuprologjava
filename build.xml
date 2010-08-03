@@ -169,7 +169,6 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<arg value="validate" />
 			<classpath>
 				<pathelement location="build/code/"/>
-				<pathelement location="/usr/share/java/gnu-getopt.jar"/>
 				<pathelement path="${java.class.path}"/>
 			</classpath>
 		</java>
@@ -191,7 +190,6 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<arg value="run_all_tests" />
 			<classpath>
 				<pathelement location="build/code/"/>
-				<pathelement location="/usr/share/java/gnu-getopt.jar"/>
 				<pathelement path="${java.class.path}"/>
 			</classpath>
 		</java>
