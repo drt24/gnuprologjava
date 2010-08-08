@@ -183,21 +183,15 @@ public class MentalArithmetic
 
 		synchronized (interpreter)// so that this class is thread safe.
 		{
-			// Prepare the goal for execution
-			Interpreter.Goal goal = interpreter.prepareGoal(goalTerm);
-
 			// Print out any errors
 			debug();
 
 			// Execute the goal and return the return code.
-			int rc = interpreter.execute(goal);
+			int rc = interpreter.runOnce(goalTerm);
 
 			// If it succeeded.
 			if (rc == PrologCode.SUCCESS || rc == PrologCode.SUCCESS_LAST)
 			{
-				// Stop the goal we have finished with.
-				interpreter.stop(goal);
-
 				// Create the answer
 				Pair<String, Integer> answer = new Pair<String, Integer>(null, 0);
 

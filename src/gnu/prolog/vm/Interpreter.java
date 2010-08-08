@@ -30,8 +30,9 @@ import java.util.Map;
 
 /**
  * This class represent interpreter, it should be used only from one thread If
- * you need to use interpreter from two threads, create new interpreter from
- * Environment
+ * you need to use interpreter from two threads,
+ * {@link Environment#createInterpreter() create new interpreter from
+ * Environment}
  */
 
 public final class Interpreter implements HasEnvironment
@@ -52,7 +53,8 @@ public final class Interpreter implements HasEnvironment
 	private Tracer tracer;
 
 	/**
-	 * Contains an {@link PrologHalt} instance when the interpreter was halted.
+	 * Contains an {@link PrologHalt} instance when the interpreter was halted in
+	 * an {@link #execute(Goal)}.
 	 */
 	private PrologHalt haltExitCode;
 
@@ -61,6 +63,7 @@ public final class Interpreter implements HasEnvironment
 	 * is cleared every time a new goal is prepared. Can be used by predicates to
 	 * store information based on goals.
 	 */
+	@Deprecated
 	private Map<String, Object> context;
 
 	/**
@@ -107,43 +110,6 @@ public final class Interpreter implements HasEnvironment
 	{
 		return context.get(key);
 	}
-
-	// backtrack menthods
-	// /** stack that contains backtrack info */
-	// ArrayList backtrackInfoStack = new ArrayList(4096,4096);
-	// int backtrackInfoStackSize = 0;
-
-	// /** push backtrack information */
-	// public void pushBacktrackInfo(BacktrackInfo bi)
-	// {
-	// backtrackInfoStack.add(bi);
-	// }
-
-	// /** pop backtrack information */
-	// public BacktrackInfo popBacktrackInfo()
-	// {
-	// return
-	// (BacktrackInfo)backtrackInfoStack.remove(backtrackInfoStack.size()-1);
-	// }
-
-	// public void popBacktrackInfoUntil(BacktrackInfo cutPoint)
-	// {
-	// int pos = backtrackInfoStack.lastIndexOf(cutPoint);
-	// if (pos >= 0)
-	// {
-	// backtrackInfoStack.removeRange(pos, backtrackInfoStack.size()-1);
-	// }
-	// else
-	// {
-	// System.err.println("pop until failed ");
-	// }
-	// }
-
-	// /** peek top backtrack information */
-	// public BacktrackInfo peekBacktrackInfo()
-	// {
-	// return (BacktrackInfo)backtrackInfoStack.get(backtrackInfoStack.size()-1);
-	// }
 
 	private static final int PAGESIZE = 4096;
 	private static final int GROWSIZE = PAGESIZE;
@@ -411,13 +377,26 @@ public final class Interpreter implements HasEnvironment
 	}
 
 	/** user level calls */
-	public static class Goal
+	public static final class Goal
 	{
-		Term goal = null;
-		boolean firstTime = true;
-		boolean stopped = false;
+		private Term goal;
+		protected boolean firstTime = true;
+		protected boolean stopped = false;
+
+		protected Goal(Term goal)
+		{
+			this.goal = goal;
+		}
+
+		protected Term getGoal()
+		{
+			return goal;
+		}
 	}
 
+	/**
+	 * The most recently {@link #prepareGoal(Term)}ed Goal.
+	 */
 	private Goal currentGoal;
 
 	/**
@@ -459,6 +438,10 @@ public final class Interpreter implements HasEnvironment
 	/**
 	 * prepare goal for execution
 	 * 
+	 * If this is called before the Goal which was previously prepared but has not
+	 * yet been stopped is stopped then we save that state so we can jump back to
+	 * it when this goal has been stopped.
+	 * 
 	 * @param term
 	 * @return the prepared Goal
 	 */
@@ -479,8 +462,7 @@ public final class Interpreter implements HasEnvironment
 			rp.rUndoPositionAsked = undoPositionAsked;
 			rp.rCurrentGoal = currentGoal;
 		}
-		currentGoal = new Goal();
-		currentGoal.goal = term;
+		currentGoal = new Goal(term);
 		context.clear();
 		if (rp != null)
 		{// save the return point so that we can jump back later
@@ -489,6 +471,17 @@ public final class Interpreter implements HasEnvironment
 		return currentGoal;
 	}
 
+	/**
+	 * Execute the {@link Goal} and return the status code indicating how
+	 * successful this was.
+	 * 
+	 * @param goal
+	 *          the goal created using {@link #prepareGoal(Term)} which is to be
+	 *          run.
+	 * @return {@link PrologCode#SUCCESS SUCCESS}, {@link PrologCode#SUCCESS_LAST}
+	 *         , {@link PrologCode#FAIL} (or {@link PrologCode#HALT})
+	 * @throws PrologException
+	 */
 	public int execute(Goal goal) throws PrologException
 	{
 		haltExitCode = null;
@@ -506,11 +499,11 @@ public final class Interpreter implements HasEnvironment
 				}
 				if (goal.stopped)
 				{
-					throw new IllegalStateException("The goal is already stopped");
+					throw new Stopped();
 				}
 				try
 				{
-					int rc = gnu.prolog.vm.interpreter.Predicate_call.staticExecute(this, !goal.firstTime, goal.goal);
+					int rc = gnu.prolog.vm.interpreter.Predicate_call.staticExecute(this, !goal.firstTime, goal.getGoal());
 					switch (rc)
 					{
 						case PrologCode.SUCCESS_LAST:
@@ -554,6 +547,15 @@ public final class Interpreter implements HasEnvironment
 		}
 	}
 
+	/**
+	 * Once the goal has been finished with and if the goal has not been stopped
+	 * (as it will have been if SUCCESS_LAST or FAIL has been returned) then
+	 * {@link #stop(Goal)} should be run.
+	 * 
+	 * 
+	 * @param goal
+	 *          the goal to stop.
+	 */
 	public void stop(Goal goal)
 	{
 		if (currentGoal != goal)
@@ -562,7 +564,7 @@ public final class Interpreter implements HasEnvironment
 		}
 		if (goal.stopped)
 		{
-			throw new IllegalStateException("The goal is already stopped");
+			throw new Stopped();
 		}
 
 		// This destroys information and means that this information is not
@@ -597,6 +599,42 @@ public final class Interpreter implements HasEnvironment
 	}
 
 	/**
+	 * Run the provided goalTerm once returning the value returned by
+	 * {@link #execute(Goal)} and then stop the goal. This is thus an atomic
+	 * operation on the Interpreter.
+	 * 
+	 * Runs {@link #prepareGoal(Term)} then {@link #execute(Goal)} then if
+	 * necessary {@link #stop(Goal)}. Returns the return code from
+	 * {@link #execute(Goal)}.
+	 * 
+	 * @param goalTerm
+	 *          the term to be executed
+	 * @return {@link PrologCode#SUCCESS}, {@link PrologCode#SUCCESS_LAST} or
+	 *         {@link PrologCode#FAIL}
+	 * @throws PrologException
+	 */
+	public int runOnce(Term goalTerm) throws PrologException
+	{
+		Goal goal = prepareGoal(goalTerm);
+		try
+		{
+			int rc = execute(goal);
+			return rc;
+		}
+		finally
+		{
+			if (!goal.stopped)
+			{
+				stop(goal);
+			}
+		}
+	}
+
+	/**
+	 * Only call this method if you have had {@link PrologCode#HALT} returned by
+	 * the most recent call to {@link #execute(Goal)}. Otherwise and
+	 * {@link IllegalStateException} will be thrown.
+	 * 
 	 * @return The exit code when the prolog interpreter was halted
 	 */
 	public int getExitCode()
@@ -606,5 +644,21 @@ public final class Interpreter implements HasEnvironment
 			throw new IllegalStateException("Prolog Interpreter was not halted");
 		}
 		return haltExitCode.getExitCode();
+	}
+
+	/**
+	 * Someone tried to do something with a {@link Goal} which had already been
+	 * stopped.
+	 * 
+	 * @author Daniel Thomas
+	 */
+	private static class Stopped extends IllegalStateException
+	{
+		public Stopped()
+		{
+			super("The goal is already stopped");
+		}
+
+		private static final long serialVersionUID = 1L;
 	}
 }

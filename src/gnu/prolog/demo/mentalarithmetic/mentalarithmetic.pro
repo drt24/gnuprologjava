@@ -33,7 +33,7 @@ pickOperation(L,C,O,N,A) :- repeat, P is random(4), innerPickOperation(P,L,C,O,N
 %I*2 to reduce probability of operation being picked and I//2 to increase probability.
 innerPickOperation(0,I, C, '+', N, A) :- N is random(I), A is C + N, A < I.
 innerPickOperation(1,I, C, '-', N, A) :- N is random(I), A is C - N, A > 0.
-innerPickOperation(2,I, C, '*', N, A) :- L is I//C, N is random(L), A is C * N, A < I, A > 0.
+innerPickOperation(2,I, C, '*', N, A) :- L is I//C, N is random(L), N > 1, A is C * N, A < I.
 innerPickOperation(3,_, C, '/', N, A) :- factors(C,L), member(N, L), N > 1, A is C // N.
 
 %factors(+N, -List) list of factors of N
