@@ -26,17 +26,15 @@ copy and modify this GNU manual.''
 
 @end copying
 
-@dircategory Texinfo documentation system
+@dircategory GNU Libraries
 @direntry
-* sample: (sample)Invoking sample.
+* Prolog for Java: (gnuprologjava). GNU Prolog for Java manual.
 @end direntry
 
 @titlepage
 @title GNU Prolog for Java
 @subtitle for version @value{VERSION}, @value{UPDATED}
 @author Daniel Thomas (@email{info-gnuprolog@gnu.org})
-@page
-@vskip 0pt plus 1filll
 @insertcopying
 @end titlepage
 
@@ -50,9 +48,10 @@ This manual is for GNU Prolog for Java (version @value{VERSION}, @value{UPDATED}
 @end ifnottex
 
 @menu
-* Overview:: getting started with GNU Prolog for Java
-* Using the API:: loading prolog code, constructing questions and getting answers.
-* Installation:: instructions on how to install GNU Prolog for Java
+* Overview:: Getting started with GNU Prolog for Java
+* Using the API:: Loading prolog code, constructing questions and getting answers.
+* Installation:: Instructions on how to install GNU Prolog for Java
+* Extending:: Instructions on how to write your own predicates in Java.
 * GNU Free Documentation License::
 * Index::
 @end menu
@@ -60,16 +59,60 @@ This manual is for GNU Prolog for Java (version @value{VERSION}, @value{UPDATED}
 
 @node Overview
 @chapter Overview
-@c TODO
+
+GNU Prolog for Java (GPJ) is a Java library (gnu.prolog) which allows the use of Prolog from within Java programs.  It supports part 1 of the ISO standard for Prolog with some extensions. It is licenced under the LGPLv3 which can be found in the COPYING and COPYING.LIBRARY files distributed with GNU Prolog for Java (GPJ) and published by the Free Software Foundation.
+
+For normal usage there are only a few classes which you will need to interact with.
+gnu.prolog.vm.Environment which provides the core of the prolog environment.
+gnu.prolog.vm.Interpreter which is what you use to run your prolog queries.
+gnu.prolog.term which contains the various types of Prolog terms which exist and which you use to construct your prolog questions if you want answers (beyond SUCCESS, SUCCESS_LAST and FAIL).
+
+The use of the API is explained in the next chapter: @ref{Using the API}.
+
+If you wish to install GPJ then instructions are provided in the @ref{Installation} chapter.
+
+If you wish to extend GPJ by writing your own predicates (for example to allow prolog code to make calls into your Java code) then see the chapter on @ref{Extending} GPJ.
+
+Further documentation is provided in the README file and changes brought about by new versions will be detailed in the NEWS file. The java API has javadoc based documentation @c TODO: add link
+
+The gnu.prolog.demo package contains various example programs which use the API.
 
 @node Using the API
 @chapter Using the API
+@menu
+* Setup:: Setting up the VM to run
+* Constructing Terms:: Constructing questions to ask
+@end menu
+You may also find the demo programs in gnu.prolog.demo which are distributed with the docs useful in showing the use of the API.
+
+The basic usage is quite simple if you are already familiar with both Prolog and Java.
+
+@node Setup, Constructing Terms, Using the API, Using the API
+@section Setup
+First construct a gnu.prolog.vm.Environment which is the core of the VM using @code{new Environment()}.
+
+Then load any prolog files you want to which define additional predicates etc using environment.ensureLoaded(AtomTerm.get(``URL of file'')) for each file. Though if you already have an gnu.prolog.vm.AtomTerm representation of the file then you can use that.
+
+Instances of Terms should be got using their relevant get(Type) methods as we ensure only one gnu.prolog.term.Term instance for each distinct object they represent.
+
+Then you will need to create at least one gnu.prolog.vm.Interpreter which is used to execute goals. You do this using environment.createInterpreter(). You might want multiple Interpreters if you want to run goals in multiple threads. 
+
+Having created it you need to use it to run the initialization of any files you have loaded by using env.runInitialization(interpreter);. This ensures the goals contained in any ``:- initialization(goal).'' or ``:- goal.''s in the files you have loaded are run.
+
+At this point the setup is completed and you can start running goals. This is done using interpreter.runOnce(Term); where Term is the goal you want to execute. Does one execution of the goal and then stops. The construction of Terms is explained in the next section. If you need something more complex than that then you will need to use goal = interpreter.prepareGoal(goalTerm); int rc = interpreter.execute(goal) and then depending on the value of rc possibly run execute(goal) again. If you stop running execute(goal) while rc is still SUCCESS then you need to run interpreter.stop(goal).
+
+@node Constructing Terms
+@section Constructing Terms
+
 @c TODO
 
 @node Installation
 @chapter Installation
 @c TODO
 
+@node Extending
+@chapter Extending
+@c TODO
 
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
