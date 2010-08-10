@@ -17,14 +17,13 @@
  */
 package gnu.prolog.term;
 
-
 /**
  * floating point number term
  * 
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
-public class FloatTerm extends AtomicTerm
+public class FloatTerm extends NumericTerm
 {
 	private static final long serialVersionUID = -5988244457397590539L;
 
@@ -44,7 +43,7 @@ public class FloatTerm extends AtomicTerm
 		}
 		catch (NumberFormatException ex)
 		{
-			throw new IllegalArgumentException("argument should be floating point number");
+			throw new IllegalArgumentException("argument should be floating point number", ex);
 		}
 	}
 

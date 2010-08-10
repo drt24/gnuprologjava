@@ -17,14 +17,13 @@
  */
 package gnu.prolog.term;
 
-
 /**
  * 32bit Integer term.
  * 
  * @author Constantine Plotnikov
  * @version 0.0.1
  */
-public class IntegerTerm extends AtomicTerm
+public class IntegerTerm extends NumericTerm
 {
 	private static final long serialVersionUID = 4778268363190379033L;
 
