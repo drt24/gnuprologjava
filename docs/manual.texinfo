@@ -73,7 +73,7 @@ If you wish to install GPJ then instructions are provided in the @ref{Installati
 
 If you wish to extend GPJ by writing your own predicates (for example to allow prolog code to make calls into your Java code) then see the chapter on @ref{Extending} GPJ.
 
-Further documentation is provided in the README file and changes brought about by new versions will be detailed in the NEWS file. The java API has javadoc based documentation @c TODO: add link
+Further documentation is provided in the README file and changes brought about by new versions will be detailed in the NEWS file. The @uref{http://www.gnu.org/software/gnuprologjava/api/ java API has javadoc based documentation}.
 
 The gnu.prolog.demo package contains various example programs which use the API.
 
@@ -91,27 +91,51 @@ The basic usage is quite simple if you are already familiar with both Prolog and
 @section Setup
 First construct a gnu.prolog.vm.Environment which is the core of the VM using @code{new Environment()}.
 
-Then load any prolog files you want to which define additional predicates etc using environment.ensureLoaded(AtomTerm.get(``URL of file'')) for each file. Though if you already have an gnu.prolog.vm.AtomTerm representation of the file then you can use that.
+Then load any prolog files you want to which define additional predicates etc using @code{environment.ensureLoaded(AtomTerm.get(``URL of file''))} for each file. Though if you already have an gnu.prolog.vm.AtomTerm representation of the file then you can use that.
 
-Instances of Terms should be got using their relevant get(Type) methods as we ensure only one gnu.prolog.term.Term instance for each distinct object they represent.
+Instances of Terms should be got using their relevant @code{get(Type)} methods as we ensure only one gnu.prolog.term.Term instance for each distinct object they represent.
 
-Then you will need to create at least one gnu.prolog.vm.Interpreter which is used to execute goals. You do this using environment.createInterpreter(). You might want multiple Interpreters if you want to run goals in multiple threads. 
+Then you will need to create at least one gnu.prolog.vm.Interpreter which is used to execute goals. You do this using @code{environment.createInterpreter()}. You might want multiple Interpreters if you want to run goals in multiple threads. 
 
-Having created it you need to use it to run the initialization of any files you have loaded by using env.runInitialization(interpreter);. This ensures the goals contained in any ``:- initialization(goal).'' or ``:- goal.''s in the files you have loaded are run.
+Having created it you need to use it to run the initialization of any files you have loaded by using @code{env.runInitialization(interpreter);}. This ensures the goals contained in any ``:- initialization(goal).'' or ``:- goal.''s in the files you have loaded are run.
 
-At this point the setup is completed and you can start running goals. This is done using interpreter.runOnce(Term); where Term is the goal you want to execute. Does one execution of the goal and then stops. The construction of Terms is explained in the next section. If you need something more complex than that then you will need to use goal = interpreter.prepareGoal(goalTerm); int rc = interpreter.execute(goal) and then depending on the value of rc possibly run execute(goal) again. If you stop running execute(goal) while rc is still SUCCESS then you need to run interpreter.stop(goal).
+At this point the setup is completed and you can start running goals. This is done using @code{interpreter.runOnce(Term);} where Term is the goal you want to execute. This does one execution of the goal and then stops.
+The construction of Terms is explained in the next section. If you need something more complex than that then you will need to use @code{goal = interpreter.prepareGoal(goalTerm); int rc = interpreter.execute(goal)} and then depending on the value of rc possibly run @code{execute(goal)} again. If you stop running @code{execute(goal)} while rc is still SUCCESS then you need to run @code{interpreter.stop(goal)}.
 
 @node Constructing Terms
 @section Constructing Terms
+Terms are contained in the gnu.prolog.term package. They all extend Term and there are four basic types: @code{VariableTerm}s, @code{CompoundTerm}s and @code{AtomicTerm}s (including @code{AtomTerm}, @code{FloatTerm}, @code{IntegerTerm}).
 
-@c TODO
+@code{VariableTerm}s are used to represent prolog variables which are written as `A' or `X' in Prolog. During exectuion a VariableTerm may become unified with some other Term. To extract the value from a VariableTerm after execution use the #dereference() method (which is implemented by Term) which finds the value which may lie at the end of an arbitary long chain of VariableTerms.
+There is a subclass of @code{VariableTerm}: @code{ChangeableTerm} which is used for Terms the value of which varies depending on the value of Prolog flags. This is currently used only for the double_quotes flag. The value of a @code{ChangeableTerm} is updated when the #dereference() method is called.
+A VariableTerm can be constructed using either the @code{VariableTerm()} or the @code{VariableTerm(``VariableName'')} constructors, the second is preferable as it helps when debugging to know more easily which VariableTerm is which.
+
+@code{CompoundTerm}s are the mechanism by which terms can be combined together and are the basic component of everything from lists to relations. They consist of a @code{CompoundTermTag} which contains the functor such as the `foo' in `foo(a,b)' or the `.' in `[a,b,c]' (by the representation of lists in Prolog) and the arity (number of arguments) such as 2 in the foo case above. This leads to the notation of foo/2 for a term with a functor of foo and an arity of 2. A @code{CompoundTerm} also has an array of arguments (Term[]). There are a variety of different constructors but @code{CompoundTerm(AtomTerm functor, Term[] args)} @code{CompoundTerm(String functor, Term[] args)} which provide the functor and the arguments are probably the most useful.
+
+@code{AtomicTerm}s extend the abstract @code{AtomicTerm} class and are used for representing constants such as Strings and chars (@code{AtomTerm}); Numbers (@code{NumericTerm}) including doubles (@code{FloatTerm}) and integers (@code{IntegerTerm}) and finally Java Objects which can be embedded using @code{JavaObjectTerm}s. @code{AtomTerm} and @code{IntegerTerm} have static get(Type) methods rather than constructors while FloatTerm and JavaObjectTerm have normal constructors.
+
+For example (using @code{gnu.prolog.demo.mentalarithmetic.MentalArithmetic#generateQuestion(int limit, int length)}: 
+@example
+// // Construct the question.
+// Create variable terms so that we can pull the answers out later
+VariableTerm listTerm = new VariableTerm("List");
+VariableTerm answerTerm = new VariableTerm("Answer");
+// Create the arguments to the compound term which is the question
+Term[] args = @{ new IntegerTerm(limit), new IntegerTerm(length), listTerm, answerTerm @};
+// Construct the question
+CompoundTerm goalTerm = new CompoundTerm(AtomTerm.get("arithmetic"), args);
+@end example
 
 @node Installation
 @chapter Installation
-@c TODO
+If you download the jar file according to the instructions on the @uref{http://www.gnu.org/software/gnuprologjava/ GNU Prolog for Java website} and put it in your path then installation should be complete.
+
+It is our intention that GNU Prolog for Java be shipped with various distributions notably Debian and also the distributions approved of by GNU. At time of writing this had not been done. Assistance in doing this is appricated.
+@c MAY-NEED-UPDATE
 
 @node Extending
 @chapter Extending
+GPJ is easily extendible by creating new java predicates such as those in gnu.prolog.vm.builtins. They need to implement @code{gnu.prolog.vm.PrologCode}. @code{gnu.prolog.vm.ExecuteOnlyCode} is provided for convenience as most will not need to implement the @code{install} or @code{uninstall} methods.
 @c TODO
 
 @node GNU Free Documentation License
