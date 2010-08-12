@@ -175,8 +175,8 @@ Ant Buildfile for GNU Prolog for Java.
 		</exec>
 	</target>
 
-	<target name="test" depends="build,test-inriasuite,test-vanilla" description="Execute tests"/>
-	<target name="clean-test" depends="clean-vanilla,clean-inria"/>
+	<target name="test" depends="build,test-inriasuite,test-vanilla,test-dcg" description="Execute tests"/>
+	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg"/>
 
 	<target name="test-vanilla" depends="build">
 		<echo>Verify output in test/test-vanilla.out
@@ -221,6 +221,21 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 		<delete>
 			<fileset dir="test/inriasuite/io/" includes="*.tmp"/>
 		</delete>
+	</target>
+	<target name="test-dcg" depends="build">
+		<echo>Verify output in test/test-dcg.out</echo>
+		<java classname="gnu.prolog.test.GoalRunner" dir="test/extending/DCG" fork="true" logerror="true" output="test/test-dcg.out">
+			<arg value="--once" />
+			<arg value="test_cases.pl" />
+			<arg value="test_gr_preds,test_gr_tr" />
+			<classpath>
+				<pathelement location="build/code/"/>
+				<pathelement path="${java.class.path}"/>
+			</classpath>
+		</java>
+	</target>
+	<target name="clean-dcg">
+		<delete file="test/test-dcg.out"/>
 	</target>
 
 	<!-- Dangerous Regenerate the parser. WARNING: This may BREAK the parser. Use with Care.-->
