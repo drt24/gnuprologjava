@@ -51,7 +51,7 @@ This manual is for GNU Prolog for Java (version @value{VERSION}, @value{UPDATED}
 * Overview:: Getting started with GNU Prolog for Java
 * Using the API:: Loading prolog code, constructing questions and getting answers.
 * Installation:: Instructions on how to install GNU Prolog for Java
-* Extending:: Instructions on how to write your own predicates in Java.
+* Extending:: Instructions on how to extend GNU Prolog for Java
 * GNU Free Documentation License::
 * Index::
 @end menu
@@ -135,8 +135,35 @@ It is our intention that GNU Prolog for Java be shipped with various distributio
 
 @node Extending
 @chapter Extending
+
+@menu
+* Creating new predicates:: instructions on how to create new predicates to allow prolog code to make calls into java code.
+* Adding more Prolog functionality:: instructions on how further functionality can be added to the Prolog environment by loading additional Prolog files.
+@end menu
+
+@node Creating new predicates
+@section Creating new predicates
 GPJ is easily extendible by creating new java predicates such as those in gnu.prolog.vm.builtins. They need to implement @code{gnu.prolog.vm.PrologCode}. @code{gnu.prolog.vm.ExecuteOnlyCode} is provided for convenience as most will not need to implement the @code{install} or @code{uninstall} methods.
 @c TODO
+
+@node Adding more Prolog functionality
+@section Adding more Prolog functionality
+If you wish to add further Prolog functionality, for example to support golog or to add support for DCGs then this can be done by loading the relevant Prolog files.
+@menu
+* Golog:: Using Prolog for situation calculus.
+* Definite clause grammar (DCG):: Support for part 3 of the ISO Prolog standard (ISO/IEC DTR 13211-3:2006) ``provide convenient and simple functionality for parsing and processing text in a variety of languages.''
+@end menu
+
+@node Golog
+@subsection Golog
+The Cognitive Robotics Group at the University of Toronto provides a prolog file providing support for the Golog language for situation calculus (an extension of Prolog).@c TODO provide a link to this file
+This has not yet been tested to determine whether it works with GPJ. @c TODO test whether it works
+Should you have difficulty finding this file then Daniel Thomas may be able to help.
+
+@node Definite clause grammar (DCG)
+@subsection Definite clause grammar (DCG)
+The ISO working group on the Prolog standard publishes a reference implementation of the part 3 draft which it should be possible to load as with any other Prolog file. @c TODO provide link.
+This should then provide support for part 3 of the standard. This is currently untested. @c TODO test this.
 
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
