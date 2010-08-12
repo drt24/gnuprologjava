@@ -118,7 +118,7 @@ public class Predicate_retract extends ExecuteOnlyCode
 			{
 				return FAIL;
 			}
-			else if (p.getType() == Predicate.USER_DEFINED)
+			else if (p.getType() == Predicate.TYPE.USER_DEFINED)
 			{
 				if (!p.isDynamic())
 				{

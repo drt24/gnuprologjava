@@ -64,7 +64,7 @@ public class Predicate_listing extends ExecuteOnlyCode
 				}
 			}
 			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
-			if (p.getType() != Predicate.USER_DEFINED)
+			if (p.getType() != Predicate.TYPE.USER_DEFINED)
 			{
 				stream.putCodeSequence(null, interpreter, "% Foreign: ");
 				stream.writeTerm(null, interpreter, options, tag.getPredicateIndicator());

@@ -301,7 +301,8 @@ public class PrologTextLoader
 			logError("predicate indicator should be a compound term");
 			return;
 		}
-		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value, Predicate.BUILD_IN);
+		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value,
+				Predicate.TYPE.BUILD_IN);
 	}
 
 	protected void processControlDirective(Term pi, Term className)
@@ -316,7 +317,8 @@ public class PrologTextLoader
 			logError("predicate indicator should be a compound term");
 			return;
 		}
-		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value, Predicate.CONTROL);
+		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value,
+				Predicate.TYPE.CONTROL);
 	}
 
 	protected void processExternalDirective(Term pi, Term className)
@@ -331,7 +333,8 @@ public class PrologTextLoader
 			logError("predicate indicator should be a compound term");
 			return;
 		}
-		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value, Predicate.EXTERNAL);
+		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value,
+				Predicate.TYPE.EXTERNAL);
 	}
 
 	protected void processInitializationDirective(Term term)

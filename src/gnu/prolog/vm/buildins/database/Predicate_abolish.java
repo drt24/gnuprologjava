@@ -88,7 +88,7 @@ public class Predicate_abolish extends ExecuteOnlyCode
 		Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
 		if (p != null)
 		{
-			if (p.getType() != Predicate.USER_DEFINED || !p.isDynamic())
+			if (p.getType() != Predicate.TYPE.USER_DEFINED || !p.isDynamic())
 			{
 				PrologException.permissionError(TermConstants.modifyAtom, TermConstants.staticProcedureAtom, pi);
 			}

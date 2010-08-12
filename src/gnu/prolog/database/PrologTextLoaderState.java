@@ -186,9 +186,9 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 				return false;
 			}
 		}
-		if (p.getType() == Predicate.UNDEFINED)
+		if (p.getType() == Predicate.TYPE.UNDEFINED)
 		{
-			p.setType(Predicate.USER_DEFINED);
+			p.setType(Predicate.TYPE.USER_DEFINED);
 		}
 		p.setDynamic();
 		defineOptionAndDeclare(loader, p, "dynamic");
@@ -218,9 +218,9 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 				return;
 			}
 		}
-		if (p.getType() == Predicate.UNDEFINED)
+		if (p.getType() == Predicate.TYPE.UNDEFINED)
 		{
-			p.setType(Predicate.USER_DEFINED);
+			p.setType(Predicate.TYPE.USER_DEFINED);
 		}
 		defineOptionAndDeclare(loader, p, "multifile");
 	}
@@ -245,9 +245,9 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 			logError(loader, "predicate was already defined and could not be declared discontiguous.");
 			return;
 		}
-		if (p.getType() == Predicate.UNDEFINED)
+		if (p.getType() == Predicate.TYPE.UNDEFINED)
 		{
-			p.setType(Predicate.USER_DEFINED);
+			p.setType(Predicate.TYPE.USER_DEFINED);
 		}
 		defineOptionAndDeclare(loader, p, "discontiguous");
 	}
@@ -296,9 +296,9 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 			currentPredicate = p;
 			if (!testOption(loader, p, "defined"))
 			{
-				if (p.getType() == Predicate.UNDEFINED)
+				if (p.getType() == Predicate.TYPE.UNDEFINED)
 				{
-					p.setType(Predicate.USER_DEFINED);
+					p.setType(Predicate.TYPE.USER_DEFINED);
 				}
 				defineOptionAndDeclare(loader, p, "defined");
 			}
@@ -314,7 +314,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	}
 
-	public void defineExternal(PrologTextLoader loader, CompoundTerm pi, String javaClassName, int type)
+	public void defineExternal(PrologTextLoader loader, CompoundTerm pi, String javaClassName, Predicate.TYPE type)
 	{
 		if (!CompoundTermTag.isPredicateIndicator(pi))
 		{
@@ -323,7 +323,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		}
 		CompoundTermTag tag = CompoundTermTag.get(pi);
 		Predicate p = findOrCreatePredicate(tag);
-		if (p.getType() != Predicate.UNDEFINED)
+		if (p.getType() != Predicate.TYPE.UNDEFINED)
 		{
 			logError(loader, "predicate type could not be changed.");
 			return;

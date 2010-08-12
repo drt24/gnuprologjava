@@ -95,7 +95,7 @@ public class Predicate_clause extends ExecuteOnlyCode
 			}
 			// System.err.println("p type = "+p.getType());
 			// System.err.println("p dyn = "+p.isDynamic());
-			if (p.getType() != Predicate.USER_DEFINED || !p.isDynamic())
+			if (p.getType() != Predicate.TYPE.USER_DEFINED || !p.isDynamic())
 			{
 				PrologException.permissionError(TermConstants.accessAtom, TermConstants.privateProcedureAtom, tag
 						.getPredicateIndicator());

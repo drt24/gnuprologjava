@@ -91,7 +91,8 @@ public class Predicate_current_predicate extends ExecuteOnlyCode
 			{
 				PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
 			}
-			Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.getEnvironment().getModule().getPredicateTags());
+			Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.getEnvironment().getModule()
+					.getPredicateTags());
 			CurrentPredicateBacktrackInfo bi = new CurrentPredicateBacktrackInfo();
 			bi.startUndoPosition = interpreter.getUndoPosition();
 			bi.pi = pi;
@@ -111,7 +112,7 @@ public class Predicate_current_predicate extends ExecuteOnlyCode
 			{
 				continue;
 			}
-			if (p.getType() != Predicate.USER_DEFINED && p.getType() != Predicate.EXTERNAL) // no
+			if (p.getType() != Predicate.TYPE.USER_DEFINED && p.getType() != Predicate.TYPE.EXTERNAL) // no
 			// buidins
 			{
 				continue;

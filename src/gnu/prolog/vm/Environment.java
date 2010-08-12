@@ -461,10 +461,10 @@ public class Environment implements PredicateListener
 		}
 		switch (p.getType())
 		{
-			case Predicate.CONTROL:
+			case CONTROL:
 				// really only call should be loaded in this way
-			case Predicate.BUILD_IN:
-			case Predicate.EXTERNAL:
+			case BUILD_IN:
+			case EXTERNAL:
 			{
 				try
 				{
@@ -480,7 +480,7 @@ public class Environment implements PredicateListener
 					return getUndefinedPredicateCode(tag);
 				}
 			}
-			case Predicate.USER_DEFINED:
+			case USER_DEFINED:
 			{
 				PrologCode code = InterpretedCodeCompiler.compile(p.getClauses());
 				code.install(this);

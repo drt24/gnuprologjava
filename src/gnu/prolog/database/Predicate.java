@@ -37,29 +37,36 @@ import java.util.Set;
  */
 public class Predicate
 {
-	// TODO convert to proper enum as this is foul.
-	/** type of predicate is not yet set */
-	public static final int UNDEFINED = -1;
 	/**
-	 * predicate is a control construct. This type of predicate could be created
-	 * only during initialization.
+	 * The possible types of Predicate
+	 * 
+	 * @author Daniel Thomas
 	 */
-	public static final int CONTROL = 0;
-	/**
-	 * predicate is a build in. This type of predicate could be created only
-	 * during initialization.
-	 */
-	public static final int BUILD_IN = 1;
-	/** predicate is a user defined predicate. */
-	public static final int USER_DEFINED = 2;
-	/** predicate is a user defined predicate defined in Java Class. */
-	public static final int EXTERNAL = 3;
+	public static enum TYPE
+	{
+		/** type of predicate is not yet set */
+		UNDEFINED,
+		/**
+		 * predicate is a control construct. This type of predicate could be created
+		 * only during initialization.
+		 */
+		CONTROL,
+		/**
+		 * predicate is a build in. This type of predicate could be created only
+		 * during initialization.
+		 */
+		BUILD_IN,
+		/** predicate is a user defined predicate. */
+		USER_DEFINED,
+		/** predicate is a user defined predicate defined in Java Class. */
+		EXTERNAL
+	}
 
 	/**
 	 * type of predicate. It should be either UNDEFINED, CONTROL ,BUILD_IN,
 	 * USER_DEFINED or EXTERNAL
 	 */
-	protected int type = UNDEFINED;
+	protected TYPE type = TYPE.UNDEFINED;
 	/** a tag of predicate head */
 	protected CompoundTermTag tag;
 	/** list of clauses for this predicate */
@@ -106,7 +113,7 @@ public class Predicate
 	 * 
 	 * @return type of predicate
 	 */
-	public synchronized int getType()
+	public synchronized TYPE getType()
 	{
 		return type;
 	}
@@ -119,9 +126,9 @@ public class Predicate
 	 * @throws IllegalStateException
 	 *           if predicate type is already set
 	 */
-	public synchronized void setType(int type)
+	public synchronized void setType(TYPE type)
 	{
-		if (this.type != UNDEFINED)
+		if (this.type != TYPE.UNDEFINED)
 		{
 			throw new IllegalStateException("Type of predicate is already set.");
 		}
@@ -204,7 +211,7 @@ public class Predicate
 	 */
 	public synchronized void addClauseLast(Term clause)
 	{
-		if (type != USER_DEFINED)
+		if (type != TYPE.USER_DEFINED)
 		{
 			throw new IllegalStateException("clauses could be added only to user defined predicate");
 		}
@@ -214,7 +221,7 @@ public class Predicate
 	}
 
 	/**
-	 * Add clause for predicate at the heginning. This method simply add clause to
+	 * Add clause for predicate at the beginning. This method simply add clause to
 	 * predicate. No modification to term is done. It even is not copied.
 	 * 
 	 * @param clause
@@ -222,7 +229,7 @@ public class Predicate
 	 */
 	public synchronized void addClauseFirst(Term clause)
 	{
-		if (type != USER_DEFINED)
+		if (type != TYPE.USER_DEFINED)
 		{
 			throw new IllegalStateException("clauses could be added only to user defined predicate");
 		}
@@ -282,7 +289,7 @@ public class Predicate
 	 */
 	public synchronized void setDynamic()
 	{
-		if (type != USER_DEFINED)
+		if (type != TYPE.USER_DEFINED)
 		{
 			throw new IllegalStateException("only user defined predicate may be declared dynamic");
 		}

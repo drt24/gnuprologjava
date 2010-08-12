@@ -92,10 +92,10 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 		if (p == null)
 		{
 			p = interpreter.getEnvironment().getModule().createDefinedPredicate(predTag);
-			p.setType(Predicate.USER_DEFINED);
+			p.setType(Predicate.TYPE.USER_DEFINED);
 			p.setDynamic();
 		}
-		else if (p.getType() == Predicate.USER_DEFINED)
+		else if (p.getType() == Predicate.TYPE.USER_DEFINED)
 		{
 			if (!p.isDynamic())
 			{
