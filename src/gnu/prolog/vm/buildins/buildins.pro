@@ -219,6 +219,7 @@ halt:-halt(0).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.java.pro')).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.uuid.pro')).
 :-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.dialogs.pro')).
+:-ensure_loaded(resource('/gnu/prolog/vm/buildins/ext.database.pro')).
 
 % Directives used outside of their normal directive context.
 :-build_in(ensure_loaded/1, 'gnu.prolog.vm.buildins.io.Predicate_ensure_loaded').

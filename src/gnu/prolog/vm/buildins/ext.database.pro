@@ -1,6 +1,5 @@
 /* GNU Prolog for Java
- * Copyright (C) 1997-1999  Constantine Plotnikov
- * Copyright (C) 2009       Michiel Hendriks
+ * Copyright (C) 2010       Daniel Thomas
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -18,22 +17,21 @@
  */
  
 %
-% Miscellaneous extensions
-%
+% Database functions
 
-% List all perdicates with the given name
-% listing(+Pred)
-:-build_in(listing/1,'gnu.prolog.vm.buildins.misc.Predicate_listing'). 
-:-build_in(listing/0,'gnu.prolog.vm.buildins.misc.Predicate_listing').
+% Unifies the name and arity with of all functors with known to the system 
+% (including builtin). This can be used to determine if a given predicate
+% exists.
+% current_functor(?Name, ?Arity)
+:-build_in(current_functor/2,'gnu.prolog.vm.buildins.database.Predicate_current_functor').
 
-% Determine or test the Order between two terms in the standard order of terms. 
-% Order is one of <, > or =, with the obvious meaning.
-% compare(?Order, +Term1, +Term2)
-:-build_in(compare/3,'gnu.prolog.vm.buildins.termcomparsion.Predicate_compare').  
 
-% Retrieve the current stacktrace of evaluating predicates (excluding
-% the current predicate). Note: it will only contain the compound tags
-% of the executed predicates.
-% stacktrace(?List)
-:-build_in(stacktrace/1,'gnu.prolog.vm.buildins.misc.Predicate_stacktrace').
+% As defined in ISO/IEC DTR 13211-1:2006 
+%  8.8 Clause retrieval and information
 
+% 8.8.3 predicate property/2
+% predicate_property(Head, Property)
+% is true iff the procedure associated with
+% the argument Head has predicate property Property.
+
+:-build_in(predicate_property/2,'gnu.prolog.vm.buildins.database.Predicate_predicate_property').
