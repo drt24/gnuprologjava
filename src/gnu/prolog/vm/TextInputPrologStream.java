@@ -18,6 +18,7 @@
 package gnu.prolog.vm;
 
 import gnu.prolog.io.CharConversionTable;
+import gnu.prolog.io.ParseException;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.io.TermReader;
 import gnu.prolog.io.WriteOptions;
@@ -269,13 +270,12 @@ public class TextInputPrologStream extends PrologStream
 			}
 			return term;
 		}
-		catch (IOException ex)
+		catch (ParseException ex)
 		{
 			debug(ex);
-			PrologException.syntaxError(inputAtom);
+			PrologException.syntaxError(ex);
 			return null;
 		}
-
 	}
 
 	@Override

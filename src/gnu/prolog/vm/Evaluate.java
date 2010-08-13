@@ -76,27 +76,26 @@ public class Evaluate
 	public final static CompoundTermTag random1 = CompoundTermTag.get("random", 1);
 	private final static Random random = new Random();
 
-	public final static CompoundTermTag evaluationError = CompoundTermTag.get("evaluation_error", 1);
 	public final static AtomTerm floatAtom = AtomTerm.get("float");
 
 	private static void zeroDivizor() throws PrologException
 	{
-		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.zeroDivizorAtom));
+		PrologException.evalutationError(TermConstants.zeroDivizorAtom);
 	}
 
 	private static void intOverflow() throws PrologException
 	{
-		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.intOverflowAtom));
+		PrologException.evalutationError(TermConstants.intOverflowAtom);
 	}
 
 	private static void floatOverflow() throws PrologException
 	{
-		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.floatOverflowAtom));
+		PrologException.evalutationError(TermConstants.floatOverflowAtom);
 	}
 
 	private static void undefined() throws PrologException
 	{
-		throw PrologException.getError(new CompoundTerm(evaluationError, TermConstants.undefinedAtom));
+		PrologException.evalutationError(TermConstants.undefinedAtom);
 	}
 
 	private static Pair<Double, Double> toDouble(Term arg0, Term arg1)

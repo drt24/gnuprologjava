@@ -68,6 +68,8 @@ public class PrologException extends Exception
 	/**
 	 * a constructor
 	 * 
+	 * @param term
+	 * 
 	 * @param inner
 	 *          The cause of the exception.
 	 */
@@ -87,7 +89,11 @@ public class PrologException extends Exception
 		return msg;
 	}
 
-	/** get term of this exception */
+	/**
+	 * get term of this exception
+	 * 
+	 * @return term of this exception
+	 */
 	public Term getTerm()
 	{
 		return term;
@@ -105,13 +111,14 @@ public class PrologException extends Exception
 	public final static CompoundTermTag representationErrorTag = CompoundTermTag.get("representation_error", 1);
 	public final static CompoundTermTag syntaxErrorTag = CompoundTermTag.get("syntax_error", 1);
 	public final static CompoundTermTag permissionErrorTag = CompoundTermTag.get("permission_error", 3);
+	public final static CompoundTermTag evaluationErrorTag = CompoundTermTag.get("evaluation_error", 1);
 
-	static PrologException getError(Term term)
+	private static PrologException getError(Term term)
 	{
 		return getError(term, null);
 	}
 
-	static PrologException getError(Term term, Throwable inner)
+	private static PrologException getError(Term term, Throwable inner)
 	{
 		if (inner != null)
 		{
@@ -163,14 +170,23 @@ public class PrologException extends Exception
 		throw getError(new CompoundTerm(syntaxErrorTag, term));
 	}
 
+	public static void syntaxError(AtomTerm term, Throwable inner) throws PrologException
+	{
+		throw getError(new CompoundTerm(syntaxErrorTag, term), inner);
+	}
+
+	public static void syntaxError(gnu.prolog.io.ParseException ex) throws PrologException
+	{
+		syntaxError(AtomTerm.get(ex.getMessage()), ex);
+	}
+
 	public static void permissionError(AtomTerm operation, AtomTerm permissionType, Term culprit) throws PrologException
 	{
 		throw getError(new CompoundTerm(permissionErrorTag, operation, permissionType, culprit));
 	}
 
-	public static void syntaxError(gnu.prolog.io.ParseException ex) throws PrologException
+	public static void evalutationError(AtomTerm error) throws PrologException
 	{
-		syntaxError(AtomTerm.get("l" + ex.getLine() + "c" + ex.getColumn()));
+		throw getError(new CompoundTerm(evaluationErrorTag, error));
 	}
-
 }
