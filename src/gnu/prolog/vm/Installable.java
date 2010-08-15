@@ -31,7 +31,7 @@ public interface Installable
 	 * @param environment
 	 *          Environment to install the predicate
 	 */
-	public void install(Environment env);
+	public void install(Environment environment);
 
 	/**
 	 * this method is called when code is uninstalled from the environment
@@ -39,5 +39,5 @@ public interface Installable
 	 * @param environment
 	 *          Environment to install the predicate
 	 */
-	public void uninstall(Environment env);
+	public void uninstall(Environment environment);
 }
