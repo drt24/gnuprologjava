@@ -36,12 +36,12 @@ public class RandomAccessFileReader extends Reader
 	InputStreamReader rd;
 
 	/**
-	 * @param fileReader
+	 * @param randomAccess
 	 */
-	public RandomAccessFileReader(RandomAccessFile randomaccess)
+	public RandomAccessFileReader(RandomAccessFile randomAccess)
 	{
 		super();
-		raf = randomaccess;
+		raf = randomAccess;
 		createReader();
 	}
 

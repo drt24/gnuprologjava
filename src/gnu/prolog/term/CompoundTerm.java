@@ -59,7 +59,12 @@ public class CompoundTerm extends Term
 		return new CompoundTerm(TermConstants.listTag, head, tail);
 	}
 
-	/** get prolog list by java array */
+	/**
+	 * get prolog list by java array
+	 * 
+	 * @param list
+	 * @return a Term representation of the list
+	 */
 	public static Term getList(Term[] list)
 	{
 		Term tlist = TermConstants.emptyListAtom;
@@ -70,7 +75,12 @@ public class CompoundTerm extends Term
 		return tlist;
 	}
 
-	/** get prolog list by java list */
+	/**
+	 * get prolog list by java list
+	 * 
+	 * @param list
+	 * @return a Term representation of the list
+	 */
 	public static Term getList(List<Term> list)
 	{
 		Term tlist = TermConstants.emptyListAtom;
@@ -185,7 +195,6 @@ public class CompoundTerm extends Term
 	 *          a functor of new term
 	 * @param arity
 	 *          arity of new term
-	 * @return new term
 	 */
 	public CompoundTerm(String functor, int arity)
 	{
@@ -199,7 +208,6 @@ public class CompoundTerm extends Term
 	 *          a functor of new term
 	 * @param arity
 	 *          arity of new term
-	 * @return new term
 	 */
 	public CompoundTerm(AtomTerm functor, int arity)
 	{
@@ -214,7 +222,6 @@ public class CompoundTerm extends Term
 	 * @param args
 	 *          arguments of term, this array is directly assigned to term and any
 	 *          changes that are done to array change term.
-	 * @return new term
 	 */
 	public CompoundTerm(AtomTerm functor, Term args[])
 	{
@@ -229,7 +236,6 @@ public class CompoundTerm extends Term
 	 * @param args
 	 *          arguments of term, this array is directly assigned to term and any
 	 *          changes that are done to array change term.
-	 * @return new term
 	 */
 	public CompoundTerm(String functor, Term args[])
 	{
