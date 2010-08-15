@@ -1,5 +1,6 @@
-0.2.5 alpha 2010-07-28
+0.2.5 beta 2010-07-28
    Conforms to ISO/IEC DIS 13211-1 : 1995 bar two minor bugs.
+   There is now a (texinfo) manual.
    The demo package now contains an example of the use of the API.
    The public key of the key signing key is in the sources.
    Term classes now have working .toString() functions (which use TermWriter.toString(Term))
@@ -12,9 +13,17 @@
          ':- intiailization(term)'.
        random(L) predicate evaluates to a random number i such that 0 =< i < L
    GNU Prolog for Java is now licensed under the LGPLv3 rather than the LGPLv2.
+   Interpreter's context methods have been deprecated.
+   The source now includes gnu.getopt
+   The Interpreter#runOnce(Term) method added to simplify the case where the
+   user only wishes to get the first answer from Prolog.
+   Added NumericTerm as an abstract parent of FloatTerm and IntegerTerm
    Two outstanding bugs in standards compliance are:
        #30568 (inria tests on findall's throwing of type_errors fails) and
        #30335 (inria tests on arg's unification of variables inside the compound term fail)
+   Other bugs
+       #30630 Deadlock may occur if multiple threads operate on the same environment
+       #30780 Unicode input breaks the parser (it gets stuck in an infinite loop).
 0.2.x
    Michiel Hendriks wrote many additional features and added support for many more 
    predicates as well as doing a lot of work towards ISO Prolog part 1 compliance.
