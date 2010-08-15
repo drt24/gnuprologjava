@@ -32,8 +32,8 @@ public class FloatTerm extends NumericTerm
 	 * 
 	 * @param str
 	 *          string representation of float number
-	 * @returns new floating point number term
-	 * @throw IllegalArgumentException when str is not valid string
+	 * @throws IllegalArgumentException
+	 *           when str is not valid string
 	 */
 	public FloatTerm(String str)
 	{

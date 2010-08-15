@@ -193,7 +193,8 @@ public class IntegerTerm extends NumericTerm
 	 * @param str
 	 *          value of integer term
 	 * @return new integer term
-	 * @throw IllegalArgumentException when val could ne be converted to integer
+	 * @throws IllegalArgumentException
+	 *           when val could not be converted to integer
 	 */
 	public static IntegerTerm get(String str)
 	{
@@ -205,8 +206,8 @@ public class IntegerTerm extends NumericTerm
 	 * 
 	 * @param str
 	 *          value of integer term
-	 * @return new integer term
-	 * @throw IllegalArgumentException when val could ne be converted to integer
+	 * @throws IllegalArgumentException
+	 *           when val could ne be converted to integer
 	 */
 	public IntegerTerm(String str)
 	{

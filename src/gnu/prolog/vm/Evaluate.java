@@ -71,7 +71,6 @@ public class Evaluate
 	 * 
 	 * Evaluates to a random integer i for which 0 =< i < IntExpr.
 	 * 
-	 * @author drt24
 	 */
 	public final static CompoundTermTag random1 = CompoundTermTag.get("random", 1);
 	private final static Random random = new Random();
@@ -785,9 +784,10 @@ public class Evaluate
 	}
 
 	/**
-	 * Test the term for an interget term
+	 * Test the term for an integer term
 	 * 
-	 * @param t1
+	 * @param term
+	 * @throws PrologException
 	 */
 	protected static void typeTestInt(Term term) throws PrologException
 	{

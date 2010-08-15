@@ -67,10 +67,10 @@ public class PrologCollectionIterator extends BacktrackInfo
 	 * @param undoPosition
 	 *          the value of interpreter.getUndoPosition();
 	 */
-	public PrologCollectionIterator(Iterator<?> it, Term destination, int undoPosition)
+	public PrologCollectionIterator(Iterator<?> iterable, Term destination, int undoPosition)
 	{
 		super(-1, -1);
-		iterator = it;
+		iterator = iterable;
 		destTerm = destination;
 		startUndoPosition = undoPosition;
 	}
