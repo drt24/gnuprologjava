@@ -351,7 +351,7 @@ protect_call_result(G,R) :-
 %  extract_error(+Ball, -Error)
 %
 
-extract_error(error(R, I), R) :- write_debug_impdef_error(I),!.
+extract_error(error(R, I), R) :- !.%,write_debug_impdef_error(I)
 extract_error(B, unexpected_ball(B)).
 
 
@@ -779,7 +779,9 @@ io(at_end_of_stream).
 
 % extras
 extra(append).
-
+extra(predicate_property).
+extra(compare).
+extra(sort).
 
 % self test
 inria(already_appears).

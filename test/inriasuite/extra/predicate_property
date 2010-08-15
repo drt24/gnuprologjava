@@ -1,0 +1,13 @@
+/* file predicate_property */
+%predicate_property(Head, Property)
+
+%Head is neither a variable nor a callable term
+[predicate_property(var(_),_),success].
+%Property is neither a variable nor a predicate property
+[predicate_property(_,foo_not_property),failure].
+
+% from examples
+[predicate_property(once(_), built_in),success].
+[predicate_property(atom_codes(_, _), Property),[[Property <-- static],[Property <-- built_in]]].
+
+/* end of predicate_property */
