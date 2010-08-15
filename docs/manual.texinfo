@@ -156,14 +156,14 @@ If you wish to add further Prolog functionality, for example to support golog or
 
 @node Golog
 @subsection Golog
-The Cognitive Robotics Group at the University of Toronto provides a prolog file providing support for the Golog language for situation calculus (an extension of Prolog).@c TODO provide a link to this file
+The Cognitive Robotics Group at the University of Toronto provides a prolog file providing support for the Golog language for situation calculus (an extension of Prolog). @uref{http://www.cs.toronto.edu/cogrobo/main/systems/index.html}.
 This has not yet been tested to determine whether it works with GPJ. @c TODO test whether it works
 Should you have difficulty finding this file then Daniel Thomas may be able to help.
 
 @node Definite clause grammar (DCG)
 @subsection Definite clause grammar (DCG)
-The ISO working group on the Prolog standard publishes a reference implementation of the part 3 draft which it should be possible to load as with any other Prolog file. @c TODO provide link.
-This should then provide support for part 3 of the standard. This is currently untested. @c TODO test this.
+The ISO working group on the Prolog standard publishes a reference implementation of the part 3 draft which it should be possible to load as with any other Prolog file. @uref{http://www.sju.edu/~jhodgson/wg17/Drafts/DCGs/reference_implementation}. Should you have difficulty finding it it is also in the git repository for GPJ.
+This should then provide support for part 3 of the standard. This currently does not work as it depends on some of the 2006 ISO extensions which we should have implemented for 0.3.0.
 
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
