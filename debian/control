@@ -2,7 +2,7 @@ Source: gnuprologjava
 Section: java
 Priority: optional
 Maintainer: Daniel Thomas <drt24-debian@srcf.ucam.org>
-Build-Depends: debhelper (>> 7), javahelper (>= 0.24), ant, texinfo
+Build-Depends: debhelper (>> 7), javahelper (>= 0.24), ant, texinfo, libgetopt-java
 Build-Depends-Indep: default-jdk
 Standards-Version: 3.8.1
 Homepage: <http://www.gnu.org/software/gnuprologjava/>
