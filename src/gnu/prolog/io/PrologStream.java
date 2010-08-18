@@ -15,15 +15,17 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm;
+package gnu.prolog.io;
 
-import gnu.prolog.io.ReadOptions;
-import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.util.HashSet;
 import java.util.List;
@@ -194,6 +196,11 @@ public abstract class PrologStream
 		}
 	}
 
+	public boolean isClosed()
+	{
+		return closed;
+	}
+
 	public int getCurrentLine()
 	{
 		return -1;
@@ -202,6 +209,11 @@ public abstract class PrologStream
 	public int getCurrentColumn()
 	{
 		return -1;
+	}
+
+	public Set<AtomTerm> getAliases()
+	{
+		return aliases;
 	}
 
 	protected void debug(Exception ex)

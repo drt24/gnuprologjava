@@ -25,6 +25,10 @@ import java.io.FilterReader;
 import java.io.Reader;
 import java.io.StringReader;
 
+/**
+ * Reads {@link Term Terms} from strings and {@link Reader Readers}.
+ * 
+ */
 public class TermReader extends FilterReader
 {
 	protected static final OperatorSet defaultOperatorSet = new OperatorSet();

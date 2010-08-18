@@ -20,13 +20,13 @@
 package gnu.prolog.vm.buildins.misc;
 
 import gnu.prolog.database.Predicate;
+import gnu.prolog.io.PrologStream;
 import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.buildins.debug.Predicate_spy;
 
 /**

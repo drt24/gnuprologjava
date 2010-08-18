@@ -15,47 +15,57 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm;
+package gnu.prolog.io;
 
-import gnu.prolog.io.ReadOptions;
-import gnu.prolog.io.TermWriter;
-import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.io.Writer;
+import java.io.Reader;
 
 /**
- * Prolog stream which writes output as text
+ * Prolog stream which reads input as text
  * 
  */
-public class TextOutputPrologStream extends PrologStream
+public class TextInputPrologStream extends PrologStream
 {
-	protected TermWriter termWriter;
-	protected RandomAccessFileWriter fileWriter;
+	protected TermReader termReader;
 
-	TextOutputPrologStream(OpenOptions options, Writer wr)
+	protected RandomAccessFileReader fileReader;
+
+	private CharConversionTable charConversion;
+
+	private TextInputPrologStream(OpenOptions options)
 	{
 		super(options);
-		endOfStream = atAtom;
-		termWriter = new TermWriter(wr);
+		charConversion = environment.getPrologTextLoaderState().getConversionTable();
+	}
+
+	public TextInputPrologStream(OpenOptions options, Reader rd) throws PrologException
+	{
+		this(options);
+		termReader = new TermReader(new BufferedReader(rd), environment);
 	}
 
 	/**
 	 * @param options
 	 * @param raf
 	 */
-	public TextOutputPrologStream(OpenOptions options, RandomAccessFile raf)
+	public TextInputPrologStream(OpenOptions options, RandomAccessFile raf)
 	{
-		super(options);
-		endOfStream = atAtom;
-		fileWriter = new RandomAccessFileWriter(raf);
-		termWriter = new TermWriter(fileWriter);
+		this(options);
+		fileReader = new RandomAccessFileReader(raf);
+		termReader = new TermReader(fileReader, environment);
 	}
 
+	// TODO Deprecate unused arguments.
+	// byte io
 	@Override
 	public int getByte(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
@@ -79,15 +89,16 @@ public class TextOutputPrologStream extends PrologStream
 		PrologException.permissionError(outputAtom, TermConstants.textStreamAtom, streamTerm);
 	}
 
+	// repositioning
 	@Override
 	public Term getPosition(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
-		if (fileWriter != null)
+		if (fileReader != null)
 		{
 			try
 			{
-				return new JavaObjectTerm(Long.valueOf(fileWriter.getPosition()));
+				return new JavaObjectTerm(Long.valueOf(fileReader.getPosition()));
 			}
 			catch (IOException ex)
 			{
@@ -104,7 +115,7 @@ public class TextOutputPrologStream extends PrologStream
 	public void setPosition(Term streamTerm, Interpreter interptreter, Term position) throws PrologException
 	{
 		checkExists();
-		if (fileWriter != null)
+		if (fileReader != null)
 		{
 			try
 			{
@@ -126,11 +137,11 @@ public class TextOutputPrologStream extends PrologStream
 					PrologException.domainError(TermConstants.streamPositionAtom, position);
 				}
 				long pos = ((Long) jt.value).longValue();
-				if (pos > fileWriter.size())
+				if (pos > fileReader.size())
 				{
 					PrologException.domainError(TermConstants.streamPositionAtom, position);
 				}
-				fileWriter.seek(pos);
+				fileReader.seek(pos);
 			}
 			catch (IOException ex)
 			{
@@ -146,58 +157,153 @@ public class TextOutputPrologStream extends PrologStream
 	public int getCode(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
-		PrologException.permissionError(inputAtom, streamAtom, streamTerm);
-		return 0;
+		try
+		{
+			if (endOfStream == pastAtom)
+			{
+				if (eofAction == errorAtom)
+				{
+					PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
+				}
+				else if (eofAction == eofCodeAtom)
+				{
+					return -1;
+				}
+			}
+			int rc = termReader.read();
+			if (rc == -1) // eof
+			{
+				endOfStream = pastAtom;
+				return -1;
+			}
+			else
+			{
+				return rc;
+			}
+		}
+		catch (IOException ex)
+		{
+			debug(ex);
+			PrologException.systemError(ex);
+			return -1;
+		}
 	}
 
 	@Override
 	public int peekCode(Term streamTerm, Interpreter interptreter) throws PrologException
 	{
 		checkExists();
-		PrologException.permissionError(inputAtom, streamAtom, streamTerm);
-		return 0;
+		try
+		{
+			if (endOfStream == pastAtom)
+			{
+				if (eofAction == errorAtom)
+				{
+					PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
+				}
+				else if (eofAction == eofCodeAtom)
+				{
+					return -1;
+				}
+			}
+			termReader.mark(1);
+			int rc = termReader.read();
+			termReader.reset();
+			if (rc == -1) // eof
+			{
+				// endOfStream = pastAtom;
+				endOfStream = atAtom;
+				return -1;
+			}
+			else
+			{
+				return rc;
+			}
+		}
+		catch (IOException ex)
+		{
+			debug(ex);
+			PrologException.systemError(ex);
+			return -1;
+		}
 	}
 
 	@Override
 	public void putCode(Term streamTerm, Interpreter interptreter, int code) throws PrologException
 	{
-		termWriter.print((char) code);
+		checkExists();
+		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
 	@Override
 	public void putCodeSequence(Term streamTerm, Interpreter interptreter, String seq) throws PrologException
 	{
-		termWriter.print(seq);
+		checkExists();
+		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
 	@Override
 	public Term readTerm(Term streamTerm, Interpreter interptreter, ReadOptions options) throws PrologException
 	{
-		PrologException.permissionError(inputAtom, streamAtom, streamTerm);
-		return null;
+		checkExists();
+
+		try
+		{
+			if (endOfStream == pastAtom)
+			{
+				if (eofAction == errorAtom)
+				{
+					PrologException.permissionError(inputAtom, TermConstants.pastEndOfStreamAtom, streamTerm);
+				}
+				else if (eofAction == eofCodeAtom)
+				{
+					PrologException.syntaxError(TermConstants.pastEndOfStreamAtom);
+				}
+			}
+			Term term = termReader.readTerm(options);
+			if (term == null)
+			{
+				endOfStream = pastAtom;
+				term = PrologStream.endOfFileAtom;
+			}
+			else
+			{// apply char Conversion
+				term = charConversion.charConvert(term, environment);
+			}
+			return term;
+		}
+		catch (ParseException ex)
+		{
+			debug(ex);
+			PrologException.syntaxError(ex);
+			return null;
+		}
 	}
 
 	@Override
 	public void writeTerm(Term streamTerm, Interpreter interptreter, WriteOptions options, Term term)
 			throws PrologException
 	{
-		termWriter.print(options, term);
+		checkExists();
+		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
 	@Override
 	public void flushOutput(Term streamTerm) throws PrologException
 	{
-		termWriter.flush();
+		checkExists();
+		PrologException.permissionError(outputAtom, streamAtom, streamTerm);
 	}
 
 	@Override
 	public void close(boolean force) throws PrologException
 	{
+		checkExists();
 		try
 		{
-			termWriter.close();
+			termReader.close();
 		}
-		catch (Exception ex)
+		catch (IOException ex)
 		{
 			debug(ex);
 			if (!force)
@@ -206,6 +312,19 @@ public class TextOutputPrologStream extends PrologStream
 			}
 		}
 		super.close(force);
+
+	}
+
+	@Override
+	public int getCurrentLine()
+	{
+		return termReader.getCurrentLine();
+	}
+
+	@Override
+	public int getCurrentColumn()
+	{
+		return termReader.getCurrentColumn();
 	}
 
 }

@@ -25,8 +25,12 @@ import gnu.prolog.database.PredicateListener;
 import gnu.prolog.database.PredicateUpdatedEvent;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.database.PrologTextLoaderState;
+import gnu.prolog.io.BinaryPrologStream;
 import gnu.prolog.io.CharConversionTable;
 import gnu.prolog.io.OperatorSet;
+import gnu.prolog.io.PrologStream;
+import gnu.prolog.io.TextInputPrologStream;
+import gnu.prolog.io.TextOutputPrologStream;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
@@ -786,7 +790,7 @@ public class Environment implements PredicateListener
 				PrologException.domainError(PrologStream.streamOrAliasAtom, stream_or_alias);
 			}
 			PrologStream stream = (PrologStream) jt.value;
-			if (stream.closed)
+			if (stream.isClosed())
 			{
 				// TODO: put this into a proper debugging framework
 				// String info = stream.filename.value + ":" + stream.getCurrentLine() +
@@ -893,7 +897,7 @@ public class Environment implements PredicateListener
 			alias2stream.put(a, stream);
 		}
 		openStreams.add(stream);
-		return stream.streamTerm;
+		return stream.getStreamTerm();
 	}
 
 	/**
@@ -913,10 +917,9 @@ public class Environment implements PredicateListener
 			userOutput.flushOutput(null);
 			return false;
 		}
-		Iterator<AtomTerm> aliases = stream.aliases.iterator();
-		while (aliases.hasNext())
+		for (AtomTerm alias : stream.getAliases())
 		{
-			alias2stream.remove(aliases.next());
+			alias2stream.remove(alias);
 		}
 		openStreams.remove(stream);
 		if (currentInput == stream)

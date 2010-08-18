@@ -17,51 +17,33 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm;
+package gnu.prolog.io;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
-import java.io.Reader;
+import java.io.Writer;
 
 /**
- * Reads a {@link RandomAccessFile}
+ * Writes to a {@link RandomAccessFile}
  * 
  * @author Michiel Hendriks
  */
-public class RandomAccessFileReader extends Reader
+public class RandomAccessFileWriter extends Writer
 {
 	RandomAccessFile raf;
 
-	InputStreamReader rd;
-
 	/**
-	 * @param randomAccess
+	 * @param raf
 	 */
-	public RandomAccessFileReader(RandomAccessFile randomAccess)
+	public RandomAccessFileWriter(RandomAccessFile raf)
 	{
 		super();
-		raf = randomAccess;
-		createReader();
-	}
-
-	protected void createReader()
-	{
-		rd = new InputStreamReader(new InputStream()
-		{
-			@Override
-			public int read() throws IOException
-			{
-				return raf.read();
-			}
-		});
+		this.raf = raf;
 	}
 
 	public void seek(long pos) throws IOException
 	{
 		raf.seek(pos);
-		createReader();
 	}
 
 	public long getPosition() throws IOException
@@ -77,19 +59,32 @@ public class RandomAccessFileReader extends Reader
 	@Override
 	public void close() throws IOException
 	{
-		rd.close();
 		raf.close();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.io.Reader#read(char[], int, int)
+	 * @see java.io.Writer#flush()
 	 */
 	@Override
-	public int read(char[] cbuf, int off, int len) throws IOException
+	public void flush() throws IOException
 	{
-		return rd.read(cbuf, off, len);
+		raf.getFD().sync();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.io.Writer#write(char[], int, int)
+	 */
+	@Override
+	public void write(char[] cbuf, int off, int len) throws IOException
+	{
+		while (len-- > 0)
+		{
+			raf.writeChar(cbuf[off++]);
+		}
 	}
 
 	/**
