@@ -111,18 +111,19 @@ public class Predicate_date_time_value extends DateTimePrologCode
 	}
 
 	/**
-	 * @param term
+	 * @param keyTerm
+	 *          the term to use to select which part of date9 to return
 	 * @param date9
-	 * @return
+	 * @return the Term representing the part of date9 selected by keyTerm
 	 * @throws PrologException
 	 */
-	protected Term getDate9Value(Term term, CompoundTerm date9) throws PrologException
+	protected Term getDate9Value(Term keyTerm, CompoundTerm date9) throws PrologException
 	{
-		if (!(term instanceof AtomTerm))
+		if (!(keyTerm instanceof AtomTerm))
 		{
-			PrologException.typeError(TermConstants.atomAtom, term);
+			PrologException.typeError(TermConstants.atomAtom, keyTerm);
 		}
-		AtomTerm key = (AtomTerm) term;
+		AtomTerm key = (AtomTerm) keyTerm;
 		if (key == yearAtom)
 		{
 			return date9.args[0];
@@ -181,7 +182,7 @@ public class Predicate_date_time_value extends DateTimePrologCode
 	/**
 	 * @param interpreter
 	 * @param bi
-	 * @return
+	 * @return PrologCode return code
 	 * @throws PrologException
 	 */
 	protected int nextSolution(Interpreter interpreter, Date9BacktrackInfo bi) throws PrologException

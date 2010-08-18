@@ -63,6 +63,7 @@ public class Predicate_file_save extends Predicate_dialog
 
 	/**
 	 * @param args
+	 * @return the created JFileChooser
 	 * @throws PrologException
 	 */
 	protected JFileChooser createFileDialog(Term[] args) throws PrologException

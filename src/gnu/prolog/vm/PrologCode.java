@@ -48,6 +48,7 @@ public interface PrologCode extends Installable
 	 * @param args
 	 *          arguments of code
 	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * @throws PrologException
 	 */
 	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException;

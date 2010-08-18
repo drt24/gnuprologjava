@@ -32,7 +32,12 @@ public class LeaveByteCodeBacktrackInfo extends BacktrackInfo
 	public BacktrackInfo startBacktrackInfo;
 	public Term environment[];
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param environment
+	 * @param startBacktrackInfo
+	 */
 	public LeaveByteCodeBacktrackInfo(Term environment[], BacktrackInfo startBacktrackInfo)
 	{
 		super(-1, -1);

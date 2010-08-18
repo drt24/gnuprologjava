@@ -93,7 +93,7 @@ public class RandomAccessFileReader extends Reader
 	}
 
 	/**
-	 * @return
+	 * @return the size of the RandomAccessFile
 	 * @throws IOException
 	 */
 	public long size() throws IOException

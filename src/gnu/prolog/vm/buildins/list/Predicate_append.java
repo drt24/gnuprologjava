@@ -107,7 +107,7 @@ public class Predicate_append extends ExecuteOnlyCode
 	/**
 	 * @param interpreter
 	 * @param bi
-	 * @return
+	 * @return PrologCode return code
 	 * @throws PrologException
 	 */
 	protected int nextSolution(Interpreter interpreter, AppendBacktrackInfo bi) throws PrologException

@@ -39,7 +39,8 @@ public abstract class Predicate_uuid extends ExecuteOnlyCode
 	 * Get the UUID from an atom term. Returns null in case of an invalid UUID.
 	 * 
 	 * @param value
-	 * @return
+	 * @return the UUID from an atom term. Returns null in case of an invalid
+	 *         UUID.
 	 * @throws PrologException
 	 */
 	public static final UUID getUUID(Term value) throws PrologException

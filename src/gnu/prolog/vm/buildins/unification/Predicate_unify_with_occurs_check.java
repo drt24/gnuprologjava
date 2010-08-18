@@ -135,7 +135,10 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 	}
 
 	/**
-	 * preform occur check on variable
+	 * Perform occur check on variable
+	 * 
+	 * @param variable
+	 * @param term
 	 * 
 	 * @return true if term does not contains variable
 	 */

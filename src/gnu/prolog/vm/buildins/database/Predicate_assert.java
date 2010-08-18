@@ -33,7 +33,12 @@ import gnu.prolog.vm.TermConstants;
  */
 public abstract class Predicate_assert extends ExecuteOnlyCode
 {
-	/** assert a clause */
+	/**
+	 * assert a clause
+	 * 
+	 * @param p
+	 * @param clause
+	 */
 	protected abstract void assertPred(Predicate p, CompoundTerm clause);
 
 	@Override

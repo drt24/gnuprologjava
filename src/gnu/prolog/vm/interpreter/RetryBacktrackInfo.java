@@ -26,7 +26,12 @@ import gnu.prolog.vm.BacktrackInfo;
  */
 public class RetryBacktrackInfo extends BacktrackInfo
 {
-	/** a costructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param undoPosition
+	 * @param codePositon
+	 */
 	public RetryBacktrackInfo(int undoPosition, int codePositon)
 	{
 		super(undoPosition, codePositon);

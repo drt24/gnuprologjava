@@ -24,7 +24,7 @@ import java.io.RandomAccessFile;
 import java.io.Writer;
 
 /**
- *
+ * 
  * @author Michiel Hendriks
  */
 public class RandomAccessFileWriter extends Writer
@@ -52,7 +52,7 @@ public class RandomAccessFileWriter extends Writer
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.io.Reader#close()
 	 */
 	@Override
@@ -63,7 +63,7 @@ public class RandomAccessFileWriter extends Writer
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.io.Writer#flush()
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class RandomAccessFileWriter extends Writer
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.io.Writer#write(char[], int, int)
 	 */
 	@Override
@@ -87,7 +87,7 @@ public class RandomAccessFileWriter extends Writer
 	}
 
 	/**
-	 * @return
+	 * @return the size of the RandomAccessFile
 	 * @throws IOException
 	 */
 	public long size() throws IOException

@@ -41,6 +41,7 @@ public class Predicate_spy extends ExecuteOnlyCode
 {
 	/**
 	 * @param term
+	 * @return set of TraceLevels for the term
 	 * @throws PrologException
 	 */
 	public static EnumSet<TraceLevel> getTraceLevel(Term term) throws PrologException
@@ -58,7 +59,7 @@ public class Predicate_spy extends ExecuteOnlyCode
 
 	/**
 	 * @param term
-	 * @return
+	 * @return the CompoundTermTag for the term
 	 * @throws PrologException
 	 */
 	public static CompoundTermTag getTag(Term term) throws PrologException

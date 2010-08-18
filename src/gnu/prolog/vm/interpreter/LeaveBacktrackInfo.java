@@ -30,7 +30,12 @@ public class LeaveBacktrackInfo extends BacktrackInfo
 	/** execution state */
 	public ExecutionState executionState;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param undoPosition
+	 * @param executionState
+	 */
 	public LeaveBacktrackInfo(int undoPosition, ExecutionState executionState)
 	{
 		super(undoPosition, -1);

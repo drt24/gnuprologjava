@@ -67,6 +67,7 @@ public class Predicate_predsort extends ExecuteOnlyCode
 		CompoundTerm callMe;
 
 		/**
+		 * @param interp
 		 * @param call
 		 */
 		public CallPredComparator(Interpreter interp, CompoundTerm call)
@@ -169,7 +170,10 @@ public class Predicate_predsort extends ExecuteOnlyCode
 	}
 
 	/**
-	 * @return
+	 * @param interpreter
+	 * @param sorter
+	 * @return a Comparator for Terms
+	 * @throws PrologException
 	 */
 	protected Comparator<? super Term> getComparator(Interpreter interpreter, Term sorter) throws PrologException
 	{
