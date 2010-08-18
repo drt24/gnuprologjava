@@ -17,33 +17,171 @@
  */
 package gnu.prolog.io;
 
+import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTermTag;
+import gnu.prolog.vm.HasAtom;
+import gnu.prolog.vm.TermConstants;
 
 final public class Operator
 {
 
 	// 6.3.4 Operator notation
-	// Specifier Class Associativity
-	public final static int FX = 0; // prefix non-associative
-	public final static int FY = 1; // prefix right-associative
-	public final static int XFX = 2; // infix non-associative
-	public final static int XFY = 3; // infix right-associative
-	public final static int YFX = 4; // infix left-associative
-	public final static int XF = 5; // postfix non-associative
-	public final static int YF = 6; // postfix left-associative
-	public final static int NONE = -1; // non opearator
+	/**
+	 * Specifier Class Associativity
+	 * 
+	 * @author Daniel Thomas
+	 */
+	public static enum SPECIFIER implements HasAtom
+	{
+		/**
+		 * prefix non-associative
+		 */
+		FX
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.fxAtom;
+			}
+		},
+		/**
+		 * prefix right-associative
+		 */
+		FY
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.fyAtom;
+			}
+		},
+		/**
+		 * infix non-associative
+		 */
+		XFX
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.xfxAtom;
+			}
+		},
+		/**
+		 * infix right-associative
+		 */
+		XFY
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.xfyAtom;
+			}
+		},
+		/**
+		 * infix left-associative
+		 */
+		YFX
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.yfxAtom;
+			}
+		},
+		/**
+		 * postfix non-associative
+		 */
+		XF
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.xfAtom;
+			}
+		},
+		/**
+		 * postfix left-associative
+		 */
+		YF
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				return TermConstants.yfAtom;
+			}
+		},
+		/**
+		 * non operator
+		 */
+		NONE
+		{
+			@Override
+			public AtomTerm getAtom()
+			{
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+
+		/**
+		 * @return the AtomTerm representation for this value for the specifier.
+		 */
+		public abstract AtomTerm getAtom();
+
+		/**
+		 * Return the SPECIFIER represented by the AtomTerm specifier or
+		 * {@link #NONE} if it does not match one.
+		 * 
+		 * @param specifier
+		 *          the AtomTerm specifier to convert
+		 * @return the SPECIFIER represented by the AtomTerm specifier or
+		 *         {@link #NONE} if it does not match one.
+		 */
+		public static SPECIFIER fromAtom(AtomTerm specifier)
+		{
+			if (specifier == TermConstants.fxAtom)
+			{
+				return SPECIFIER.FX;
+			}
+			else if (specifier == TermConstants.fyAtom)
+			{
+				return SPECIFIER.FY;
+			}
+			else if (specifier == TermConstants.xfxAtom)
+			{
+				return SPECIFIER.XFX;
+			}
+			else if (specifier == TermConstants.xfyAtom)
+			{
+				return SPECIFIER.XFY;
+			}
+			else if (specifier == TermConstants.yfxAtom)
+			{
+				return SPECIFIER.YFX;
+			}
+			else if (specifier == TermConstants.xfAtom)
+			{
+				return SPECIFIER.XF;
+			}
+			else if (specifier == TermConstants.yfAtom)
+			{
+				return SPECIFIER.YF;
+			}
+			return SPECIFIER.NONE;
+		}
+	}
 
 	public final static int MAX_PRIORITY = 1200;
 	public final static int MIN_PRIORITY = 1;
 
-	public static final Operator nonOperator = new Operator("", NONE, -1);
+	public static final Operator nonOperator = new Operator("", SPECIFIER.NONE, -1);
 
 	public final String name;
-	public final int specifier;
+	public final SPECIFIER specifier;
 	public final int priority;
 	public final CompoundTermTag tag;
 
-	protected Operator(String name, int specifier, int priority)
+	protected Operator(String name, SPECIFIER specifier, int priority)
 	{
 		this.name = name;
 		this.specifier = specifier;
@@ -73,7 +211,6 @@ final public class Operator
 	@Override
 	public String toString()
 	{
-		String specifiers[] = { "NONE", "FX", "FY", "XFX", "XFY", "YFX", "XF", "YF" };
-		return "Opearator[name='" + name + "';specifier='" + specifiers[specifier + 1] + ";priority=" + priority + "]";
+		return "Opearator[name='" + name + "';specifier='" + specifier + ";priority=" + priority + "]";
 	}
 }
