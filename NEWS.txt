@@ -1,6 +1,6 @@
-0.2.5 beta 2010-07-28
+0.2.5 2010-07-28
    Conforms to ISO/IEC DIS 13211-1 : 1995 bar two minor bugs.
-   There is now a (texinfo) manual.
+   There is now a (texinfo) manual and the readme.txt has been updated.
    The demo package now contains an example of the use of the API.
    The public key of the key signing key is in the sources.
    Term classes now have working .toString() functions (which use TermWriter.toString(Term))
