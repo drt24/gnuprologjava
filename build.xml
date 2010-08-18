@@ -198,10 +198,10 @@ Ant Buildfile for GNU Prolog for Java.
 		</exec>
 	</target>
 
-	<target name="test" depends="build,test-inriasuite,test-vanilla" description="Execute tests"/>
+	<target name="test" depends="compile,test-inriasuite,test-vanilla" description="Execute tests"/>
 	<target name="clean-test" depends="clean-vanilla,clean-inria"/>
 
-	<target name="test-vanilla" depends="build">
+	<target name="test-vanilla" depends="compile">
 		<echo>Verify output in test/test-vanilla.out
 Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to happen.</echo>
 		<java classname="gnu.prolog.test.GoalRunner" dir="test/vanilla" fork="true" logerror="true" output="test/test-vanilla.out">
