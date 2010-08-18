@@ -28,6 +28,12 @@ import gnu.prolog.term.VariableTerm;
 
 import java.util.Random;
 
+/**
+ * Evaluates mathematical expressions as instructed by the
+ * {@link gnu.prolog.vm.buildins.arithmetics.Predicate_is is} predicate and
+ * {@link gnu.prolog.vm.buildins.arithmetics equality testing terms}.
+ * 
+ */
 public class Evaluate
 {
 	private Evaluate()

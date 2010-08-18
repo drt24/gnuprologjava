@@ -29,6 +29,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Reader;
 
+/**
+ * Prolog stream which reads input as text
+ * 
+ */
 public class TextInputPrologStream extends PrologStream
 {
 	protected TermReader termReader;

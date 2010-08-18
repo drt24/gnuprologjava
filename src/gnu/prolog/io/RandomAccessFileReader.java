@@ -26,6 +26,7 @@ import java.io.RandomAccessFile;
 import java.io.Reader;
 
 /**
+ * Reads a {@link RandomAccessFile}
  * 
  * @author Michiel Hendriks
  */

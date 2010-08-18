@@ -537,7 +537,11 @@ public class Environment implements PredicateListener
 		}
 	}
 
-	protected static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
+	/**
+	 * A {@link WeakReference} to a {@link PrologCodeListener}
+	 * 
+	 */
+	private static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
 	{
 		PrologCodeListenerRef(ReferenceQueue<? super PrologCodeListener> queue, PrologCodeListener listener,
 				CompoundTermTag tag)

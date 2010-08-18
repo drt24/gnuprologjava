@@ -28,6 +28,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Writer;
 
+/**
+ * Prolog stream which writes output as text
+ * 
+ */
 public class TextOutputPrologStream extends PrologStream
 {
 	protected TermWriter termWriter;

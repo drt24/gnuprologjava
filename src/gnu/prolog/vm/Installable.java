@@ -19,6 +19,8 @@
 package gnu.prolog.vm;
 
 /**
+ * Implementing classes can be installed and uninstalled into the
+ * {@link Environment}.
  * 
  * @author Daniel Thomas
  */
