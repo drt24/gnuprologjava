@@ -47,6 +47,11 @@ Ant Buildfile for GNU Prolog for Java.
 		<property name="test.concurrency.threads" value="1" />
 		<property name="test.concurrency.iterations" value="1" />
 
+		<!-- Key id to use for signing the .deb files -->
+		<property name="dist.keyid" value="" />
+		<property name="dist.name-version" value="${ant.project.name}-${version}"/>
+		<property name="dist.debdir" value="dist/${dist.name-version}/" />
+
 		<mkdir dir="build" />
 		<mkdir dir="dist" />
 
@@ -68,7 +73,7 @@ Ant Buildfile for GNU Prolog for Java.
 				<include name="**/*.properties" />
 			</fileset>
 		</copy>
-		<jar destfile="build/${ant.project.name}-${version}.jar" basedir="build/code">
+		<jar destfile="build/${dist.name-version}.jar" basedir="build/code">
 			<manifest>
 				<attribute name="Main-Class" value="gnu.prolog.test.GoalRunner" />
 				<section name="gnu/prolog/">
@@ -85,13 +90,13 @@ Ant Buildfile for GNU Prolog for Java.
 
 	<target name="compile" depends="init">
 		<mkdir dir="build/code" />
-		<javac srcdir="src" destdir="build/code" debug="${java.debug}" debuglevel="lines,vars,source"/>
+		<javac srcdir="src" destdir="build/code" classpath="${java.class.path}" debug="${java.debug}" debuglevel="lines,vars,source"/>
 	</target>
 
 	<target name="dist" depends="build,docs,generate-changelog" description="Produce a release zip file of the .jar and the api">
-		<zip destfile="dist/${ant.project.name}-${version}.zip">
+		<zip destfile="dist/${dist.name-version}.zip">
 			<fileset dir="build">
-				<include name="${ant.project.name}-${version}.jar" />
+				<include name="${dist.name-version}.jar" />
 				<include name="api/**" />
 				<include name="demo/**" />
 				<include name="manual/**" />
@@ -114,7 +119,7 @@ Ant Buildfile for GNU Prolog for Java.
 	</target>
 
 	<target name="dist-src" depends="init,generate-changelog" description="Produce a zip of the source">
-		<zip destfile="dist/${ant.project.name}-${version}-src.zip">
+		<zip destfile="dist/${dist.name-version}-src.zip">
 			<fileset dir="${basedir}">
 				<include name="src/**" />
 				<include name="build.xml" />
@@ -124,6 +129,7 @@ Ant Buildfile for GNU Prolog for Java.
 				<include name="docs/readme.txt" />
 				<include name="docs/COPYING.txt" />
 				<include name="docs/COPYING.LIBRARY.txt" />
+				<include name="debian/**" />
 			</fileset>
 			<fileset dir="dist">
 				<include name="ChangeLog"/>
@@ -131,10 +137,20 @@ Ant Buildfile for GNU Prolog for Java.
 		</zip>
 	</target>
 
+	<target name="dist-deb" depends="dist-src" description="Produce a .deb to install with">
+		<mkdir dir="${dist.debdir}"/>
+		<unzip src="dist/${dist.name-version}-src.zip" dest="${dist.debdir}"/>
+		<!-- Delete the getopt code as we want to use the libgetopt-java package for that -->
+		<delete dir="${dist.debdir}src/gnu/getopt"/>
+		<exec executable="dpkg-buildpackage" dir="${dist.debdir}">
+			<arg value="-k${dist.keyid}"/>
+		</exec>
+	</target>
+
 	<target name="generate-changelog" depends="init">
 		<copy file="ChangeLog" todir="dist"/>
-		<exec executable="./generate-ChangeLog.sh">
-			<arg value="./"/>
+		<exec executable="${basedir}/generate-ChangeLog.sh">
+			<arg value="${basedir}"/>
 			<arg value="dist"/>
 		</exec>
 	</target>
@@ -192,8 +208,8 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 		</java>
 	</target>
 	<target name="clean-vanilla">
-		<delete file="test/test-vanilla.out"/>
-		<delete>
+		<delete file="test/test-vanilla.out" failonerror="false"/>
+		<delete failonerror="false">
 			<fileset dir="test/vanilla/" includes="*.tmp,*.bin,*.out"/>
 		</delete>
 	</target>
@@ -217,8 +233,8 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 		</exec>
 	</target>
 	<target name="clean-inria">
-		<delete file="test/test-inria.out"/>
-		<delete>
+		<delete file="test/test-inria.out" failonerror="false"/>
+		<delete failonerror="false">
 			<fileset dir="test/inriasuite/io/" includes="*.tmp"/>
 		</delete>
 	</target>

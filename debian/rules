@@ -3,7 +3,7 @@
 export JAVA_HOME=/usr/lib/jvm/default-java
 
 # Put depended upon jars in here
-# export CLASSPATH=
+export CLASSPATH=/usr/share/java/gnu-getopt.jar
 
 %:
 	dh --with javahelper $@
