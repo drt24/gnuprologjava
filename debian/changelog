@@ -1,4 +1,4 @@
-gnuprologjava (0.2.5-1) unstable; urgency=low
+gnuprolog-java (0.2.5-1) unstable; urgency=low
 
   * Initial release. (Closes: #593450)
 

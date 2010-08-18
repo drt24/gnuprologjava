@@ -194,7 +194,7 @@ Ant Buildfile for GNU Prolog for Java.
 		<exec executable="ln" dir="build">
 			<arg value="-s"/>
 			<arg value="manual.info"/>
-			<arg value="gnuprologjava.info"/>
+			<arg value="gnuprolog-java.info"/>
 		</exec>
 	</target>
 
