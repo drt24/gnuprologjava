@@ -201,7 +201,7 @@ Ant Buildfile for GNU Prolog for Java.
 	<target name="test" depends="compile,test-inriasuite,test-vanilla,test-dcg" description="Execute tests"/>
 	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg"/>
 
-	<target name="test-vanilla" depends="build">
+	<target name="test-vanilla" depends="compile">
 		<echo>Verify output in test/test-vanilla.out
 Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to happen.</echo>
 		<java classname="gnu.prolog.test.GoalRunner" dir="test/vanilla" fork="true" logerror="true" output="test/test-vanilla.out">
@@ -245,7 +245,7 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<fileset dir="test/inriasuite/io/" includes="*.tmp"/>
 		</delete>
 	</target>
-	<target name="test-dcg" depends="build">
+	<target name="test-dcg" depends="compile">
 		<echo>Verify output in test/test-dcg.out</echo>
 		<java classname="gnu.prolog.test.GoalRunner" dir="test/extending/DCG" fork="true" logerror="true" output="test/test-dcg.out">
 			<arg value="--once" />
