@@ -15,14 +15,14 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm;
+package gnu.prolog.io;
 
-import gnu.prolog.io.ReadOptions;
-import gnu.prolog.io.TermWriter;
-import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -33,7 +33,7 @@ public class TextOutputPrologStream extends PrologStream
 	protected TermWriter termWriter;
 	protected RandomAccessFileWriter fileWriter;
 
-	TextOutputPrologStream(OpenOptions options, Writer wr)
+	public TextOutputPrologStream(OpenOptions options, Writer wr)
 	{
 		super(options);
 		endOfStream = atAtom;

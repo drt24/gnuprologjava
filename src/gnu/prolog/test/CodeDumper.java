@@ -32,6 +32,10 @@ import gnu.prolog.vm.PrologCode;
 
 import java.io.StringReader;
 
+/**
+ * Print out the interpreted code compiled from the supplied Prolog file.
+ * 
+ */
 public class CodeDumper
 {
 	private CodeDumper()

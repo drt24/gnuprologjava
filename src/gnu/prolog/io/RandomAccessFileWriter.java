@@ -17,7 +17,7 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm;
+package gnu.prolog.io;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;

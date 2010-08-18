@@ -15,16 +15,14 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm;
+package gnu.prolog.io;
 
-import gnu.prolog.io.CharConversionTable;
-import gnu.prolog.io.ParseException;
-import gnu.prolog.io.ReadOptions;
-import gnu.prolog.io.TermReader;
-import gnu.prolog.io.WriteOptions;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 import java.io.BufferedReader;
 import java.io.IOException;

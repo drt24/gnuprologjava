@@ -17,10 +17,10 @@
  */
 package gnu.prolog.vm.buildins.io;
 
+import gnu.prolog.io.PrologStream;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.PrologStream;
 
 /**
  * prolog code

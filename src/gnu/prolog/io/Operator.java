@@ -22,6 +22,10 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.vm.HasAtom;
 import gnu.prolog.vm.TermConstants;
 
+/**
+ * Represents a Prolog operator with a name, {@link SPECIFIER} and priority.
+ * 
+ */
 final public class Operator
 {
 

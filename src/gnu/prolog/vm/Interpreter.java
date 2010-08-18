@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm;
 
+import gnu.prolog.io.PrologStream;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;

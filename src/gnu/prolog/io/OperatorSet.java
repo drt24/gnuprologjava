@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Stores the current {@link Operator Operators}.
+ * 
+ */
 final public class OperatorSet
 {
 	static class OperatorLevel
@@ -189,6 +193,12 @@ final public class OperatorSet
 		return 1200;
 	}
 
+	/**
+	 * 
+	 * @param defaultSet
+	 *          should this OperatorSet be initialized with the default
+	 *          OperatorSet?
+	 */
 	public OperatorSet(boolean defaultSet)
 	{
 		if (defaultSet)

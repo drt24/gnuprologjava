@@ -19,11 +19,11 @@
  */
 package gnu.prolog.vm.interpreter;
 
+import gnu.prolog.io.PrologStream;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologStream;
 
 import java.util.EnumSet;
 import java.util.HashMap;

@@ -17,6 +17,11 @@
  */
 package gnu.prolog.io;
 
+/**
+ * Errors which occur when parsing text as Prolog code, stores a line and column
+ * number.
+ * 
+ */
 public class ParseException extends java.io.IOException
 {
 	private static final long serialVersionUID = -7824584186874732911L;

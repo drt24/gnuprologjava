@@ -17,13 +17,13 @@
  */
 package gnu.prolog.vm.buildins.io;
 
+import gnu.prolog.io.PrologStream;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.TermConstants;
 
 /**

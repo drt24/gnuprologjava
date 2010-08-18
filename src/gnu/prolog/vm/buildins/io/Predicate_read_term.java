@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm.buildins.io;
 
+import gnu.prolog.io.PrologStream;
 import gnu.prolog.io.ReadOptions;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
@@ -26,7 +27,6 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.PrologStream;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;

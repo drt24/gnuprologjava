@@ -41,19 +41,29 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.util.Iterator;
 
+/**
+ * Load a prolog file and run a goal.
+ * 
+ * @see #USAGE
+ * @see #EXAMPLE
+ * 
+ */
 public class GoalRunner
 {
 	private GoalRunner()
 	{}
 
+	public static final String USAGE = "usage: java gnu.prolog.test.GoalRunner\n"
+			+ "                                      [-o|--once]\n"
+			+ "                                      [-t|--threads <threads>]\n"
+			+ "                                      [-i|--iterations <iterations>]\n"
+			+ "                                      <text to load> <goal to run>";
+	public static final String EXAMPLE = "example: java gnu.prolog.test.GoalRunner append.pro append([a,b],[c,d],R)";
+
 	private static void usage()
 	{
-		System.out.println("usage: java gnu.prolog.test.GoalRunner\n"
-				+ "                                      [-o|--once]\n"
-				+ "                                      [-t|--threads <threads>]\n"
-				+ "                                      [-i|--iterations <iterations>]\n"
-				+ "                                      <text to load> <goal to run>");
-		System.out.println("example: java gnu.prolog.test.GoalRunner append.pro append([a,b],[c,d],R)");
+		System.out.println(USAGE);
+		System.out.println(EXAMPLE);
 		System.exit(-1);
 	}
 
@@ -177,7 +187,6 @@ public class GoalRunner
 			TermReader trd = new TermReader(rd, env);
 			TermWriter out = new TermWriter(new OutputStreamWriter(System.out));
 			ReadOptions rd_ops = new ReadOptions(env.getOperatorSet());
-			WriteOptions wr_ops = new WriteOptions(env.getOperatorSet());
 			try
 			{
 				Term goalTerm = trd.readTermEof(rd_ops);
