@@ -67,12 +67,6 @@ Ant Buildfile for GNU Prolog for Java.
 	<target name="rebuild" depends="clean,build" description="Perform a clean rebuild of the project" />
 
 	<target name="jar" depends="compile">
-		<copy todir="build/code">
-			<fileset dir="src">
-				<include name="**/*.pro" />
-				<include name="**/*.properties" />
-			</fileset>
-		</copy>
 		<jar destfile="build/${dist.name-version}.jar" basedir="build/code">
 			<manifest>
 				<attribute name="Main-Class" value="gnu.prolog.test.GoalRunner" />
@@ -91,6 +85,12 @@ Ant Buildfile for GNU Prolog for Java.
 	<target name="compile" depends="init">
 		<mkdir dir="build/code" />
 		<javac srcdir="src" destdir="build/code" classpath="${java.class.path}" debug="${java.debug}" debuglevel="lines,vars,source"/>
+		<copy todir="build/code">
+			<fileset dir="src">
+				<include name="**/*.pro" />
+				<include name="**/*.properties" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="dist" depends="build,doc,generate-changelog" description="Produce a release zip file of the .jar and the api">
