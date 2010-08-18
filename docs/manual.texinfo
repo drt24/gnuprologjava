@@ -5,6 +5,12 @@
 @settitle GNU Prolog for Java @value{VERSION} Manual
 @c %**end of header
 
+@dircategory GNU Libraries
+@direntry
+* Prolog for Java: (gnuprologjava). GNU Prolog for Java manual.
+@end direntry
+
+
 @copying
 This manual is for GNU Prolog for Java @value{VERSION},
 which is a Java library for utilising Prolog.
@@ -26,10 +32,6 @@ copy and modify this GNU manual.''
 
 @end copying
 
-@dircategory GNU Libraries
-@direntry
-* Prolog for Java: (gnuprologjava). GNU Prolog for Java manual.
-@end direntry
 
 @titlepage
 @title GNU Prolog for Java
