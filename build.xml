@@ -198,7 +198,7 @@ Ant Buildfile for GNU Prolog for Java.
 		</exec>
 	</target>
 
-	<target name="test" depends="build,test-inriasuite,test-vanilla,test-dcg" description="Execute tests"/>
+	<target name="test" depends="compile,test-inriasuite,test-vanilla,test-dcg" description="Execute tests"/>
 	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg"/>
 
 	<target name="test-vanilla" depends="build">
