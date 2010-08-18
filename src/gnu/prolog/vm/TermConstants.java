@@ -20,6 +20,12 @@ package gnu.prolog.vm;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTermTag;
 
+/**
+ * Stores all the commonly used terms for easy access.
+ * 
+ * Those terms still stored in other classes should be migrated here.
+ * 
+ */
 public final class TermConstants
 {
 	private TermConstants()

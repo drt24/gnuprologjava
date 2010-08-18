@@ -25,6 +25,10 @@ import gnu.prolog.term.VariableTerm;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+/**
+ * A PrologStream for binary data
+ * 
+ */
 public class BinaryPrologStream extends PrologStream
 {
 	protected RandomAccessFile file;

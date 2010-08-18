@@ -29,10 +29,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Abstract class representing Prolog Streams
+ * 
+ */
 public abstract class PrologStream
 {
 	protected static final boolean DEBUG = false;
 
+	/**
+	 * Options for an opening a PrologStream
+	 * 
+	 */
 	public static class OpenOptions
 	{
 		public AtomTerm mode;

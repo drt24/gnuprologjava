@@ -24,6 +24,7 @@ import java.io.RandomAccessFile;
 import java.io.Writer;
 
 /**
+ * Writes to a {@link RandomAccessFile}
  * 
  * @author Michiel Hendriks
  */

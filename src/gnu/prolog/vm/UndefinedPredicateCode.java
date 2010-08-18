@@ -23,7 +23,8 @@ import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 
 /**
- * prolog code
+ * An Undefined Predicate throws an error on execution depending on the value of
+ * the unknown flag.
  */
 public class UndefinedPredicateCode extends ExecuteOnlyCode
 {

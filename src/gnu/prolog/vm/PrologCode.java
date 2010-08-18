@@ -18,11 +18,15 @@
 package gnu.prolog.vm;
 
 /**
- * prolog code
+ * Implementing classes can be executed and return a return code of
+ * {@link #SUCCESS}, {@link #SUCCESS_LAST}, or {@link #FAIL}.
+ * 
+ * {@link gnu.prolog.vm.buildins.imphooks.Predicate_halt Predicate_halt} can
+ * also return {@link #HALT}
  */
 public interface PrologCode extends Installable
 {
-	// EXTENSION: use an enum rather than ints
+	// TODO: use an enum rather than ints
 	/**
 	 * predicate was returned with success, backtrack info was created, and
 	 * re-execute is possible.
