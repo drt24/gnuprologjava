@@ -24,7 +24,6 @@ package gnu.getopt;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.PropertyResourceBundle;
 import java.text.MessageFormat;
 
 /**************************************************************************/
@@ -540,7 +539,7 @@ protected String progname;
 /**
   * The localized strings are kept in a separate file
   */
-private ResourceBundle _messages = PropertyResourceBundle.getBundle(
+private ResourceBundle _messages = ResourceBundle.getBundle(
                            "gnu/getopt/MessagesBundle", Locale.getDefault());
 
 /**************************************************************************/
@@ -619,7 +618,7 @@ Getopt(String progname, String[] argv, String optstring,
   else
     {
       posixly_correct = true;
-      _messages = PropertyResourceBundle.getBundle("gnu/getopt/MessagesBundle",
+      _messages = ResourceBundle.getBundle("gnu/getopt/MessagesBundle",
                                                    Locale.US);
     }
 
