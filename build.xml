@@ -62,7 +62,7 @@ Ant Buildfile for GNU Prolog for Java.
 		<delete dir="dist" />
 	</target>
 
-	<target name="build" depends="jar" description="Build all the sources" />
+	<target name="build" depends="jar,doc" description="Build all the sources" />
 
 	<target name="rebuild" depends="clean,build" description="Perform a clean rebuild of the project" />
 
@@ -93,7 +93,7 @@ Ant Buildfile for GNU Prolog for Java.
 		<javac srcdir="src" destdir="build/code" classpath="${java.class.path}" debug="${java.debug}" debuglevel="lines,vars,source"/>
 	</target>
 
-	<target name="dist" depends="build,docs,generate-changelog" description="Produce a release zip file of the .jar and the api">
+	<target name="dist" depends="build,doc,generate-changelog" description="Produce a release zip file of the .jar and the api">
 		<zip destfile="dist/${dist.name-version}.zip">
 			<fileset dir="build">
 				<include name="${dist.name-version}.jar" />
@@ -106,6 +106,7 @@ Ant Buildfile for GNU Prolog for Java.
 				<include name="readme.txt" />
 				<include name="COPYING.txt" />
 				<include name="COPYING.LIBRARY.txt" />
+				<include name="*.texinfo" />
 			</fileset>
 			<fileset dir="${basedir}">
 				<include name="NEWS.txt" />
@@ -127,6 +128,7 @@ Ant Buildfile for GNU Prolog for Java.
 				<include name="key-signing-key.asc" />
 				<include name="generate-ChangeLog.sh" />
 				<include name="docs/readme.txt" />
+				<include name="docs/*.texinfo" />
 				<include name="docs/COPYING.txt" />
 				<include name="docs/COPYING.LIBRARY.txt" />
 				<include name="debian/**" />
@@ -155,7 +157,7 @@ Ant Buildfile for GNU Prolog for Java.
 		</exec>
 	</target>
 
-	<target name="docs" depends="init,manual" description="Make the javadoc api and copy the demo applications">
+	<target name="doc" depends="init,manual" description="Make the javadoc api and copy the demo applications">
 		<mkdir dir="build/api" />
 		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes" use="yes">
 			<packageset dir="src">
@@ -189,6 +191,11 @@ Ant Buildfile for GNU Prolog for Java.
 			<arg value="docs/manual.texinfo"/>
 			<arg value="--output=build/manual.info"/>
 		</exec>
+		<exec executable="ln" dir="build">
+			<arg value="-s"/>
+			<arg value="manual.info"/>
+			<arg value="gnuprologjava.info"/>
+		</exec>
 	</target>
 
 	<target name="test" depends="build,test-inriasuite,test-vanilla,test-dcg" description="Execute tests"/>
@@ -213,7 +220,7 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<fileset dir="test/vanilla/" includes="*.tmp,*.bin,*.out"/>
 		</delete>
 	</target>
-	<target name="test-inriasuite" depends="build">
+	<target name="test-inriasuite" depends="compile">
 		<echo>Verify output in test/test-inria.out</echo>
 		<java classname="gnu.prolog.test.GoalRunner" dir="test/inriasuite" fork="true" logerror="true" output="test/test-inria.out">
 			<arg value="--once" />
