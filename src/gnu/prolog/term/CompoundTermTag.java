@@ -24,8 +24,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * A tag of compound term. A tag consists of functor and arity. All tags are
- * unique in one JVM.
+ * A tag of compound term such as foo/2. A tag consists of functor and arity.
+ * All tags are unique in one JVM.
  * 
  * @author Constatine Plotinikov
  * @version 0.0.1

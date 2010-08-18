@@ -4,11 +4,11 @@
 package gnu.prolog.database;
 
 /**
- * A pair of a {@link L} and a {@link R}
+ * A pair of a LeftType (L) and a RightType (R)
  * 
  * (Because java doesn't do tuples)
  * 
- * @author daniel
+ * @author Daniel Thomas
  * @param <L>
  * @param <R>
  * 

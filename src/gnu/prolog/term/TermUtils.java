@@ -25,6 +25,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Static utility functions for operating on {@link Term Terms}
+ * 
+ */
 public class TermUtils
 {
 	private TermUtils()
