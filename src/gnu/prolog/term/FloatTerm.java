@@ -18,7 +18,7 @@
 package gnu.prolog.term;
 
 /**
- * floating point number term
+ * Floating point number term (uses double)
  * 
  * @author Constantine Plotnikov
  * @version 0.0.1

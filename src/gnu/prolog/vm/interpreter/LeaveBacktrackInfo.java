@@ -42,4 +42,3 @@ public class LeaveBacktrackInfo extends BacktrackInfo
 		this.executionState = executionState;
 	}
 }
->>>>>>> 88911e1... Fix javadoc errors

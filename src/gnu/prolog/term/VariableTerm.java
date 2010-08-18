@@ -21,6 +21,11 @@
  */
 package gnu.prolog.term;
 
+/**
+ * Represents Prolog variables such as X or A.
+ * 
+ * @see Term#dereference()
+ */
 public class VariableTerm extends Term
 {
 	private static final long serialVersionUID = -8440602532721728373L;

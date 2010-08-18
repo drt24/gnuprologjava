@@ -23,7 +23,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * compound term.
+ * Compound terms are the basic method for combining terms. In
+ * <code>foo(a,b) foo/2</code> is the compound term while <code>a</code> and
+ * <code>b</code> are {@link AtomTerm AtomTerms}
  * 
  * @author Constantine Plotnilkov
  * @version 0.0.1

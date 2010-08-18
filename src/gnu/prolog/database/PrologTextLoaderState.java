@@ -42,6 +42,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Stores the state of all the {@link PrologTextLoader PrologTextLoaders} for
+ * the {@link Environment} instance it is for.
+ * 
+ */
 public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvironment
 {
 	protected Module module = new Module();

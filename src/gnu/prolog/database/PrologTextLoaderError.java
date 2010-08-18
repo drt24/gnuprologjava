@@ -17,6 +17,13 @@
  */
 package gnu.prolog.database;
 
+/**
+ * Stores details of errors that occurred during the loading of a file by a
+ * {@link PrologTextLoader}.
+ * 
+ * @see PrologTextLoaderState#getErrors()
+ * 
+ */
 public class PrologTextLoaderError extends Exception
 {
 	private static final long serialVersionUID = 4388822484504978038L;

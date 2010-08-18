@@ -36,7 +36,7 @@ import java.util.Map.Entry;
  * {@link gnu.prolog.vm.buildins.io.Predicate_char_conversion char_conversion}
  * and {@link gnu.prolog.vm.buildins.io.Predicate_current_char_conversion
  * current_char_conversion} and
- * {@link gnu.prolog.io.TextInputPrologStream#readTerm(Term,Interpreter,ReadOptions)}
+ * {@link gnu.prolog.vm.TextInputPrologStream#readTerm(Term,Interpreter,ReadOptions)}
  * to map one character to another.
  * 
  * @author Michiel Hendriks

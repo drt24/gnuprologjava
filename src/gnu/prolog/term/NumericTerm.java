@@ -21,6 +21,7 @@
 package gnu.prolog.term;
 
 /**
+ * Abstract class for all Terms which represent numbers
  * 
  * @author Daniel Thomas
  */

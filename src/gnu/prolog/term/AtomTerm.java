@@ -21,7 +21,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * Atom term. The object of this class represent prolog atom.
+ * Atom term. The objects of this class represent prolog atoms. This
+ * encapsulates Strings and chars.
  * 
  * @author Constantin Plotnikov
  * @version 0.0.1

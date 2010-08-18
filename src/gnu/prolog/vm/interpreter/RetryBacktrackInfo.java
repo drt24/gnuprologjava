@@ -37,4 +37,3 @@ public class RetryBacktrackInfo extends BacktrackInfo
 		super(undoPosition, codePositon);
 	}
 }
->>>>>>> 88911e1... Fix javadoc errors

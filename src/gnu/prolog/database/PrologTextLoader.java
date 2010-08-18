@@ -34,6 +34,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Stack;
 
+/**
+ * Processes prolog files adding the new predicates listed within them and
+ * processing directives.
+ * 
+ * @see PrologTextLoaderState all the PrologTextLoader's for an
+ *      {@link gnu.prolog.vm.Environment Environment} use the same instance of
+ *      PrologTextLoaderState to store the collective state.
+ */
 public class PrologTextLoader
 {
 	/** root file */
