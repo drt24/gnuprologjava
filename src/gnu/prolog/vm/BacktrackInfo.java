@@ -34,7 +34,11 @@ public class BacktrackInfo
 		this.codePosition = codePosition;
 	}
 
-	/** undo changes up to creation of this backtrack info */
+	/**
+	 * undo changes up to creation of this backtrack info
+	 * 
+	 * @param i
+	 */
 	public void undo(Interpreter i)
 	{
 		i.undo(undoPosition);

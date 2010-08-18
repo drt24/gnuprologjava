@@ -30,7 +30,13 @@ public class TermUtils
 	private TermUtils()
 	{}
 
-	/** Check if one term is variant of another */
+	/**
+	 * Check if one term is variant of another
+	 * 
+	 * @param term1
+	 * @param term2
+	 * @return whether one term is the variant of another
+	 */
 	public static boolean isVariant(Term term1, Term term2)
 	{
 		return isVariant(term1, term2, new HashMap<Term, Term>());
@@ -110,7 +116,12 @@ public class TermUtils
 
 	static final CompoundTermTag existsTag = CompoundTermTag.get("^", 2);
 
-	/** get variable set */
+	/**
+	 * get variable set
+	 * 
+	 * @param term
+	 * @param set
+	 */
 	public static void getVariableSet(Term term, Set<Term> set)
 	{
 		term = term.dereference();
@@ -128,7 +139,13 @@ public class TermUtils
 		}
 	}
 
-	/** get existential variable set */
+	/**
+	 * get existential variable set
+	 * 
+	 * @param term
+	 * @param set
+	 * @return the existential variable set
+	 */
 	public static Term getExistentialVariableSet(Term term, Set<Term> set)
 	{
 		term = term.dereference();
@@ -151,6 +168,10 @@ public class TermUtils
 	/**
 	 * get free variables of term1 with respect to term2
 	 * 
+	 * @param term1
+	 * @param term2
+	 * @param set
+	 * 
 	 * @return term1 w/o existential specifiers
 	 */
 	public static Term getFreeVariableSet(Term term1, Term term2, Set<Term> set)
@@ -163,7 +184,12 @@ public class TermUtils
 		return rc;
 	}
 
-	/** get witness of variable set, now just list of variables */
+	/**
+	 * get witness of variable set, now just list of variables
+	 * 
+	 * @param set
+	 * @return the witness for the variable set
+	 */
 	public static Term getWitness(Set<Term> set)
 	{
 		Term rc = TermConstants.emptyListAtom;

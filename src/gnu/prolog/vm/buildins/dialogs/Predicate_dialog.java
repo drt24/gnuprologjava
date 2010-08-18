@@ -89,6 +89,7 @@ public abstract class Predicate_dialog extends ExecuteOnlyCode
 	 * Process dialog options
 	 * 
 	 * @param optionsList
+	 * @return the processed DialogOptions
 	 * @throws PrologException
 	 */
 	protected DialogOptions processOptions(Term optionsList) throws PrologException

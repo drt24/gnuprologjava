@@ -87,7 +87,7 @@ public class PrologCollectionIterator extends BacktrackInfo
 	 * Get the next value
 	 * 
 	 * @param interpreter
-	 * @return
+	 * @return PrologCode return code
 	 * @throws PrologException
 	 */
 	public int nextSolution(Interpreter interpreter) throws PrologException

@@ -25,7 +25,11 @@ import gnu.prolog.vm.BacktrackInfo;
  */
 public class EnterBacktrackInfo extends BacktrackInfo
 {
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param undoPosition
+	 */
 	public EnterBacktrackInfo(int undoPosition)
 	{
 		super(undoPosition, -1);

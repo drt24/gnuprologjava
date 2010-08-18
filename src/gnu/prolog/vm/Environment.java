@@ -495,15 +495,10 @@ public class Environment implements PredicateListener
 	 * get undefined predicate code
 	 * 
 	 * @param tag
-	 * @return
+	 * @return undefined predicate code for the tag
 	 */
 	public PrologCode getUndefinedPredicateCode(CompoundTermTag tag)
 	{
-		// if (undefinedPredicate == null)
-		// {
-		// undefinedPredicate = null;//= new UndefinedPredicateCode();
-		// undefinedPredicate.install(this);
-		// }
 		return new UndefinedPredicateCode(tag);
 	}
 

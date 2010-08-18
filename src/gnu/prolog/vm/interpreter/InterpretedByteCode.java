@@ -81,7 +81,13 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	/** set of exception handlers */
 	protected ExceptionHandlerInfo exceptionHandlers[];
 
-	/** constructor of code */
+	/**
+	 * constructor of code
+	 * 
+	 * @param codeTag
+	 * @param isrc
+	 * @param ehs
+	 */
 	protected InterpretedByteCode(CompoundTermTag codeTag, Instruction isrc[], ExceptionHandlerInfo ehs[])
 	{
 		this.codeTag = codeTag;
@@ -1016,7 +1022,12 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		return new Pair<String, Integer>(rc, currentPosition);
 	}
 
-	/** convert code to string */
+	/**
+	 * convert code to string
+	 * 
+	 * @param currentPosition
+	 * @return a string representation of the instruction at the currentPosition
+	 */
 	public String getIntruction(int currentPosition)
 	{
 		int instr = instructions[currentPosition] & 255;

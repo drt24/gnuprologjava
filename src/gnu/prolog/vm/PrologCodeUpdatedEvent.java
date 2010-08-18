@@ -28,7 +28,12 @@ public class PrologCodeUpdatedEvent extends java.util.EventObject implements Has
 	/** tag for predicate */
 	CompoundTermTag tag;
 
-	/** a constructor */
+	/**
+	 * a constructor
+	 * 
+	 * @param environment
+	 * @param tag
+	 */
 	public PrologCodeUpdatedEvent(Environment environment, CompoundTermTag tag)
 	{
 		super(environment);
@@ -41,7 +46,11 @@ public class PrologCodeUpdatedEvent extends java.util.EventObject implements Has
 		return (Environment) getSource();
 	}
 
-	/** get tag of predicate */
+	/**
+	 * get tag of predicate
+	 * 
+	 * @return get the CompoundTermTag for this event
+	 */
 	public CompoundTermTag getPredicateTag()
 	{
 		return tag;

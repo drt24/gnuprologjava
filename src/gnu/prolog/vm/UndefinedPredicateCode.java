@@ -37,7 +37,11 @@ public class UndefinedPredicateCode extends ExecuteOnlyCode
 	public final static AtomTerm warningAtom = AtomTerm.get("warning");
 	public final static AtomTerm procedureAtom = AtomTerm.get("procedure");
 
-	/** construct new instance of undefiend predicate */
+	/**
+	 * construct new instance of undefined predicate
+	 * 
+	 * @param predicateTag
+	 */
 	public UndefinedPredicateCode(CompoundTermTag predicateTag)
 	{
 		this.predicateTag = predicateTag;

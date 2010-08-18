@@ -22,6 +22,10 @@ package gnu.prolog.vm;
  */
 public interface PrologCodeListener extends java.util.EventListener
 {
-	/** this method is called when prolog code was updated */
+	/**
+	 * this method is called when prolog code was updated
+	 * 
+	 * @param evt
+	 */
 	public void prologCodeUpdated(PrologCodeUpdatedEvent evt);
 }

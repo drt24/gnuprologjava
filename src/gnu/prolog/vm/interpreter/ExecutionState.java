@@ -62,19 +62,31 @@ public class ExecutionState
 	/** arguments */
 	public Term args[];
 
-	/** pop backtrack info from stack */
+	/**
+	 * pop backtrack info from stack
+	 * 
+	 * @return the popped backtrack info from the stack
+	 */
 	public BacktrackInfo popBacktrackInfo()
 	{
 		return interpreter.popBacktrackInfo();
 	}
 
-	/** peek backtrack info w/o popping it */
+	/**
+	 * peek backtrack info w/o popping it
+	 * 
+	 * @return the top of the backtrack info stack without popping
+	 */
 	public BacktrackInfo peekBacktrackInfo()
 	{
 		return interpreter.peekBacktrackInfo();
 	}
 
-	/** push backtrack info to stack */
+	/**
+	 * push backtrack info to stack
+	 * 
+	 * @param cbi
+	 */
 	public void pushBacktrackInfo(BacktrackInfo cbi)
 	{
 		interpreter.pushBacktrackInfo(cbi);
@@ -87,7 +99,7 @@ public class ExecutionState
 	 * @param args
 	 * @param code
 	 * @param tag
-	 * @return
+	 * @return BacktrackInfo for call instruction
 	 */
 	public CallBacktrackInfo getCallBacktrackInfo(int codePosition, Term args[], PrologCode code, CompoundTermTag tag)
 	{
@@ -98,7 +110,7 @@ public class ExecutionState
 	 * get BacktrackInfo for try family instructions.
 	 * 
 	 * @param retryPosition
-	 * @return
+	 * @return BacktrackInfo for try family instructions
 	 */
 	public RetryBacktrackInfo getRetryBacktrackInfo(int retryPosition)
 	{
@@ -108,7 +120,7 @@ public class ExecutionState
 	/**
 	 * pop term from pushdown stack
 	 * 
-	 * @return
+	 * @return term removed from pushdown stack
 	 */
 	public Term popPushDown()
 	{
@@ -129,7 +141,7 @@ public class ExecutionState
 	 * get term from environment
 	 * 
 	 * @param environmentIndex
-	 * @return
+	 * @return term from environment
 	 */
 	public Term getEnvironment(int environmentIndex)
 	{
@@ -150,7 +162,7 @@ public class ExecutionState
 	/**
 	 * get leave backtrack info
 	 * 
-	 * @return
+	 * @return the leave backtrack info
 	 */
 	public LeaveBacktrackInfo getLeaveBacktrackInfo()
 	{
@@ -160,7 +172,7 @@ public class ExecutionState
 	/**
 	 * get enter backtrack info
 	 * 
-	 * @return
+	 * @return the enter backtrack info
 	 */
 	public EnterBacktrackInfo getEnterBacktrackInfo()
 	{
