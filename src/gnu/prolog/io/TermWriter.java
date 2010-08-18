@@ -258,43 +258,43 @@ public class TermWriter extends PrintWriter
 				}
 				switch (op.specifier)
 				{
-					case Operator.FX:
+					case FX:
 						displayAtom(options, term.tag.functor);
 						print(" ");
 						displayTerm(options, op.priority - 1, term.args[0]);
 						break;
-					case Operator.FY:
+					case FY:
 						displayAtom(options, term.tag.functor);
 						print(" ");
 						displayTerm(options, op.priority, term.args[0]);
 						break;
-					case Operator.XFX:
+					case XFX:
 						displayTerm(options, op.priority - 1, term.args[0]);
 						print(" ");
 						displayAtom(options, term.tag.functor);
 						print(" ");
 						displayTerm(options, op.priority - 1, term.args[1]);
 						break;
-					case Operator.XFY:
+					case XFY:
 						displayTerm(options, op.priority - 1, term.args[0]);
 						print(" ");
 						displayAtom(options, term.tag.functor);
 						print(" ");
 						displayTerm(options, op.priority, term.args[1]);
 						break;
-					case Operator.YFX:
+					case YFX:
 						displayTerm(options, op.priority, term.args[0]);
 						print(" ");
 						displayAtom(options, term.tag.functor);
 						print(" ");
 						displayTerm(options, op.priority - 1, term.args[1]);
 						break;
-					case Operator.XF:
+					case XF:
 						displayTerm(options, op.priority - 1, term.args[0]);
 						print(" ");
 						displayAtom(options, term.tag.functor);
 						break;
-					case Operator.YF:
+					case YF:
 						displayTerm(options, op.priority, term.args[0]);
 						print(" ");
 						displayAtom(options, term.tag.functor);

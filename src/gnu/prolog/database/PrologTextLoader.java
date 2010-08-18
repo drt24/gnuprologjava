@@ -17,10 +17,10 @@
  */
 package gnu.prolog.database;
 
-import gnu.prolog.io.Operator;
 import gnu.prolog.io.OperatorSet;
 import gnu.prolog.io.ParseException;
 import gnu.prolog.io.TermReader;
+import gnu.prolog.io.Operator.SPECIFIER;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
@@ -392,6 +392,7 @@ public class PrologTextLoader
 			logError("the specifier should be an atom term");
 			return;
 		}
+		AtomTerm specifierAtom = (AtomTerm) specifier;
 		if (!(priority instanceof IntegerTerm))
 		{
 			logError("the priority should be an integer term");
@@ -404,36 +405,8 @@ public class PrologTextLoader
 			return;
 		}
 
-		int spec = -1;
-		if (specifier == TermConstants.fxAtom)
-		{
-			spec = Operator.FX;
-		}
-		else if (specifier == TermConstants.fyAtom)
-		{
-			spec = Operator.FY;
-		}
-		else if (specifier == TermConstants.xfxAtom)
-		{
-			spec = Operator.XFX;
-		}
-		else if (specifier == TermConstants.xfyAtom)
-		{
-			spec = Operator.XFY;
-		}
-		else if (specifier == TermConstants.yfxAtom)
-		{
-			spec = Operator.YFX;
-		}
-		else if (specifier == TermConstants.xfAtom)
-		{
-			spec = Operator.XF;
-		}
-		else if (specifier == TermConstants.yfAtom)
-		{
-			spec = Operator.YF;
-		}
-		else
+		SPECIFIER spec = SPECIFIER.fromAtom(specifierAtom);
+		if (spec == SPECIFIER.NONE)
 		{
 			logError("invalid operator specifier");
 		}

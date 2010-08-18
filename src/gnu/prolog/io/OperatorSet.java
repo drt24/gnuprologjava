@@ -17,6 +17,7 @@
  */
 package gnu.prolog.io;
 
+import gnu.prolog.io.Operator.SPECIFIER;
 import gnu.prolog.term.CompoundTermTag;
 
 import java.util.ArrayList;
@@ -75,19 +76,19 @@ final public class OperatorSet
 	 * @param specifier
 	 * @param name
 	 */
-	public synchronized void remove(int specifier, String name)
+	public synchronized void remove(SPECIFIER specifier, String name)
 	{
 		switch (specifier)
 		{
-			case Operator.FX:
-			case Operator.FY:
+			case FX:
+			case FY:
 				fxOps.remove(name);
 				break;
-			case Operator.XF:
-			case Operator.YF:
-			case Operator.XFX:
-			case Operator.XFY:
-			case Operator.YFX:
+			case XF:
+			case YF:
+			case XFX:
+			case XFY:
+			case YFX:
 				xfOps.remove(name);
 				break;
 		}
@@ -101,7 +102,7 @@ final public class OperatorSet
 	 * @param name
 	 * @return the added {@link Operator}
 	 */
-	public synchronized Operator add(int priority, int specifier, String name)
+	public synchronized Operator add(int priority, SPECIFIER specifier, String name)
 	{
 		int i, n = priorityLevels.size();
 		// System.out.println(name+" prio:" + priority+ " priolvs:"+n);
@@ -149,15 +150,15 @@ final public class OperatorSet
 
 		switch (specifier)
 		{
-			case Operator.FX:
-			case Operator.FY:
+			case FX:
+			case FY:
 				fxOps.put(name, op);
 				break;
-			case Operator.XF:
-			case Operator.YF:
-			case Operator.XFX:
-			case Operator.XFY:
-			case Operator.YFX:
+			case XF:
+			case YF:
+			case XFX:
+			case XFY:
+			case YFX:
 				xfOps.put(name, op);
 				break;
 		}
@@ -203,47 +204,47 @@ final public class OperatorSet
 
 	protected void initDefault()
 	{
-		add(1200, Operator.XFX, "-->");
-		add(1200, Operator.XFX, ":-");
-		add(1200, Operator.FX, ":-");
-		add(1200, Operator.FX, "?-");
-		add(1100, Operator.XFY, ";");
-		add(1050, Operator.XFY, "->");
-		add(1000, Operator.XFY, ",");
-		add(900, Operator.FX, "\\+");
-		add(700, Operator.XFX, "=");
-		add(700, Operator.XFX, "\\=");
-		add(700, Operator.XFX, "==");
-		add(700, Operator.XFX, "\\==");
-		add(700, Operator.XFX, "@<");
-		add(700, Operator.XFX, "@=<");
-		add(700, Operator.XFX, "@>");
-		add(700, Operator.XFX, "@>=");
-		add(700, Operator.XFX, "=..");
-		add(700, Operator.XFX, "is");
-		add(700, Operator.XFX, "=:=");
-		add(700, Operator.XFX, "=\\=");
-		add(700, Operator.XFX, "<");
-		add(700, Operator.XFX, "=<");
-		add(700, Operator.XFX, ">");
-		add(700, Operator.XFX, ">=");
-		add(600, Operator.XFX, ":");
-		add(500, Operator.YFX, "+");
-		add(500, Operator.YFX, "-");
-		add(500, Operator.YFX, "/\\");
-		add(500, Operator.YFX, "\\/");
-		add(400, Operator.YFX, "*");
-		add(400, Operator.YFX, "/");
-		add(400, Operator.YFX, "//");
-		add(400, Operator.YFX, "rem");
-		add(400, Operator.YFX, "mod");
-		add(400, Operator.YFX, "<<");
-		add(400, Operator.YFX, ">>");
-		add(200, Operator.XFX, "**");
-		add(200, Operator.XFY, "^");
-		add(200, Operator.FY, "-");
-		add(200, Operator.FY, "\\");
-		add(100, Operator.XFX, "@");
+		add(1200, SPECIFIER.XFX, "-->");
+		add(1200, SPECIFIER.XFX, ":-");
+		add(1200, SPECIFIER.FX, ":-");
+		add(1200, SPECIFIER.FX, "?-");
+		add(1100, SPECIFIER.XFY, ";");
+		add(1050, SPECIFIER.XFY, "->");
+		add(1000, SPECIFIER.XFY, ",");
+		add(900, SPECIFIER.FX, "\\+");
+		add(700, SPECIFIER.XFX, "=");
+		add(700, SPECIFIER.XFX, "\\=");
+		add(700, SPECIFIER.XFX, "==");
+		add(700, SPECIFIER.XFX, "\\==");
+		add(700, SPECIFIER.XFX, "@<");
+		add(700, SPECIFIER.XFX, "@=<");
+		add(700, SPECIFIER.XFX, "@>");
+		add(700, SPECIFIER.XFX, "@>=");
+		add(700, SPECIFIER.XFX, "=..");
+		add(700, SPECIFIER.XFX, "is");
+		add(700, SPECIFIER.XFX, "=:=");
+		add(700, SPECIFIER.XFX, "=\\=");
+		add(700, SPECIFIER.XFX, "<");
+		add(700, SPECIFIER.XFX, "=<");
+		add(700, SPECIFIER.XFX, ">");
+		add(700, SPECIFIER.XFX, ">=");
+		add(600, SPECIFIER.XFX, ":");
+		add(500, SPECIFIER.YFX, "+");
+		add(500, SPECIFIER.YFX, "-");
+		add(500, SPECIFIER.YFX, "/\\");
+		add(500, SPECIFIER.YFX, "\\/");
+		add(400, SPECIFIER.YFX, "*");
+		add(400, SPECIFIER.YFX, "/");
+		add(400, SPECIFIER.YFX, "//");
+		add(400, SPECIFIER.YFX, "rem");
+		add(400, SPECIFIER.YFX, "mod");
+		add(400, SPECIFIER.YFX, "<<");
+		add(400, SPECIFIER.YFX, ">>");
+		add(200, SPECIFIER.XFX, "**");
+		add(200, SPECIFIER.XFY, "^");
+		add(200, SPECIFIER.FY, "-");
+		add(200, SPECIFIER.FY, "\\");
+		add(100, SPECIFIER.XFX, "@");
 	}
 
 	public synchronized Operator getOperatorForTag(CompoundTermTag tag)

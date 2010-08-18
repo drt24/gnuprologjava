@@ -19,6 +19,7 @@ package gnu.prolog.vm.buildins.io;
 
 import gnu.prolog.io.Operator;
 import gnu.prolog.io.OperatorSet;
+import gnu.prolog.io.Operator.SPECIFIER;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.IntegerTerm;
@@ -49,7 +50,7 @@ public class Predicate_op extends ExecuteOnlyCode
 		Term tops = args[2];
 
 		int priority = 0; // parsed priority
-		int opspec = -1; // parsed operator specifier
+		SPECIFIER opspec = SPECIFIER.NONE; // parsed operator specifier
 		Set<AtomTerm> ops = new HashSet<AtomTerm>(); // set of operators
 		OperatorSet opSet = interpreter.getEnvironment().getOperatorSet();
 
@@ -77,36 +78,11 @@ public class Predicate_op extends ExecuteOnlyCode
 		{
 			PrologException.typeError(TermConstants.atomAtom, topspec);
 		}
+		AtomTerm atomSpec = (AtomTerm) topspec;
 
-		if (topspec == TermConstants.xfxAtom)
-		{
-			opspec = Operator.XFX;
-		}
-		else if (topspec == TermConstants.xfyAtom)
-		{
-			opspec = Operator.XFY;
-		}
-		else if (topspec == TermConstants.yfxAtom)
-		{
-			opspec = Operator.YFX;
-		}
-		else if (topspec == TermConstants.fxAtom)
-		{
-			opspec = Operator.FX;
-		}
-		else if (topspec == TermConstants.fyAtom)
-		{
-			opspec = Operator.FY;
-		}
-		else if (topspec == TermConstants.xfAtom)
-		{
-			opspec = Operator.XF;
-		}
-		else if (topspec == TermConstants.yfAtom)
-		{
-			opspec = Operator.YF;
-		}
-		else
+		opspec = SPECIFIER.fromAtom(atomSpec);
+
+		if (opspec == SPECIFIER.NONE)
 		{
 			PrologException.domainError(TermConstants.operatorSpecifierAtom, topspec);
 		}
@@ -177,7 +153,7 @@ public class Predicate_op extends ExecuteOnlyCode
 		return SUCCESS_LAST;
 	}
 
-	private static void validateOp(int priority, int specifier, AtomTerm opAtom, OperatorSet opSet)
+	private static void validateOp(int priority, SPECIFIER specifier, AtomTerm opAtom, OperatorSet opSet)
 			throws PrologException
 	{
 		if (opAtom == commaAtom)
@@ -186,25 +162,25 @@ public class Predicate_op extends ExecuteOnlyCode
 		}
 		switch (specifier)
 		{
-			case Operator.FX:
-			case Operator.FY:
+			case FX:
+			case FY:
 				break;
-			case Operator.XF:
-			case Operator.YF:
+			case XF:
+			case YF:
 			{
 				Operator op = opSet.lookupXf(opAtom.value);
-				if (op.specifier != Operator.YF && specifier != Operator.XF)
+				if (op.specifier != SPECIFIER.YF && specifier != SPECIFIER.XF)
 				{
 					PrologException.permissionError(TermConstants.createAtom, TermConstants.operatorAtom, opAtom);
 				}
 				break;
 			}
-			case Operator.XFX:
-			case Operator.XFY:
-			case Operator.YFX:
+			case XFX:
+			case XFY:
+			case YFX:
 			{
 				Operator op = opSet.lookupXf(opAtom.value);
-				if (op.specifier == Operator.YF || specifier == Operator.XF)
+				if (op.specifier == SPECIFIER.YF || specifier == SPECIFIER.XF)
 				{
 					PrologException.permissionError(TermConstants.createAtom, TermConstants.operatorAtom, opAtom);
 				}

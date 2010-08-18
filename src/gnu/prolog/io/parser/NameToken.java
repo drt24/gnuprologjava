@@ -19,6 +19,7 @@ package gnu.prolog.io.parser;
 
 import gnu.prolog.io.Operator;
 import gnu.prolog.io.OperatorSet;
+import gnu.prolog.io.Operator.SPECIFIER;
 import gnu.prolog.io.parser.gen.Token;
 
 public class NameToken extends Token
@@ -62,23 +63,23 @@ public class NameToken extends Token
 		return !isOperator(set);
 	}
 
-	public final boolean isOperator(OperatorSet set, int priority, int specifier)
+	public final boolean isOperator(OperatorSet set, int priority, SPECIFIER specifier)
 	{
 		getValue();
 		switch (specifier)
 		{
-			case Operator.FX:
-			case Operator.FY:
+			case FX:
+			case FY:
 				if (fxOp == null)
 				{
 					fxOp = set.lookupFx(value);
 				}
 				return fxOp != null && fxOp.priority == priority && fxOp.specifier == specifier;
-			case Operator.XFX:
-			case Operator.XFY:
-			case Operator.YFX:
-			case Operator.XF:
-			case Operator.YF:
+			case XFX:
+			case XFY:
+			case YFX:
+			case XF:
+			case YF:
 				if (xfOp == null)
 				{
 					xfOp = set.lookupXf(value);
@@ -91,36 +92,36 @@ public class NameToken extends Token
 
 	public final boolean isFxOperator(OperatorSet set, int priority)
 	{
-		return isOperator(set, priority, Operator.FX);
+		return isOperator(set, priority, SPECIFIER.FX);
 	}
 
 	public final boolean isFyOperator(OperatorSet set, int priority)
 	{
-		return isOperator(set, priority, Operator.FY);
+		return isOperator(set, priority, SPECIFIER.FY);
 	}
 
 	public final boolean isXfxOperator(OperatorSet set, int priority)
 	{
-		return isOperator(set, priority, Operator.XFX);
+		return isOperator(set, priority, SPECIFIER.XFX);
 	}
 
 	public final boolean isXfyOperator(OperatorSet set, int priority)
 	{
-		return isOperator(set, priority, Operator.XFY);
+		return isOperator(set, priority, SPECIFIER.XFY);
 	}
 
 	public final boolean isYfxOperator(OperatorSet set, int priority)
 	{
-		return isOperator(set, priority, Operator.YFX);
+		return isOperator(set, priority, SPECIFIER.YFX);
 	}
 
 	public final boolean isXfOperator(OperatorSet set, int priority)
 	{
-		return isOperator(set, priority, Operator.XF);
+		return isOperator(set, priority, SPECIFIER.XF);
 	}
 
 	public final boolean isYfOperator(OperatorSet set, int priority)
 	{
-		return isOperator(set, priority, Operator.YF);
+		return isOperator(set, priority, SPECIFIER.YF);
 	}
 }

@@ -110,31 +110,7 @@ public class Predicate_current_op extends ExecuteOnlyCode
 				Operator o = i.next();
 				ops.add(o.tag.functor);
 				priorities.add(IntegerTerm.get(o.priority));
-				AtomTerm a = null;
-				switch (o.specifier)
-				{
-					case Operator.FX:
-						a = TermConstants.fxAtom;
-						break;
-					case Operator.FY:
-						a = TermConstants.fyAtom;
-						break;
-					case Operator.XF:
-						a = TermConstants.xfAtom;
-						break;
-					case Operator.YF:
-						a = TermConstants.yfAtom;
-						break;
-					case Operator.XFX:
-						a = TermConstants.xfxAtom;
-						break;
-					case Operator.XFY:
-						a = TermConstants.xfyAtom;
-						break;
-					case Operator.YFX:
-						a = TermConstants.yfxAtom;
-						break;
-				}
+				AtomTerm a = o.specifier.getAtom();
 				specifiers.add(a);
 			}
 			CurrentOpBacktrackInfo bi = new CurrentOpBacktrackInfo();
