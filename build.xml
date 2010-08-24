@@ -50,6 +50,7 @@ Ant Buildfile for GNU Prolog for Java.
 		<!-- Key id to use for signing the .deb files -->
 		<property name="dist.keyid" value="" />
 		<property name="dist.name-version" value="${ant.project.name}-${version}"/>
+		<property name="dist.debian.name_version" value="gnuprolog-java_${version}"/>
 		<property name="dist.debdir" value="dist/${dist.name-version}/" />
 
 		<mkdir dir="build" />
@@ -140,12 +141,15 @@ Ant Buildfile for GNU Prolog for Java.
 	</target>
 
 	<target name="dist-deb" depends="dist-src" description="Produce a .deb to install with">
-		<mkdir dir="${dist.debdir}"/>
+		<!-- Delete the old directory if it exists before unziping the new one -->
+		<delete dir="${dist.debdir}" failonerror="false"/>
 		<unzip src="dist/${dist.name-version}-src.zip" dest="${dist.debdir}"/>
 		<!-- Delete the getopt code as we want to use the libgetopt-java package for that -->
 		<delete dir="${dist.debdir}src/gnu/getopt"/>
+		<tar destfile="dist/${dist.debian.name_version}.orig.tar.gz" basedir="${dist.debdir}" excludes="debian/**" compression="gzip"/>
 		<exec executable="dpkg-buildpackage" dir="${dist.debdir}">
 			<arg value="-k${dist.keyid}"/>
+			<arg value="-sa"/>
 		</exec>
 	</target>
 
