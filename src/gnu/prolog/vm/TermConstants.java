@@ -48,6 +48,7 @@ public final class TermConstants
 	public static final AtomTerm numberAtom = AtomTerm.get("number");
 	public static final AtomTerm predicateIndicatorAtom = AtomTerm.get("predicate_indicator");
 	public static final AtomTerm variableAtom = AtomTerm.get("variable");
+
 	// valid domains
 	public static final AtomTerm characterCodeListAtom = AtomTerm.get("character_code_list");
 	public static final AtomTerm closeOptionAtom = AtomTerm.get("close_option");
@@ -66,6 +67,8 @@ public final class TermConstants
 	public static final AtomTerm streamPositionAtom = AtomTerm.get("stream_position");
 	public static final AtomTerm streamPropertyAtom = AtomTerm.get("stream_property");
 	public static final AtomTerm writeOptionAtom = AtomTerm.get("write_option");
+	public static final AtomTerm orderAtom = AtomTerm.get("order");
+
 	// object types -
 	public static final AtomTerm procedureAtom = AtomTerm.get("procedure");
 	// stream, source_sink
@@ -144,4 +147,5 @@ public final class TermConstants
 	public static final AtomTerm javaObjectAtom = AtomTerm.get("java_object");
 	public final static AtomTerm charsAtom = AtomTerm.get("chars");
 	public final static AtomTerm codesAtom = AtomTerm.get("codes");
+
 }

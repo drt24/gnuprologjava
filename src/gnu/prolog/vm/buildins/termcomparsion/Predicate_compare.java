@@ -26,8 +26,10 @@ import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 
 /**
+ * compare(?Order, +Term1, +Term2)
  * 
  * @author Michiel Hendriks
  */
@@ -45,22 +47,30 @@ public class Predicate_compare extends ExecuteOnlyCode
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		if (!(args[0] instanceof VariableTerm))
+		Term order = args[0];
+		if (!(order instanceof VariableTerm))
 		{
-			//
+			if (!(order instanceof AtomTerm))
+			{
+				PrologException.typeError(TermConstants.atomAtom, order);
+			}
+			else if ((order != EQ_ATOM) & (order != LT_ATOM) & (order != GT_ATOM))
+			{
+				PrologException.domainError(TermConstants.orderAtom, order);
+			}
 		}
 		int rc = comp.compare(args[1], args[2]);
 		if (rc == 0)
 		{
-			return interpreter.unify(EQ_ATOM, args[0]);
+			return interpreter.unify(EQ_ATOM, order);
 		}
 		else if (rc > 0)
 		{
-			return interpreter.unify(GT_ATOM, args[0]);
+			return interpreter.unify(GT_ATOM, order);
 		}
 		else if (rc < 0)
 		{
-			return interpreter.unify(LT_ATOM, args[0]);
+			return interpreter.unify(LT_ATOM, order);
 		}
 		return RC.FAIL;
 	}

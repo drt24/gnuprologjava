@@ -3,7 +3,7 @@
 %Order is neither a variable nor an atom
 [compare(1,a,b),type_error(atom, 1)].
 [compare(72.1,a,b),type_error(atom, 72.1)].
-[compare(foo(a),a,b),type_error(atom, 1)].
+[compare(foo(a),a,b),type_error(atom, foo(a))].
 
 %Order an atom other than <, =, or >
 [compare('<=', a, b),domain_error(order, '<=')].
