@@ -30,9 +30,9 @@ import gnu.prolog.vm.TermConstants;
  * 
  * @author Michiel Hendriks
  */
-public class Predicate_is_list extends ExecuteOnlyCode
+public class Predicate_is_proper_list extends ExecuteOnlyCode
 {
-	public Predicate_is_list()
+	public Predicate_is_proper_list()
 	{}
 
 	@Override
@@ -41,7 +41,7 @@ public class Predicate_is_list extends ExecuteOnlyCode
 		Term lst = args[0];
 		while (lst != null)
 		{
-			if (interpreter.unify(TermConstants.emptyListAtom, lst) == RC.SUCCESS_LAST)
+			if (TermConstants.emptyListAtom.equals(lst))
 			{
 				return RC.SUCCESS_LAST;
 			}

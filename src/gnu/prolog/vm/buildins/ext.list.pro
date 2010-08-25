@@ -31,10 +31,15 @@ append([X|Xs],Y,[X|Z]) :- append(Xs,Y,Z).
 % member(?Elem, ?List)
 :-build_in(member/2,'gnu.prolog.vm.buildins.list.Predicate_member').
 
-% True if Term is bound to the empty list () or a term with functor `.' 
+% True if Term is unifies to the empty list [] or a term with functor `.' 
 % and arity 2 and the second argument is a list.
 % is_list(+Term)
 :-build_in(is_list/1,'gnu.prolog.vm.buildins.list.Predicate_is_list').
+
+% True if Term is the empty list [] or a term with functor `.' 
+% and arity 2 and the second argument is a proper list.
+% is_list(+Term)
+:-build_in(is_proper_list/1,'gnu.prolog.vm.buildins.list.Predicate_is_proper_list').
 
 % True if Int represents the number of elements of list List. Can be used to 
 % create a list holding only variables. 

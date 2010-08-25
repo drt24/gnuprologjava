@@ -360,7 +360,7 @@ public final class Interpreter implements HasEnvironment
 	}
 
 	/**
-	 * unify two terms
+	 * unify two terms and undo the unification if it fails.
 	 * 
 	 * @param t1
 	 * @param t2

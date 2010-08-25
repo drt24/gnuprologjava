@@ -773,20 +773,24 @@ file(TF,IF) :-
 	atom_concat('io/', NIF, IF).
 
 % io
+io(at_end_of_stream).
 io(char_conversion,'char_conversion.pl').
 io(read_term,'read_term.pl').
-io(at_end_of_stream).
+
 
 % extras
 extra(append).
-extra(predicate_property).
 extra(compare).
+extra(is_list).
+extra(is_proper_list).
+extra(predicate_property).
 extra(sort).
+
 
 % self test
 inria(already_appears).
-inria(vars_in_term).
 inria(delmemb).
+inria(vars_in_term).
 
 
 %%%%%%%%%%%

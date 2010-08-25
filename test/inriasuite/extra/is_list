@@ -1,0 +1,27 @@
+/* file is_list */
+
+[is_list([]),success].
+[is_list([a,b]),success].
+[is_list([1,b]),success].
+[is_list([3,2]),success].
+[is_list([3.2,0.1]),success].
+[is_list([k,82.3]),success].
+[is_list([a,b,d,y,e,foo(a),2,4,6,dt,9.2]),success].
+
+[is_list(X),[[X <-- []]]].
+[is_list([a,b|X]),[[X <-- []]]].
+[is_list([1,b|X]),[[X <-- []]]].
+[is_list([3,2|X]),[[X <-- []]]].
+[is_list([3.2,0.1|X]),[[X <-- []]]].
+[is_list([k,82.3|X]),[[X <-- []]]].
+[is_list([a,b,d,y,e,foo(a),2,4,6,dt,9.2|X]),[[X <-- []]]].
+
+[is_list(a),failure].
+[is_list(1),failure].
+[is_list(5.3),failure].
+[is_list(foo(a)),failure].
+
+% TODO: test on some lists which break part way down.
+
+
+/* end of is_list */

@@ -1,0 +1,27 @@
+/* file is_proper_list */
+
+[is_proper_list([]),success].
+[is_proper_list([a,b]),success].
+[is_proper_list([1,b]),success].
+[is_proper_list([3,2]),success].
+[is_proper_list([3.2,0.1]),success].
+[is_proper_list([k,82.3]),success].
+[is_proper_list([a,b,d,y,e,foo(a),2,4,6,dt,9.2]),success].
+
+[is_proper_list(X),failure].
+[is_proper_list([a,b|X]),failure].
+[is_proper_list([1,b|X]),failure].
+[is_proper_list([3,2|X]),failure].
+[is_proper_list([3.2,0.1|X]),failure].
+[is_proper_list([k,82.3|X]),failure].
+[is_proper_list([a,b,d,y,e,foo(a),2,4,6,dt,9.2|X]),failure].
+
+[is_proper_list(a),failure].
+[is_proper_list(1),failure].
+[is_proper_list(5.3),failure].
+[is_proper_list(foo(a)),failure].
+
+% TODO: test on some lists which break part way down.
+
+
+/* end of is_proper_list */
