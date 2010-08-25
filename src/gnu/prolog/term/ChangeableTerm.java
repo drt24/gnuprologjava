@@ -57,4 +57,14 @@ public abstract class ChangeableTerm extends VariableTerm
 	 */
 	@Override
 	public abstract Term dereference();
+
+	/**
+	 * The term type of a ChangeableTerm may vary as it's value varies so we
+	 * return the term type of the value.
+	 */
+	@Override
+	public int getTermType()
+	{
+		return value.getTermType();
+	}
 }
