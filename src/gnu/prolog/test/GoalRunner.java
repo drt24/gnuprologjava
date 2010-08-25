@@ -148,8 +148,6 @@ public class GoalRunner
 					runners[i] = null;
 				}
 			}
-			// runners.wait();// don't terminate TODO remove this.
-
 		}
 		catch (Exception ex)
 		{

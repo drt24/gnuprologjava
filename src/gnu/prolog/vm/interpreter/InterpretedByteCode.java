@@ -1034,7 +1034,6 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 		return instructionToString(instr, currentPosition).left;
 	}
 
-	// TODO switch to using enums for this.
 	public final static int IALLOCATE = 0;
 	public final static int ICALL = 1;
 	public final static int ICREATE_COMPOUND = 2;
