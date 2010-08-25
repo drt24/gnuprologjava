@@ -32,8 +32,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_arg extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term n = args[0];
 		Term term = args[1];
@@ -62,19 +61,19 @@ public class Predicate_arg extends ExecuteOnlyCode
 		CompoundTerm ct = (CompoundTerm) term;
 		if (ct.tag.arity < in.value)
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 		if (in.value == 0)
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 		int undoPos = interpreter.getUndoPosition();
-		int rc = interpreter.unify(ct.args[in.value - 1], arg);
-		if (rc == FAIL)
+		RC rc = interpreter.unify(ct.args[in.value - 1], arg);
+		if (rc == RC.FAIL)
 		{
 			interpreter.undo(undoPos);
-			return FAIL;
+			return RC.FAIL;
 		}
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

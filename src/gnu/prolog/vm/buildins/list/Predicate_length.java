@@ -41,7 +41,7 @@ public class Predicate_length extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (CompoundTerm.isListPair(args[0]) || TermConstants.emptyListAtom.equals(args[0]))
 		{
@@ -56,12 +56,12 @@ public class Predicate_length extends ExecuteOnlyCode
 				}
 				if (!CompoundTerm.isListPair(lst))
 				{
-					return FAIL;
+					return RC.FAIL;
 				}
 				CompoundTerm ct = (CompoundTerm) lst;
 				if (ct.args.length != 2)
 				{
-					return FAIL;
+					return RC.FAIL;
 				}
 				++length;
 				lst = ct.args[1];
@@ -87,6 +87,6 @@ public class Predicate_length extends ExecuteOnlyCode
 		{
 			PrologException.typeError(TermConstants.listAtom, args[0]);
 		}
-		return 0;
+		return RC.SUCCESS;
 	}
 }

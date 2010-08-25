@@ -37,7 +37,7 @@ public class Predicate_number_codes extends ExecuteOnlyCode
 {
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term number = args[0];

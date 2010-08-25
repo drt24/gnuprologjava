@@ -53,8 +53,7 @@ public class Predicate_bagof extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -73,10 +72,10 @@ public class Predicate_bagof extends ExecuteOnlyCode
 			Term witness = TermUtils.getWitness(wset);
 			CompoundTerm findallTemplate = new CompoundTerm(plusTag, witness, ptemplate);
 			List<Term> list = new ArrayList<Term>();
-			int rc = Predicate_findall.findall(interpreter, false, findallTemplate, findallGoal, list);
-			if (rc == FAIL || list.size() == 0)
+			RC rc = Predicate_findall.findall(interpreter, false, findallTemplate, findallGoal, list);
+			if (rc == RC.FAIL || list.size() == 0)
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 			BagOfBacktrackInfo bi = new BagOfBacktrackInfo();
 			bi.startUndoPosition = interpreter.getUndoPosition();
@@ -88,7 +87,7 @@ public class Predicate_bagof extends ExecuteOnlyCode
 
 	}
 
-	public int nextSolution(Interpreter interpreter, BagOfBacktrackInfo bi) throws PrologException
+	public RC nextSolution(Interpreter interpreter, BagOfBacktrackInfo bi) throws PrologException
 	{
 		List<Term> curTList = new ArrayList<Term>();
 		int undoPos = interpreter.getUndoPosition();
@@ -96,8 +95,8 @@ public class Predicate_bagof extends ExecuteOnlyCode
 		{
 			CompoundTerm curInstance = (CompoundTerm) (bi.solutionList.remove(0)).dereference();
 			Term curWitness = curInstance.args[0].dereference();
-			int rc = interpreter.simpleUnify(bi.witness, curWitness);
-			if (rc == FAIL)
+			RC rc = interpreter.simpleUnify(bi.witness, curWitness);
+			if (rc == RC.FAIL)
 			{
 				throw new IllegalStateException("unexpected unify fail");
 			}
@@ -110,7 +109,7 @@ public class Predicate_bagof extends ExecuteOnlyCode
 				if (TermUtils.isVariant(curWitness, w))
 				{
 					rc = interpreter.simpleUnify(bi.witness, w);
-					if (rc == FAIL)
+					if (rc == RC.FAIL)
 					{
 						throw new IllegalStateException("unexpected unify fail");
 					}
@@ -120,22 +119,22 @@ public class Predicate_bagof extends ExecuteOnlyCode
 			}
 			processList(curTList);
 			rc = interpreter.unify(CompoundTerm.getList(curTList), bi.instances.dereference());
-			if (rc == SUCCESS_LAST)
+			if (rc == RC.SUCCESS_LAST)
 			{
 				if (bi.solutionList.size() != 0)
 				{
 					interpreter.pushBacktrackInfo(bi);
-					return SUCCESS;
+					return RC.SUCCESS;
 				}
 				else
 				{
-					return SUCCESS_LAST;
+					return RC.SUCCESS_LAST;
 				}
 			}
 			interpreter.undo(undoPos);
 			curTList.clear();
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 
 	protected void processList(List<Term> curTList)

@@ -39,7 +39,7 @@ public class Predicate_univ extends ExecuteOnlyCode
 	public final static Term termArrayType[] = new Term[0];
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		int undoPos = interpreter.getUndoPosition();
@@ -53,7 +53,7 @@ public class Predicate_univ extends ExecuteOnlyCode
 				VariableTerm lvar = (VariableTerm) list;
 				interpreter.addVariableUndo(lvar);
 				lvar.value = CompoundTerm.getList(term, TermConstants.emptyListAtom);
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			CompoundTerm ct = (CompoundTerm) list;
 			Term head = ct.args[0].dereference();
@@ -78,8 +78,8 @@ public class Predicate_univ extends ExecuteOnlyCode
 				tmp = CompoundTerm.getList(targs[i].dereference(), tmp);
 			}
 			tmp = CompoundTerm.getList(functor, tmp);
-			int rc = interpreter.unify(tmp, list);
-			if (rc == FAIL)
+			RC rc = interpreter.unify(tmp, list);
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(undoPos);
 			}
@@ -108,7 +108,7 @@ public class Predicate_univ extends ExecuteOnlyCode
 			{
 				interpreter.addVariableUndo(vt);
 				vt.value = head;
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			if (!(head instanceof AtomTerm))
 			{
@@ -126,9 +126,9 @@ public class Predicate_univ extends ExecuteOnlyCode
 			Term targs[] = argList.toArray(termArrayType);
 			interpreter.addVariableUndo(vt);
 			vt.value = new CompoundTerm(functor, targs);
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 
 	private static void checkList(Term list, boolean nonPartial) throws PrologException

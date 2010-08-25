@@ -49,7 +49,7 @@ public class Predicate_format_time extends DateTimePrologCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		// format_time(+Out, +Format, +StampOrDateTime)
 		// format_time(+Out, +Format, +StampOrDateTime, +Locale)
@@ -167,7 +167,7 @@ public class Predicate_format_time extends DateTimePrologCode
 		if (outstream != null)
 		{
 			outstream.writeTerm(args[0], interpreter, null, AtomTerm.get(result));
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else
 		{

@@ -36,17 +36,16 @@ import java.util.List;
 public class Predicate_findall extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		List<Term> list = new ArrayList<Term>();
 		checkList(args[2]);
-		int rc = findall(interpreter, backtrackMode, args[0], args[1], list);
-		if (rc == SUCCESS_LAST)
+		RC rc = findall(interpreter, backtrackMode, args[0], args[1], list);
+		if (rc == RC.SUCCESS_LAST)
 		{
 			return interpreter.unify(args[2], CompoundTerm.getList(list));
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 
 	/**
@@ -58,10 +57,10 @@ public class Predicate_findall extends ExecuteOnlyCode
 	 * @param template
 	 * @param goal
 	 * @param list
-	 * @return either {@link #SUCCESS_LAST} or {@link #FAIL}
+	 * @return either {@link RC#SUCCESS_LAST} or {@link RC#FAIL}
 	 * @throws PrologException
 	 */
-	public static int findall(Interpreter interpreter, boolean backtrackMode, Term template, Term goal, List<Term> list)
+	public static RC findall(Interpreter interpreter, boolean backtrackMode, Term template, Term goal, List<Term> list)
 			throws PrologException
 	{
 		int startUndoPosition = interpreter.getUndoPosition();
@@ -71,26 +70,26 @@ public class Predicate_findall extends ExecuteOnlyCode
 			try
 			{
 				boolean callBacktrackMode = false;
-				int rc;
+				RC rc;
 				do
 				{
 					rc = Predicate_call.staticExecute(interpreter, callBacktrackMode, goal);
 					callBacktrackMode = true;
-					if (rc != FAIL)
+					if (rc != RC.FAIL)
 					{
 						list.add((Term) template.clone());
 					}
-				} while (rc == SUCCESS);
-				if (rc == SUCCESS_LAST)
+				} while (rc == RC.SUCCESS);
+				if (rc == RC.SUCCESS_LAST)
 				{
 					interpreter.undo(startUndoPosition);
 				}
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			catch (RuntimeException rex)
 			{
 				PrologException.systemError(rex);
-				return FAIL; // fake return
+				return RC.FAIL; // fake return
 			}
 		}
 		catch (PrologException ex)

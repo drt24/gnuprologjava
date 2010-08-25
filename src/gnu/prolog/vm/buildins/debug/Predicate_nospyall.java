@@ -35,9 +35,9 @@ public class Predicate_nospyall extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		interpreter.getTracer().removeAllTraces();
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

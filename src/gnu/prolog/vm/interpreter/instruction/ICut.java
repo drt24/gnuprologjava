@@ -21,6 +21,7 @@ import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.interpreter.ExecutionState;
+import gnu.prolog.vm.interpreter.ExecutionState.EXRC;
 
 /** cut instruction */
 public class ICut extends Instruction
@@ -54,10 +55,11 @@ public class ICut extends Instruction
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction
-	 * @throws PrologException if code is throwing prolog exception
+	 * @throws PrologException
+	 *           if code is throwing prolog exception
 	 */
 	@Override
-	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	public EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		JavaObjectTerm term = (JavaObjectTerm) state.getEnvironment(environmentIndex);
 		BacktrackInfo cutparent = (BacktrackInfo) term.value;
@@ -65,6 +67,6 @@ public class ICut extends Instruction
 		{
 			state.popBacktrackInfo();
 		}
-		return ExecutionState.NEXT;
+		return ExecutionState.EXRC.NEXT;
 	}
 }

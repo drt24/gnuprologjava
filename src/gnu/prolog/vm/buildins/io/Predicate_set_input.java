@@ -29,7 +29,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_set_input extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
@@ -38,6 +38,6 @@ public class Predicate_set_input extends ExecuteOnlyCode
 			PrologException.permissionError(TermConstants.inputAtom, TermConstants.streamAtom, args[0]);
 		}
 		interpreter.getEnvironment().setCurrentInput(stream);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

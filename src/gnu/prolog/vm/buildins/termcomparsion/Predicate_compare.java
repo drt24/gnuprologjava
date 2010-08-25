@@ -43,7 +43,7 @@ public class Predicate_compare extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (!(args[0] instanceof VariableTerm))
 		{
@@ -62,6 +62,6 @@ public class Predicate_compare extends ExecuteOnlyCode
 		{
 			return interpreter.unify(LT_ATOM, args[0]);
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

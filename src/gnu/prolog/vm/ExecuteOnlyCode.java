@@ -28,7 +28,7 @@ package gnu.prolog.vm;
 public abstract class ExecuteOnlyCode implements PrologCode
 {
 
-	public abstract int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public abstract RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException;
 
 	/**

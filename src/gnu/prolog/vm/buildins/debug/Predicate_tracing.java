@@ -35,12 +35,12 @@ public class Predicate_tracing extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (interpreter.getTracer().isActive())
 		{
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

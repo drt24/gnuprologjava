@@ -33,7 +33,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_open extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term tsource_sink = args[0];
@@ -149,6 +149,6 @@ public class Predicate_open extends ExecuteOnlyCode
 		options.mode = mode;
 		vstream.value = interpreter.getEnvironment().open(source_sink, mode, options);
 		interpreter.addVariableUndo(vstream);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

@@ -36,7 +36,7 @@ public class Predicate_close extends ExecuteOnlyCode
 	CompoundTermTag forceTag = CompoundTermTag.get("force", 1);
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term cur = args[1];
@@ -78,13 +78,13 @@ public class Predicate_close extends ExecuteOnlyCode
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		if (stream == interpreter.getEnvironment().getUserInput())
 		{
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		if (stream == interpreter.getEnvironment().getUserOutput())
 		{
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		stream.close(force == TermConstants.trueAtom);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

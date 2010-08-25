@@ -32,9 +32,9 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_notrace extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		interpreter.getTracer().setActive(false);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

@@ -52,7 +52,7 @@ public class Predicate_clause extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -91,7 +91,7 @@ public class Predicate_clause extends ExecuteOnlyCode
 			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
 			if (p == null) // if predicate not found
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 			// System.err.println("p type = "+p.getType());
 			// System.err.println("p dyn = "+p.isDynamic());
@@ -111,7 +111,7 @@ public class Predicate_clause extends ExecuteOnlyCode
 				}
 				if (clauses.size() == 0)
 				{
-					return FAIL;
+					return RC.FAIL;
 				}
 				else
 				{
@@ -126,18 +126,18 @@ public class Predicate_clause extends ExecuteOnlyCode
 		}
 	}
 
-	private int nextSolution(Interpreter interpreter, ClauseBacktrackInfo bi) throws PrologException
+	private RC nextSolution(Interpreter interpreter, ClauseBacktrackInfo bi) throws PrologException
 	{
 		while (bi.position < bi.clauses.size())
 		{
-			int rc = interpreter.unify(bi.clauses.get(bi.position++), bi.clause);
-			if (rc == SUCCESS_LAST)
+			RC rc = interpreter.unify(bi.clauses.get(bi.position++), bi.clause);
+			if (rc == RC.SUCCESS_LAST)
 			{
 				interpreter.pushBacktrackInfo(bi);
-				return SUCCESS;
+				return RC.SUCCESS;
 			}
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 
 	public static boolean isCallable(Term body)

@@ -410,10 +410,9 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 	 *          true if predicate is called on backtracking and false otherwise
 	 * @param args
 	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * @return either RC.SUCCESS, RC.SUCCESS_LAST, or RC.FAIL.
 	 */
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 
 		Term environment[] = null;
@@ -458,7 +457,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 						cur_bi.undo(interpreter);
 						if (cur_bi instanceof EnterBacktrackInfo)
 						{
-							return FAIL;
+							return RC.FAIL;
 						}
 						else
 						{
@@ -516,7 +515,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 							}
 							interpreter.getTracer().traceEvent(backtrackMode ? TraceLevel.REDO : TraceLevel.CALL, interpreter, tag,
 									cargs);
-							int rc;
+							RC rc;
 							try
 							{
 								rc = code.execute(interpreter, backtrackMode, cargs);
@@ -677,7 +676,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 							{
 								// code cannot be rexecuted
 								interpreter.popBacktrackInfo();
-								return SUCCESS_LAST;
+								return RC.SUCCESS_LAST;
 							}
 							else
 							{
@@ -691,7 +690,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 									lbi = new LeaveByteCodeBacktrackInfo(environment, startBacktrackInfo);
 								}
 								interpreter.pushBacktrackInfo(lbi);
-								return SUCCESS;
+								return RC.SUCCESS;
 							}
 						}
 						case ISAVE_CUT:
@@ -747,8 +746,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 							pds[pdsSize] = null;
 							Term t0 = pds[--pdsSize].dereference(); // pop argument from stack
 							pds[pdsSize] = null;
-							int rc = interpreter.simpleUnify(t0, t1);
-							if (rc == FAIL)
+							RC rc = interpreter.simpleUnify(t0, t1);
+							if (rc == RC.FAIL)
 							{
 								backtrackMode = true;
 							}

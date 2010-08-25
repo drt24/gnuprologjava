@@ -28,11 +28,11 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_set_stream_position extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		stream.setPosition(args[0], interpreter, args[1]);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

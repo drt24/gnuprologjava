@@ -37,13 +37,12 @@ import java.util.List;
 public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		List<Term> stack = new ArrayList<Term>(10);
 		stack.add(args[0]);
 		stack.add(args[1]);
-		int rc = SUCCESS_LAST;
+		RC rc = RC.SUCCESS_LAST;
 		unify_loop: while (stack.size() > 0)
 		{
 			Term t1 = stack.remove(stack.size() - 1);
@@ -56,7 +55,7 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 				VariableTerm vt1 = (VariableTerm) t1;
 				if (!occurCheck(vt1, t2))
 				{
-					rc = FAIL;
+					rc = RC.FAIL;
 					break unify_loop;
 				}
 				interpreter.addVariableUndo(vt1);
@@ -67,7 +66,7 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 				VariableTerm vt2 = (VariableTerm) t2;
 				if (!occurCheck(vt2, t1))
 				{
-					rc = FAIL;
+					rc = RC.FAIL;
 					break unify_loop;
 				}
 				interpreter.addVariableUndo(vt2);
@@ -75,7 +74,7 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 			}
 			else if (t1.getClass() != t2.getClass())
 			{
-				rc = FAIL;
+				rc = RC.FAIL;
 				break unify_loop;
 			}
 			else if (t1 instanceof CompoundTerm && t2 instanceof CompoundTerm)
@@ -84,7 +83,7 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 				CompoundTerm ct2 = (CompoundTerm) t2;
 				if (ct1.tag != ct2.tag)
 				{
-					rc = FAIL;
+					rc = RC.FAIL;
 					break unify_loop;
 				}
 				Term args1[] = ct1.args;
@@ -101,7 +100,7 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 				FloatTerm ct2 = (FloatTerm) t2;
 				if (ct1.value != ct2.value)
 				{
-					rc = FAIL;
+					rc = RC.FAIL;
 					break unify_loop;
 				}
 			}
@@ -111,7 +110,7 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 				IntegerTerm ct2 = (IntegerTerm) t2;
 				if (ct1.value != ct2.value)
 				{
-					rc = FAIL;
+					rc = RC.FAIL;
 					break unify_loop;
 				}
 			}
@@ -121,13 +120,13 @@ public class Predicate_unify_with_occurs_check extends ExecuteOnlyCode
 				JavaObjectTerm ct2 = (JavaObjectTerm) t2;
 				if (ct1.value != ct2.value)
 				{
-					rc = FAIL;
+					rc = RC.FAIL;
 					break unify_loop;
 				}
 			}
 			else
 			{
-				rc = PrologCode.FAIL;
+				rc = PrologCode.RC.FAIL;
 				break unify_loop;
 			}
 		}

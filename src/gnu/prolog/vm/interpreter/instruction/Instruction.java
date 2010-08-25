@@ -22,6 +22,7 @@ import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Installable;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.interpreter.ExecutionState;
+import gnu.prolog.vm.interpreter.ExecutionState.EXRC;
 
 /** base call for instruction */
 public abstract class Instruction implements Installable
@@ -35,12 +36,12 @@ public abstract class Instruction implements Installable
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @param bi
-	 * @return ExecutionState.{BACKTRACK,NEXT,JUMP,RETURN}: instruction to caller
-	 *         how to execute next instruction
+	 * @return ExecutionState.{EXRC.BACKTRACK,EXRC.NEXT,EXRC.JUMP,EXRC.RETURN}:
+	 *         instruction to caller how to execute next instruction
 	 * @throws PrologException
 	 *           if code is throwing prolog exception
 	 */
-	public abstract int execute(ExecutionState state, BacktrackInfo bi) throws PrologException;
+	public abstract EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException;
 
 	/** install instruction to environment */
 	public void install(Environment env)

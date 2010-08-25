@@ -38,10 +38,10 @@ public class Predicate_flush_output extends ExecuteOnlyCode
 	 *          true if predicate is called on backtracking and false otherwise
 	 * @param args
 	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * @return either RC.SUCCESS, RC.SUCCESS_LAST, or RC.FAIL.
 	 */
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
@@ -50,6 +50,6 @@ public class Predicate_flush_output extends ExecuteOnlyCode
 			PrologException.permissionError(TermConstants.outputAtom, TermConstants.streamAtom, args[0]);
 		}
 		stream.flushOutput(args[0]);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

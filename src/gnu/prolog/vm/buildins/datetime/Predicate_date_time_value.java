@@ -66,7 +66,7 @@ public class Predicate_date_time_value extends DateTimePrologCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		// date_time_value(?Key, +DateTime, ?Value)
 		if (backtrackMode)
@@ -104,7 +104,7 @@ public class Predicate_date_time_value extends DateTimePrologCode
 			Term res = getDate9Value(args[0], date9);
 			if (res == null)
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 			return interpreter.unify(args[2], res);
 		}
@@ -185,7 +185,7 @@ public class Predicate_date_time_value extends DateTimePrologCode
 	 * @return PrologCode return code
 	 * @throws PrologException
 	 */
-	protected int nextSolution(Interpreter interpreter, Date9BacktrackInfo bi) throws PrologException
+	protected RC nextSolution(Interpreter interpreter, Date9BacktrackInfo bi) throws PrologException
 	{
 		while (bi.date9idx < date9keys.length)
 		{
@@ -196,20 +196,20 @@ public class Predicate_date_time_value extends DateTimePrologCode
 			{
 				continue;
 			}
-			if (interpreter.unify(bi.value, res) == FAIL)
+			if (interpreter.unify(bi.value, res) == RC.FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
-			if (interpreter.unify(bi.key, key) == FAIL)
+			if (interpreter.unify(bi.key, key) == RC.FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
 			interpreter.pushBacktrackInfo(bi);
-			return SUCCESS;
+			return RC.SUCCESS;
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 
 }

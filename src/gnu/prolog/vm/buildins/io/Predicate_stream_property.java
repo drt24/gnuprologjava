@@ -57,7 +57,7 @@ public class Predicate_stream_property extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -169,7 +169,7 @@ public class Predicate_stream_property extends ExecuteOnlyCode
 		}
 	}
 
-	private int nextSolution(Interpreter interpreter, StreamPropertyBacktrackInfo bi) throws PrologException
+	private RC nextSolution(Interpreter interpreter, StreamPropertyBacktrackInfo bi) throws PrologException
 	{
 		int undoPos = interpreter.getUndoPosition();
 		while (true)
@@ -185,15 +185,15 @@ public class Predicate_stream_property extends ExecuteOnlyCode
 				}
 				else
 				{
-					return FAIL;
+					return RC.FAIL;
 				}
 			}
 			Term currentProp = bi.options.next();
-			if (interpreter.simpleUnify(bi.stream, bi.currentStream) == SUCCESS_LAST
-					&& interpreter.simpleUnify(bi.property, currentProp) == SUCCESS_LAST)
+			if (interpreter.simpleUnify(bi.stream, bi.currentStream) == RC.SUCCESS_LAST
+					&& interpreter.simpleUnify(bi.property, currentProp) == RC.SUCCESS_LAST)
 			{
 				interpreter.pushBacktrackInfo(bi);
-				return SUCCESS;
+				return RC.SUCCESS;
 			}
 			interpreter.undo(undoPos);
 		}

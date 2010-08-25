@@ -42,7 +42,7 @@ public class Predicate_op extends ExecuteOnlyCode
 	static final AtomTerm commaAtom = AtomTerm.get(",");
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term tpriority = args[0];
@@ -150,7 +150,7 @@ public class Predicate_op extends ExecuteOnlyCode
 				opSet.add(priority, opspec, op.value);
 			}
 		}
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 
 	private static void validateOp(int priority, SPECIFIER specifier, AtomTerm opAtom, OperatorSet opSet)

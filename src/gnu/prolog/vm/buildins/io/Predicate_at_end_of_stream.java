@@ -29,18 +29,18 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_at_end_of_stream extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term st = stream.getEndOfStreamState();
 		if (st == PrologStream.atAtom || st == PrologStream.pastAtom)
 		{
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 	}
 }

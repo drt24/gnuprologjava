@@ -36,7 +36,7 @@ public class Predicate_message extends Predicate_dialog
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		DialogOptions options = processOptions(args[0]);
 		if (options.title == null)
@@ -44,7 +44,7 @@ public class Predicate_message extends Predicate_dialog
 			options.title = UIManager.getString("OptionPane.messageDialogTitle", null);
 		}
 		JOptionPane.showMessageDialog(null, options.message, options.title, options.messageType);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 
 }

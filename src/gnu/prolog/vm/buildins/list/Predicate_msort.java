@@ -38,7 +38,7 @@ import java.util.List;
 public class Predicate_msort extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (!CompoundTerm.isListPair(args[0]))
 		{

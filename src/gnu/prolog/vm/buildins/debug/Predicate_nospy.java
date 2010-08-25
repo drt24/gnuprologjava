@@ -36,7 +36,7 @@ public class Predicate_nospy extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		CompoundTermTag tag = Predicate_spy.getTag(args[0]);
 		if (tag.arity == -1)
@@ -53,6 +53,6 @@ public class Predicate_nospy extends ExecuteOnlyCode
 		{
 			interpreter.getTracer().removeTrace(tag);
 		}
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

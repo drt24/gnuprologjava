@@ -36,13 +36,13 @@ public class Predicate_uuid_compare extends Predicate_uuid
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		UUID uuid1 = getUUID(args[1]);
 		UUID uuid2 = getUUID(args[2]);
 		if (uuid1 == null || uuid2 == null)
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 		int cmp = uuid1.compareTo(uuid2);
 		if (cmp > 0)

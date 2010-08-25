@@ -38,6 +38,7 @@ import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.PrologCode.RC;
 import gnu.prolog.vm.interpreter.InterpretedCodeCompiler;
 
 import java.io.File;
@@ -269,12 +270,12 @@ public class Environment implements PredicateListener
 			try
 			{
 				Interpreter.Goal goal = interpreter.prepareGoal(term);
-				int rc = interpreter.execute(goal);
-				if (rc == PrologCode.SUCCESS)
+				RC rc = interpreter.execute(goal);
+				if (rc == PrologCode.RC.SUCCESS)
 				{
 					interpreter.stop(goal);
 				}
-				else if (rc != PrologCode.SUCCESS_LAST)
+				else if (rc != PrologCode.RC.SUCCESS_LAST)
 				{
 					prologTextLoaderState.logError(loaderTerm.left, "Goal Failed: " + term);
 				}

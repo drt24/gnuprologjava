@@ -28,17 +28,17 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_term_greater_then extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		TermComparator cmp = new TermComparator();
 		if (cmp.compare(args[0], args[1]) > 0)
 		{
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 	}
 }

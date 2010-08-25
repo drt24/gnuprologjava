@@ -27,7 +27,7 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_unify extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		return interpreter.unify(args[0], args[1]);

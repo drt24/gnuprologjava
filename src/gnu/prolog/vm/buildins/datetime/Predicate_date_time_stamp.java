@@ -38,7 +38,7 @@ public class Predicate_date_time_stamp extends DateTimePrologCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		// date_time_stamp(+DateTime, -TimeStamp)
 		Date date = getDate(args[0]);

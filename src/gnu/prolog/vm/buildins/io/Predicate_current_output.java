@@ -32,7 +32,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_current_output extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term stream = args[0];

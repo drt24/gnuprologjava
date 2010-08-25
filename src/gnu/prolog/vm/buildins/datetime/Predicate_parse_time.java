@@ -40,7 +40,7 @@ public class Predicate_parse_time extends DateTimePrologCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		// % parse_time(+Text, -Stamp)
 		// % parse_time(+Text, -Stamp, +Format)
@@ -68,7 +68,7 @@ public class Predicate_parse_time extends DateTimePrologCode
 		}
 		catch (ParseException e)
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 		return interpreter.unify(args[1], new FloatTerm(date.getTime() / 1000.0));
 	}

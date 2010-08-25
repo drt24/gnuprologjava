@@ -31,7 +31,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_set_prolog_flag extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term flag = args[0];
@@ -45,6 +45,6 @@ public class Predicate_set_prolog_flag extends ExecuteOnlyCode
 			PrologException.typeError(TermConstants.atomAtom, flag);
 		}
 		interpreter.getEnvironment().setPrologFlag((AtomTerm) flag, value);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

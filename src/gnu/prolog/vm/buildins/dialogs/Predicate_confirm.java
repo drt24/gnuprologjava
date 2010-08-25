@@ -68,7 +68,7 @@ public class Predicate_confirm extends Predicate_dialog
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		DialogOptions options;
 		if (args.length >= 2)
@@ -144,6 +144,6 @@ public class Predicate_confirm extends Predicate_dialog
 				return interpreter.unify(args[0], opts.get(res).result);
 			}
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

@@ -25,8 +25,10 @@ import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologCodeListener;
 import gnu.prolog.vm.PrologCodeUpdatedEvent;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.PrologCode.RC;
 import gnu.prolog.vm.interpreter.CallBacktrackInfo;
 import gnu.prolog.vm.interpreter.ExecutionState;
+import gnu.prolog.vm.interpreter.ExecutionState.EXRC;
 
 /**
  * call instruction.
@@ -61,10 +63,11 @@ public class ICall extends Instruction implements PrologCodeListener
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction
-	 * @throws PrologException if code is throwing prolog exception
+	 * @throws PrologException
+	 *           if code is throwing prolog exception
 	 */
 	@Override
-	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	public EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		// System.err.print("calling: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
 		/*
@@ -99,25 +102,26 @@ public class ICall extends Instruction implements PrologCodeListener
 			code = this.code;
 		}
 		/* call code, with last backtrack info if applicable */
-		int rc = code.execute(state.interpreter, backtrack, args);
+		RC rc = code.execute(state.interpreter, backtrack, args);
+		EXRC exrc = EXRC.BACKTRACK;
 		switch (rc)
 		{
-			case PrologCode.SUCCESS:
+			case SUCCESS:
 				/* push backtrack info */
 				state.pushBacktrackInfo(state.getCallBacktrackInfo(codePosition, args, code, tag));
-				rc = ExecutionState.NEXT; /* proceed to next instruction */
+				exrc = ExecutionState.EXRC.NEXT; /* proceed to next instruction */
 				// System.err.println("success: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
 				break;
-			case PrologCode.SUCCESS_LAST:
-				rc = ExecutionState.NEXT; /* proceed to next instruction */
+			case SUCCESS_LAST:
+				exrc = ExecutionState.EXRC.NEXT; /* proceed to next instruction */
 				// System.err.println("success last: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
 				break;
-			case PrologCode.FAIL:
-				rc = ExecutionState.BACKTRACK; /* backtrack */
+			case FAIL:
+				exrc = ExecutionState.EXRC.BACKTRACK; /* backtrack */
 				// System.err.println("fail: "+gnu.prolog.io.TermWriter.toString(tag.getPredicateIndicator()));
 				break;
 		}
-		return rc;
+		return exrc;
 	}
 
 	/** notify instruction that prolog code for predicate was updated */

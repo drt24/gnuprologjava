@@ -37,7 +37,7 @@ public class Predicate_stacktrace extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Term res = TermConstants.emptyListAtom;
 		Term prev = TermConstants.emptyListAtom;

@@ -38,47 +38,46 @@ public class Predicate_functor extends ExecuteOnlyCode
 	public static final IntegerTerm zero = IntegerTerm.get(0);
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		int undoPos = interpreter.getUndoPosition();
 		Term term = args[0];
 		Term name = args[1];
 		Term arity = args[2];
-		int rc;
+		RC rc;
 		if (term instanceof AtomicTerm)
 		{
 			rc = interpreter.unify(term, name);
-			if (rc == FAIL)
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(undoPos);
-				return FAIL;
+				return RC.FAIL;
 			}
 			rc = interpreter.unify(arity, zero);
-			if (rc == FAIL)
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(undoPos);
-				return FAIL;
+				return RC.FAIL;
 			}
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else if (term instanceof CompoundTerm)
 		{
 			CompoundTermTag tag = ((CompoundTerm) term).tag;
 			IntegerTerm tarity = IntegerTerm.get(tag.arity);
 			rc = interpreter.unify(tag.functor, name);
-			if (rc == FAIL)
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(undoPos);
-				return FAIL;
+				return RC.FAIL;
 			}
 			rc = interpreter.unify(tarity, arity);
-			if (rc == FAIL)
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(undoPos);
-				return FAIL;
+				return RC.FAIL;
 			}
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else if (term instanceof VariableTerm)
 		{
@@ -120,25 +119,25 @@ public class Predicate_functor extends ExecuteOnlyCode
 					targs[i] = new VariableTerm();
 				}
 				rc = interpreter.unify(term, new CompoundTerm(functor, targs));
-				if (rc == FAIL)
+				if (rc == RC.FAIL)
 				{
 					interpreter.undo(undoPos);
-					return FAIL;
+					return RC.FAIL;
 				}
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			if (iarity.value < 0)
 			{
 				PrologException.domainError(TermConstants.notLessThanZeroAtom, arity);
 			}
 			rc = interpreter.unify(term, name);
-			if (rc == FAIL)
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(undoPos);
-				return FAIL;
+				return RC.FAIL;
 			}
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
-		return FAIL; // this point is unreachable
+		return RC.FAIL; // this point is unreachable
 	}
 }

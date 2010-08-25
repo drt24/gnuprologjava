@@ -36,7 +36,7 @@ public class Predicate_char_conversion extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Term from = args[0];
 		Term to = args[1];
@@ -73,6 +73,6 @@ public class Predicate_char_conversion extends ExecuteOnlyCode
 		char cfrom = ((AtomTerm) from).value.charAt(0);
 		char cto = ((AtomTerm) to).value.charAt(0);
 		interpreter.getEnvironment().getConversionTable().setConversion(cfrom, cto);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

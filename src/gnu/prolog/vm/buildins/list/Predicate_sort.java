@@ -40,7 +40,7 @@ import java.util.Set;
 public class Predicate_sort extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (!CompoundTerm.isListPair(args[0]))
 		{

@@ -37,7 +37,7 @@ public class Predicate_abolish extends ExecuteOnlyCode
 	static final CompoundTermTag divideTag = CompoundTermTag.get("/", 2);
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term tpi = args[0];
@@ -94,6 +94,6 @@ public class Predicate_abolish extends ExecuteOnlyCode
 			}
 			interpreter.getEnvironment().getModule().removeDefinedPredicate(tag);
 		}
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

@@ -24,6 +24,7 @@ import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.PrologCode.RC;
 import gnu.prolog.vm.interpreter.Tracer;
 
 import java.util.HashMap;
@@ -276,12 +277,12 @@ public final class Interpreter implements HasEnvironment
 	 * 
 	 * @param t1
 	 * @param t2
-	 * @return {@link PrologCode#SUCCESS_LAST} or {@link PrologCode#FAIL}
+	 * @return {@link RC#SUCCESS_LAST} or {@link RC#FAIL}
 	 * @throws PrologException
 	 */
-	public int simpleUnify(Term t1, Term t2) throws PrologException
+	public RC simpleUnify(Term t1, Term t2) throws PrologException
 	{
-		int rc = PrologCode.SUCCESS_LAST;
+		RC rc = PrologCode.RC.SUCCESS_LAST;
 		if (t1 == t2)
 		{
 		}
@@ -299,7 +300,7 @@ public final class Interpreter implements HasEnvironment
 		}
 		else if (t1.getClass() != t2.getClass())
 		{
-			rc = PrologCode.FAIL;
+			rc = PrologCode.RC.FAIL;
 		}
 		else if (t1 instanceof CompoundTerm/* && t2 instanceof CompoundTerm */)
 		{
@@ -307,7 +308,7 @@ public final class Interpreter implements HasEnvironment
 			CompoundTerm ct2 = (CompoundTerm) t2;
 			if (ct1.tag != ct2.tag)
 			{
-				rc = PrologCode.FAIL;
+				rc = PrologCode.RC.FAIL;
 			}
 			else
 			{
@@ -317,7 +318,7 @@ public final class Interpreter implements HasEnvironment
 				unify_loop: for (int i = args2.length - 1; i >= 0; i--)
 				{
 					rc = simpleUnify(args1[i].dereference(), args2[i].dereference());
-					if (rc == PrologCode.FAIL)
+					if (rc == PrologCode.RC.FAIL)
 					{
 						break unify_loop;
 					}
@@ -330,7 +331,7 @@ public final class Interpreter implements HasEnvironment
 			FloatTerm ct2 = (FloatTerm) t2;
 			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON)
 			{
-				rc = PrologCode.FAIL;
+				rc = PrologCode.RC.FAIL;
 			}
 		}
 		else if (t1 instanceof IntegerTerm /* && t2 instanceof IntegerTerm */)
@@ -339,7 +340,7 @@ public final class Interpreter implements HasEnvironment
 			IntegerTerm ct2 = (IntegerTerm) t2;
 			if (ct1.value != ct2.value)
 			{
-				rc = PrologCode.FAIL;
+				rc = PrologCode.RC.FAIL;
 			}
 		}
 		else if (t1 instanceof JavaObjectTerm /* && t2 instanceof JavaObjectTerm */)
@@ -348,12 +349,12 @@ public final class Interpreter implements HasEnvironment
 			JavaObjectTerm ct2 = (JavaObjectTerm) t2;
 			if (ct1.value != ct2.value)
 			{
-				rc = PrologCode.FAIL;
+				rc = PrologCode.RC.FAIL;
 			}
 		}
 		else
 		{
-			rc = PrologCode.FAIL;
+			rc = PrologCode.RC.FAIL;
 		}
 		return rc;
 	}
@@ -363,14 +364,14 @@ public final class Interpreter implements HasEnvironment
 	 * 
 	 * @param t1
 	 * @param t2
-	 * @return {@link PrologCode#SUCCESS_LAST} or {@link PrologCode#FAIL}
+	 * @return {@link RC#SUCCESS_LAST} or {@link RC#FAIL}
 	 * @throws PrologException
 	 */
-	public int unify(Term t1, Term t2) throws PrologException
+	public RC unify(Term t1, Term t2) throws PrologException
 	{
 		int undoPos = getUndoPosition();
-		int rc = simpleUnify(t1, t2);
-		if (rc == PrologCode.FAIL)
+		RC rc = simpleUnify(t1, t2);
+		if (rc == PrologCode.RC.FAIL)
 		{
 			undo(undoPos);
 		}
@@ -479,11 +480,11 @@ public final class Interpreter implements HasEnvironment
 	 * @param goal
 	 *          the goal created using {@link #prepareGoal(Term)} which is to be
 	 *          run.
-	 * @return {@link PrologCode#SUCCESS SUCCESS}, {@link PrologCode#SUCCESS_LAST}
-	 *         , {@link PrologCode#FAIL} (or {@link PrologCode#HALT})
+	 * @return {@link RC#SUCCESS}, {@link RC#SUCCESS_LAST} , {@link RC#FAIL} (or
+	 *         {@link RC#HALT})
 	 * @throws PrologException
 	 */
-	public int execute(Goal goal) throws PrologException
+	public RC execute(Goal goal) throws PrologException
 	{
 		haltExitCode = null;
 		try
@@ -504,15 +505,15 @@ public final class Interpreter implements HasEnvironment
 				}
 				try
 				{
-					int rc = gnu.prolog.vm.interpreter.Predicate_call.staticExecute(this, !goal.firstTime, goal.getGoal());
+					RC rc = gnu.prolog.vm.interpreter.Predicate_call.staticExecute(this, !goal.firstTime, goal.getGoal());
 					switch (rc)
 					{
-						case PrologCode.SUCCESS_LAST:
-						case PrologCode.FAIL:
+						case SUCCESS_LAST:
+						case FAIL:
 							goal.stopped = true;
 							currentGoal = null;
 							break;
-						case PrologCode.SUCCESS:
+						case SUCCESS:
 							goal.firstTime = false;
 							break;
 					}
@@ -539,7 +540,7 @@ public final class Interpreter implements HasEnvironment
 		{
 			stop(goal);
 			haltExitCode = ph;
-			return PrologCode.HALT;
+			return PrologCode.RC.HALT;
 		}
 		catch (PrologException ex)
 		{
@@ -550,7 +551,7 @@ public final class Interpreter implements HasEnvironment
 
 	/**
 	 * Once the goal has been finished with and if the goal has not been stopped
-	 * (as it will have been if SUCCESS_LAST or FAIL has been returned) then
+	 * (as it will have been if RC.SUCCESS_LAST or RC.FAIL has been returned) then
 	 * {@link #stop(Goal)} should be run.
 	 * 
 	 * 
@@ -610,16 +611,15 @@ public final class Interpreter implements HasEnvironment
 	 * 
 	 * @param goalTerm
 	 *          the term to be executed
-	 * @return {@link PrologCode#SUCCESS}, {@link PrologCode#SUCCESS_LAST} or
-	 *         {@link PrologCode#FAIL}
+	 * @return {@link RC#SUCCESS}, {@link RC#SUCCESS_LAST} or {@link RC#FAIL}
 	 * @throws PrologException
 	 */
-	public int runOnce(Term goalTerm) throws PrologException
+	public RC runOnce(Term goalTerm) throws PrologException
 	{
 		Goal goal = prepareGoal(goalTerm);
 		try
 		{
-			int rc = execute(goal);
+			RC rc = execute(goal);
 			return rc;
 		}
 		finally
@@ -632,8 +632,8 @@ public final class Interpreter implements HasEnvironment
 	}
 
 	/**
-	 * Only call this method if you have had {@link PrologCode#HALT} returned by
-	 * the most recent call to {@link #execute(Goal)}. Otherwise and
+	 * Only call this method if you have had {@link RC#HALT} returned by the most
+	 * recent call to {@link #execute(Goal)}. Otherwise and
 	 * {@link IllegalStateException} will be thrown.
 	 * 
 	 * @return The exit code when the prolog interpreter was halted

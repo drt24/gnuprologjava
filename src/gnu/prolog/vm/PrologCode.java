@@ -19,28 +19,30 @@ package gnu.prolog.vm;
 
 /**
  * Implementing classes can be executed and return a return code of
- * {@link #SUCCESS}, {@link #SUCCESS_LAST}, or {@link #FAIL}.
+ * {@link RC#SUCCESS}, {@link RC#SUCCESS_LAST}, or {@link RC#FAIL}.
  * 
  * {@link gnu.prolog.vm.buildins.imphooks.Predicate_halt Predicate_halt} can
- * also return {@link #HALT}
+ * also return {@link RC#HALT}
  */
 public interface PrologCode extends Installable
 {
-	// TODO: use an enum rather than ints
-	/**
-	 * predicate was returned with success, backtrack info was created, and
-	 * re-execute is possible.
-	 */
-	public final static int SUCCESS = 0;
-	/** predicate was returned with success, backtrack info was not created */
-	public final static int SUCCESS_LAST = 1;
-	/** predicate failed */
-	public final static int FAIL = -1;
-	/**
-	 * returned by the interpreter when it was halted, should never be returned by
-	 * prolog code
-	 */
-	public static final int HALT = -2;
+	public static enum RC
+	{
+		/**
+		 * predicate was returned with success, backtrack info was created, and
+		 * re-execute is possible.
+		 */
+		SUCCESS,
+		/** predicate was returned with success, backtrack info was not created */
+		SUCCESS_LAST,
+		/** predicate failed */
+		FAIL,
+		/**
+		 * returned by the interpreter when it was halted, should never be returned
+		 * by prolog code
+		 */
+		HALT
+	}
 
 	/**
 	 * this method is used for execution of code
@@ -51,10 +53,9 @@ public interface PrologCode extends Installable
 	 *          true if predicate is called on backtracking and false otherwise
 	 * @param args
 	 *          arguments of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * @return either RC.SUCCESS, RC.SUCCESS_LAST, or RC.FAIL.
 	 * @throws PrologException
 	 */
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException;
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException;
 
 }

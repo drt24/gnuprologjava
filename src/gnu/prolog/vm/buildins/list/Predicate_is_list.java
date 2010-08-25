@@ -36,26 +36,26 @@ public class Predicate_is_list extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Term lst = args[0];
 		while (lst != null)
 		{
 			if (TermConstants.emptyListAtom.equals(lst))
 			{
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			if (!CompoundTerm.isListPair(lst))
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 			CompoundTerm ct = (CompoundTerm) lst;
 			if (ct.args.length != 2)
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 			lst = ct.args[1];
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

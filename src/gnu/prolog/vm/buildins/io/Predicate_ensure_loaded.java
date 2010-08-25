@@ -39,7 +39,7 @@ public class Predicate_ensure_loaded extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Environment environment = interpreter.getEnvironment();
 		PrologTextLoaderState state = environment.getPrologTextLoaderState();
@@ -53,6 +53,6 @@ public class Predicate_ensure_loaded extends ExecuteOnlyCode
 		{
 			System.err.println(error.toString());
 		}
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

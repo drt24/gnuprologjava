@@ -43,13 +43,14 @@ public class IStoreEnvironment extends Instruction
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction
-	 * @throws PrologException if code is throwing prolog exception
+	 * @throws PrologException
+	 *           if code is throwing prolog exception
 	 */
 	@Override
-	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	public ExecutionState.EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		state.putEnvironment(environmentIndex, state.popPushDown());
-		return ExecutionState.NEXT;
+		return ExecutionState.EXRC.NEXT;
 	}
 
 	/** convert instruction to string */

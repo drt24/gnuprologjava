@@ -76,8 +76,7 @@ public class Predicate_call extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		return staticExecute(interpreter, backtrackMode, args[0]);
 	}
@@ -91,10 +90,10 @@ public class Predicate_call extends ExecuteOnlyCode
 	 *          true if predicate is called on backtracking and false otherwise
 	 * @param arg
 	 *          argument of code
-	 * @return either SUCCESS, SUCCESS_LAST, or FAIL.
+	 * @return either RC.SUCCESS, RC.SUCCESS_LAST, or RC.FAIL.
 	 * @throws PrologException
 	 */
-	public static int staticExecute(Interpreter interpreter, boolean backtrackMode, Term arg) throws PrologException
+	public static RC staticExecute(Interpreter interpreter, boolean backtrackMode, Term arg) throws PrologException
 	{
 		CallTermBacktrackInfo cbi = backtrackMode ? (CallTermBacktrackInfo) interpreter.popBacktrackInfo() : null;
 		PrologCode code; // code to call
@@ -119,7 +118,7 @@ public class Predicate_call extends ExecuteOnlyCode
 			catch (IllegalArgumentException ex) // term not callable
 			{
 				PrologException.typeError(TermConstants.callableAtom, callTerm);
-				return FAIL; // fake return
+				return RC.FAIL; // fake return
 			}
 			Term headArgs[] = argumentsToArgumentVariables.values().toArray(termArrayType);
 			Term head = new CompoundTerm(headFunctor, headArgs);
@@ -141,8 +140,8 @@ public class Predicate_call extends ExecuteOnlyCode
 			code = cbi.code;
 			callTerm = cbi.callTerm;
 		}
-		int rc = code.execute(interpreter, backtrackMode, args);
-		if (rc == SUCCESS) // redo is possible
+		RC rc = code.execute(interpreter, backtrackMode, args);
+		if (rc == RC.SUCCESS) // redo is possible
 		{
 			cbi = new CallTermBacktrackInfo(interpreter, code, args, callTerm);
 			cbi.environment = interpreter.getEnvironment();

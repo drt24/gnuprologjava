@@ -36,9 +36,9 @@ public class Predicate_debugging extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		interpreter.getTracer().reportStatus();
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

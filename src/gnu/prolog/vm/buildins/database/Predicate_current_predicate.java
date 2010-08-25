@@ -54,7 +54,7 @@ public class Predicate_current_predicate extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -102,7 +102,7 @@ public class Predicate_current_predicate extends ExecuteOnlyCode
 
 	}
 
-	private static int nextSolution(Interpreter interpreter, CurrentPredicateBacktrackInfo bi) throws PrologException
+	private static RC nextSolution(Interpreter interpreter, CurrentPredicateBacktrackInfo bi) throws PrologException
 	{
 		while (bi.tagsIterator.hasNext())
 		{
@@ -117,13 +117,13 @@ public class Predicate_current_predicate extends ExecuteOnlyCode
 			{
 				continue;
 			}
-			int rc = interpreter.unify(bi.pi, tag.getPredicateIndicator());
-			if (rc == SUCCESS_LAST)
+			RC rc = interpreter.unify(bi.pi, tag.getPredicateIndicator());
+			if (rc == RC.SUCCESS_LAST)
 			{
 				interpreter.pushBacktrackInfo(bi);
-				return SUCCESS;
+				return RC.SUCCESS;
 			}
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

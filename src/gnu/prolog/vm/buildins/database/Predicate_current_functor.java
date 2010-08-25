@@ -58,7 +58,7 @@ public class Predicate_current_functor extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -88,7 +88,7 @@ public class Predicate_current_functor extends ExecuteOnlyCode
 		}
 	}
 
-	private static int nextSolution(Interpreter interpreter, CurrentPredicateBacktrackInfo bi) throws PrologException
+	private static RC nextSolution(Interpreter interpreter, CurrentPredicateBacktrackInfo bi) throws PrologException
 	{
 		while (bi.tagsIterator.hasNext())
 		{
@@ -98,21 +98,21 @@ public class Predicate_current_functor extends ExecuteOnlyCode
 			{
 				continue;
 			}
-			int rc = interpreter.unify(bi.functor, tag.functor);
-			if (rc == FAIL)
+			RC rc = interpreter.unify(bi.functor, tag.functor);
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
 			rc = interpreter.unify(bi.arity, IntegerTerm.get(tag.arity));
-			if (rc == FAIL)
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
 			interpreter.pushBacktrackInfo(bi);
-			return SUCCESS;
+			return RC.SUCCESS;
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

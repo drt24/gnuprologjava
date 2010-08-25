@@ -34,7 +34,7 @@ public class Predicate_atom_codes extends ExecuteOnlyCode
 {
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term ta = args[0];
@@ -79,7 +79,7 @@ public class Predicate_atom_codes extends ExecuteOnlyCode
 			}
 			interpreter.addVariableUndo(va);
 			va.value = AtomTerm.get(bu.toString());
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else if (ta instanceof AtomTerm)
 		{
@@ -95,6 +95,6 @@ public class Predicate_atom_codes extends ExecuteOnlyCode
 		{
 			PrologException.typeError(TermConstants.atomAtom, ta);
 		}
-		return FAIL; // fake return
+		return RC.FAIL; // fake return
 	}
 }

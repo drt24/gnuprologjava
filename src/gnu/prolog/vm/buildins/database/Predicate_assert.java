@@ -42,7 +42,7 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 	protected abstract void assertPred(Predicate p, CompoundTerm clause);
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term clause = args[0];
@@ -114,7 +114,7 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 					.getPredicateIndicator());
 		}
 		assertPred(p, (CompoundTerm) new CompoundTerm(TermConstants.clauseTag, head, body).clone());
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 
 	public static Term prepareBody(Term body, Term term) throws PrologException

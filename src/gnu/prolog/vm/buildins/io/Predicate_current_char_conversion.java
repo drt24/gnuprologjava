@@ -54,7 +54,7 @@ public class Predicate_current_char_conversion extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -112,25 +112,25 @@ public class Predicate_current_char_conversion extends ExecuteOnlyCode
 			}
 			// not possible
 			PrologException.systemError();
-			return FAIL;
+			return RC.FAIL;
 		}
 	}
 
-	private int nextSolution(Interpreter interpreter, CharConvBacktrackInfo bi) throws PrologException
+	private RC nextSolution(Interpreter interpreter, CharConvBacktrackInfo bi) throws PrologException
 	{
 		if (bi.charIt != null)
 		{
 			while (bi.charIt.hasNext())
 			{
 				Term res = AtomTerm.get(Character.toString(bi.charIt.next()));
-				int rc = interpreter.unify(bi.arg0, res);
-				if (rc == FAIL)
+				RC rc = interpreter.unify(bi.arg0, res);
+				if (rc == RC.FAIL)
 				{
 					interpreter.undo(bi.startUndoPosition);
 					continue;
 				}
 				interpreter.pushBacktrackInfo(bi);
-				return SUCCESS;
+				return RC.SUCCESS;
 			}
 		}
 		else
@@ -143,8 +143,8 @@ public class Predicate_current_char_conversion extends ExecuteOnlyCode
 					continue;
 				}
 				Term res = AtomTerm.get(Character.toString(bi.counter));
-				int rc = interpreter.unify(bi.arg0, res);
-				if (rc == FAIL)
+				RC rc = interpreter.unify(bi.arg0, res);
+				if (rc == RC.FAIL)
 				{
 					bi.counter++;
 					interpreter.undo(bi.startUndoPosition);
@@ -152,7 +152,7 @@ public class Predicate_current_char_conversion extends ExecuteOnlyCode
 				}
 				Term res2 = AtomTerm.get(Character.toString(interpreter.getEnvironment().getConversionTable().convert(bi.counter)));
 				rc = interpreter.unify(bi.arg1, res2);
-				if (rc == FAIL)
+				if (rc == RC.FAIL)
 				{
 					bi.counter++;
 					interpreter.undo(bi.startUndoPosition);
@@ -160,9 +160,9 @@ public class Predicate_current_char_conversion extends ExecuteOnlyCode
 				}
 				bi.counter++;
 				interpreter.pushBacktrackInfo(bi);
-				return SUCCESS;
+				return RC.SUCCESS;
 			}
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

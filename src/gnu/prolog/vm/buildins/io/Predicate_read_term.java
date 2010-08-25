@@ -41,7 +41,7 @@ import java.util.Map.Entry;
 public class Predicate_read_term extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Environment environment = interpreter.getEnvironment();
@@ -104,11 +104,11 @@ public class Predicate_read_term extends ExecuteOnlyCode
 
 		try
 		{
-			int rc = interpreter.simpleUnify(args[1], readTerm);
-			if (rc == FAIL)
+			RC rc = interpreter.simpleUnify(args[1], readTerm);
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(undoPos);
-				return FAIL;
+				return RC.FAIL;
 			}
 			Iterator<Term> i = singletons.iterator();
 			if (i.hasNext())
@@ -119,10 +119,10 @@ public class Predicate_read_term extends ExecuteOnlyCode
 					Term t = i.next();
 					t = t.dereference();
 					rc = interpreter.simpleUnify(t, singletonsList);
-					if (rc == FAIL)
+					if (rc == RC.FAIL)
 					{
 						interpreter.undo(undoPos);
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 			}
@@ -135,10 +135,10 @@ public class Predicate_read_term extends ExecuteOnlyCode
 					Term t = i.next();
 					t = t.dereference();
 					rc = interpreter.simpleUnify(t, vnlist);
-					if (rc == FAIL)
+					if (rc == RC.FAIL)
 					{
 						interpreter.undo(undoPos);
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 			}
@@ -151,14 +151,14 @@ public class Predicate_read_term extends ExecuteOnlyCode
 					Term t = i.next();
 					t = t.dereference();
 					rc = interpreter.simpleUnify(t, vnlist);
-					if (rc == FAIL)
+					if (rc == RC.FAIL)
 					{
 						interpreter.undo(undoPos);
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 			}
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		catch (PrologException ex)
 		{

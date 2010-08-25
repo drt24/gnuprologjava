@@ -43,7 +43,7 @@ public class Predicate_stamp_date_time extends DateTimePrologCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		// stamp_date_time(+TimeStamp, -DateTime, +TimeZone)
 		if (!(args[0] instanceof FloatTerm))

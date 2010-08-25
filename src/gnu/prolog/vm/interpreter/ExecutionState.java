@@ -29,25 +29,25 @@ import java.util.List;
 /** execution state class */
 public class ExecutionState
 {
-	// TODO: use an enum here.
-	/** instruction return code indicating need for backtracking */
-	public final static int BACKTRACK = -1;
-	/**
-	 * instruction return code indicating success. backtrack information may or
-	 * not be created
-	 */
-	public final static int NEXT = 0;
-
-	/**
-	 * instruction return code indicating success. jump to position in instruction
-	 * pointer needed
-	 */
-	public final static int JUMP = 1;
-
-	/**
-	 * instruction return code indicating success. return from function needed.
-	 */
-	public final static int RETURN = 2;
+	public static enum EXRC
+	{
+		/** instruction return code indicating need for backtracking */
+		BACKTRACK,
+		/**
+		 * instruction return code indicating success. backtrack information may or
+		 * not be created
+		 */
+		NEXT,
+		/**
+		 * instruction return code indicating success. jump to position in
+		 * instruction pointer needed
+		 */
+		JUMP,
+		/**
+		 * instruction return code indicating success. return from function needed.
+		 */
+		RETURN
+	}
 
 	/** current interpreter */
 	public Interpreter interpreter;

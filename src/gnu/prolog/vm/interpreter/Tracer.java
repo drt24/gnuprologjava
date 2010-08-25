@@ -24,6 +24,7 @@ import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode.RC;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -102,7 +103,7 @@ public class Tracer
 			{
 				return EnumSet.of(EXIT);
 			}
-			else if (lvl.equalsIgnoreCase(FAIL.toString()))
+			else if (lvl.equalsIgnoreCase(RC.FAIL.toString()))
 			{
 				return EnumSet.of(FAIL);
 			}

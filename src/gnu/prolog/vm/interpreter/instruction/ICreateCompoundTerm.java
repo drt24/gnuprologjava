@@ -23,6 +23,7 @@ import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.interpreter.ExecutionState;
+import gnu.prolog.vm.interpreter.ExecutionState.EXRC;
 
 /**
  * create compound term
@@ -55,10 +56,11 @@ public class ICreateCompoundTerm extends Instruction
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction
-	 * @throws PrologException if code is throwing prolog exception
+	 * @throws PrologException
+	 *           if code is throwing prolog exception
 	 */
 	@Override
-	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	public EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		int arity = tag.arity;
 		Term args[] = new Term[arity];
@@ -67,6 +69,6 @@ public class ICreateCompoundTerm extends Instruction
 			args[i] = state.popPushDown().dereference();
 		}
 		state.pushPushDown(new CompoundTerm(tag, args));
-		return ExecutionState.NEXT;
+		return ExecutionState.EXRC.NEXT;
 	}
 }

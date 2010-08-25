@@ -32,7 +32,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_put_char extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
@@ -59,6 +59,6 @@ public class Predicate_put_char extends ExecuteOnlyCode
 			PrologException.typeError(TermConstants.characterAtom, outchar);
 		}
 		stream.putCode(args[0], interpreter, ch);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

@@ -29,16 +29,16 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_number extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (args[0] instanceof IntegerTerm || args[0] instanceof FloatTerm)
 		{
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 	}
 }

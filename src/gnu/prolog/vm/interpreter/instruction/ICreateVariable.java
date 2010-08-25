@@ -21,6 +21,7 @@ import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.interpreter.ExecutionState;
+import gnu.prolog.vm.interpreter.ExecutionState.EXRC;
 
 /**
  * create variable on pushDownStack
@@ -37,16 +38,17 @@ public class ICreateVariable extends Instruction
 
 	/**
 	 * execute call instruction within specified sate
-	 *
+	 * 
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction
-	 * @throws PrologException if code is throwing prolog exception
+	 * @throws PrologException
+	 *           if code is throwing prolog exception
 	 */
 	@Override
-	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	public EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		state.pushPushDown(new VariableTerm());
-		return ExecutionState.NEXT;
+		return ExecutionState.EXRC.NEXT;
 	}
 }

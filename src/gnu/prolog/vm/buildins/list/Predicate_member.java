@@ -61,7 +61,7 @@ public class Predicate_member extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -98,7 +98,7 @@ public class Predicate_member extends ExecuteOnlyCode
 	 * @return PrologCode return code
 	 * @throws PrologException
 	 */
-	protected int nextSolution(Interpreter interpreter, MemberBacktrackInfo bi) throws PrologException
+	protected RC nextSolution(Interpreter interpreter, MemberBacktrackInfo bi) throws PrologException
 	{
 		while (!TermConstants.emptyListAtom.equals(bi.list))
 		{
@@ -122,16 +122,16 @@ public class Predicate_member extends ExecuteOnlyCode
 			}
 			else if (!CompoundTerm.isListPair(bi.list) && !TermConstants.emptyListAtom.equals(bi.list))
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
-			if (interpreter.unify(bi.item, head) == FAIL)
+			if (interpreter.unify(bi.item, head) == RC.FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
 			interpreter.pushBacktrackInfo(bi);
-			return SUCCESS;
+			return RC.SUCCESS;
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

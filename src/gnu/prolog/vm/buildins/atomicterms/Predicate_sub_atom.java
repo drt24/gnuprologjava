@@ -62,7 +62,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -127,7 +127,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 				}
 				if (bi.length > bi.atomLen)
 				{
-					return FAIL;
+					return RC.FAIL;
 				}
 			}
 			else
@@ -165,7 +165,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 				{
 					if (bi.length != a.value.length())
 					{
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 				else
@@ -174,7 +174,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 					bi.length = a.value.length();
 					if (bi.length > bi.atomLen)
 					{
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 				bi.subAtomFixed = true;
@@ -188,7 +188,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 		}
 	}
 
-	private static int nextSolution(Interpreter interpreter, SubAtomBacktrackInfo bi)
+	private static RC nextSolution(Interpreter interpreter, SubAtomBacktrackInfo bi)
 	{
 		while (true)
 		{
@@ -198,7 +198,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 				bi.currentPos++;
 				if (bi.currentPos > bi.atomLen)
 				{
-					return FAIL;
+					return RC.FAIL;
 				}
 			}
 
@@ -244,7 +244,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 				bi.varSubAtom.value = AtomTerm.get(bi.atom.value.substring(pos, pos + len));
 			}
 			interpreter.pushBacktrackInfo(bi);
-			return SUCCESS;
+			return RC.SUCCESS;
 		}
 	}
 }

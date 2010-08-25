@@ -95,9 +95,9 @@ public class Predicate_predsort extends ExecuteOnlyCode
 				try
 				{
 					boolean callBacktrackMode = false;
-					int rc = Predicate_call.staticExecute(interpreter, callBacktrackMode, callMe);
+					RC rc = Predicate_call.staticExecute(interpreter, callBacktrackMode, callMe);
 					callBacktrackMode = true;
-					if (rc == FAIL)
+					if (rc == RC.FAIL)
 					{
 						throw new ComparatorException(null);
 					}
@@ -144,7 +144,7 @@ public class Predicate_predsort extends ExecuteOnlyCode
 	public static final CompoundTermTag COMPARE_TAG = CompoundTermTag.get("compare", 3);
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		if (!CompoundTerm.isListPair(args[1]))
 		{
@@ -161,7 +161,7 @@ public class Predicate_predsort extends ExecuteOnlyCode
 		{
 			if (e.thrown == null)
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 			throw e.thrown;
 		}

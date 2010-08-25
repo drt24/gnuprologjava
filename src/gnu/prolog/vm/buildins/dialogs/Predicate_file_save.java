@@ -40,7 +40,7 @@ public class Predicate_file_save extends Predicate_dialog
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		JFileChooser choose = createFileDialog(args);
 		while (choose.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
@@ -58,7 +58,7 @@ public class Predicate_file_save extends Predicate_dialog
 			Term term = AtomTerm.get(choose.getSelectedFile().toString());
 			return interpreter.unify(args[0], term);
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 
 	/**

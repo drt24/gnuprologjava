@@ -55,7 +55,7 @@ public class Predicate_retract extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -116,7 +116,7 @@ public class Predicate_retract extends ExecuteOnlyCode
 			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(predTag);
 			if (p == null)
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 			else if (p.getType() == Predicate.TYPE.USER_DEFINED)
 			{
@@ -156,19 +156,19 @@ public class Predicate_retract extends ExecuteOnlyCode
 		}
 	}
 
-	private static int nextSolution(Interpreter interpreter, RetractBacktrackInfo bi) throws PrologException
+	private static RC nextSolution(Interpreter interpreter, RetractBacktrackInfo bi) throws PrologException
 	{
 		while (bi.iclauses.hasNext())
 		{
 			Term term = bi.iclauses.next();
-			int rc = interpreter.unify(bi.clause, term);
-			if (rc == SUCCESS_LAST)
+			RC rc = interpreter.unify(bi.clause, term);
+			if (rc == RC.SUCCESS_LAST)
 			{
 				bi.pred.removeClause(bi.clauseMap.get(term));
 				interpreter.pushBacktrackInfo(bi);
-				return SUCCESS;
+				return RC.SUCCESS;
 			}
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

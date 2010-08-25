@@ -21,7 +21,7 @@ public class Predicate_java_classname extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Object obj = null;
 		if (args[0] instanceof JavaObjectTerm)

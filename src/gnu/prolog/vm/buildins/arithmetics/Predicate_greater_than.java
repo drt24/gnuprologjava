@@ -32,7 +32,7 @@ public class Predicate_greater_than extends ExecuteOnlyCode
 {
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term arg0 = Evaluate.evaluate(args[0]);
@@ -41,26 +41,26 @@ public class Predicate_greater_than extends ExecuteOnlyCode
 		{
 			IntegerTerm i0 = (IntegerTerm) arg0;
 			IntegerTerm i1 = (IntegerTerm) arg1;
-			return i0.value > i1.value ? SUCCESS_LAST : FAIL;
+			return i0.value > i1.value ? RC.SUCCESS_LAST : RC.FAIL;
 		}
 		else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
 		{
 			FloatTerm f0 = (FloatTerm) arg0;
 			IntegerTerm i1 = (IntegerTerm) arg1;
-			return f0.value > i1.value ? SUCCESS_LAST : FAIL;
+			return f0.value > i1.value ? RC.SUCCESS_LAST : RC.FAIL;
 		}
 		else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
 		{
 			IntegerTerm i0 = (IntegerTerm) arg0;
 			FloatTerm f1 = (FloatTerm) arg1;
-			return i0.value > f1.value ? SUCCESS_LAST : FAIL;
+			return i0.value > f1.value ? RC.SUCCESS_LAST : RC.FAIL;
 		}
 		else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
 		{
 			FloatTerm f0 = (FloatTerm) arg0;
 			FloatTerm f1 = (FloatTerm) arg1;
-			return f0.value > f1.value ? SUCCESS_LAST : FAIL;
+			return f0.value > f1.value ? RC.SUCCESS_LAST : RC.FAIL;
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

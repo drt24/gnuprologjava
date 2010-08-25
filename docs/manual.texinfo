@@ -67,7 +67,7 @@ GNU Prolog for Java (GPJ) is a Java library (gnu.prolog) which allows the use of
 For normal usage there are only a few classes which you will need to interact with.
 gnu.prolog.vm.Environment which provides the core of the prolog environment.
 gnu.prolog.vm.Interpreter which is what you use to run your prolog queries.
-gnu.prolog.term which contains the various types of Prolog terms which exist and which you use to construct your prolog questions if you want answers (beyond SUCCESS, SUCCESS_LAST and FAIL).
+gnu.prolog.term which contains the various types of Prolog terms which exist and which you use to construct your prolog questions if you want answers (beyond RC.SUCCESS, RC.SUCCESS_LAST and RC.FAIL).
 
 The use of the API is explained in the next chapter: @ref{Using the API}.
 
@@ -102,7 +102,7 @@ Then you will need to create at least one gnu.prolog.vm.Interpreter which is use
 Having created it you need to use it to run the initialization of any files you have loaded by using @code{env.runInitialization(interpreter);}. This ensures the goals contained in any ``:- initialization(goal).'' or ``:- goal.''s in the files you have loaded are run.
 
 At this point the setup is completed and you can start running goals. This is done using @code{interpreter.runOnce(Term);} where Term is the goal you want to execute. This does one execution of the goal and then stops.
-The construction of Terms is explained in the next section. If you need something more complex than that then you will need to use @code{goal = interpreter.prepareGoal(goalTerm); int rc = interpreter.execute(goal)} and then depending on the value of rc possibly run @code{execute(goal)} again. If you stop running @code{execute(goal)} while rc is still SUCCESS then you need to run @code{interpreter.stop(goal)}.
+The construction of Terms is explained in the next section. If you need something more complex than that then you will need to use @code{goal = interpreter.prepareGoal(goalTerm); RC rc = interpreter.execute(goal)} and then depending on the value of rc possibly run @code{execute(goal)} again. If you stop running @code{execute(goal)} while rc is still RC.SUCCESS then you need to run @code{interpreter.stop(goal)}.
 
 @node Constructing Terms
 @section Constructing Terms

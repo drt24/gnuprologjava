@@ -49,7 +49,7 @@ public class UndefinedPredicateCode extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term flg = interpreter.getEnvironment().getPrologFlag(unknownAtom);
@@ -63,13 +63,13 @@ public class UndefinedPredicateCode extends ExecuteOnlyCode
 		}
 		else if (flg == TermConstants.failAtom)
 		{
-			return FAIL;
+			return RC.FAIL;
 		}
 		else if (flg == warningAtom)
 		{
 			// later should be replaced by output to 'user'
 			System.err.println("predicate " + predicateTag.functor.value + "/" + predicateTag.arity + " does not exist.");
-			return FAIL;
+			return RC.FAIL;
 		}
 		throw new PrologException(PrologException.systemErrorAtom, null);
 	}

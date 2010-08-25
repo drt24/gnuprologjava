@@ -50,7 +50,7 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -67,7 +67,7 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 				v1.value = args[2];
 				interpreter.addVariableUndo(v2);
 				v2.value = nullAtom;
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			interpreter.addVariableUndo(v1);
 			v1.value = AtomTerm.get(acbi.atom.substring(0, pos));
@@ -75,7 +75,7 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 			v2.value = AtomTerm.get(acbi.atom.substring(pos, al));
 			acbi.atomPosition++;
 			interpreter.pushBacktrackInfo(acbi);
-			return SUCCESS;
+			return RC.SUCCESS;
 		}
 		else
 		{
@@ -112,7 +112,7 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 				AtomTerm a3 = AtomTerm.get(a1.value + a2.value);
 				interpreter.addVariableUndo(v12);
 				v12.value = a3;
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			else
 			// t12 is AtomTerm
@@ -129,14 +129,14 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 						v1.value = a12;
 						interpreter.addVariableUndo(v2);
 						v2.value = a12;
-						return SUCCESS_LAST;
+						return RC.SUCCESS_LAST;
 					}
 					interpreter.addVariableUndo(v1);
 					v1.value = nullAtom;
 					interpreter.addVariableUndo(v2);
 					v2.value = a12;
 					interpreter.pushBacktrackInfo(new AtomConcatBacktrackInfo(1, startUndoPosition, s12));
-					return SUCCESS;
+					return RC.SUCCESS;
 				}
 				else if (t1 instanceof VariableTerm)
 				{
@@ -147,11 +147,11 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 					{
 						interpreter.addVariableUndo(v1);
 						v1.value = AtomTerm.get(s12.substring(0, s12.length() - s2.length()));
-						return SUCCESS_LAST;
+						return RC.SUCCESS_LAST;
 					}
 					else
 					{
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 				else if (t2 instanceof VariableTerm)
@@ -165,11 +165,11 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 						int l1 = s1.length();
 						int l12 = s12.length();
 						v2.value = AtomTerm.get(s12.substring(l1, l12));
-						return SUCCESS_LAST;
+						return RC.SUCCESS_LAST;
 					}
 					else
 					{
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 				else
@@ -180,11 +180,11 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 					String s2 = a2.value;
 					if (s12.equals(s1 + s2))
 					{
-						return SUCCESS_LAST;
+						return RC.SUCCESS_LAST;
 					}
 					else
 					{
-						return FAIL;
+						return RC.FAIL;
 					}
 				}
 			}

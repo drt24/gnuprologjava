@@ -57,7 +57,7 @@ public class Predicate_current_op extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -125,7 +125,7 @@ public class Predicate_current_op extends ExecuteOnlyCode
 		}
 	}
 
-	private static int nextSolution(Interpreter interpreter, CurrentOpBacktrackInfo bi) throws PrologException
+	private static RC nextSolution(Interpreter interpreter, CurrentOpBacktrackInfo bi) throws PrologException
 	{
 		try
 		{
@@ -134,16 +134,16 @@ public class Predicate_current_op extends ExecuteOnlyCode
 				Term op = bi.ops.next();
 				Term specifier = bi.specifiers.next();
 				Term priority = bi.priorities.next();
-				if (interpreter.simpleUnify(op, bi.op) == SUCCESS_LAST
-						&& interpreter.simpleUnify(specifier, bi.specifier) == SUCCESS_LAST
-						&& interpreter.simpleUnify(priority, bi.priority) == SUCCESS_LAST)
+				if (interpreter.simpleUnify(op, bi.op) == RC.SUCCESS_LAST
+						&& interpreter.simpleUnify(specifier, bi.specifier) == RC.SUCCESS_LAST
+						&& interpreter.simpleUnify(priority, bi.priority) == RC.SUCCESS_LAST)
 				{
 					interpreter.pushBacktrackInfo(bi);
-					return SUCCESS;
+					return RC.SUCCESS;
 				}
 				interpreter.undo(bi.startUndoPosition);
 			}
-			return FAIL;
+			return RC.FAIL;
 		}
 		catch (PrologException ex)
 		{

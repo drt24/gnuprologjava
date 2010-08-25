@@ -28,19 +28,18 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_not_unifiable extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		int undoPos = interpreter.getUndoPosition();
-		int rc = interpreter.unify(args[0], args[1]);
-		if (rc == PrologCode.SUCCESS_LAST)
+		RC rc = interpreter.unify(args[0], args[1]);
+		if (rc == PrologCode.RC.SUCCESS_LAST)
 		{
 			interpreter.undo(undoPos);
-			rc = FAIL;
+			rc = RC.FAIL;
 		}
 		else
 		{
-			rc = SUCCESS_LAST;
+			rc = RC.SUCCESS_LAST;
 		}
 		return rc;
 	}

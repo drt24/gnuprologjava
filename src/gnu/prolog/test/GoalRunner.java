@@ -31,8 +31,8 @@ import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.PrologCode.RC;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -196,14 +196,14 @@ public class GoalRunner
 				do
 				{
 					long startTime = System.currentTimeMillis();
-					int rc = interpreter.execute(goal);
+					RC rc = interpreter.execute(goal);
 					long stopTime = System.currentTimeMillis();
 					env.getUserOutput().flushOutput(null);
 					System.out.println("time = " + (stopTime - startTime) + "ms");
 					response = "n";
 					switch (rc)
 					{
-						case PrologCode.SUCCESS:
+						case SUCCESS:
 						{
 							WriteOptions options = new WriteOptions(new OperatorSet());
 							Iterator<String> ivars = rd_ops.variableNames.keySet().iterator();
@@ -217,10 +217,10 @@ public class GoalRunner
 							out.println();
 							if (once)
 							{
-								out.print("SUCCESS. redo suppressed by command line option \"-once\"");
+								out.print("RC.SUCCESS. redo suppressed by command line option \"-once\"");
 								return;
 							}
-							out.print("SUCCESS. redo (y/n/a)?");
+							out.print("RC.SUCCESS. redo (y/n/a)?");
 							out.flush();
 							response = kin.readLine();
 
@@ -236,7 +236,7 @@ public class GoalRunner
 							}
 							break;
 						}
-						case PrologCode.SUCCESS_LAST:
+						case SUCCESS_LAST:
 						{
 							WriteOptions options = new WriteOptions(new OperatorSet());
 							Iterator<String> ivars2 = rd_ops.variableNames.keySet().iterator();
@@ -248,17 +248,17 @@ public class GoalRunner
 								out.print("; ");
 							}
 							out.println();
-							out.println("SUCCESS LAST");
+							out.println("RC.SUCCESS LAST");
 							out.flush();
 							return;
 						}
-						case PrologCode.FAIL:
-							out.println("FAIL");
+						case FAIL:
+							out.println("RC.FAIL");
 							out.flush();
 							return;
-						case PrologCode.HALT:
+						case HALT:
 							env.closeStreams();
-							out.println("HALT");
+							out.println("RC.HALT");
 							out.flush();
 							System.exit(interpreter.getExitCode());
 							return;

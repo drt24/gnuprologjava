@@ -38,7 +38,7 @@ public class Predicate_listing extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		CompoundTermTag filter = null;
 		if (args.length >= 1)
@@ -86,6 +86,6 @@ public class Predicate_listing extends ExecuteOnlyCode
 			}
 		}
 		stream.flushOutput(null);
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 }

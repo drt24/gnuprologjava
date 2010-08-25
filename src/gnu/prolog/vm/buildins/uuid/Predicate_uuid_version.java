@@ -37,7 +37,7 @@ public class Predicate_uuid_version extends Predicate_uuid
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		UUID uuid = getUUID(args[0]);
 		if (uuid == null)

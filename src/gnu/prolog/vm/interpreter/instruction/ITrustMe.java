@@ -30,13 +30,14 @@ public class ITrustMe extends Instruction
 	 * @param state
 	 *          state within which instruction will be executed
 	 * @return instruction to caller how to execute next instruction
-	 * @throws PrologException if code is throwing prolog exception
+	 * @throws PrologException
+	 *           if code is throwing prolog exception
 	 */
 	@Override
-	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	public ExecutionState.EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		bi.undo(state.interpreter); /* undo changes */
-		return ExecutionState.NEXT; /* proceed to next instruction */
+		return ExecutionState.EXRC.NEXT; /* proceed to next instruction */
 	}
 
 	/** convert instruction to string */

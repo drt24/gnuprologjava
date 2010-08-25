@@ -33,6 +33,7 @@ import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
+import gnu.prolog.vm.PrologCode.RC;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -187,10 +188,10 @@ public class MentalArithmetic
 			debug();
 
 			// Execute the goal and return the return code.
-			int rc = interpreter.runOnce(goalTerm);
+			RC rc = interpreter.runOnce(goalTerm);
 
 			// If it succeeded.
-			if (rc == PrologCode.SUCCESS || rc == PrologCode.SUCCESS_LAST)
+			if (rc == PrologCode.RC.SUCCESS || rc == PrologCode.RC.SUCCESS_LAST)
 			{
 				// Create the answer
 				Pair<String, Integer> answer = new Pair<String, Integer>(null, 0);

@@ -32,7 +32,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_atom_length extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term tatom = args[0];
@@ -52,7 +52,7 @@ public class Predicate_atom_length extends ExecuteOnlyCode
 			VariableTerm vlength = (VariableTerm) tlength;
 			interpreter.addVariableUndo(vlength);
 			vlength.value = ilength;
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else if (tlength instanceof IntegerTerm)
 		{
@@ -63,17 +63,17 @@ public class Predicate_atom_length extends ExecuteOnlyCode
 			}
 			if (ilength.value == atom.value.length())
 			{
-				return SUCCESS_LAST;
+				return RC.SUCCESS_LAST;
 			}
 			else
 			{
-				return FAIL;
+				return RC.FAIL;
 			}
 		}
 		else
 		{
 			PrologException.typeError(TermConstants.integerAtom, tlength);
 		}
-		return FAIL; // fake return
+		return RC.FAIL; // fake return
 	}
 }

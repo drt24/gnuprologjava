@@ -37,7 +37,7 @@ public class Predicate_prompt extends Predicate_dialog
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		DialogOptions options;
 		if (args.length >= 2)
@@ -58,6 +58,6 @@ public class Predicate_prompt extends Predicate_dialog
 		{
 			return interpreter.unify(args[0], AtomTerm.get((String) result));
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

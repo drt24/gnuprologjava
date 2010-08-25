@@ -21,6 +21,7 @@ package gnu.prolog.vm;
 
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.vm.PrologCode.RC;
 
 import java.util.Iterator;
 
@@ -90,20 +91,20 @@ public class PrologCollectionIterator extends BacktrackInfo
 	 * @return PrologCode return code
 	 * @throws PrologException
 	 */
-	public int nextSolution(Interpreter interpreter) throws PrologException
+	public RC nextSolution(Interpreter interpreter) throws PrologException
 	{
 		while (iterator.hasNext())
 		{
 			Term term = new JavaObjectTerm(iterator.next());
-			int rc = interpreter.unify(destTerm, term);
-			if (rc == PrologCode.FAIL)
+			RC rc = interpreter.unify(destTerm, term);
+			if (rc == PrologCode.RC.FAIL)
 			{
 				interpreter.undo(startUndoPosition);
 				continue;
 			}
 			interpreter.pushBacktrackInfo(this);
-			return PrologCode.SUCCESS;
+			return PrologCode.RC.SUCCESS;
 		}
-		return PrologCode.FAIL;
+		return PrologCode.RC.FAIL;
 	}
 }

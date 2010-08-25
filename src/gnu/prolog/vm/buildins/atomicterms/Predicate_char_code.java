@@ -33,7 +33,7 @@ public class Predicate_char_code extends ExecuteOnlyCode
 {
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		Term tchar = args[0];
@@ -58,7 +58,7 @@ public class Predicate_char_code extends ExecuteOnlyCode
 			bu.append((char) icode.value);
 			interpreter.addVariableUndo(vchar);
 			vchar.value = AtomTerm.get(bu.toString());
-			return SUCCESS_LAST;
+			return RC.SUCCESS_LAST;
 		}
 		else if (tchar instanceof AtomTerm)
 		{
@@ -80,6 +80,6 @@ public class Predicate_char_code extends ExecuteOnlyCode
 		{
 			PrologException.typeError(TermConstants.characterAtom, tchar);
 		}
-		return FAIL; // fake return
+		return RC.FAIL; // fake return
 	}
 }

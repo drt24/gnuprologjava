@@ -28,7 +28,7 @@ import gnu.prolog.vm.PrologException;
 public class Predicate_copy_term extends ExecuteOnlyCode
 {
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		return interpreter.unify((Term) args[0].clone(), args[1]);

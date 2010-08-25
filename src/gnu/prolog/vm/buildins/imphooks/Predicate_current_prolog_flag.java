@@ -49,7 +49,7 @@ public class Predicate_current_prolog_flag extends ExecuteOnlyCode
 	}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
 		if (backtrackMode)
@@ -68,7 +68,7 @@ public class Predicate_current_prolog_flag extends ExecuteOnlyCode
 				if (val == null)
 				{
 					PrologException.domainError(TermConstants.prologFlagAtom, flag);
-					return FAIL;// fake return.
+					return RC.FAIL;// fake return.
 				}
 				return interpreter.unify(value, val.dereference());
 			}
@@ -86,27 +86,27 @@ public class Predicate_current_prolog_flag extends ExecuteOnlyCode
 		}
 	}
 
-	private int nextSolution(Interpreter interpreter, CurrentPrologFlagBacktrackInfo bi) throws PrologException
+	private RC nextSolution(Interpreter interpreter, CurrentPrologFlagBacktrackInfo bi) throws PrologException
 	{
 		while (bi.keys.hasNext())
 		{
 			AtomTerm f = bi.keys.next();
 			Term v = bi.map.get(f);
-			int rc = interpreter.simpleUnify(f, bi.flag);
-			if (rc == FAIL)
+			RC rc = interpreter.simpleUnify(f, bi.flag);
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
 			rc = interpreter.simpleUnify(v, bi.value);
-			if (rc == FAIL)
+			if (rc == RC.FAIL)
 			{
 				interpreter.undo(bi.startUndoPosition);
 				continue;
 			}
 			interpreter.pushBacktrackInfo(bi);
-			return SUCCESS;
+			return RC.SUCCESS;
 		}
-		return FAIL;
+		return RC.FAIL;
 	}
 }

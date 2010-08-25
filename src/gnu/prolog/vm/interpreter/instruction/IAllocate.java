@@ -22,6 +22,7 @@ import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.interpreter.ExecutionState;
+import gnu.prolog.vm.interpreter.ExecutionState.EXRC;
 
 /** allocate environment instruction */
 public class IAllocate extends Instruction
@@ -58,7 +59,7 @@ public class IAllocate extends Instruction
 	 *           if code is throwing prolog exception
 	 */
 	@Override
-	public int execute(ExecutionState state, BacktrackInfo bi) throws PrologException
+	public EXRC execute(ExecutionState state, BacktrackInfo bi) throws PrologException
 	{
 		Term env[] = new Term[environmentSize];
 		for (int i = reserved; i < environmentSize; i++)
@@ -66,6 +67,6 @@ public class IAllocate extends Instruction
 			env[i] = new VariableTerm();
 		}
 		state.environment = env;
-		return ExecutionState.NEXT;
+		return ExecutionState.EXRC.NEXT;
 	}
 }

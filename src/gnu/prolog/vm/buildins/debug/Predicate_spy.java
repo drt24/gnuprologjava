@@ -117,7 +117,7 @@ public class Predicate_spy extends ExecuteOnlyCode
 	{}
 
 	@Override
-	public int execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		CompoundTermTag tag = getTag(args[0]);
 		if (tag.arity == -1)
@@ -134,7 +134,7 @@ public class Predicate_spy extends ExecuteOnlyCode
 		{
 			setSpyPoint(interpreter, tag, args[1]);
 		}
-		return SUCCESS_LAST;
+		return RC.SUCCESS_LAST;
 	}
 
 	protected void setSpyPoint(Interpreter interpreter, CompoundTermTag tag, Term arg) throws PrologException
