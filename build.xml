@@ -85,7 +85,7 @@ Ant Buildfile for GNU Prolog for Java.
 
 	<target name="compile" depends="init">
 		<mkdir dir="build/code" />
-		<javac srcdir="src" destdir="build/code" classpath="${java.class.path}" debug="${java.debug}" debuglevel="lines,vars,source"/>
+		<javac srcdir="src" destdir="build/code" classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar" debug="${java.debug}" debuglevel="lines,vars,source"/>
 		<copy todir="build/code">
 			<fileset dir="src">
 				<include name="**/*.pro" />
@@ -163,7 +163,7 @@ Ant Buildfile for GNU Prolog for Java.
 
 	<target name="doc" depends="init,manual" description="Make the javadoc api and copy the demo applications">
 		<mkdir dir="build/api" />
-		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes" use="yes">
+		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes" use="yes"  classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar">
 			<packageset dir="src">
 				<include name="gnu/prolog/**" />
 			</packageset>

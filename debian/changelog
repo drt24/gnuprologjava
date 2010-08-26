@@ -9,8 +9,9 @@ gnuprolog-java (0.2.5-3) unstable; urgency=low
     /usr/share/doc/libgnuprolog-java/api
   * Remove suggestion on libgetopt-java as this is a library not application.
   * Add TODO of modifying dependency once squeeze is stable.
+  * Remove accidental dependency on libgetopt-java.
 
- -- Daniel Thomas <drt24-debian@srcf.ucam.org>  Thu, 26 Aug 2010 14:47:07 +0100
+ -- Daniel Thomas <drt24-debian@srcf.ucam.org>  Thu, 26 Aug 2010 15:24:11 +0100
 
 gnuprolog-java (0.2.5-2) unstable; urgency=low
 
