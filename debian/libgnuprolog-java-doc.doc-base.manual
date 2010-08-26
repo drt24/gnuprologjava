@@ -5,5 +5,5 @@ Abstract: This the Manual for libgnuprolog-java
 Section: Programming
 
 Format: HTML
-Index: /usr/share/doc/libgnuprolog-java-doc/manual
-Files: /usr/share/doc/libgnuprolog-java-doc/manual/*.html
+Index: /usr/share/doc/libgnuprolog-java/manual
+Files: /usr/share/doc/libgnuprolog-java/manual/*.html

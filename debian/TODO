@@ -1,0 +1,2 @@
+Once squeeze is stable the dependency on "dpkg (>=1.15.4) | install-info" should be removed.
+  See: http://www.debian.org/doc/debian-policy/ch-docs.html#s12.2
