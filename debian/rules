@@ -8,3 +8,5 @@ export CLASSPATH=/usr/share/java/gnu-getopt.jar
 %:
 	dh --with javahelper $@
 
+override_dh_installdocs:
+	dh_installdocs --link-doc=libgnuprolog-java

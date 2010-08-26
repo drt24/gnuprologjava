@@ -1,3 +1,17 @@
+gnuprolog-java (0.2.5-3) unstable; urgency=low
+
+  * use override_dh_installdocs and --link-doc to make the manual get installed
+    to /usr/share/doc/libgnuprolog-java/ rather than
+    /usr/share/doc/libgnuprolog-java-doc/ and to make the -doc directory a
+    symlink to the non -doc directory.
+  * Add NEWS.txt to libgnuprolog-java.docs
+  * update libgnuprolog-java-doc.javadoc so that it puts the api in
+    /usr/share/doc/libgnuprolog-java/api
+  * Remove suggestion on libgetopt-java as this is a library not application.
+  * Add TODO of modifying dependency once squeeze is stable.
+
+ -- Daniel Thomas <drt24-debian@srcf.ucam.org>  Thu, 26 Aug 2010 14:47:07 +0100
+
 gnuprolog-java (0.2.5-2) unstable; urgency=low
 
   * Refactor documentation into separate -doc package.
