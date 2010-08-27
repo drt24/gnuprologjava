@@ -209,7 +209,7 @@ public class Environment implements PredicateListener
 		createNewPrologFlag(charConversionAtom, offAtom, true);
 		createNewPrologFlag(debugAtom, offAtom, true);
 		// we can't have a Term with an arity higher than the available memory
-		long maxMemory = Runtime.getRuntime().maxMemory();
+		long maxMemory = Runtime.getRuntime().totalMemory() / 64L;
 		IntegerTerm maxArity = (maxMemory < maxIntegerTerm.value) ? IntegerTerm.get((int) maxMemory) : maxIntegerTerm;
 		createNewPrologFlag(TermConstants.maxArityAtom, maxArity, false);
 		createNewPrologFlag(unknownAtom, errorAtom, true);

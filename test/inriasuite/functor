@@ -35,6 +35,9 @@
 [(current_prolog_flag(max_arity,A), X is A + 1, functor(T, foo, X)), 
 				representation_error(max_arity)]. 
 
+[(current_prolog_flag(max_arity,A), functor(T, foo, A)), 
+				[[A <-- _, T <-- _]]]. 
+
 [functor(T, foo, -1), domain_error(not_less_than_zero,-1)].
 
 /* end of functor */
