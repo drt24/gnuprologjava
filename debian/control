@@ -17,6 +17,7 @@ Description: GNU Prolog for Java
  particularly suited to while Java is used for other components.
 
 Package: libgnuprolog-java-doc
+Section: doc
 Architecture: all
 Depends: ${java:Depends}, ${misc:Depends}, dpkg (>= 1.15.4) | install-info
 Description: GNU Prolog for Java - Documentation
