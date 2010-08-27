@@ -215,10 +215,10 @@ public class GoalRunner
 							out.println();
 							if (once)
 							{
-								out.print("RC.SUCCESS. redo suppressed by command line option \"-once\"");
+								out.print(rc + ". redo suppressed by command line option \"-once\"");
 								return;
 							}
-							out.print("RC.SUCCESS. redo (y/n/a)?");
+							out.print(rc + ". redo (y/n/a)?");
 							out.flush();
 							response = kin.readLine();
 
@@ -246,17 +246,17 @@ public class GoalRunner
 								out.print("; ");
 							}
 							out.println();
-							out.println("RC.SUCCESS LAST");
+							out.println(rc);
 							out.flush();
 							return;
 						}
 						case FAIL:
-							out.println("RC.FAIL");
+							out.println(rc);
 							out.flush();
 							return;
 						case HALT:
 							env.closeStreams();
-							out.println("RC.HALT");
+							out.println(rc);
 							out.flush();
 							System.exit(interpreter.getExitCode());
 							return;
