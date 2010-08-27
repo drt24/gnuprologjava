@@ -779,15 +779,17 @@ io(read_term,'read_term.pl').
 
 
 % extras
-extra(append).
 extra(compare).
-extra(is_list).
-extra(is_proper_list).
-extra(sort).
 extra(F) :- extra_database(N), atom_concat('database/',N,F).
+extra(F) :- extra_list(N), atom_concat('list/',N,F).
 
 extra_database(current_functor).
 extra_database(predicate_property).
+
+extra_list(append).
+extra_list(is_list).
+extra_list(is_proper_list).
+extra_list(sort).
 
 % self test
 inria(already_appears).
