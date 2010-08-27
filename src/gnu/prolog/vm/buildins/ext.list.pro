@@ -38,7 +38,7 @@ append([X|Xs],Y,[X|Z]) :- append(Xs,Y,Z).
 
 % True if Term is the empty list [] or a term with functor `.' 
 % and arity 2 and the second argument is a proper list.
-% is_list(+Term)
+% is_proper_list(+Term)
 :-build_in(is_proper_list/1,'gnu.prolog.vm.buildins.list.Predicate_is_proper_list').
 
 % True if Int represents the number of elements of list List. Can be used to 

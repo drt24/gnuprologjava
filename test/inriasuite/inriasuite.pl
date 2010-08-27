@@ -789,6 +789,10 @@ extra_database(predicate_property).
 extra_list(append).
 extra_list(is_list).
 extra_list(is_proper_list).
+extra_list(length).
+extra_list(member).
+extra_list(msort).
+extra_list(predsort).
 extra_list(sort).
 
 % self test

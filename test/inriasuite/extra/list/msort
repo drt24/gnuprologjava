@@ -1,0 +1,30 @@
+/* file msort */
+
+% msort(List, Sorted)
+
+%List is a partial list
+[msort(_,[]),instantiation_error].
+[msort([_],[a]),instantiation_error].
+[msort([a,b,_],[a,b]),instantiation_error].
+
+%List is neither a partial list nor a list
+[msort(a,[]),type_error(list, a)].
+[msort(foo(a),[]),type_error(list, foo(a))].
+[msort(1,[]),type_error(list, 1)].
+[msort(73.2,[]),type_error(list, 73.2)].
+[msort(0,[]),type_error(list, 0)].
+
+%Sorted is neither a partial list nor a list
+[msort([],0),type_error(list, 0)].
+[msort([],5),type_error(list, 5)].
+[msort([],a),type_error(list, a)].
+[msort([],6.8),type_error(list, 6.8)].
+
+%Examples
+[msort([1, 2, 1, 8, 4], Sorted),[[Sorted <-- [1, 1, 2, 4, 8]]]].
+[msort([1.1, 2.2, 1.1, 8.8, 4.4], Sorted),[[Sorted <-- [1.1, 1.1, 2.2, 4.4, 8.8]]]].
+[msort([a, b, a, h, d], Sorted),[[Sorted <-- [a, a, b, d, h]]]].
+[msort([a, b, e, a, h, d, e], Sorted),[[Sorted <-- [a, a, b, d, e, e, h]]]].
+
+
+/* end of msort */

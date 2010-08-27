@@ -1,0 +1,31 @@
+/* file sort */
+
+%TODO this is just a copy of sort
+
+% sort(List, Sorted)
+
+%List is a partial list
+[sort(_,[]),instantiation_error].
+[sort([_],[a]),instantiation_error].
+[sort([a,b,_],[a,b]),instantiation_error].
+
+%List is neither a partial list nor a list
+[sort(a,[]),type_error(list, a)].
+[sort(foo(a),[]),type_error(list, foo(a))].
+[sort(1,[]),type_error(list, 1)].
+[sort(73.2,[]),type_error(list, 73.2)].
+[sort(0,[]),type_error(list, 0)].
+
+%Sorted is neither a partial list nor a list
+[sort([],0),type_error(list, 0)].
+[sort([],5),type_error(list, 5)].
+[sort([],a),type_error(list, a)].
+[sort([],6.8),type_error(list, 6.8)].
+
+%Examples
+[sort([1, 2, 1, 8, 4], Sorted),[[Sorted <-- [1, 2, 4, 8]]]].
+[sort([1.1, 2.2, 1.1, 8.8, 4.4], Sorted),[[Sorted <-- [1.1, 2.2, 4.4, 8.8]]]].
+[sort([a, b, a, h, d], Sorted),[[Sorted <-- [a, b, d, h]]]].
+
+
+/* end of sort */
