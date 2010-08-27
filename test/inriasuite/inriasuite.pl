@@ -783,9 +783,11 @@ extra(append).
 extra(compare).
 extra(is_list).
 extra(is_proper_list).
-extra(predicate_property).
 extra(sort).
+extra(F) :- extra_database(N), atom_concat('database/',N,F).
 
+extra_database(current_functor).
+extra_database(predicate_property).
 
 % self test
 inria(already_appears).

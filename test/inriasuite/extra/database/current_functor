@@ -1,0 +1,14 @@
+/* file current_functor */
+
+[current_functor(file,1),success].
+[current_functor(file,2),success].
+[current_functor(atom,1),success].
+[current_functor(abolish,1),success].
+[current_functor(arg,3),success].
+
+[current_functor(does_not_exist,1),failure].
+[current_functor(does_not_exist,_),failure].
+
+[(current_prolog_flag(max_arity,A), X is A + 1, current_functor(_,X)),failure].
+
+/* end of current_functor */
