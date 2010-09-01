@@ -266,8 +266,12 @@ public final class Interpreter implements HasEnvironment
 		{
 			for (int i = variablesAmount - 1; i >= startPosion; i--)
 			{
-				variables[i].value = null;
-				variables[i] = null;
+				if (variables[i] != null)
+				{// TODO need to confirm that this is sensible it might be better to
+					// ensure it can't happen
+					variables[i].value = null;
+					variables[i] = null;
+				}
 			}
 			variablesAmount = startPosion;
 		}
@@ -384,7 +388,7 @@ public final class Interpreter implements HasEnvironment
 	{
 		private Term goal;
 		protected boolean firstTime = true;
-		protected boolean stopped = false;
+		private boolean stopped = false;
 
 		protected Goal(Term goal)
 		{
@@ -394,6 +398,25 @@ public final class Interpreter implements HasEnvironment
 		protected Term getGoal()
 		{
 			return goal;
+		}
+
+		protected boolean isStopped()
+		{
+			return stopped;
+		}
+
+		/**
+		 * Should only be called by {@link #stop(Goal)}
+		 */
+		protected void stop()
+		{
+			stopped = true;
+		}
+
+		@Override
+		public String toString()
+		{
+			return goal.toString() + " f:" + firstTime + " s:" + stopped;
 		}
 	}
 
@@ -481,8 +504,8 @@ public final class Interpreter implements HasEnvironment
 	 * @param goal
 	 *          the goal created using {@link #prepareGoal(Term)} which is to be
 	 *          run.
-	 * @return {@link RC#SUCCESS}, {@link RC#SUCCESS_LAST} , {@link RC#FAIL} (or
-	 *         {@link RC#HALT})
+	 * @return {@link RC#SUCCESS}, {@link RC#SUCCESS_LAST} , {@link RC#FAIL} or
+	 *         {@link RC#HALT}
 	 * @throws PrologException
 	 */
 	public RC execute(Goal goal) throws PrologException
@@ -500,9 +523,9 @@ public final class Interpreter implements HasEnvironment
 				{
 					throw new IllegalArgumentException("The goal is not currently active");
 				}
-				if (goal.stopped)
+				if (goal.isStopped())
 				{
-					throw new Stopped();
+					throw new Stopped(goal);
 				}
 				try
 				{
@@ -511,12 +534,14 @@ public final class Interpreter implements HasEnvironment
 					{
 						case SUCCESS_LAST:
 						case FAIL:
-							goal.stopped = true;
-							currentGoal = null;
+							stop(goal);
 							break;
 						case SUCCESS:
 							goal.firstTime = false;
 							break;
+						case HALT:
+							break;// on HALT all we can do is return HALT which is what
+						// happens if we do nothing for it.
 					}
 					return rc;
 				}
@@ -535,6 +560,12 @@ public final class Interpreter implements HasEnvironment
 				// too much recursion
 				PrologException.systemError(se);
 				throw se; // fake
+			}
+			catch (OutOfMemoryError me)
+			{
+				// too much memory usage
+				PrologException.systemError(me);
+				throw me; // fake
 			}
 		}
 		catch (PrologHalt ph)
@@ -563,12 +594,14 @@ public final class Interpreter implements HasEnvironment
 	{
 		if (currentGoal != goal)
 		{
-			throw new IllegalArgumentException("The goal is not currently active");
+			throw new IllegalArgumentException(String.format("The goal (%s) is not currently active: (%s) is active", goal,
+					currentGoal));
 		}
-		if (goal.stopped)
+		if (goal.isStopped())
 		{
-			throw new Stopped();
+			throw new Stopped(goal);
 		}
+		goal.stop();
 
 		// This destroys information and means that this information is not
 		// available after stop(Goal) has been called. Hence I (Daniel) have
@@ -581,14 +614,14 @@ public final class Interpreter implements HasEnvironment
 			backtrackInfoStack[i] = null;
 		}
 		backtrackInfoAmount = 0;
+
 		currentGoal = null;
 
 		// We have just finished with a goal we originally forced another goal out
 		// to do so pull that state back so that we can finish that goal
-		ReturnPoint rp = returnPoints.get(goal);
+		ReturnPoint rp = returnPoints.remove(goal);
 		if (rp != null)
 		{
-			returnPoints.remove(rp.rCurrentGoal);// garbage collect
 			context = rp.rContext;
 			backtrackInfoStack = rp.rBacktrackInfoStack;
 			backtrackInfoAmount = rp.rBacktrackInfoAmount;
@@ -620,12 +653,11 @@ public final class Interpreter implements HasEnvironment
 		Goal goal = prepareGoal(goalTerm);
 		try
 		{
-			RC rc = execute(goal);
-			return rc;
+			return execute(goal);
 		}
 		finally
 		{
-			if (!goal.stopped)
+			if (!goal.isStopped())
 			{
 				stop(goal);
 			}
@@ -656,9 +688,9 @@ public final class Interpreter implements HasEnvironment
 	 */
 	private static class Stopped extends IllegalStateException
 	{
-		public Stopped()
+		public Stopped(Goal goal)
 		{
-			super("The goal is already stopped");
+			super(String.format("The goal (%s) is already stopped", goal));
 		}
 
 		private static final long serialVersionUID = 1L;
