@@ -1,4 +1,4 @@
-:-dynamic(get_steam_for_read_term/1).
+:-dynamic(get_stream_for_read_term/1).
 
 
 :- F = 'io/read_term.tmp', open(F, write, W), write(W,'a.'), 
