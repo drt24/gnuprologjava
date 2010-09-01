@@ -1,6 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
  * Copyright (C) 2009       Michiel Hendriks
+ * Copyright (C) 2010       Daniel Thomas
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
