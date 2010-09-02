@@ -1,6 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
  * Copyright (C) 2009       Michiel Hendriks
+ * Copyright (C) 2010       Daniel Thomas
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -26,24 +27,18 @@ import gnu.prolog.term.Term;
 import gnu.prolog.term.TermComparator;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 import gnu.prolog.vm.interpreter.Predicate_call;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 
  * @author Michiel Hendriks
  */
-public class Predicate_predsort extends ExecuteOnlyCode
+public class Predicate_predsort extends Predicate_sort
 {
 	static class ComparatorException extends RuntimeException
 	{
@@ -56,6 +51,8 @@ public class Predicate_predsort extends ExecuteOnlyCode
 			thrown = thrownElm;
 		}
 	}
+
+	private Comparator<? super Term> comparator;
 
 	/**
 	 * 
@@ -146,16 +143,14 @@ public class Predicate_predsort extends ExecuteOnlyCode
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		if (!CompoundTerm.isListPair(args[1]))
-		{
-			PrologException.typeError(TermConstants.listAtom, args[1]);
-		}
-		Set<Term> set = new HashSet<Term>();
-		CompoundTerm.toCollection(args[1], set);
-		List<Term> list = new ArrayList<Term>(set);
+		// set the comparator to use
+		comparator = getComparator(interpreter, args[0]);
+		// create a new set of args using only the second two arguments
+		Term[] newArgs = { args[1], args[2] };
+
 		try
 		{
-			Collections.sort(list, getComparator(interpreter, args[0]));
+			return super.execute(interpreter, backtrackMode, newArgs);
 		}
 		catch (ComparatorException e)
 		{
@@ -165,8 +160,6 @@ public class Predicate_predsort extends ExecuteOnlyCode
 			}
 			throw e.thrown;
 		}
-		Term result = CompoundTerm.getList(list);
-		return interpreter.unify(args[2], result);
 	}
 
 	/**
@@ -203,5 +196,15 @@ public class Predicate_predsort extends ExecuteOnlyCode
 			return new TermComparator();
 		}
 		return new CallPredComparator(interpreter, call);
+	}
+
+	/**
+	 * Return the comparator produced from the the first argument to
+	 * {@link #execute(Interpreter, boolean, Term[])}
+	 */
+	@Override
+	protected Comparator<? super Term> getComparator()
+	{
+		return comparator;
 	}
 }

@@ -30,6 +30,7 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -71,7 +72,7 @@ public abstract class Abstract_sort extends ExecuteOnlyCode
 				PrologException.instantiationError();
 			}
 			List<Term> list = makeList(listTerm);
-			Collections.sort(list, new TermComparator());
+			Collections.sort(list, getComparator());
 			Term result = CompoundTerm.getList(list);
 			return interpreter.unify(sortedTerm, result);
 		}
@@ -84,4 +85,16 @@ public abstract class Abstract_sort extends ExecuteOnlyCode
 	}
 
 	protected abstract List<Term> makeList(Term listTerm);
+
+	/**
+	 * Get the comparator to use to do the sorting.
+	 * 
+	 * @return a Comparator for Terms
+	 * 
+	 * @see Predicate_predsort#getComparator()
+	 */
+	protected Comparator<? super Term> getComparator()
+	{
+		return new TermComparator();
+	}
 }

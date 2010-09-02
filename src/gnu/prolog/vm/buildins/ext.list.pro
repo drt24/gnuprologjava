@@ -56,6 +56,6 @@ append([X|Xs],Y,[X|Z]) :- append(Xs,Y,Z).
 :-build_in(msort/2,'gnu.prolog.vm.buildins.list.Predicate_msort').
 
 % Sorts similar to sort/2, but determines the order of two terms by calling Pred(-Delta, +E1, +E2) . 
-% This call must unify Delta with one of <, > or =. 
+% This call must unify Delta with one of <, > or =. For an example Pred see compare/3
 % predsort(+Pred, +List, -Sorted)
 :-build_in(predsort/3,'gnu.prolog.vm.buildins.list.Predicate_predsort').
