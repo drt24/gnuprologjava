@@ -38,23 +38,23 @@ public class Predicate_is_proper_list extends ExecuteOnlyCode
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		Term lst = args[0];
-		while (lst != null)
+		Term list = args[0];
+		while (list != null)
 		{
-			if (TermConstants.emptyListAtom.equals(lst))
+			if (TermConstants.emptyListAtom.equals(list))
 			{
 				return RC.SUCCESS_LAST;
 			}
-			if (!CompoundTerm.isListPair(lst))
+			if (!CompoundTerm.isListPair(list))
 			{
 				return RC.FAIL;
 			}
-			CompoundTerm ct = (CompoundTerm) lst;
+			CompoundTerm ct = (CompoundTerm) list;
 			if (ct.args.length != 2)
 			{
 				return RC.FAIL;
 			}
-			lst = ct.args[1];
+			list = ct.args[1];
 		}
 		return RC.FAIL;
 	}

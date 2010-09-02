@@ -21,33 +21,22 @@ package gnu.prolog.vm.buildins.list;
 
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
-import gnu.prolog.term.TermComparator;
-import gnu.prolog.vm.ExecuteOnlyCode;
-import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
+ * msort(+List, -Sorted)
  * 
  * @author Michiel Hendriks
  */
-public class Predicate_msort extends ExecuteOnlyCode
+public class Predicate_msort extends Abstract_sort
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	protected List<Term> makeList(Term listTerm)
 	{
-		if (!CompoundTerm.isListPair(args[0]))
-		{
-			PrologException.typeError(TermConstants.listAtom, args[0]);
-		}
 		List<Term> list = new ArrayList<Term>();
-		CompoundTerm.toCollection(args[0], list);
-		Collections.sort(list, new TermComparator());
-		Term result = CompoundTerm.getList(list);
-		return interpreter.unify(args[1], result);
+		CompoundTerm.toCollection(listTerm, list);
+		return list;
 	}
 }

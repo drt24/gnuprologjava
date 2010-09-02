@@ -94,6 +94,18 @@ public class CompoundTerm extends Term
 		return tlist;
 	}
 
+	/**
+	 * Adds all the non-compound Terms in term to the collection col by
+	 * recursively running over the arguments of all the compound terms.
+	 * 
+	 * @param term
+	 *          the Term to extract all the Term elements from to produce the
+	 *          collection
+	 * @param col
+	 *          the collection to add the terms to
+	 * @return whether we successfully formed a collection. If false then the
+	 *         state of col is undefined.
+	 */
 	public static boolean toCollection(Term term, Collection<Term> col)
 	{
 		term = term.dereference();

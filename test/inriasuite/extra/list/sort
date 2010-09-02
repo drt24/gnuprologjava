@@ -5,7 +5,7 @@
 %List is a partial list
 [sort(_,[]),instantiation_error].
 [sort([_],[a]),instantiation_error].
-[sort([a,b,_],[a,b]),instantiation_error].
+[sort([a,b|_],[a,b]),instantiation_error].
 
 %List is neither a partial list nor a list
 [sort(a,[]),type_error(list, a)].

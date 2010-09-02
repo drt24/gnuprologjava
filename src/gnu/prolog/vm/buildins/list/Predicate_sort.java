@@ -21,14 +21,8 @@ package gnu.prolog.vm.buildins.list;
 
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
-import gnu.prolog.term.TermComparator;
-import gnu.prolog.vm.ExecuteOnlyCode;
-import gnu.prolog.vm.Interpreter;
-import gnu.prolog.vm.PrologException;
-import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,20 +31,13 @@ import java.util.Set;
  * 
  * @author Michiel Hendriks
  */
-public class Predicate_sort extends ExecuteOnlyCode
+public class Predicate_sort extends Abstract_sort
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
+	protected List<Term> makeList(Term listTerm)
 	{
-		if (!CompoundTerm.isListPair(args[0]))
-		{
-			PrologException.typeError(TermConstants.listAtom, args[0]);
-		}
 		Set<Term> set = new HashSet<Term>();
-		CompoundTerm.toCollection(args[0], set);
-		List<Term> list = new ArrayList<Term>(set);
-		Collections.sort(list, new TermComparator());
-		Term result = CompoundTerm.getList(list);
-		return interpreter.unify(args[1], result);
+		CompoundTerm.toCollection(listTerm, set);
+		return new ArrayList<Term>(set);
 	}
 }
