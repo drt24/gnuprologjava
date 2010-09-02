@@ -29,6 +29,11 @@ public class FloatTerm extends NumericTerm
 	private static final long serialVersionUID = -5988244457397590539L;
 
 	/**
+	 * The "slack" used in float comparison
+	 */
+	// public static final double FLOAT_EPSILON = 0.0000001d;
+
+	/**
 	 * get floating point number term
 	 * 
 	 * @param str
@@ -71,5 +76,34 @@ public class FloatTerm extends NumericTerm
 	public int getTermType()
 	{
 		return FLOAT;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof FloatTerm)
+		{
+			return equals((FloatTerm) obj);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean equals(FloatTerm oft)
+	{
+		if (oft != null && value == oft.value
+		/* && Math.abs(value - oft.value) < FLOAT_EPSILON */)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new Double(value).hashCode();
 	}
 }

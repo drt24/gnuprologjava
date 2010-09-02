@@ -40,10 +40,6 @@ import java.util.Map;
 
 public final class Interpreter implements HasEnvironment
 {
-	/**
-	 * The "slack" used in float comparison
-	 */
-	static final double FLOAT_EPSILON = 0.0000001d;
 
 	/**
 	 * Environment for this interpreter
@@ -332,9 +328,9 @@ public final class Interpreter implements HasEnvironment
 		}
 		else if (t1 instanceof FloatTerm/* && t2 instanceof FloatTerm */)
 		{
-			FloatTerm ct1 = (FloatTerm) t1;
-			FloatTerm ct2 = (FloatTerm) t2;
-			if (ct1.value != ct2.value && Math.abs(ct1.value - ct2.value) > FLOAT_EPSILON)
+			FloatTerm ft1 = (FloatTerm) t1;
+			FloatTerm ft2 = (FloatTerm) t2;
+			if (!ft1.equals(ft2))
 			{
 				rc = PrologCode.RC.FAIL;
 			}
