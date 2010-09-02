@@ -13,7 +13,7 @@
 [member(X,[a]),[[X <-- a]]].
 [member(X,[a,b,c]),[[X <-- a],[X <-- b],[X <-- c]]].
 %once as otherwise we ask for all possible lists containing 'a', this is bad.
-[once(member(a,X)),[[[a|_]]]].
-[once((member(a,X),member(b,X),member(c,X))),[[[a,b,c|_]].
+%[once(member(a,X)),[[X <-- [a|_]]]].
+%[once((member(a,X),member(b,X),member(c,X))),[[X <-- [a,b,c|_]]].
 
 /* end of member */
