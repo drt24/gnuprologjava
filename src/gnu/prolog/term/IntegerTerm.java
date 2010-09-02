@@ -239,4 +239,20 @@ public class IntegerTerm extends NumericTerm
 	{
 		return INTEGER;
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof IntegerTerm && ((IntegerTerm) obj).value == value)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return new Integer(value).hashCode();
+	}
 }
