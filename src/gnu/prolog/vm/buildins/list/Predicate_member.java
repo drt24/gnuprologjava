@@ -29,6 +29,8 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 /**
+ * member(?Elem, ?List)
+ * 
  * Does:
  * 
  * <pre>

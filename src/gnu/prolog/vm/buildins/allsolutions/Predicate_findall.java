@@ -23,6 +23,7 @@ import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 import gnu.prolog.vm.interpreter.Predicate_call;
@@ -57,7 +58,8 @@ public class Predicate_findall extends ExecuteOnlyCode
 	 * @param template
 	 * @param goal
 	 * @param list
-	 * @return either {@link RC#SUCCESS_LAST} or {@link RC#FAIL}
+	 * @return either {@link PrologCode.RC#SUCCESS_LAST} or
+	 *         {@link PrologCode.RC#FAIL}
 	 * @throws PrologException
 	 */
 	public static RC findall(Interpreter interpreter, boolean backtrackMode, Term template, Term goal, List<Term> list)

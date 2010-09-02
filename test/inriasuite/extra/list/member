@@ -1,8 +1,19 @@
 /* file member */
 
-%TODO these tests need writing
+[member(a,[a,b,c]),success].
+[member(a,[b,a,c]),success].
+[member(a,[b,c,a]),success].
+[member(83,[a,b,92,7,c,83,4,2.1]),success].
 
-[,success].
-[,failure].
+[member(X,[]),failure].
+[member(a,[]),failure].
+[member(a,[b,c,e,t,w]),failure].
+[member(0,[d,w,dgfsdfs,3,1,6,ce,7.2]),failure].
+
+[member(X,[a]),[[X <-- a]]].
+[member(X,[a,b,c]),[[X <-- a],[X <-- b],[X <-- c]]].
+%once as otherwise we ask for all possible lists containing 'a', this is bad.
+[once(member(a,X)),[[[a|_]]]].
+[once((member(a,X),member(b,X),member(c,X))),[[[a,b,c|_]].
 
 /* end of member */
