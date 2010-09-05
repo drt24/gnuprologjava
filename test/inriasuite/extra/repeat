@@ -1,0 +1,15 @@
+/* file repeat */
+
+[repeat(0),failure].
+[repeat(-1),failure].
+[repeat(-234),failure].
+[repeat(-0.1),failure].
+[(repeat(1),X=1),[[X <-- 1]]].
+[(repeat(2),X=2),[[X <-- 2],[X <-- 2]]].
+[(repeat(5),X=2),[[X <-- 2],[X <-- 2],[X <-- 2],[X <-- 2],[X <-- 2]]].
+[(repeat(2.0),X=2),[[X <-- 2],[X <-- 2]]].
+[repeat(_),instantiation_error].
+[repeat(a),type_error(evaluable,a/0)].
+[repeat(foo(a)),type_error(evaluable,foo/1)].
+
+/* end of repeat */

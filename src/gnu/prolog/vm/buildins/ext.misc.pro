@@ -37,3 +37,9 @@
 % stacktrace(?List)
 :-build_in(stacktrace/1,'gnu.prolog.vm.buildins.misc.Predicate_stacktrace').
 
+% repeat(+Repeats)
+% Like repeat/0 but limits the number of repeats to Repeats
+% @throws instantiation_error if Repeats is a variable
+repeat(Repeats) :- Repeats =< 0, !, fail.
+repeat(Repeats).
+repeat(Repeats) :- NewRepeats is Repeats -1, repeat(NewRepeats).

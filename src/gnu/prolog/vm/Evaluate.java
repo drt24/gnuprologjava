@@ -161,7 +161,8 @@ public class Evaluate
 			Term sargs[] = ct.args;
 			Term args[] = new Term[arity];
 			for (i = 0; i < arity; i++)
-			{
+			{// TODO: we need to check whether tag represents an evaluable function
+				// before we try to evaluate it's arguments
 				args[i] = evaluate(sargs[i].dereference());
 			}
 			if (tag == add2) // ***************************************
