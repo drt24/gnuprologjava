@@ -382,9 +382,10 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	public void ensureLoaded(Term term)
 	{
-		if (!loadedFiles.contains(getInputName(term)))
+		String inputName = getInputName(term);
+		if (!loadedFiles.contains(inputName))
 		{
-			loadedFiles.add(getInputName(term));
+			loadedFiles.add(inputName);
 			new PrologTextLoader(this, term);
 		}
 	}
@@ -415,7 +416,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 				return fl;
 			}
 		}
-		return new File(filename);
+		return new File(filename);// reset here as we might have added a .pl
 	}
 
 	protected String getInputName(Term term)
