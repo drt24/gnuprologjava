@@ -2,7 +2,39 @@
 
 %TODO these tests need writing
 
-[,success].
-[,failure].
+[length([],N),[[N <-- 0]]].
+[length([a],N),[[N <-- 1]]].
+[length([a,b],N),[[N <-- 2]]].
+[length([a,b,c],N),[[N <-- 3]]].
+[length([a,b,c|X],3),[[X <-- []]]].
+
+[length([],-1),failure].
+[length([a],0),failure].
+[length([a,b],1),failure].
+[length([a,b,c],2),failure].
+[length([],1),failure].
+[length([a],2),failure].
+[length([a,b],3),failure].
+[length([a,b,c],4),failure].
+
+[length(X,0),[[X <--[]]]].
+[length(X,3),[[X <--[_,_,_]]]].
+
+[length([],0.0),type_error(integer,0.0)].
+[length([],a),type_error(integer,a)].
+[length([],"a"),type_error(integer,"a")].
+[length([],foo(a)),type_error(integer,foo(a))].
+
+% Examples
+[length([1, 2, 3], Length),[[Length <-- 3]]].
+[length(List,3),[[List <--[_,_,_]]]].
+[length(List, -2), failure].
+[once(length(List, Length)),[[List <-- [], Length <-- 0]]].
+[(repeat(3),length(List, Length)),
+    [[List <-- [], Length <-- 0],
+     [List <-- [_], Length <-- 1],
+     [List <-- [_,_], Length <-- 2]]].
+
+
 
 /* end of length */

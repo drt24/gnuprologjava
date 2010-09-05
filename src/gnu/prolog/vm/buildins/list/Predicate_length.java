@@ -43,15 +43,27 @@ public class Predicate_length extends ExecuteOnlyCode
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
-		if (CompoundTerm.isListPair(args[0]) || TermConstants.emptyListAtom.equals(args[0]))
+		Term listTerm = args[0];
+		Term lengthTerm = args[1];
+		if (!(lengthTerm instanceof VariableTerm | lengthTerm instanceof IntegerTerm))
+		{
+			PrologException.typeError(TermConstants.integerAtom, lengthTerm);
+		}
+		if (CompoundTerm.isListPair(listTerm) || TermConstants.emptyListAtom.equals(listTerm))
 		{
 			int length = 0;
 
-			Term lst = args[0];
+			Term lst = listTerm;
 			while (lst != null)
 			{
 				if (TermConstants.emptyListAtom.equals(lst))
 				{
+					break;
+				}
+				if ((lst.dereference() instanceof VariableTerm))
+				{
+					((VariableTerm) lst).value = TermConstants.emptyListAtom;
+					// TODO on backtracking we need to unify with [_] etc.
 					break;
 				}
 				if (!CompoundTerm.isListPair(lst))
@@ -67,25 +79,30 @@ public class Predicate_length extends ExecuteOnlyCode
 				lst = ct.args[1];
 			}
 
-			return interpreter.unify(args[1], IntegerTerm.get(length));
+			return interpreter.unify(lengthTerm, IntegerTerm.get(length));
 		}
-		else if (args[0] instanceof VariableTerm)
+		else if (listTerm instanceof VariableTerm)
 		{
-			if (!(args[1] instanceof IntegerTerm))
-			{
-				PrologException.typeError(TermConstants.integerAtom, args[1]);
+			if ((lengthTerm.dereference() instanceof VariableTerm))
+			{// TODO we need to do better on backtracking
+				((VariableTerm) lengthTerm).value = new IntegerTerm(0);
 			}
 			List<Term> genList = new ArrayList<Term>();
-			for (int i = 0; i < ((IntegerTerm) args[1]).value; i++)
+			int length = ((IntegerTerm) lengthTerm.dereference()).value;
+			if (length < 0)
+			{
+				return RC.FAIL;
+			}
+			for (int i = 0; i < length; i++)
 			{
 				genList.add(new VariableTerm());
 			}
 			Term term = CompoundTerm.getList(genList);
-			return interpreter.unify(args[0], term);
+			return interpreter.unify(listTerm, term);
 		}
 		else
 		{
-			PrologException.typeError(TermConstants.listAtom, args[0]);
+			PrologException.typeError(TermConstants.listAtom, listTerm);
 		}
 		return RC.SUCCESS;
 	}
