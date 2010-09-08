@@ -1,0 +1,55 @@
+ISO part 1
+
+Directives
+dynamic/1 
+ dynamic(PI) the predicate identified by predicate indicator PI is dynamic (can be modified at runtime)
+multifile/1
+ multifile(PI) the predicate identified by PI can be defined in multiple files
+discontiguous/1
+ discontiguous(PI) the predicate identified by PI can be defined in a discontiguous manner with other predicate definitions between the terms of its definition
+op/3
+ op(Priority, Op_specifier, Operator) add the operator to the operator table
+ Implementation note: change does not effect read terms from other prolog texts not loaded from inside the prolog text which defines this call.
+char_conversion/2
+ char_conversion(In_char, Out_char) when the char_conversion flag is set to 'on' then when terms containing In_char are read in then they all occurances of In_char are substituded for Out_char.
+ Implementation note: this affects all future read terms from all future texts.
+initialization/1
+ initialization(Term) converts Term to a Goal and adds Goal to the list of goals to be executed when the initailization list is processed.
+ @see gnu.prolog.vm.Environment.runInitialization(Interpreter)
+include/1
+ include(File) replace this directive with the prolog text defined in File,
+ Implementation Note: File is first tried with java.io.File(String) and if that file does not exist then .pro and then .pl extensions are tried.
+ensure_loaded/1
+ ensure_loaded(File) Load File making sure only to do so once even if multiple calls to ensure_loaded(File) are made.
+ Implementation Note: The text of File is loaded on the first call to ensure_loaded/1
+set_prolog_flag/2
+ set_prolog_flag(Flag, Value) set the value of Flag to Value if Flag exists and is changeable and the Value is valid for that flag.
+ Implementation Note: The value is set for all prolog texts and execution occurring in this Environment.
+
+Predicates
+
+true/0
+ true is true
+fail/0
+ fail is false
+call/1
+ call(Goal) is true iff Goal represents a goal which is true
+ @throws instantation_error.
+ @throws type_error(callable, G).
+!/0
+ ! is true. It causes all choice points up to its cutparent to be discarded.
+(',')/2 -- conjunction
+ ','(First, Second) both First and Second are true
+(;)/2 -- disjunction
+ ';'(Either, Or) true if Either is true or Or is true
+
+
+
+ISO part 1 2006 extension
+2009 version
+
+In 2008 but removed in 2009
+
+NONISO
+Directives
+When the term given after a :- does not match a defined directive we try treating it as if it were wrapped in an initialization(term).
