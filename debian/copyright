@@ -24,6 +24,11 @@ Copyright 2010 Daniel Thomas, 2009 Michiel Hendriks, 1997-1999 Constantine Plotn
 On Debian systems the full text of the GNU Library Public License, can be
 found in the file /usr/share/common-licenses/LGPL-3.
 
+The manual is available under GNU Free Documentation License version 1.3.
+The full text of the license is included in the manual as an appendix.
+The manual is Copyright 2010 Free Software Foundation, Inc and was written by
+Daniel Thomas.
+
 The packaging is Copyright 2010 Daniel Thomas <drt24-debian@srcf.ucam.org> and
 is licenced under the terms of the GPL licence. On Debian systems the GPL
 licence can be found in /usr/share/common-licenses/GPL.

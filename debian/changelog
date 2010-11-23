@@ -1,3 +1,8 @@
+gnuprolog-java (0.2.5-2) unstable; urgency=low
+
+  * Add note that manual is under GFDLv1.3 to copyright
+
+ -- Daniel Thomas <drt24-debian@srcf.ucam.org>  Wed, 17 Nov 2010 23:14:33 +0000
 gnuprolog-java (0.2.5-1) unstable; urgency=low
 
   * Initial release. (Closes: #593450)
