@@ -151,6 +151,12 @@ Ant Buildfile for GNU Prolog for Java.
 			<arg value="-k${dist.keyid}"/>
 			<arg value="-sa"/>
 		</exec>
+		<exec executable="lintian" dir="dist">
+			<arg value="-i"/>
+			<arg value="-I"/>
+			<arg value="--show-overrides"/>
+			<arg value="${dist.debian.name_version}-2_i386.changes"/>
+		</exec>
 	</target>
 
 	<target name="generate-changelog" depends="init">
