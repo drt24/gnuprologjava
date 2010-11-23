@@ -158,7 +158,7 @@ Ant Buildfile for GNU Prolog for Java.
 			<arg value="-i"/>
 			<arg value="-I"/>
 			<arg value="--show-overrides"/>
-			<arg value="${dist.debian.name_version}-2_i386.changes"/>
+			<arg value="${dist.debian.name_version}-1_i386.changes"/>
 		</exec>
 	</target>
 
