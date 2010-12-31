@@ -33,8 +33,7 @@ public class Predicate_char_code extends ExecuteOnlyCode
 {
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term tchar = args[0];
 		Term tcode = args[1];
@@ -43,7 +42,7 @@ public class Predicate_char_code extends ExecuteOnlyCode
 			VariableTerm vchar = (VariableTerm) tchar;
 			if (tcode instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(tcode);
 			}
 			else if (!(tcode instanceof IntegerTerm))
 			{

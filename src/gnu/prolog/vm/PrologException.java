@@ -116,7 +116,13 @@ public class PrologException extends Exception
 
 	private static PrologException getError(Term term)
 	{
-		return getError(term, null);
+		Throwable t = null;
+		return getError(term, t);
+	}
+
+	private static PrologException getError(Term term, Term detail)
+	{
+		return new PrologException(new CompoundTerm(errorTag, term, detail), null);
 	}
 
 	private static PrologException getError(Term term, Throwable inner)
@@ -144,6 +150,11 @@ public class PrologException extends Exception
 	public static void instantiationError() throws PrologException
 	{
 		throw getError(instantiationErrorAtom);
+	}
+
+	public static void instantiationError(Term variable) throws PrologException
+	{
+		throw getError(instantiationErrorAtom, variable);
 	}
 
 	public static void typeError(AtomTerm errorType, Term errorTerm) throws PrologException

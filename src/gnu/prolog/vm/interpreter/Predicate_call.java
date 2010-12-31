@@ -105,7 +105,7 @@ public class Predicate_call extends ExecuteOnlyCode
 			callTerm = arg;
 			if (callTerm instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(callTerm);
 			}
 			// This was originally done using two Lists by keeping their sizes in sync
 			// but I (Daniel) refactored this to a map. (This may have broken

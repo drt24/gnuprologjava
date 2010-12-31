@@ -49,7 +49,7 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 		Term body = null;
 		if (clause instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(clause);
 		}
 		else if (clause instanceof CompoundTerm)
 		{
@@ -78,7 +78,7 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 		CompoundTermTag predTag = null;
 		if (head instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(head);
 		}
 		else if (head instanceof CompoundTerm)
 		{

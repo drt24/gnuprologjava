@@ -41,7 +41,7 @@ public class IThrow extends Instruction
 		Term term = state.popPushDown();
 		if (term instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(term);
 		}
 		throw new PrologException(term, null);
 	}

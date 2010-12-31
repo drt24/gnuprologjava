@@ -178,7 +178,7 @@ public class BinaryPrologStream extends PrologStream
 			}
 			if (position instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(position);
 			}
 			else if (!(position instanceof JavaObjectTerm))
 			{

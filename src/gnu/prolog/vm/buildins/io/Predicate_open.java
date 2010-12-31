@@ -33,8 +33,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_open extends ExecuteOnlyCode
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term tsource_sink = args[0];
 		Term tmode = args[1];
@@ -49,7 +48,7 @@ public class Predicate_open extends ExecuteOnlyCode
 		// check source/sink
 		if (tsource_sink instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(tsource_sink);
 		}
 		if (!(tsource_sink instanceof AtomTerm))
 		{
@@ -59,7 +58,7 @@ public class Predicate_open extends ExecuteOnlyCode
 		// check mode
 		if (tmode instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(tmode);
 		}
 		if (!(tmode instanceof AtomTerm))
 		{
@@ -78,11 +77,12 @@ public class Predicate_open extends ExecuteOnlyCode
 		vstream = (VariableTerm) tstream;
 		// parse options
 		Term cur = optionsList;
-		while (cur != TermConstants.emptyListAtom)
+		while (cur != TermConstants.emptyListAtom)// TODO possibly duplicate code
+																							// see Predicate_close
 		{
 			if (cur instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(cur);
 			}
 			if (!(cur instanceof CompoundTerm))
 			{
@@ -97,7 +97,7 @@ public class Predicate_open extends ExecuteOnlyCode
 			cur = ct.args[1].dereference();
 			if (head instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(head);
 			}
 			if (!(head instanceof CompoundTerm))
 			{

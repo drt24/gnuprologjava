@@ -33,8 +33,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_write_term extends ExecuteOnlyCode
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term optionsList = args[2];
@@ -46,7 +45,7 @@ public class Predicate_write_term extends ExecuteOnlyCode
 		{
 			if (cur instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(cur);
 			}
 			if (!(cur instanceof CompoundTerm))
 			{
@@ -61,7 +60,7 @@ public class Predicate_write_term extends ExecuteOnlyCode
 			cur = ct.args[1].dereference();
 			if (head instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(head);
 			}
 			if (!(head instanceof CompoundTerm))
 			{

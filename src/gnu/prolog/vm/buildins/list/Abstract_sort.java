@@ -61,7 +61,7 @@ public abstract class Abstract_sort extends ExecuteOnlyCode
 		}
 		else if (listTerm.dereference() instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(listTerm);
 		}
 
 		if (CompoundTerm.isListPair(listTerm))

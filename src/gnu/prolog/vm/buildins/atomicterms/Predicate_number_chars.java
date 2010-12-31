@@ -37,8 +37,7 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_number_chars extends ExecuteOnlyCode
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term number = args[0];
 		Term list = args[1];
@@ -88,7 +87,7 @@ public class Predicate_number_chars extends ExecuteOnlyCode
 			{
 				if (numberIsVariable)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(cur);
 				}
 				else
 				{
@@ -106,7 +105,7 @@ public class Predicate_number_chars extends ExecuteOnlyCode
 			{
 				if (numberIsVariable)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(head);
 				}
 				else
 				{

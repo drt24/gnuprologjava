@@ -36,8 +36,7 @@ public class Predicate_close extends ExecuteOnlyCode
 	CompoundTermTag forceTag = CompoundTermTag.get("force", 1);
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term cur = args[1];
 		Term force = TermConstants.falseAtom;
@@ -45,7 +44,7 @@ public class Predicate_close extends ExecuteOnlyCode
 		{
 			if (cur instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(cur);
 			}
 			if (!(cur instanceof CompoundTerm))
 			{
@@ -61,7 +60,7 @@ public class Predicate_close extends ExecuteOnlyCode
 
 			if (head instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(head);
 			}
 			if (!(head instanceof CompoundTerm))
 			{

@@ -141,6 +141,8 @@ public class Evaluate
 
 	public static Term evaluate(Term term) throws PrologException
 	{
+		term = term.dereference();// ensure we are looking at most instantiated
+		// value
 		if (term instanceof FloatTerm)
 		{
 			return term;
@@ -151,7 +153,7 @@ public class Evaluate
 		}
 		else if (term instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(term);
 		}
 		else if (term instanceof CompoundTerm)
 		{
@@ -805,7 +807,7 @@ public class Evaluate
 		}
 		if (term instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(term);
 		}
 		PrologException.typeError(TermConstants.integerAtom, term);
 	}

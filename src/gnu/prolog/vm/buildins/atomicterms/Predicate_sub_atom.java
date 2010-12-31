@@ -62,8 +62,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 	}
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -84,7 +83,7 @@ public class Predicate_sub_atom extends ExecuteOnlyCode
 
 			if (tatom instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(tatom);
 			}
 			else if (!(tatom instanceof AtomTerm))
 			{

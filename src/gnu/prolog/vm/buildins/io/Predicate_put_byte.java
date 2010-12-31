@@ -32,15 +32,14 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_put_byte extends ExecuteOnlyCode
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term in_byte = args[1];
 		int b = 0;
 		if (in_byte instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(in_byte);
 		}
 		else if (in_byte instanceof IntegerTerm)
 		{

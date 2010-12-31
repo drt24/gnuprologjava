@@ -49,7 +49,7 @@ public class Predicate_char_conversion extends ExecuteOnlyCode
 		}
 		else if (from instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(from);
 		}
 		else
 		{

@@ -34,8 +34,7 @@ public class Predicate_atom_codes extends ExecuteOnlyCode
 {
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term ta = args[0];
 		Term tl = args[1];
@@ -48,7 +47,7 @@ public class Predicate_atom_codes extends ExecuteOnlyCode
 			{
 				if (cur instanceof VariableTerm)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(cur);
 				}
 				if (!(cur instanceof CompoundTerm))
 				{
@@ -63,7 +62,7 @@ public class Predicate_atom_codes extends ExecuteOnlyCode
 				cur = ct.args[1].dereference();
 				if (head instanceof VariableTerm)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(head);
 				}
 				if (!(head instanceof IntegerTerm))
 				{

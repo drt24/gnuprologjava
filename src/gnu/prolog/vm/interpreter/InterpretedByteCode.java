@@ -716,7 +716,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 							pds[pdsSize] = null;
 							if (t instanceof VariableTerm)
 							{
-								PrologException.instantiationError();
+								PrologException.instantiationError(t);
 							}
 							throw new PrologException(t, null);
 						}

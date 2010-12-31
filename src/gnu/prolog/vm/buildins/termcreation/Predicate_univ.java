@@ -39,8 +39,7 @@ public class Predicate_univ extends ExecuteOnlyCode
 	public final static Term termArrayType[] = new Term[0];
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		int undoPos = interpreter.getUndoPosition();
 		Term term = args[0];
@@ -102,7 +101,7 @@ public class Predicate_univ extends ExecuteOnlyCode
 			Term tail = ct.args[1].dereference();
 			if (head instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(head);
 			}
 			if (tail == TermConstants.emptyListAtom)
 			{
@@ -143,7 +142,7 @@ public class Predicate_univ extends ExecuteOnlyCode
 		{
 			if (nonPartial)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(list);
 			}
 			else
 			{

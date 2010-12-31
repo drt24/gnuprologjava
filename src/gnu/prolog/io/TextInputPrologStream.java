@@ -125,7 +125,7 @@ public class TextInputPrologStream extends PrologStream
 				}
 				if (position instanceof VariableTerm)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(position);
 				}
 				else if (!(position instanceof JavaObjectTerm))
 				{

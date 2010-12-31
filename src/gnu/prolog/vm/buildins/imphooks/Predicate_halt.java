@@ -45,13 +45,12 @@ public class Predicate_halt extends ExecuteOnlyCode
 	 * 
 	 */
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term tcode = args[0];
 		if (tcode instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(tcode);
 		}
 		if (!(tcode instanceof IntegerTerm))
 		{

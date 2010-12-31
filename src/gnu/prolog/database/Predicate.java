@@ -343,7 +343,7 @@ public class Predicate
 	{
 		if (head instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(head);
 		}
 		else if (head instanceof AtomTerm | head instanceof CompoundTerm)
 		{

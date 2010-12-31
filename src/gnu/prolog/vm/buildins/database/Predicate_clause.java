@@ -52,8 +52,7 @@ public class Predicate_clause extends ExecuteOnlyCode
 	}
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -67,7 +66,7 @@ public class Predicate_clause extends ExecuteOnlyCode
 			Term body = args[1];
 			if (head instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(head);
 			}
 			CompoundTermTag tag = null;
 			if (head instanceof AtomTerm)

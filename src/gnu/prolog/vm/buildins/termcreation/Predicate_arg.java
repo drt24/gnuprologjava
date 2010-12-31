@@ -39,11 +39,11 @@ public class Predicate_arg extends ExecuteOnlyCode
 		Term arg = args[2];
 		if (n instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(n);
 		}
 		if (term instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(term);
 		}
 		if (!(n instanceof IntegerTerm))
 		{

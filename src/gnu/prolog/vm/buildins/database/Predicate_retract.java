@@ -55,8 +55,7 @@ public class Predicate_retract extends ExecuteOnlyCode
 	}
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -71,7 +70,7 @@ public class Predicate_retract extends ExecuteOnlyCode
 			Term body = null;
 			if (clause instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(clause);
 			}
 			else if (clause instanceof CompoundTerm)
 			{
@@ -96,10 +95,11 @@ public class Predicate_retract extends ExecuteOnlyCode
 			{
 				PrologException.typeError(TermConstants.callableAtom, clause);
 			}
-			CompoundTermTag predTag = null;
+			CompoundTermTag predTag = null;// TODO duplicated code - see
+																			// Predicate_assert
 			if (head instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(head);
 			}
 			else if (head instanceof CompoundTerm)
 			{

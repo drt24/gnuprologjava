@@ -83,11 +83,11 @@ public class Predicate_functor extends ExecuteOnlyCode
 		{
 			if (arity instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(arity);
 			}
 			if (name instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(name);
 			}
 			if (!(name instanceof AtomicTerm))
 			{

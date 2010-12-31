@@ -96,11 +96,12 @@ public abstract class Predicate_dialog extends ExecuteOnlyCode
 	{
 		DialogOptions options = new DialogOptions();
 		Term cur = optionsList;
-		while (cur != TermConstants.emptyListAtom)
+		while (cur != TermConstants.emptyListAtom)// TODO possibly duplicate code
+																							// see Predicate_close
 		{
 			if (cur instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(cur);
 			}
 			if (!(cur instanceof CompoundTerm))
 			{
@@ -115,7 +116,7 @@ public abstract class Predicate_dialog extends ExecuteOnlyCode
 			cur = ct.args[1].dereference();
 			if (head instanceof VariableTerm)
 			{
-				PrologException.instantiationError();
+				PrologException.instantiationError(head);
 			}
 
 			if (head instanceof AtomTerm)

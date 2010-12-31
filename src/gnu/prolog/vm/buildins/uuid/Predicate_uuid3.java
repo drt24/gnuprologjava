@@ -42,7 +42,7 @@ public class Predicate_uuid3 extends Predicate_uuid
 	{
 		if (!(args[0] instanceof VariableTerm))
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(args[0]);
 		}
 		if (!(args[1] instanceof AtomTerm))
 		{

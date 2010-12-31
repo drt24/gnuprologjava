@@ -37,8 +37,7 @@ public class Predicate_number_codes extends ExecuteOnlyCode
 {
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term number = args[0];
 		Term list = args[1];
@@ -79,7 +78,7 @@ public class Predicate_number_codes extends ExecuteOnlyCode
 
 	/** returns null if illegal character sequence */
 	private static String getNumberString(Term list, boolean numberIsVariable) throws PrologException
-	{
+	{// TODO possibly duplicate code see Predicate_number_chars
 		StringBuffer bu = new StringBuffer();
 		Term cur = list;
 		while (cur != TermConstants.emptyListAtom)
@@ -88,7 +87,7 @@ public class Predicate_number_codes extends ExecuteOnlyCode
 			{
 				if (numberIsVariable)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(cur);
 				}
 				else
 				{
@@ -107,7 +106,7 @@ public class Predicate_number_codes extends ExecuteOnlyCode
 			{
 				if (numberIsVariable)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(head);
 				}
 				else
 				{

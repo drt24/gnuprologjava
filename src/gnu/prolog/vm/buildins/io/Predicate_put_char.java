@@ -32,15 +32,14 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_put_char extends ExecuteOnlyCode
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		PrologStream stream = interpreter.getEnvironment().resolveStream(args[0]);
 		Term outchar = args[1];
 		char ch = 0;
 		if (outchar instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(outchar);
 		}
 		else if (outchar instanceof AtomTerm)
 		{

@@ -32,8 +32,7 @@ public class Predicate_less_than extends ExecuteOnlyCode
 {
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term arg0 = Evaluate.evaluate(args[0]);
 		Term arg1 = Evaluate.evaluate(args[1]);

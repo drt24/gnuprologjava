@@ -769,7 +769,7 @@ public class Environment implements PredicateListener
 		stream_or_alias = stream_or_alias.dereference();
 		if (stream_or_alias instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(stream_or_alias);
 		}
 		else if (stream_or_alias instanceof AtomTerm)
 		{

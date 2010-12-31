@@ -42,8 +42,7 @@ public class Predicate_op extends ExecuteOnlyCode
 	static final AtomTerm commaAtom = AtomTerm.get(",");
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term tpriority = args[0];
 		Term topspec = args[1];
@@ -58,7 +57,7 @@ public class Predicate_op extends ExecuteOnlyCode
 		// priority
 		if (tpriority instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(tpriority);
 		}
 		if (!(tpriority instanceof IntegerTerm))
 		{
@@ -72,7 +71,7 @@ public class Predicate_op extends ExecuteOnlyCode
 		// specifier
 		if (topspec instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(topspec);
 		}
 		if (!(topspec instanceof AtomTerm))
 		{
@@ -99,11 +98,12 @@ public class Predicate_op extends ExecuteOnlyCode
 		else if (tops instanceof CompoundTerm)
 		{
 			Term cur = tops;
-			while (cur != TermConstants.emptyListAtom)
+			while (cur != TermConstants.emptyListAtom)// TODO possibly duplicate code
+																								// see Predicate_close
 			{
 				if (cur instanceof VariableTerm)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(cur);
 				}
 				if (!(cur instanceof CompoundTerm))
 				{
@@ -118,7 +118,7 @@ public class Predicate_op extends ExecuteOnlyCode
 				cur = ct.args[1].dereference();
 				if (head instanceof VariableTerm)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(head);
 				}
 				if (!(head instanceof AtomTerm))
 				{

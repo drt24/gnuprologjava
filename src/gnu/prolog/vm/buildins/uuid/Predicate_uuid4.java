@@ -41,7 +41,7 @@ public class Predicate_uuid4 extends Predicate_uuid
 	{
 		if (!(args[0] instanceof VariableTerm))
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(args[0]);
 		}
 		Term uuidTerm = AtomTerm.get(UUID.randomUUID().toString());
 		return interpreter.unify(args[0], uuidTerm);

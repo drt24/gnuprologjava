@@ -32,14 +32,13 @@ import gnu.prolog.vm.TermConstants;
 public class Predicate_atom_length extends ExecuteOnlyCode
 {
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term tatom = args[0];
 		Term tlength = args[1];
 		if (tatom instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(tatom);
 		}
 		if (!(tatom instanceof AtomTerm))
 		{

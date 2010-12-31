@@ -50,8 +50,7 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 	}
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		if (backtrackMode)
 		{
@@ -101,11 +100,11 @@ public class Predicate_atom_concat extends ExecuteOnlyCode
 				VariableTerm v12 = (VariableTerm) t12;
 				if (t1 instanceof VariableTerm)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(t1);
 				}
 				if (t2 instanceof VariableTerm)
 				{
-					PrologException.instantiationError();
+					PrologException.instantiationError(t2);
 				}
 				AtomTerm a1 = (AtomTerm) t1;
 				AtomTerm a2 = (AtomTerm) t2;
