@@ -23,6 +23,7 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.ArrayList;
@@ -306,7 +307,7 @@ public class Predicate
 		dynamicFlag = true;
 	}
 
-	public static Term prepareClause(Term clause)
+	public static Term prepareClause(Term clause) throws PrologException
 	{
 		clause = clause.dereference();
 		Term head;
@@ -332,32 +333,45 @@ public class Predicate
 		}
 		else
 		{
-			throw new IllegalArgumentException("not callable");
+			PrologException.typeError(TermConstants.callableAtom, clause);
+			return null;// never happens
 		}
 		return new CompoundTerm(TermConstants.clauseTag, head, body);
 	}
 
-	public static Term prepareHead(Term head)
+	public static Term prepareHead(Term head) throws PrologException
 	{
 		if (head instanceof VariableTerm)
 		{
-			throw new IllegalArgumentException("head cannot be a variable");
+			PrologException.instantiationError();
 		}
-		else if (head instanceof AtomTerm)
-		{
-			return head;
-		}
-		else if (head instanceof CompoundTerm)
+		else if (head instanceof AtomTerm | head instanceof CompoundTerm)
 		{
 			return head;
 		}
 		else
 		{
-			throw new IllegalArgumentException("head cannot be converted to predication");
+			PrologException.typeError(TermConstants.callableAtom, head);
 		}
+		return head;// never happens
 	}
 
-	public static Term prepareBody(Term body)
+	public static Term prepareBody(Term body) throws PrologException
+	{
+		return prepareBody(body, body);
+	}
+
+	/**
+	 * 
+	 * @param body
+	 * @param term
+	 *          for use in any PrologExceptions - should be the same as the
+	 *          original body
+	 * @return the body prepared for use as a body
+	 * @throws PrologException
+	 *           if the body cannot be made valid for use as a body
+	 */
+	private static Term prepareBody(Term body, Term term) throws PrologException
 	{
 		if (body instanceof VariableTerm)
 		{
@@ -373,14 +387,15 @@ public class Predicate
 			if (ct.tag == TermConstants.conjunctionTag || ct.tag == TermConstants.disjunctionTag
 					|| ct.tag == TermConstants.ifTag)
 			{
-				return new CompoundTerm(ct.tag, prepareBody(ct.args[0].dereference()), prepareBody(ct.args[1].dereference()));
+				return new CompoundTerm(ct.tag, prepareBody(ct.args[0].dereference(), term), prepareBody(ct.args[1]
+						.dereference(), term));
 			}
 			return body;
 		}
 		else
 		{
-			throw new IllegalArgumentException("body cannot be converted to goal");
+			PrologException.typeError(TermConstants.callableAtom, term);
+			return null;// never happens
 		}
 	}
-
 }

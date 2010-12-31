@@ -28,6 +28,7 @@ import gnu.prolog.term.Term;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.HasEnvironment;
 import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 import java.io.File;
@@ -313,7 +314,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		{
 			currentPredicate.addClauseLast(Predicate.prepareClause(term));
 		}
-		catch (IllegalArgumentException ex)
+		catch (PrologException ex)
 		{
 			logError(loader, ex.getMessage());
 		}

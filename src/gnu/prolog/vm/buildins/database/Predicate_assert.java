@@ -42,8 +42,7 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 	protected abstract void assertPred(Predicate p, CompoundTerm clause);
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term clause = args[0];
 		Term head = null;
@@ -59,7 +58,7 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 			{
 				head = ct.args[0].dereference();
 				body = ct.args[1].dereference();
-				body = prepareBody(body, body);
+				body = Predicate.prepareBody(body);
 			}
 			else
 			{
@@ -116,33 +115,4 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 		assertPred(p, (CompoundTerm) new CompoundTerm(TermConstants.clauseTag, head, body).clone());
 		return RC.SUCCESS_LAST;
 	}
-
-	public static Term prepareBody(Term body, Term term) throws PrologException
-	{
-		if (body instanceof VariableTerm)
-		{
-			return new CompoundTerm(TermConstants.callTag, body);
-		}
-		else if (body instanceof AtomTerm)
-		{
-			return body;
-		}
-		else if (body instanceof CompoundTerm)
-		{
-			CompoundTerm ct = (CompoundTerm) body;
-			if (ct.tag == TermConstants.conjunctionTag || ct.tag == TermConstants.disjunctionTag
-					|| ct.tag == TermConstants.ifTag)
-			{
-				return new CompoundTerm(ct.tag, prepareBody(ct.args[0].dereference(), term), prepareBody(ct.args[1]
-						.dereference(), term));
-			}
-			return body;
-		}
-		else
-		{
-			PrologException.typeError(TermConstants.callableAtom, term);
-			return null;
-		}
-	}
-
 }
