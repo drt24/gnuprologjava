@@ -26,7 +26,6 @@ import gnu.prolog.vm.Interpreter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -75,18 +74,32 @@ public class Module
 	 */
 	public synchronized Predicate getDefinedPredicate(CompoundTermTag tag)
 	{
-		Predicate p = tag2predicate.get(tag);
-		if (p == null)
-		{
-			return null;
-		}
-		return p;
+		return tag2predicate.get(tag);
 	}
 
 	public synchronized void removeDefinedPredicate(CompoundTermTag tag)
 	{
 		tag2predicate.remove(tag);
 		predicateUpdated(tag);
+	}
+
+	/**
+	 * If a Predicate for the tag exists then get it else create it Does this in
+	 * one synchronized operation - otherwise thread safety issues could occur.
+	 * 
+	 * @param tag
+	 * @return the Predicate retrieved or if it didn't exist created.
+	 * @see #getDefinedPredicate(CompoundTermTag)
+	 * @see #createDefinedPredicate(CompoundTermTag)
+	 */
+	public synchronized Predicate getOrCreateDefinedPredicate(CompoundTermTag tag)
+	{
+		Predicate p = getDefinedPredicate(tag);
+		if (p == null)
+		{
+			p = createDefinedPredicate(tag);
+		}
+		return p;
 	}
 
 	/**
@@ -140,13 +153,13 @@ public class Module
 
 	protected List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
 
+	// TODO methods below should possibly synchronize on predicateListeners
+	// instead.
 	public synchronized void predicateUpdated(CompoundTermTag tag)
 	{
 		PredicateUpdatedEvent evt = new PredicateUpdatedEvent(this, tag);
-		Iterator<PredicateListener> i = new ArrayList<PredicateListener>(predicateListeners).iterator();
-		while (i.hasNext())
+		for (PredicateListener listener : predicateListeners)
 		{
-			PredicateListener listener = i.next();
 			listener.predicateUpdated(evt);
 		}
 	}

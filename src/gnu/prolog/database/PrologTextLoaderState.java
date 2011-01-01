@@ -51,7 +51,7 @@ import java.util.Set;
  */
 public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvironment
 {
-	protected Module module = new Module();
+	protected final Module module = new Module();
 	protected Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
 	protected Predicate currentPredicate = null;
 	protected List<PrologTextLoaderError> errorList = new ArrayList<PrologTextLoaderError>();
@@ -166,7 +166,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	public boolean declareDynamic(PrologTextLoader loader, CompoundTermTag tag)
 	{
-		Predicate p = findOrCreatePredicate(tag);
+		Predicate p = module.getOrCreateDefinedPredicate(tag);
 		if (testOption(loader, p, "dynamic"))
 		{
 			return true;
@@ -204,7 +204,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	public void declareMultifile(PrologTextLoader loader, CompoundTermTag tag)
 	{
-		Predicate p = findOrCreatePredicate(tag);
+		Predicate p = module.getOrCreateDefinedPredicate(tag);
 		if (testOption(loader, p, "multifile"))
 		{
 			return;
@@ -234,7 +234,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	public void declareDiscontiguous(PrologTextLoader loader, CompoundTermTag tag)
 	{
-		Predicate p = findOrCreatePredicate(tag);
+		Predicate p = module.getOrCreateDefinedPredicate(tag);
 		if (testOption(loader, p, "discontiguous"))
 		{
 			return;
@@ -284,7 +284,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		if (currentPredicate == null || headTag != currentPredicate.getTag())
 		{
 			currentPredicate = null;
-			Predicate p = findOrCreatePredicate(headTag);
+			Predicate p = module.getOrCreateDefinedPredicate(headTag);
 			if (testOption(loader, p, "defined") && !testOption(loader, p, "discontiguous"))
 			{
 				logError(loader, "predicate is not discontiguous.");
@@ -329,7 +329,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 			return;
 		}
 		CompoundTermTag tag = CompoundTermTag.get(pi);
-		Predicate p = findOrCreatePredicate(tag);
+		Predicate p = module.getOrCreateDefinedPredicate(tag);
 		if (p.getType() != Predicate.TYPE.UNDEFINED)
 		{
 			logError(loader, "predicate type could not be changed.");
@@ -338,16 +338,6 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		p.setType(type);
 		p.setJavaClassName(javaClassName);
 		defineOptionAndDeclare(loader, p, "defined");
-	}
-
-	protected Predicate findOrCreatePredicate(CompoundTermTag tag)
-	{
-		Predicate p = module.getDefinedPredicate(tag);
-		if (p == null)
-		{
-			p = module.createDefinedPredicate(tag);
-		}
-		return p;
 	}
 
 	public void logError(PrologTextLoader loader, ParseException ex)
