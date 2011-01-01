@@ -12,5 +12,13 @@
 [assertz((atom(_) :- true)), 
 	permission_error(modify,static_procedure,atom/1)].
 
+[(assertz(aFoo(1)),assertz(aFoo(2)),aFoo(1),aFoo(2)),success].
+
+[abolish(aFoo/1),success].
+
+[(assertz(aFoo(3)),aFoo(3)),success].
+[(assertz(aFoo(4)),aFoo(4)),success].
+
+[aFoo(X),[[X <-- 3],[X <-- 4]]].
 
 /* end of assertz */
