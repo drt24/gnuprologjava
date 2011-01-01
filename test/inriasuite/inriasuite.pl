@@ -49,6 +49,7 @@
 %  version of the tests.
 %
 
+:- dynamic(abFoo/1).        % for abolish
 :- dynamic(bar/1).          % for asserta
 :- dynamic(foo/1).          % for assertz
 :- dynamic(aFoo/1).         % for assertz

@@ -72,6 +72,7 @@ public abstract class Predicate_assert extends AbstractPredicate_assertRetract
 					.getPredicateIndicator());
 		}
 		assertPred(p, (CompoundTerm) new CompoundTerm(TermConstants.clauseTag, head, body).clone());
+
 		return RC.SUCCESS_LAST;
 	}
 }

@@ -13,6 +13,8 @@
 
 [abolish(5/2), type_error(atom,5)].
 
+[(assertz(abFoo(1)), abolish(abFoo/1), abFoo(_)), existence_error(procedure,_)].
+[(assertz(abFoo(2)), abolish(abFoo/1), assertz(abFoo(3)), abFoo(X)), [[X <-- 3]]].
 
 /* end of abolish */
 
