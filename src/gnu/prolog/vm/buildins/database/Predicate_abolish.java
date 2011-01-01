@@ -37,13 +37,12 @@ public class Predicate_abolish extends ExecuteOnlyCode
 	static final CompoundTermTag divideTag = CompoundTermTag.get("/", 2);
 
 	@Override
-	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
-			throws PrologException
+	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term tpi = args[0];
 		if (tpi instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(tpi);
 		}
 		if (!(tpi instanceof CompoundTerm))
 		{
@@ -58,7 +57,7 @@ public class Predicate_abolish extends ExecuteOnlyCode
 		Term ta = pi.args[1].dereference();
 		if (tn instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(tn);
 		}
 		else if (!(tn instanceof AtomTerm))
 		{
@@ -67,7 +66,7 @@ public class Predicate_abolish extends ExecuteOnlyCode
 		AtomTerm n = (AtomTerm) tn;
 		if (ta instanceof VariableTerm)
 		{
-			PrologException.instantiationError();
+			PrologException.instantiationError(ta);
 		}
 		else if (!(ta instanceof IntegerTerm))
 		{

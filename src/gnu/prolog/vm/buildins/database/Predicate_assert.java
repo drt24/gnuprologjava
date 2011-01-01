@@ -18,12 +18,9 @@
 package gnu.prolog.vm.buildins.database;
 
 import gnu.prolog.database.Predicate;
-import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
-import gnu.prolog.term.VariableTerm;
-import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
@@ -31,7 +28,7 @@ import gnu.prolog.vm.TermConstants;
 /**
  * prolog code
  */
-public abstract class Predicate_assert extends ExecuteOnlyCode
+public abstract class Predicate_assert extends AbstractPredicate_assertRetract
 {
 	/**
 	 * assert a clause
@@ -45,54 +42,16 @@ public abstract class Predicate_assert extends ExecuteOnlyCode
 	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
 	{
 		Term clause = args[0];
-		Term head = null;
-		Term body = null;
-		if (clause instanceof VariableTerm)
-		{
-			PrologException.instantiationError(clause);
-		}
-		else if (clause instanceof CompoundTerm)
-		{
-			CompoundTerm ct = (CompoundTerm) clause;
-			if (ct.tag == TermConstants.clauseTag)
-			{
-				head = ct.args[0].dereference();
-				body = ct.args[1].dereference();
-				body = Predicate.prepareBody(body);
-			}
-			else
-			{
-				head = ct;
-				body = TermConstants.trueAtom;
-			}
-		}
-		else if (clause instanceof AtomTerm)
-		{
-			head = clause;
-			body = TermConstants.trueAtom;
-		}
-		else
-		{
-			PrologException.typeError(TermConstants.callableAtom, clause);
-		}
-		CompoundTermTag predTag = null;
-		if (head instanceof VariableTerm)
-		{
-			PrologException.instantiationError(head);
-		}
-		else if (head instanceof CompoundTerm)
-		{
-			predTag = ((CompoundTerm) head).tag;
-		}
-		else if (head instanceof AtomTerm)
-		{
-			predTag = CompoundTermTag.get((AtomTerm) head, 0);
-		}
-		else
-		{
-			PrologException.typeError(TermConstants.callableAtom, head);
-		}
-		Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(predTag);
+
+		PredicateTagHeadBody predicateTagHeadBody = execute(clause, interpreter);
+
+		Predicate p = predicateTagHeadBody.predicate;
+		CompoundTermTag predTag = predicateTagHeadBody.tag;
+		Term head = predicateTagHeadBody.head;
+		Term body = predicateTagHeadBody.body;
+
+		body = Predicate.prepareBody(body);
+
 		if (p == null)
 		{
 			p = interpreter.getEnvironment().getModule().createDefinedPredicate(predTag);

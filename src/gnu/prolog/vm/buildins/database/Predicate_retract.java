@@ -18,13 +18,10 @@
 package gnu.prolog.vm.buildins.database;
 
 import gnu.prolog.database.Predicate;
-import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
-import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
@@ -38,7 +35,7 @@ import java.util.Map;
 /**
  * prolog code
  */
-public class Predicate_retract extends ExecuteOnlyCode
+public class Predicate_retract extends AbstractPredicate_assertRetract
 {
 	private static class RetractBacktrackInfo extends BacktrackInfo
 	{
@@ -66,54 +63,14 @@ public class Predicate_retract extends ExecuteOnlyCode
 		else
 		{
 			Term clause = args[0];
-			Term head = null;
-			Term body = null;
-			if (clause instanceof VariableTerm)
-			{
-				PrologException.instantiationError(clause);
-			}
-			else if (clause instanceof CompoundTerm)
-			{
-				CompoundTerm ct = (CompoundTerm) clause;
-				if (ct.tag == TermConstants.clauseTag)
-				{
-					head = ct.args[0].dereference();
-					body = ct.args[1].dereference();
-				}
-				else
-				{
-					head = ct;
-					body = TermConstants.trueAtom;
-				}
-			}
-			else if (clause instanceof AtomTerm)
-			{
-				head = clause;
-				body = TermConstants.trueAtom;
-			}
-			else
-			{
-				PrologException.typeError(TermConstants.callableAtom, clause);
-			}
-			CompoundTermTag predTag = null;// TODO duplicated code - see
-																			// Predicate_assert
-			if (head instanceof VariableTerm)
-			{
-				PrologException.instantiationError(head);
-			}
-			else if (head instanceof CompoundTerm)
-			{
-				predTag = ((CompoundTerm) head).tag;
-			}
-			else if (head instanceof AtomTerm)
-			{
-				predTag = CompoundTermTag.get((AtomTerm) head, 0);
-			}
-			else
-			{
-				PrologException.typeError(TermConstants.callableAtom, head);
-			}
-			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(predTag);
+
+			PredicateTagHeadBody predicateTagHeadBody = execute(clause, interpreter);
+
+			Predicate p = predicateTagHeadBody.predicate;
+			Term head = predicateTagHeadBody.head;
+			Term body = predicateTagHeadBody.body;
+			CompoundTermTag predTag = predicateTagHeadBody.tag;
+
 			if (p == null)
 			{
 				return RC.FAIL;
