@@ -18,6 +18,8 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.database.Pair;
+import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
 
 import java.util.Collection;
@@ -156,6 +158,34 @@ public class CompoundTerm extends Term
 	public static CompoundTerm getDisjunction(Term head, Term tail)
 	{
 		return new CompoundTerm(TermConstants.disjunctionTag, head, tail);
+	}
+
+	/**
+	 * Check that the term is a listPair where the head is instantiated and throw
+	 * the relevant PrologException if not.
+	 * 
+	 * @param term
+	 * @return a (head,body) Pair
+	 * @throws PrologException
+	 */
+	public static Pair<Term, Term> getInstantiatedHeadBody(Term term) throws PrologException
+	{
+		if (term instanceof VariableTerm)
+		{
+			PrologException.instantiationError(term);
+		}
+		if (!CompoundTerm.isListPair(term))
+		{
+			PrologException.typeError(TermConstants.listAtom, term);
+		}
+		CompoundTerm ct = (CompoundTerm) term;
+		Term head = ct.args[0].dereference();
+		term = ct.args[1].dereference();
+		if (head instanceof VariableTerm)
+		{
+			PrologException.instantiationError(head);
+		}
+		return new Pair<Term, Term>(head, term);
 	}
 
 	/**

@@ -17,6 +17,7 @@
  */
 package gnu.prolog.vm.buildins.atomicterms;
 
+import gnu.prolog.database.Pair;
 import gnu.prolog.io.ParseException;
 import gnu.prolog.io.TermReader;
 import gnu.prolog.io.TermWriter;
@@ -26,7 +27,6 @@ import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
-import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.TermConstants;
@@ -34,7 +34,7 @@ import gnu.prolog.vm.TermConstants;
 /**
  * prolog code
  */
-public class Predicate_number_chars extends ExecuteOnlyCode
+public class Predicate_number_chars extends AbstractPredicate_number
 {
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
@@ -76,42 +76,21 @@ public class Predicate_number_chars extends ExecuteOnlyCode
 		}
 	}
 
-	/** returns null if illegal chracter sequenca */
+	/** returns null if illegal character sequence */
 	private static String getNumberString(Term list, boolean numberIsVariable) throws PrologException
 	{
 		StringBuffer bu = new StringBuffer();
 		Term cur = list;
 		while (cur != TermConstants.emptyListAtom)
 		{
-			if (cur instanceof VariableTerm)
+			Pair<Term, Term> headBodyPair = getInstantiatedHeadBody(cur, numberIsVariable);
+			if (headBodyPair == null)
 			{
-				if (numberIsVariable)
-				{
-					PrologException.instantiationError(cur);
-				}
-				else
-				{
-					return null;
-				}
+				return null;
 			}
-			if (!CompoundTerm.isListPair(cur))
-			{
-				PrologException.typeError(TermConstants.listAtom, list);
-			}
-			CompoundTerm ct = (CompoundTerm) cur;
-			Term head = ct.args[0].dereference();
-			cur = ct.args[1].dereference();
-			if (head instanceof VariableTerm)
-			{
-				if (numberIsVariable)
-				{
-					PrologException.instantiationError(head);
-				}
-				else
-				{
-					return null;
-				}
-			}
+			Term head = headBodyPair.left;
+			cur = headBodyPair.right;
+
 			if (!(head instanceof AtomTerm))
 			{
 				PrologException.typeError(TermConstants.characterAtom, head);

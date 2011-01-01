@@ -123,7 +123,6 @@ final public class Operator
 			@Override
 			public AtomTerm getAtom()
 			{
-				// TODO Auto-generated method stub
 				return null;
 			}
 		};
