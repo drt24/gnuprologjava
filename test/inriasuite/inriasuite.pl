@@ -699,12 +699,6 @@ file(fail).
 file(abolish).
 file(and).
 file(arg).
-file(arith_diff).
-file(arith_eq).
-file(arith_gt).
-file('arith_gt=').
-file(arith_lt).
-file('arith_lt=').
 file(asserta).
 file(assertz).
 file(atom).
@@ -746,15 +740,11 @@ file(retract).
 file(set_prolog_flag).
 file(setof).
 file(sub_atom).
-file(term_diff).
-file(term_eq).
-file(term_gt).
-file('term_gt=').
-file(term_lt).
-file('term_lt=').
 file(true).
 file(unify).
 
+file(F) :- arith(N), atom_concat('arith/',N,F).
+file(F) :- terms(N), atom_concat('terms/',N,F).
 file(F) :- extra(N), atom_concat('extra/',N,F).
 file(F) :- inria(N), atom_concat('inria/',N,F).
 file(F) :- io(N), atom_concat('io/',N,F).
@@ -771,6 +761,22 @@ file(TF,IF) :-
 	io(NTF,NIF),
 	atom_concat('io/',NTF,TF),
 	atom_concat('io/', NIF, IF).
+
+%arith
+arith(arith_diff).
+arith(arith_eq).
+arith(arith_gt).
+arith('arith_gt=').
+arith(arith_lt).
+arith('arith_lt=').
+
+%terms
+terms(term_diff).
+terms(term_eq).
+terms(term_gt).
+terms('term_gt=').
+terms(term_lt).
+terms('term_lt=').
 
 % io
 io(at_end_of_stream).
