@@ -87,10 +87,12 @@ public class Predicate
 	/**
 	 * constructor of predicate
 	 * 
+	 * Predicates should only be constructed inside {@link Module}
+	 * 
 	 * @param module
 	 * @param tag
 	 */
-	public Predicate(Module module, CompoundTermTag tag)
+	Predicate(Module module, CompoundTermTag tag)
 	{
 		this.tag = tag;
 		this.module = module;
@@ -305,6 +307,15 @@ public class Predicate
 			throw new IllegalStateException("dynamic property of predicate could not be changed");
 		}
 		dynamicFlag = true;
+	}
+
+	@Override
+	public synchronized String toString()
+	{
+		StringBuilder answer = new StringBuilder(tag.toString());
+		answer.append(": ");
+		answer.append(clauses.toString());
+		return answer.toString();
 	}
 
 	public static Term prepareClause(Term clause) throws PrologException
