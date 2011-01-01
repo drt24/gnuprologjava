@@ -1,0 +1,25 @@
+/* file arith_plus_minus */
+
+% imported from vanilla sec91
+[X1 is +(7,35),[[X1 <-- 42]]].
+[X2 is +(0,+(3,11)),[[X2 <-- 14]]].
+[X3 is +(0,3.2+11),[[X3 <-- 14.2000]]].
+
+[X6 is -(7),[[X6 <-- -7]]].
+[X7 is -(3-11),[[X7 <-- 8]]].
+[X8 is -(3.2-11),[[X8 <-- 7.8000]]].
+
+[X11 is -(7,35),[[X11 <-- -28]]].
+[X12 is -(20,3+11),[[X12 <-- 6]]].
+[X13 is -(0,3.2+11),[[X13 <-- -14.2000]]].
+
+[X4 is +(77,N),instantiation_error].
+[X5 is +(foo,77),type_error(evaluable,_)].
+
+[X9 is -(N),instantiation_error].
+[X10 is -(foo),type_error(evaluable, _)].
+
+[X14 is -(77,N),instantiation_error].
+[X15 is -(foo,77),type_error(evaluable, _)].
+
+/* end of arith_plus_minus */

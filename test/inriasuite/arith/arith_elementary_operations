@@ -1,0 +1,32 @@
+/* file arith_elementary_operations */
+
+%imported from vanilla sec91
+
+[X30 is mod(7,3),[[X30 <-- 1]]].
+[X31 is mod(0,3+11),[[X31 <-- 0]]].
+[X32 is mod(7,-2),[[X32 <-- -1]]].
+[X33 is floor(7.4),[[X33 <-- 7]]].
+[X34 is floor(-0.4),[[X34 <-- -1]]].
+[X35 is round(7.5),[[X35 <-- 8]]].
+[X36 is round(7.6),[[X36 <-- 8]]].
+[X37 is round(-0.6),[[X37 <-- -1]]].
+[X39 is ceiling(-0.5),[[X39 <-- 0]]].
+[X40 is truncate(-0.5),[[X40 <-- 0]]].
+[X47 is abs(7),[[X47 <-- 7]]].
+[X48 is abs(3-11),[[X48 <-- 8]]].
+[X49 is abs(3.2-11.0),[[X49 <-- 7.8000]]].
+
+[Y2 is mod(77,N),instantiation_error].
+[Y3 is mod(foo,77),type_error(evaluable, _)].
+[Y4 is mod(7.5,2),type_error(integer, _)].
+[Y5 is mod(7,0),evaluation_error(_)].
+[X38 is round(N),instantiation_error].
+[X39 is round(foo),type_error(evaluable, _)].
+[X38 is ceiling(N),instantiation_error].
+[X39 is ceiling(foo),type_error(evaluable, _)].
+[X38 is truncate(N),instantiation_error].
+[X41 is truncate(foo),type_error(evaluable, _)].
+[X50 is abs(N),instantiation_error].
+[X51 is abs(foo),type_error(evaluable, _)].
+
+/* end of arith_elementary_operations */

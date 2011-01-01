@@ -769,6 +769,9 @@ arith(arith_gt).
 arith('arith_gt=').
 arith(arith_lt).
 arith('arith_lt=').
+arith(arith_plus_minus).
+arith(arith_multiply_divide).
+arith(arith_elementary_operations).
 
 %terms
 terms(term_diff).

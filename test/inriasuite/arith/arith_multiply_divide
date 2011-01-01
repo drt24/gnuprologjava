@@ -1,0 +1,26 @@
+/* file arith_multiply_divide */
+
+% imported from vanilla sec91
+[X16 is *(7,35),[[X16 <-- 245]]].
+[X17 is *(0,3+11),[[X17 <-- 0]]].
+[X18 is *(1.5,3.2+11),[[X18 <-- 21.3000]]].
+
+[X21 is /(7,35),[[X21 <-- 0.2000]]].
+[X22 is /(7.0,35),[[X22 <-- 0.2000]]].
+[X23 is /(140,3+11),[[X23 <-- 10.0]]].
+[X24 is /(20.164,3.2+11),[[X24 <-- 1.42000]]].
+[X25 is /(7,-3),[[X25 <-- -2.33333333333333]]].
+[X26 is /(-7,3),[[X26 <-- -2.33333333333333]]].
+
+[X19 is *(77,N),instantiation_error].
+[X19 is *(N,77),instantiation_error].
+[X20 is *(foo,77),type_error(evaluable,_)].
+[X20 is *(77,foo),type_error(evaluable,_)].
+
+[X27 is /(77,N),instantiation_error].
+[X27 is /(N,77),instantiation_error].
+[X28 is /(foo,77),type_error(evaluable, _)].
+[X28 is /(77,foo),type_error(evaluable, _)].
+[X29 is /(3,0),evaluation_error(_)].
+
+/* end of  */

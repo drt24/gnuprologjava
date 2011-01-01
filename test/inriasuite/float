@@ -6,5 +6,12 @@
 [float(atom), failure].
 [float(X), failure].
 
+%Imported from vanilla sec91
+[X42 is float(7),[[X42 <-- 7.0]]].
+[X43 is float(7.3),[[X43 <-- 7.3]]].
+[X44 is float(5/3),[[X44 <-- 1.66666666666666666]]].
+[X45 is float(N),instantiation_error].
+[X46 is float(foo),type_error(evaluable, _)].
+
 /* end of float */
 
