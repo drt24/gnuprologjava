@@ -292,7 +292,7 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 			}
 			if (!testOption(loader, p, "declared") && testOption(null, p, "declared") && !testOption(loader, p, "multifile"))
 			{
-				logError(loader, "predicate is not multifile.");
+				logError(loader, "predicate is not multifile: " + p.getTag());
 				return;
 			}
 			if (!testOption(loader, p, "dynamic") && testOption(null, p, "dynamic"))
