@@ -6,5 +6,11 @@
 [retract((atom(_) :- X == '[]')), 
 	permission_error(modify,static_procedure,atom/1)].
 
-/* end of retract */
+[(assertz(retrFoo(1)),retract(retrFoo(1))),success].
+[(assertz(retrFoo(2)),assertz(retrFoo(3)),retract(retrFoo(2)),retrFoo(X)),[[X <-- 3]]].
+[(retract(retrFoo(X))),[[X <-- 3]]].
+[retrFoo(_),failure].
+[(assertz(retrFoo(4)),retrFoo(4),assertz(retrFoo(5)),retract(retrFoo(X))),[[X <-- 4],[X <-- 5]]].
 
+[(assertz(retrFoo(6)),retract(retrFoo(X))),[[X <-- 6]]].
+/* end of retract */

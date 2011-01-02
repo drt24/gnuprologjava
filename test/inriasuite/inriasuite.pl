@@ -53,6 +53,7 @@
 :- dynamic(bar/1).          % for asserta
 :- dynamic(foo/1).          % for assertz
 :- dynamic(aFoo/1).         % for assertz
+:- dynamic(retrFoo/1).      % for retract
 
 %%%%%%%%%%%%%%%%
 %
