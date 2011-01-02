@@ -707,7 +707,11 @@ safe_ensure_loaded(F) :-
 %   list all the files 
 %   of tests.
 %
-        	
+
+% So that other included files can define additional file predicates.
+:- multifile(file/1).
+:- multifile(file/2).
+
 file(fail).
 file(abolish).
 file(and).
@@ -821,6 +825,7 @@ inria(already_appears).
 inria(delmemb).
 inria(vars_in_term).
 
+:- ensure_loaded('bugs/bugs.pl').
 
 %%%%%%%%%%%
 %

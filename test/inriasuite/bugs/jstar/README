@@ -1,0 +1,8 @@
+These files exist to test any bugs found by people trying to use
+GNU Prolog for Java for JStar.
+
+The bugs in question: https://savannah.gnu.org/bugs/index.php?31550
+
+These files are based on those provided for the purpose of illustrating those bugs.
+Hence transitive_closure*.pl are:
+Copyright 2010 Mark Utting, Waikato University, 2011 Daniel Thomas, Cambridge University

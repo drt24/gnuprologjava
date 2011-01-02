@@ -1,0 +1,8 @@
+/* file transitive_closure_retract */
+
+[(b_t_c_r_setup(2),b_t_c_r_strictBefore(X,Y)),[[X <-- 0, Y <-- 1],[X <-- 1, Y <--2]]].
+
+[(b_t_c_r_complete_transitive_closure, b_t_c_r_strictBefore(X,Y)),
+    [[X <-- 0, Y <-- 1], [X <-- 1, Y <-- 2], [X <-- 0, Y <-- 2]]].
+
+/* end of transitive_closure_retract */
