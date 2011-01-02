@@ -691,7 +691,17 @@ inerror(F) :-
 	score(F, total(_X), wrong(Y)),
         Y =\= 0.
 
-
+%%%%%%%%%%
+%
+%  safe_ensure_loaded(+File)
+%
+%  run ensure_loaded(+File) but catch existance_errors and print a warning
+%  This means that safe_ensure_loaded can be used even on implementations
+%  which don't support ensure_loaded.
+safe_ensure_loaded(F) :-
+    catch(ensure_loaded(F),error(existence_error(procedure,ensure_loaded/1),_),
+		(write('Optional ensure_loaded/1 predicate not supported cannot load: '),
+		write(F),nl, fail)).
 %%%%%%%%%
 %
 %   list all the files 
@@ -753,9 +763,7 @@ file(F) :- inria(N), atom_concat('inria/',N,F).
 file(F) :- io(N), atom_concat('io/',N,F).
 file(F) :-
 	file(F,IF),
-	catch(ensure_loaded(IF),error(existence_error(procedure,ensure_loaded/1),_),
-		(write('Optional ensure_loaded/1 predicate not supported cannot test: '),
-		write(F),nl, fail)).
+	safe_ensure_loaded(IF).
 
 
 % file(+TestFile,+IncludeFile) a TestFile which depends on an IncludeFile
