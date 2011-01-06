@@ -1,8 +1,9 @@
 gnuprolog-java (0.2.6-1) unstable; urgency=low
 
   * New upstream release 0.2.6 fixes major bug in assert, retract and abolish
+  * Add Suggests on documentation and libgetopt-java  and Recommends: ${java:Recommends}
 
- -- Daniel Thomas <drt24-debian@srcf.ucam.org>  Thu, 06 Jan 2011 12:51:08 +0000
+ -- Daniel Thomas <drt24-debian@srcf.ucam.org>  Thu, 06 Jan 2011 13:01:57 +0000
 
 gnuprolog-java (0.2.5-2) unstable; urgency=low
 

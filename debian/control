@@ -3,13 +3,15 @@ Section: java
 Priority: optional
 Maintainer: Daniel Thomas <drt24-debian@srcf.ucam.org>
 Build-Depends: debhelper (>= 7.0.50~), javahelper (>= 0.24), ant
-Build-Depends-Indep: default-jdk, texinfo, libgetopt-java
+Build-Depends-Indep: default-jdk, texinfo, libgetopt-java, default-jdk-doc
 Standards-Version: 3.9.1
 Homepage: http://www.gnu.org/software/gnuprologjava/
 
 Package: libgnuprolog-java
 Architecture: all
 Depends: ${java:Depends}, ${misc:Depends}
+Recommends: ${java:Recommends}
+Suggests: libgnuprolog-java-doc, libgetopt-java
 Description: GNU Prolog for Java
  GNU Prolog for Java is an implementation of ISO Prolog as a Java library 
  (gnu.prolog) that allows Prolog code to be executed from within java.
@@ -20,6 +22,7 @@ Package: libgnuprolog-java-doc
 Section: doc
 Architecture: all
 Depends: ${java:Depends}, ${misc:Depends}, dpkg (>= 1.15.4) | install-info
+Recommends: ${java:Recommends}
 Description: GNU Prolog for Java - Documentation
  GNU Prolog for Java is an implementation of ISO Prolog as a Java library 
  (gnu.prolog) that allows Prolog code to be executed from within java.
