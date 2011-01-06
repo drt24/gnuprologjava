@@ -1,0 +1,23 @@
+/* file compare */
+
+%Order is neither a variable nor an atom
+[compare(1,a,b),type_error(atom, 1)].
+[compare(72.1,a,b),type_error(atom, 72.1)].
+[compare(foo(a),a,b),type_error(atom, foo(a))].
+
+%Order an atom other than <, =, or >
+[compare('<=', a, b),domain_error(order, '<=')].
+[compare('==', a, b),domain_error(order, '==')].
+[compare(c, a, b),domain_error(order, c)].
+
+%Examples
+[compare(Order, 3, 5),[[Order <-- (<)]]].
+[compare(Order, d, d),[[Order <-- (=)]]].
+[compare(Order, 3, 3.0),[[Order <-- (>)]]].
+
+[compare(Order, 0, 1),[[Order <-- (<)]]].
+[compare(Order, -1, 0),[[Order <-- (<)]]].
+[compare(Order, 0.1, 0.01),[[Order <-- (>)]]].
+[compare(Order, 0.1, 0.10),[[Order <-- (=)]]].
+
+/* end of compare */
