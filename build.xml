@@ -179,7 +179,7 @@ Ant Buildfile for GNU Prolog for Java.
 			<footer>
 				&lt;a href="${url.website}" target="_top"&gt;${name.friendly}&lt;/a&gt;
 			</footer>
-			<link href="http://java.sun.com/javase/6/docs/api/" />
+			<link href="/usr/share/doc/default-jdk-doc/api/" />
 		</javadoc>
 		<mkdir dir="build/demo" />
 		<copy todir="build/demo/gnu/prolog/">
