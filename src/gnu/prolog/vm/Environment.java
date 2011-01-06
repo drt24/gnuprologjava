@@ -224,6 +224,10 @@ public class Environment implements PredicateListener
 		prologTextLoaderState = new PrologTextLoaderState(this);
 	}
 
+	/**
+	 * @see #getPrologTextLoaderState
+	 * @return the PrologTextLoader for this Environment
+	 */
 	@Deprecated
 	public PrologTextLoaderState getTextLoaderState()
 	{
@@ -255,6 +259,7 @@ public class Environment implements PredicateListener
 	public void runInitialization(Interpreter interpreter)
 	{
 		Module module = getModule();
+		module.addPredicateListener(this);
 		List<Pair<PrologTextLoaderError, Term>> initialization;
 		synchronized (module)
 		{// get the initialization list and then clear it so that it is no longer
@@ -284,6 +289,13 @@ public class Environment implements PredicateListener
 				prologTextLoaderState.logError(loaderTerm.left, ex.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public void finalize() throws Throwable
+	{
+		getModule().removePredicateListener(this);
+		super.finalize();
 	}
 
 	/**
