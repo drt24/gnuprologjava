@@ -9,7 +9,7 @@ GNU Prolog for Java does not use maven for anything else.
   <groupId>gnu</groupId>
   <artifactId>gnu.prolog</artifactId>
   <name>gnuprologjava</name>
-  <version>0.2.5</version>
+  <version>0.3.0</version>
   <build>
         <sourceDirectory>src</sourceDirectory>
         <outputDirectory>build/code</outputDirectory>
