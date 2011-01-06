@@ -1,0 +1,25 @@
+From: Daniel Thomas <drt24@srcf.ucam.org>
+Date: Thu, 6 Jan 2011 13:05:13 +0000
+Subject: [PATCH] Add link to system javadoc
+
+As per http://www.debian.org/doc/manuals/debian-java-faq/ch4.html#s4.4.4
+
+Signed-off-by: Daniel Thomas <drt24@srcf.ucam.org>
+---
+ build.xml |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/build.xml b/build.xml
+index f429530..475e30f 100644
+--- a/build.xml
++++ b/build.xml
+@@ -179,7 +179,7 @@ Ant Buildfile for GNU Prolog for Java.
+ 			<footer>
+ 				&lt;a href="${url.website}" target="_top"&gt;${name.friendly}&lt;/a&gt;
+ 			</footer>
+-			<link href="http://java.sun.com/javase/6/docs/api/" />
++			<link href="/usr/share/doc/default-jdk-doc/api/" />
+ 		</javadoc>
+ 		<mkdir dir="build/demo" />
+ 		<copy todir="build/demo/gnu/prolog/">
+-- 
