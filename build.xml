@@ -29,8 +29,8 @@ Ant Buildfile for GNU Prolog for Java.
 				<deletecharacters chars=" \t" />
 			</filterchain>
 		</loadproperties>
-		
-		<property file="build.properties"/>
+
+		<property file="build.properties" />
 
 		<property name="name.friendly" value="GNU Prolog for Java" />
 		<property name="url.website" value="http://www.gnu.org/software/gnuprologjava/" />
@@ -43,14 +43,14 @@ Ant Buildfile for GNU Prolog for Java.
 
 		<property name="javacc.debug" value="false" />
 		<property name="javacc.home" value="/usr/share/java" />
-		
+
 		<property name="test.concurrency.threads" value="1" />
 		<property name="test.concurrency.iterations" value="1" />
 
 		<!-- Key id to use for signing the .deb files -->
 		<property name="dist.keyid" value="" />
-		<property name="dist.name-version" value="${ant.project.name}-${version}"/>
-		<property name="dist.debian.name_version" value="gnuprolog-java_${version}"/>
+		<property name="dist.name-version" value="${ant.project.name}-${version}" />
+		<property name="dist.debian.name_version" value="gnuprolog-java_${version}" />
 		<property name="dist.debdir" value="dist/${dist.name-version}/" />
 
 		<mkdir dir="build" />
@@ -85,10 +85,10 @@ Ant Buildfile for GNU Prolog for Java.
 
 	<target name="compile" depends="init">
 		<mkdir dir="build/code" />
-		<javac srcdir="src" destdir="build/code" classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar"
+		<javac srcdir="src" destdir="build/code"
+			classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar"
 			debug="${java.debug}" debuglevel="lines,vars,source"
-			excludes="**/package-info.java"
-		/>
+			excludes="**/package-info.java" />
 		<copy todir="build/code">
 			<fileset dir="src">
 				<include name="**/*.pro" />
@@ -118,7 +118,7 @@ Ant Buildfile for GNU Prolog for Java.
 				<include name="generate-ChangeLog.sh" />
 			</fileset>
 			<fileset dir="dist">
-				<include name="ChangeLog"/>
+				<include name="ChangeLog" />
 			</fileset>
 		</zip>
 	</target>
@@ -138,41 +138,42 @@ Ant Buildfile for GNU Prolog for Java.
 				<include name="debian/**" />
 			</fileset>
 			<fileset dir="dist">
-				<include name="ChangeLog"/>
+				<include name="ChangeLog" />
 			</fileset>
 		</zip>
 	</target>
 
 	<target name="dist-deb" depends="dist-src" description="Produce a .deb to install with">
 		<!-- Delete the old directory if it exists before unziping the new one -->
-		<delete dir="${dist.debdir}" failonerror="false"/>
-		<unzip src="dist/${dist.name-version}-src.zip" dest="${dist.debdir}"/>
+		<delete dir="${dist.debdir}" failonerror="false" />
+		<unzip src="dist/${dist.name-version}-src.zip" dest="${dist.debdir}" />
 		<!-- Delete the getopt code as we want to use the libgetopt-java package for that -->
-		<delete dir="${dist.debdir}src/gnu/getopt"/>
-		<tar destfile="dist/${dist.debian.name_version}.orig.tar.gz" basedir="${dist.debdir}" excludes="debian/**" compression="gzip"/>
+		<delete dir="${dist.debdir}src/gnu/getopt" />
+		<tar destfile="dist/${dist.debian.name_version}.orig.tar.gz" basedir="${dist.debdir}" excludes="debian/**" compression="gzip" />
 		<exec executable="dpkg-buildpackage" dir="${dist.debdir}">
-			<arg value="-k${dist.keyid}"/>
-			<arg value="-sa"/>
+			<arg value="-k${dist.keyid}" />
+			<arg value="-sa" />
 		</exec>
 		<exec executable="lintian" dir="dist">
-			<arg value="-i"/>
-			<arg value="-I"/>
-			<arg value="--show-overrides"/>
-			<arg value="${dist.debian.name_version}-1_i386.changes"/>
+			<arg value="-i" />
+			<arg value="-I" />
+			<arg value="--show-overrides" />
+			<arg value="${dist.debian.name_version}-1_i386.changes" />
 		</exec>
 	</target>
 
 	<target name="generate-changelog" depends="init">
-		<copy file="ChangeLog" todir="dist"/>
+		<copy file="ChangeLog" todir="dist" />
 		<exec executable="${basedir}/generate-ChangeLog.sh">
-			<arg value="${basedir}"/>
-			<arg value="dist"/>
+			<arg value="${basedir}" />
+			<arg value="dist" />
 		</exec>
 	</target>
 
 	<target name="doc" depends="init,manual" description="Make the javadoc api and copy the demo applications">
 		<mkdir dir="build/api" />
-		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes" use="yes"  classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar">
+		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes"
+			use="yes" classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar">
 			<packageset dir="src">
 				<include name="gnu/prolog/**" />
 			</packageset>
@@ -186,33 +187,34 @@ Ant Buildfile for GNU Prolog for Java.
 		</javadoc>
 		<mkdir dir="build/demo" />
 		<copy todir="build/demo/gnu/prolog/">
-			<fileset dir="src/gnu/prolog/demo"/>
+			<fileset dir="src/gnu/prolog/demo" />
 		</copy>
 	</target>
-	
-	<target name="manual" depends="init,manual-html,manual-info"/>
-	
+
+	<target name="manual" depends="init,manual-html,manual-info" />
+
 	<target name="manual-html" depends="init">
 		<exec executable="makeinfo">
-			<arg value="--html"/>
-			<arg value="docs/manual.texinfo"/>
-			<arg value="--output=build/manual"/>
+			<arg value="--html" />
+			<arg value="docs/manual.texinfo" />
+			<arg value="--output=build/manual" />
 		</exec>
 	</target>
 	<target name="manual-info" depends="init">
 		<exec executable="makeinfo">
-			<arg value="docs/manual.texinfo"/>
-			<arg value="--output=build/manual.info"/>
+			<arg value="docs/manual.texinfo" />
+			<arg value="--output=build/manual.info" />
 		</exec>
 		<exec executable="ln" dir="build">
-			<arg value="-s"/>
-			<arg value="manual.info"/>
-			<arg value="gnuprolog-java.info"/>
+			<arg value="-s" />
+			<arg value="manual.info" />
+			<arg value="gnuprolog-java.info" />
 		</exec>
 	</target>
 
-	<target name="test" depends="compile,test-inriasuite,test-vanilla,test-dcg" description="Execute tests"/>
-	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg"/>
+	<target name="test" depends="compile,test-inriasuite,test-vanilla,test-dcg" description="Execute tests" />
+
+	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg" />
 
 	<target name="test-vanilla" depends="compile">
 		<echo>Verify output in test/test-vanilla.out
@@ -222,15 +224,15 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<arg value="gnuprologjava.pl" />
 			<arg value="validate" />
 			<classpath>
-				<pathelement location="build/code/"/>
-				<pathelement path="${java.class.path}"/>
+				<pathelement location="build/code/" />
+				<pathelement path="${java.class.path}" />
 			</classpath>
 		</java>
 	</target>
 	<target name="clean-vanilla">
-		<delete file="test/test-vanilla.out" failonerror="false"/>
+		<delete file="test/test-vanilla.out" failonerror="false" />
 		<delete failonerror="false">
-			<fileset dir="test/vanilla/" includes="*.tmp,*.bin,*.out"/>
+			<fileset dir="test/vanilla/" includes="*.tmp,*.bin,*.out" />
 		</delete>
 	</target>
 	<target name="test-inriasuite" depends="compile">
@@ -243,19 +245,19 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<arg value="inriasuite.pl" />
 			<arg value="run_all_tests" />
 			<classpath>
-				<pathelement location="build/code/"/>
-				<pathelement path="${java.class.path}"/>
+				<pathelement location="build/code/" />
+				<pathelement path="${java.class.path}" />
 			</classpath>
 		</java>
 		<exec executable="grep">
-			<arg value="* BIPs gave"/>
-			<arg value="test/test-inria.out"/>
+			<arg value="* BIPs gave" />
+			<arg value="test/test-inria.out" />
 		</exec>
 	</target>
 	<target name="clean-inria">
-		<delete file="test/test-inria.out" failonerror="false"/>
+		<delete file="test/test-inria.out" failonerror="false" />
 		<delete failonerror="false">
-			<fileset dir="test/inriasuite/io/" includes="*.tmp"/>
+			<fileset dir="test/inriasuite/io/" includes="*.tmp" />
 		</delete>
 	</target>
 	<target name="test-dcg" depends="compile">
@@ -265,24 +267,20 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 			<arg value="test_cases.pl" />
 			<arg value="test_gr_preds,test_gr_tr" />
 			<classpath>
-				<pathelement location="build/code/"/>
-				<pathelement path="${java.class.path}"/>
+				<pathelement location="build/code/" />
+				<pathelement path="${java.class.path}" />
 			</classpath>
 		</java>
 	</target>
 	<target name="clean-dcg">
-		<delete file="test/test-dcg.out" failonerror="false"/>
+		<delete file="test/test-dcg.out" failonerror="false" />
 	</target>
 
 	<!-- Dangerous Regenerate the parser. WARNING: This may BREAK the parser. Use with Care.-->
 	<target name="regenerate-parser" depends="init">
-		<javacc
-		    target="src/gnu/prolog/io/parser/TermParser.jj"
-		    outputdirectory="src/gnu/prolog/io/parser/gen/"
-			jdkversion="1.6"
-			javacchome="${javacc.home}"
-			debugparser="${javacc.debug}"
-		/>
+		<javacc target="src/gnu/prolog/io/parser/TermParser.jj"
+			outputdirectory="src/gnu/prolog/io/parser/gen/"
+			jdkversion="1.6" javacchome="${javacc.home}" debugparser="${javacc.debug}" />
 	</target>
 </project>
 
