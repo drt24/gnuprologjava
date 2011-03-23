@@ -472,7 +472,7 @@ public class Environment implements PredicateListener
 	public synchronized PrologCode loadPrologCode(CompoundTermTag tag) throws PrologException
 	{
 		// simple variant, later I will need to add compilation.
-		Predicate p = prologTextLoaderState.getModule().getDefinedPredicate(tag);
+		Predicate p = getModule().getDefinedPredicate(tag);
 		if (p == null) // case of undefined predicate
 		{
 			return getUndefinedPredicateCode(tag);
