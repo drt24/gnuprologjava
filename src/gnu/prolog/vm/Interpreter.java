@@ -554,12 +554,14 @@ public final class Interpreter implements HasEnvironment
 			catch (StackOverflowError se)
 			{
 				// too much recursion
+				// System.err.println("Stack overflow while executing: " + goal);
 				PrologException.systemError(se);
 				throw se; // fake
 			}
 			catch (OutOfMemoryError me)
 			{
 				// too much memory usage
+				// System.err.println("Out of memory error while executing: " + goal);
 				PrologException.systemError(me);
 				throw me; // fake
 			}

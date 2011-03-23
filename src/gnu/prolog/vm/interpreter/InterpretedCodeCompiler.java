@@ -510,9 +510,9 @@ public class InterpretedCodeCompiler
 		}
 		else
 		{
-			Iterator<Term> iclauses;
+			Iterator<Term> iclauses = passedClauses.iterator();
 			// dereference all clauses, it will simplify analysis a bit
-			for (iclauses = passedClauses.iterator(); iclauses.hasNext();)
+			while (iclauses.hasNext())
 			{
 				clauses.add(rdereferenced(iclauses.next()));
 			}

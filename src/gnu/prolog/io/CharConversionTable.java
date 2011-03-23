@@ -54,7 +54,7 @@ public class CharConversionTable
 	/**
 	 * @return True if there are conversions (other than c==c)
 	 */
-	public boolean hasConversions()
+	public synchronized boolean hasConversions()
 	{
 		return !conv.isEmpty();
 	}
@@ -65,7 +65,7 @@ public class CharConversionTable
 	 * @param from
 	 * @param to
 	 */
-	public void setConversion(char from, char to)
+	public synchronized void setConversion(char from, char to)
 	{
 		if (from == to)
 		{
@@ -83,7 +83,7 @@ public class CharConversionTable
 	 * @param input
 	 * @return the converted character
 	 */
-	public char convert(char input)
+	public synchronized char convert(char input)
 	{
 		if (conv.containsKey(input))
 		{
@@ -98,7 +98,7 @@ public class CharConversionTable
 	 * @param toChar
 	 * @return the set of characters which are converted to this character
 	 */
-	public Set<Character> convertsTo(char toChar)
+	public synchronized Set<Character> convertsTo(char toChar)
 	{
 		HashSet<Character> res = new HashSet<Character>();
 		if (!conv.containsKey(toChar))
@@ -127,7 +127,7 @@ public class CharConversionTable
 	 *          the environment this is happening in (provides the flag value)
 	 * @return the converted term.
 	 */
-	public Term charConvert(Term term, Environment environment)
+	public synchronized Term charConvert(Term term, Environment environment)
 	{
 		Term status = environment.getPrologFlag(Environment.charConversionAtom);
 		// skip if should not do it.
@@ -165,7 +165,7 @@ public class CharConversionTable
 	 *          the string to apply the conversion to
 	 * @return the converted string
 	 */
-	public String applyConversion(String fromString)
+	public synchronized String applyConversion(String fromString)
 	{
 		char[] fromCharacters = fromString.toCharArray();
 		char[] toCharacters = new char[fromCharacters.length];

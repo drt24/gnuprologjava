@@ -538,18 +538,8 @@ public class Environment implements PredicateListener
 		return code;
 	}
 
-	protected Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
-	protected ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
-
-	protected void pollPrologCodeListeners()
-	{
-		PrologCodeListenerRef ref;
-		while (null != (ref = (PrologCodeListenerRef) prologCodeListenerReferenceQueue.poll()))
-		{
-			List<PrologCodeListenerRef> list = tag2listeners.get(ref.tag);
-			list.remove(ref);
-		}
-	}
+	protected final Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
+	protected final ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
 
 	/**
 	 * A {@link WeakReference} to a {@link PrologCodeListener}
@@ -567,6 +557,19 @@ public class Environment implements PredicateListener
 		CompoundTermTag tag;
 	}
 
+	protected void pollPrologCodeListeners()
+	{
+		PrologCodeListenerRef ref;
+		synchronized (tag2listeners)
+		{
+			while (null != (ref = (PrologCodeListenerRef) prologCodeListenerReferenceQueue.poll()))
+			{
+				List<PrologCodeListenerRef> list = tag2listeners.get(ref.tag);
+				list.remove(ref);
+			}
+		}
+	}
+
 	// this functionality will be needed later, but I need to think more ;-)
 	/**
 	 * add prolog code listener
@@ -574,16 +577,19 @@ public class Environment implements PredicateListener
 	 * @param tag
 	 * @param listener
 	 */
-	public synchronized void addPrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
+	public void addPrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
-		pollPrologCodeListeners();
-		List<PrologCodeListenerRef> list = tag2listeners.get(tag);
-		if (list == null)
+		synchronized (tag2listeners)
 		{
-			list = new ArrayList<PrologCodeListenerRef>();
-			tag2listeners.put(tag, list);
+			pollPrologCodeListeners();
+			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
+			if (list == null)
+			{
+				list = new ArrayList<PrologCodeListenerRef>();
+				tag2listeners.put(tag, list);
+			}
+			list.add(new PrologCodeListenerRef(prologCodeListenerReferenceQueue, listener, tag));
 		}
-		list.add(new PrologCodeListenerRef(prologCodeListenerReferenceQueue, listener, tag));
 	}
 
 	/**
@@ -592,56 +598,62 @@ public class Environment implements PredicateListener
 	 * @param tag
 	 * @param listener
 	 */
-	public synchronized void removePrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
+	public void removePrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
-		pollPrologCodeListeners();
-		List<PrologCodeListenerRef> list = tag2listeners.get(tag);
-		if (list != null)
+		synchronized (tag2listeners)
 		{
-			ListIterator<PrologCodeListenerRef> i = list.listIterator();
-			while (i.hasNext())
+			pollPrologCodeListeners();
+			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
+			if (list != null)
 			{
-				PrologCodeListenerRef ref = i.next();
-				PrologCodeListener lst = ref.get();
-				if (lst == null)
+				ListIterator<PrologCodeListenerRef> i = list.listIterator();
+				while (i.hasNext())
 				{
-					i.remove();
-				}
-				else if (lst == listener)
-				{
-					i.remove();
-					return;
+					PrologCodeListenerRef ref = i.next();
+					PrologCodeListener lst = ref.get();
+					if (lst == null)
+					{
+						i.remove();
+					}
+					else if (lst == listener)
+					{
+						i.remove();
+						return;
+					}
 				}
 			}
 		}
 	}
 
-	public synchronized void predicateUpdated(PredicateUpdatedEvent evt)
+	public void predicateUpdated(PredicateUpdatedEvent evt)
 	{
-		Object code = tag2code.remove(evt.getTag());
+		PrologCode code = tag2code.remove(evt.getTag());
 		pollPrologCodeListeners();
 		if (code == null) // if code was not loaded yet
 		{
 			return;
 		}
 		CompoundTermTag tag = evt.getTag();
-		List<PrologCodeListenerRef> list = tag2listeners.get(tag);
-		if (list != null)
+		synchronized (tag2listeners)
 		{
-			PrologCodeUpdatedEvent uevt = new PrologCodeUpdatedEvent(this, tag);
-			ListIterator<PrologCodeListenerRef> i = list.listIterator();
-			while (i.hasNext())
+			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
+			if (list != null)
 			{
-				PrologCodeListenerRef ref = i.next();
-				PrologCodeListener lst = ref.get();
-				if (lst == null)
+				PrologCodeUpdatedEvent uevt = new PrologCodeUpdatedEvent(this, tag);
+				ListIterator<PrologCodeListenerRef> i = list.listIterator();
+				while (i.hasNext())
 				{
-					i.remove();
-				}
-				else
-				{
-					lst.prologCodeUpdated(uevt);
-					return;
+					PrologCodeListenerRef ref = i.next();
+					PrologCodeListener lst = ref.get();
+					if (lst == null)
+					{
+						i.remove();
+					}
+					else
+					{
+						lst.prologCodeUpdated(uevt);
+						return;
+					}
 				}
 			}
 		}

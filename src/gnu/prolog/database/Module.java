@@ -151,27 +151,36 @@ public class Module
 		return tag2predicate.keySet();
 	}
 
-	protected List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
+	protected final List<PredicateListener> predicateListeners = new ArrayList<PredicateListener>();
 
-	// TODO methods below should possibly synchronize on predicateListeners
-	// instead.
-	public synchronized void predicateUpdated(CompoundTermTag tag)
+	public void predicateUpdated(CompoundTermTag tag)
 	{
-		PredicateUpdatedEvent evt = new PredicateUpdatedEvent(this, tag);
-		for (PredicateListener listener : predicateListeners)
+		// We need to synchronize on predicateListeners rather than Module as
+		// otherwise we end up locking module before environment and get deadlock
+		synchronized (predicateListeners)
 		{
-			listener.predicateUpdated(evt);
+			PredicateUpdatedEvent evt = new PredicateUpdatedEvent(this, tag);
+			for (PredicateListener listener : predicateListeners)
+			{
+				listener.predicateUpdated(evt);
+			}
 		}
 	}
 
-	public synchronized void addPredicateListener(PredicateListener listener)
+	public void addPredicateListener(PredicateListener listener)
 	{
-		predicateListeners.add(listener);
+		synchronized (predicateListeners)
+		{
+			predicateListeners.add(listener);
+		}
 	}
 
-	public synchronized void removePredicateListener(PredicateListener listener)
+	public void removePredicateListener(PredicateListener listener)
 	{
-		predicateListeners.remove(listener);
+		synchronized (predicateListeners)
+		{
+			predicateListeners.remove(listener);
+		}
 	}
 
 }

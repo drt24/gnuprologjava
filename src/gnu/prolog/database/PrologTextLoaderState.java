@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,13 +53,15 @@ import java.util.Set;
 public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvironment
 {
 	protected final Module module = new Module();
-	protected Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
+	protected final Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
 	protected Predicate currentPredicate = null;
-	protected List<PrologTextLoaderError> errorList = new ArrayList<PrologTextLoaderError>();
-	protected Set<String> loadedFiles = new HashSet<String>();
-	protected CharConversionTable convTable = new CharConversionTable();
-	protected List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
-	private Environment environment;
+	private final Object currentPredicateLock = new Object();
+	protected final List<PrologTextLoaderError> errorList = Collections
+			.synchronizedList(new ArrayList<PrologTextLoaderError>());
+	protected final Set<String> loadedFiles = new HashSet<String>();
+	protected final CharConversionTable convTable = new CharConversionTable();
+	protected final List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
+	private final Environment environment;
 
 	// arguments of ensure_loaded/1 and include/2 directive
 	protected final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
@@ -95,73 +98,85 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	protected boolean testOption(PrologTextLoader loader, Predicate p, String option)
 	{
-		Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
-		if (options2loaders == null)
+		synchronized (predicate2options2loaders)
 		{
-			return false;
-		}
+			Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
+			if (options2loaders == null)
+			{
+				return false;
+			}
 
-		Set<PrologTextLoader> loaders = options2loaders.get(option);
-		if (loaders == null)
-		{
-			return false;
+			Set<PrologTextLoader> loaders = options2loaders.get(option);
+			if (loaders == null)
+			{
+				return false;
+			}
+			if (loader != null && !loaders.contains(loader))
+			{
+				return false;
+			}
+			return true;
 		}
-		if (loader != null && !loaders.contains(loader))
-		{
-			return false;
-		}
-		return true;
 	}
 
 	protected void defineOption(PrologTextLoader loader, Predicate p, String option)
 	{
-		Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
-		if (options2loaders == null)
+		synchronized (predicate2options2loaders)
 		{
-			options2loaders = new HashMap<String, Set<PrologTextLoader>>();
-			predicate2options2loaders.put(p, options2loaders);
-		}
-		Set<PrologTextLoader> loaders = options2loaders.get(option);
-		if (loaders == null)
-		{
-			loaders = new HashSet<PrologTextLoader>();
-			options2loaders.put(option, loaders);
-		}
-		if (!loaders.contains(loader))
-		{
-			loaders.add(loader);
+			Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
+			if (options2loaders == null)
+			{
+				options2loaders = new HashMap<String, Set<PrologTextLoader>>();
+				predicate2options2loaders.put(p, options2loaders);
+			}
+			Set<PrologTextLoader> loaders = options2loaders.get(option);
+			if (loaders == null)
+			{
+				loaders = new HashSet<PrologTextLoader>();
+				options2loaders.put(option, loaders);
+			}
+			if (!loaders.contains(loader))
+			{
+				loaders.add(loader);
+			}
 		}
 	}
 
 	protected void defineOptionAndDeclare(PrologTextLoader loader, Predicate p, String option)
 	{
-		defineOption(loader, p, option);
-		defineOption(loader, p, "declared");
+		synchronized (predicate2options2loaders)
+		{
+			defineOption(loader, p, option);
+			defineOption(loader, p, "declared");
+		}
 	}
 
 	protected boolean isDeclaredInOtherLoaders(PrologTextLoader loader, Predicate p)
 	{
-		Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
-		if (options2loaders == null)
+		synchronized (predicate2options2loaders)
 		{
-			return false;
-		}
-
-		Set<PrologTextLoader> loaders = options2loaders.get("declared");
-		if (loaders == null || loaders.isEmpty())
-		{
-			return false;
-		}
-
-		Iterator<PrologTextLoader> i = loaders.iterator();
-		while (i.hasNext())
-		{
-			if (loader != i.next())
+			Map<String, Set<PrologTextLoader>> options2loaders = predicate2options2loaders.get(p);
+			if (options2loaders == null)
 			{
-				return true;
+				return false;
 			}
+
+			Set<PrologTextLoader> loaders = options2loaders.get("declared");
+			if (loaders == null || loaders.isEmpty())
+			{
+				return false;
+			}
+
+			Iterator<PrologTextLoader> i = loaders.iterator();
+			while (i.hasNext())
+			{
+				if (loader != i.next())
+				{
+					return true;
+				}
+			}
+			return false;
 		}
-		return false;
 	}
 
 	public boolean declareDynamic(PrologTextLoader loader, CompoundTermTag tag)
@@ -281,42 +296,46 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 			return;
 		}
 
-		if (currentPredicate == null || headTag != currentPredicate.getTag())
+		synchronized (currentPredicateLock)
 		{
-			currentPredicate = null;
-			Predicate p = module.getOrCreateDefinedPredicate(headTag);
-			if (testOption(loader, p, "defined") && !testOption(loader, p, "discontiguous"))
+			if (currentPredicate == null || headTag != currentPredicate.getTag())
 			{
-				logError(loader, "predicate is not discontiguous.");
-				return;
-			}
-			if (!testOption(loader, p, "declared") && testOption(null, p, "declared") && !testOption(loader, p, "multifile"))
-			{
-				logError(loader, "predicate is not multifile: " + p.getTag());
-				return;
-			}
-			if (!testOption(loader, p, "dynamic") && testOption(null, p, "dynamic"))
-			{
-				logError(loader, "predicate is not declared dynamic in this prolog text.");
-				return;
-			}
-			currentPredicate = p;
-			if (!testOption(loader, p, "defined"))
-			{
-				if (p.getType() == Predicate.TYPE.UNDEFINED)
+				currentPredicate = null;
+				Predicate p = module.getOrCreateDefinedPredicate(headTag);
+				if (testOption(loader, p, "defined") && !testOption(loader, p, "discontiguous"))
 				{
-					p.setType(Predicate.TYPE.USER_DEFINED);
+					logError(loader, "predicate is not discontiguous.");
+					return;
 				}
-				defineOptionAndDeclare(loader, p, "defined");
+				if (!testOption(loader, p, "declared") && testOption(null, p, "declared")
+						&& !testOption(loader, p, "multifile"))
+				{
+					logError(loader, "predicate is not multifile: " + p.getTag());
+					return;
+				}
+				if (!testOption(loader, p, "dynamic") && testOption(null, p, "dynamic"))
+				{
+					logError(loader, "predicate is not declared dynamic in this prolog text.");
+					return;
+				}
+				currentPredicate = p;
+				if (!testOption(loader, p, "defined"))
+				{
+					if (p.getType() == Predicate.TYPE.UNDEFINED)
+					{
+						p.setType(Predicate.TYPE.USER_DEFINED);
+					}
+					defineOptionAndDeclare(loader, p, "defined");
+				}
 			}
-		}
-		try
-		{
-			currentPredicate.addClauseLast(Predicate.prepareClause(term));
-		}
-		catch (PrologException ex)
-		{
-			logError(loader, ex.getMessage());
+			try
+			{
+				currentPredicate.addClauseLast(Predicate.prepareClause(term));
+			}
+			catch (PrologException ex)
+			{
+				logError(loader, ex.getMessage());
+			}
 		}
 
 	}
@@ -374,10 +393,13 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	public void ensureLoaded(Term term)
 	{
 		String inputName = getInputName(term);
-		if (!loadedFiles.contains(inputName))
+		synchronized (loadedFiles)
 		{
-			loadedFiles.add(inputName);
-			new PrologTextLoader(this, term);
+			if (!loadedFiles.contains(inputName))
+			{
+				loadedFiles.add(inputName);
+				new PrologTextLoader(this, term);
+			}
 		}
 	}
 
@@ -496,71 +518,61 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		{
 			return false;
 		}
-		return listeners.add(listener);
+		synchronized (listeners)
+		{
+			return listeners.add(listener);
+		}
 	}
 
 	public boolean removePrologTextLoaderListener(PrologTextLoaderListener listener)
 	{
-		return listeners.remove(listener);
+		synchronized (listeners)
+		{
+			return listeners.remove(listener);
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gnu.prolog.database.PrologTextLoaderListener#afterIncludeFile(gnu.prolog
-	 * .database.PrologTextLoader)
-	 */
 	public void afterIncludeFile(PrologTextLoader loader)
 	{
-		for (PrologTextLoaderListener listener : listeners)
+		synchronized (listeners)
 		{
-			listener.afterIncludeFile(loader);
+			for (PrologTextLoaderListener listener : listeners)
+			{
+				listener.afterIncludeFile(loader);
+			}
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gnu.prolog.database.PrologTextLoaderListener#afterProcessFile(gnu.prolog
-	 * .database.PrologTextLoader)
-	 */
 	public void afterProcessFile(PrologTextLoader loader)
 	{
-		for (PrologTextLoaderListener listener : listeners)
+		synchronized (listeners)
 		{
-			listener.afterProcessFile(loader);
+			for (PrologTextLoaderListener listener : listeners)
+			{
+				listener.afterProcessFile(loader);
+			}
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gnu.prolog.database.PrologTextLoaderListener#beforeIncludeFile(gnu.prolog
-	 * .database.PrologTextLoader, gnu.prolog.term.Term)
-	 */
 	public void beforeIncludeFile(PrologTextLoader loader, Term argument)
 	{
-		for (PrologTextLoaderListener listener : listeners)
+		synchronized (listeners)
 		{
-			listener.beforeIncludeFile(loader, argument);
+			for (PrologTextLoaderListener listener : listeners)
+			{
+				listener.beforeIncludeFile(loader, argument);
+			}
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gnu.prolog.database.PrologTextLoaderListener#beforeProcessFile(gnu.prolog
-	 * .database.PrologTextLoader)
-	 */
 	public void beforeProcessFile(PrologTextLoader loader)
 	{
-		for (PrologTextLoaderListener listener : listeners)
+		synchronized (listeners)
 		{
-			listener.beforeProcessFile(loader);
+			for (PrologTextLoaderListener listener : listeners)
+			{
+				listener.beforeProcessFile(loader);
+			}
 		}
 	}
 
