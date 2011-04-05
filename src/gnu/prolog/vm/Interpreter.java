@@ -175,8 +175,8 @@ public final class Interpreter implements HasEnvironment
 	}
 
 	// Undo Stack methods
-	private VariableTerm variables[] = new VariableTerm[PAGESIZE];
-	private int variablesAmount = 0;
+	protected VariableTerm variables[] = new VariableTerm[PAGESIZE];
+	protected int variablesAmount = 0;
 
 	private UndoData undoData[] = new UndoData[PAGESIZE];
 	private int undoDataAmount = 0;
@@ -286,7 +286,7 @@ public final class Interpreter implements HasEnvironment
 		RC rc = PrologCode.RC.SUCCESS_LAST;
 		if (t1 == t2)
 		{
-		    // Same reference, do nothing. Added only for clarity.
+			// Same reference, do nothing. Added only for clarity.
 		}
 		else if (t1 instanceof VariableTerm)
 		{
@@ -425,7 +425,7 @@ public final class Interpreter implements HasEnvironment
 	 * @see #prepareGoal(Term)
 	 * @see #stop(Goal)
 	 * 
-	 *	WARNING: may result in obscure bugs, if so sorry.
+	 *      WARNING: may result in obscure bugs, if so sorry.
 	 * 
 	 * @author Daniel Thomas
 	 */
@@ -495,10 +495,10 @@ public final class Interpreter implements HasEnvironment
 	 * successful this was.
 	 * 
 	 * @param goal
-	 *	    the goal created using {@link #prepareGoal(Term)} which is to be
-	 *	    run.
+	 *          the goal created using {@link #prepareGoal(Term)} which is to be
+	 *          run.
 	 * @return {@link RC#SUCCESS}, {@link RC#SUCCESS_LAST} , {@link RC#FAIL} or
-	 *	   {@link RC#HALT}
+	 *         {@link RC#HALT}
 	 * @throws PrologException
 	 */
 	public RC execute(Goal goal) throws PrologException
@@ -583,7 +583,7 @@ public final class Interpreter implements HasEnvironment
 	 * 
 	 * 
 	 * @param goal
-	 *	    the goal to stop.
+	 *          the goal to stop.
 	 */
 	public void stop(Goal goal)
 	{
@@ -639,7 +639,7 @@ public final class Interpreter implements HasEnvironment
 	 * {@link #execute(Goal)}.
 	 * 
 	 * @param goalTerm
-	 *	    the term to be executed
+	 *          the term to be executed
 	 * @return {@link RC#SUCCESS}, {@link RC#SUCCESS_LAST} or {@link RC#FAIL}
 	 * @throws PrologException
 	 */
