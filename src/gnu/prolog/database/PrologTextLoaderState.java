@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,8 +55,8 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	protected final Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
 	protected Predicate currentPredicate = null;
 	private final Object currentPredicateLock = new Object();
-	protected final List<PrologTextLoaderError> errorList = Collections
-			.synchronizedList(new ArrayList<PrologTextLoaderError>());
+	protected final List<PrologTextLoaderError> errorList = new ArrayList<PrologTextLoaderError>();// @Guarded-By
+																																																	// errorList
 	protected final Set<String> loadedFiles = new HashSet<String>();
 	protected final CharConversionTable convTable = new CharConversionTable();
 	protected final List<PrologTextLoaderListener> listeners = new ArrayList<PrologTextLoaderListener>();
@@ -80,7 +79,15 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	public List<PrologTextLoaderError> getErrors()
 	{
-		return errorList;
+		final ArrayList<PrologTextLoaderError> duplicate = new ArrayList<PrologTextLoaderError>();
+		synchronized (errorList)
+		{
+			for (PrologTextLoaderError dup : errorList)
+			{
+				duplicate.add(dup);
+			}
+		}
+		return duplicate;
 	}
 
 	public Module getModule()
@@ -361,12 +368,18 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 
 	public void logError(PrologTextLoader loader, ParseException ex)
 	{
-		errorList.add(new PrologTextLoaderError(loader, ex));
+		synchronized (errorList)
+		{
+			errorList.add(new PrologTextLoaderError(loader, ex));
+		}
 	}
 
 	public void logError(PrologTextLoader loader, String message)
 	{
-		errorList.add(new PrologTextLoaderError(loader, message));
+		synchronized (errorList)
+		{
+			errorList.add(new PrologTextLoaderError(loader, message));
+		}
 	}
 
 	/**
@@ -382,7 +395,10 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	 */
 	public void logError(PrologTextLoaderError partialError, String message)
 	{
-		errorList.add(new PrologTextLoaderError(partialError, message));
+		synchronized (errorList)
+		{
+			errorList.add(new PrologTextLoaderError(partialError, message));
+		}
 	}
 
 	public void addInitialization(PrologTextLoader loader, Term term)

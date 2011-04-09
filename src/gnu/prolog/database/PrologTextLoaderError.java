@@ -29,9 +29,9 @@ public class PrologTextLoaderError extends Exception
 {
 	private static final long serialVersionUID = 4388822484504978038L;
 
-	protected String file;
-	protected int line;
-	protected int column;
+	protected final String file;
+	protected final int line;
+	protected final int column;
 
 	// String message;
 
