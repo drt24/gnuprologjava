@@ -21,4 +21,61 @@
 
 [aFoo(X),[[X <-- 3],[X <-- 4]]].
 
+/* Tests added by Devashish Tyagi 2011*/
+
+[retract(aFoo(3)),success].
+
+[aFoo(X),[[X <-- 4]]].
+
+[assertz(aFoo(3)),success].
+
+[aFoo(X),[[X <-- 3],[X <-- 4]]].
+
+[assertz((:-dynamic(father/2, mother/2))),success].
+
+[(assertz(father(a,b)),assertz(mother(c,b))),success].
+[(assertz(father(a,r)),assertz(mother(l,r))),success].
+[(assertz(father(d,a)),assertz(mother(e,a))),success].
+
+[assertz((married(X,Y):-father(X,W),mother(Y,W))),success].
+
+
+[married(X,Y),[[X <-- a , Y <-- c],[X <-- a , Y <-- l],[X <-- d , Y <-- e]]].
+
+[retract(married(a,_)),failure].
+
+[(assertz(father(z,x)),assertz(mother(y,w))),success].
+[(assertz(father(z,w)),assertz(mother(y,x))),success].
+[(assertz(father(x,l)),assertz(mother(j,l))),success].
+[(assertz(father(w,m)),assertz(mother(k,m))),success].
+
+[retract(father(z,w)),success].
+
+[retract(mother(j,l)),success].
+
+[married(X,Y),[[X <-- a , Y <-- c],[X <-- a , Y <-- l],[X <-- z , Y <-- y],[X <-- w, Y <-- k],[X <-- d , Y <-- e]]].
+
+[assertz(father(g,m)),success].
+[assertz(mother(s,l)),success].
+
+[married(X,Y),[[X <-- a , Y <-- c],[X <-- a , Y <-- l],[X <-- z , Y <-- y],[X <-- w, Y <-- k],[X <--g,Y <-- k],[X <-- x, Y <-- s],[X <-- d , Y <-- e]]].
+
+
+/* Simon Brand 2011 */
+[(retract(aFoo(3)),retract(aFoo(4))),success].
+[(X is 5, assertz(aFoo(X)), aFoo(X), retract(aFoo(X)), Y is X + 1, assertz(aFoo(Y)), aFoo(Z)),
+    [[X <-- 5, Y <-- 6, Z <-- 6]]].
+[retract(aFoo(6)),success].
+[aFoo(_),failure].
+
+/* Daniel Thomas 2011 for #32560 */
+
+[(assertz(aFoo(100)),aFoo(X),Y is X+0,retract(aFoo(X)),assertz(aFoo(200)),aFoo(Z)),[[X <-- 100, Y <-- 100, Z <-- 200]]].
+
+/* This was just for testing and has side effects so shouldn't actually be run.
+[assertz((:-dynamic(res/1))),success].
+[assertz((writeRes :- res(X), write(X))),success].
+[(assertz(res(100)),writeRes,retract(res(Y)),assertz(res(200)),res(X),write(X)),[[Y <-- 100,X <--200]]].  
+*/
+
 /* end of assertz */
