@@ -20,6 +20,7 @@ package gnu.prolog.io;
 
 import gnu.prolog.io.parser.gen.TermParser;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.Environment;
 
 import java.io.FilterReader;
@@ -63,6 +64,22 @@ public class TermReader extends FilterReader
 		}
 	}
 
+	/**
+	 * Parse the string into a Term in the specified environment using the
+	 * specified options.
+	 * 
+	 * @see ReadOptions#variableNames which is a map from the strings of the
+	 *      variable names to the generated {@link VariableTerm VariableTerms}.
+	 * @param options
+	 *          the options to parse with
+	 * @param str
+	 *          the string to convert to a term
+	 * @param environment
+	 *          to create the Term in
+	 * @return the term representing the provided string
+	 * @throws ParseException
+	 *           if any errors occur while parsing
+	 */
 	public static Term stringToTerm(ReadOptions options, String str, Environment environment) throws ParseException
 	{
 		StringReader srd = new StringReader(str);
