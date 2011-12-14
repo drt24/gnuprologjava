@@ -142,6 +142,10 @@ public final class Interpreter implements HasEnvironment
 	public BacktrackInfo popBacktrackInfo()
 	{
 		BacktrackInfo rc = backtrackInfoStack[--backtrackInfoAmount];
+                if (rc instanceof BacktrackInfoWithCleanup)
+                {
+                   ((BacktrackInfoWithCleanup)rc).cleanup(this);
+                }
 		backtrackInfoStack[backtrackInfoAmount] = null;
 		return rc;
 	}
@@ -159,6 +163,10 @@ public final class Interpreter implements HasEnvironment
 		}
 		for (int i = pos + 1; i < backtrackInfoAmount; i++)
 		{
+                	if (backtrackInfoStack[i] instanceof BacktrackInfoWithCleanup)
+			{
+                        	((BacktrackInfoWithCleanup)backtrackInfoStack[i]).cleanup(this);
+			}
 			backtrackInfoStack[i] = null;
 		}
 		backtrackInfoAmount = pos + 1;
@@ -606,6 +614,10 @@ public final class Interpreter implements HasEnvironment
 
 		for (int i = 0; i < backtrackInfoAmount; i++)
 		{
+			if (backtrackInfoStack[i] instanceof BacktrackInfoWithCleanup)
+                        {
+                               ((BacktrackInfoWithCleanup)backtrackInfoStack[i]).cleanup(this);
+                        }
 			backtrackInfoStack[i] = null;
 		}
 		backtrackInfoAmount = 0;
