@@ -805,6 +805,7 @@ io(read_term,'read_term.pl').
 % extras
 extra(compare).
 extra(repeat).
+extra(setup_call_catcher_cleanup).
 extra(F) :- extra_database(N), atom_concat('database/',N,F).
 extra(F) :- extra_list(N), atom_concat('list/',N,F).
 

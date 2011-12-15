@@ -23,6 +23,7 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
+import gnu.prolog.vm.BacktrackInfoWithCleanup;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
@@ -96,7 +97,13 @@ public class Predicate_call extends ExecuteOnlyCode
 	 */
 	public static RC staticExecute(Interpreter interpreter, boolean backtrackMode, Term arg) throws PrologException
 	{
-		CallTermBacktrackInfo cbi = backtrackMode ? (CallTermBacktrackInfo) interpreter.popBacktrackInfo() : null;
+		BacktrackInfo bi = backtrackMode ? interpreter.popBacktrackInfo() : null;
+		while (bi != null && (bi instanceof BacktrackInfoWithCleanup))
+		{
+			((BacktrackInfoWithCleanup) bi).cleanup(interpreter);
+			bi = backtrackMode ? interpreter.popBacktrackInfo() : null;
+		}
+		CallTermBacktrackInfo cbi = (CallTermBacktrackInfo) bi;
 		PrologCode code; // code to call
 		Term args[]; // arguments of code
 		Term callTerm; // term being called

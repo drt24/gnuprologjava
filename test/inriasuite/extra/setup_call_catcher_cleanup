@@ -1,0 +1,23 @@
+/* file setup_call_catcher_cleanup */
+
+[setup_call_catcher_cleanup(true, true, A, true), [[A <-- exit]]].
+
+[(setup_call_catcher_cleanup(true, member(A, [a,b]), Catcher, true), var(Catcher)), [[A <-- a], [A <-- b]]].
+
+[(setup_call_catcher_cleanup(true, member(A, [a,b]), Catcher, true), !),  [[A <-- a, Catcher <-- !]]].
+
+[setup_call_catcher_cleanup(true, fail, Catcher, true), [[Catcher <-- fail]]].
+
+[setup_call_catcher_cleanup(true, throw(egg), Catcher, true), [[Catcher <-- exception(egg)]]].
+
+[(setup_call_catcher_cleanup(true, Call=done, Catcher, Cleanup=done), !),  [[Call <-- done, Cleanup <-- done, Catcher <-- exit]]].
+
+[(setup_call_catcher_cleanup(Setup=done, member(A, [a,b]), Catcher, Cleanup=done), var(Cleanup), var(Catcher), !), [[Setup <-- done, A <--a, Catcher <-- !, Cleanup <-- done]]].
+
+[setup_call_catcher_cleanup(fail, member(A, [a,b]), Catcher, Cleanup=done), failure].
+
+[(setup_call_catcher_cleanup(throw(egg), member(_, [a,b,c]), _, Cleanup=done), !, var(Cleanup)), unexpected_ball(egg)].
+
+[setup_call_catcher_cleanup(true, true, Catcher, throw(egg)), unexpected_ball(egg)].
+
+/* end of file setup_call_catcher_cleanup  */

@@ -1,5 +1,5 @@
 /* GNU Prolog for Java
- * Copyright (C) 2011 Matt Lilley
+ * Copyright (C) 2011  Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -15,40 +15,10 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm;
 
-import gnu.prolog.term.Term;
+%
+% Meta-call extensions
+%
 
-/** back track information with cleanup information included */
-public class BacktrackInfoWithCleanup extends BacktrackInfo
-{
-	/**
-	 * a constructor
-	 * 
-	 * @param cleanup
-	 *          {@link #codePosition}
-	 * */
-	public BacktrackInfoWithCleanup(Term cleanup)
-	{
-		super(-1, -1);
-		this.cleanup = cleanup;
-	}
-
-	private Term cleanup;
-
-	public void cleanup(Interpreter interpreter)
-	{
-		if (cleanup != null)
-		{
-			try
-			{
-				gnu.prolog.vm.interpreter.Predicate_call.staticExecute(interpreter, false, cleanup);
-			}
-			catch (PrologException e)
-			{
-				/* Ignore exceptions and return status for cleanup */
-				// TODO(drt24) Log a warning
-			}
-		}
-	}
-}
+% setup_call_catcher_cleanup(+Setup, +Call, -Catcher, +Cleanup)
+:-build_in(setup_call_catcher_cleanup/4,'gnu.prolog.vm.buildins.meta.Predicate_setup_call_catcher_cleanup'). 
