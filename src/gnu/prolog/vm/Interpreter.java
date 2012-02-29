@@ -142,9 +142,10 @@ public final class Interpreter implements HasEnvironment
 	public BacktrackInfo popBacktrackInfo()
 	{
 		BacktrackInfo rc = backtrackInfoStack[--backtrackInfoAmount];
-		if (rc instanceof BacktrackInfoWithCleanup)
+		while (rc instanceof BacktrackInfoWithCleanup)
 		{
-			((BacktrackInfoWithCleanup) rc).cleanup(this);
+			backtrackInfoStack[backtrackInfoAmount] = null;
+			rc = backtrackInfoStack[--backtrackInfoAmount];
 		}
 		backtrackInfoStack[backtrackInfoAmount] = null;
 		return rc;

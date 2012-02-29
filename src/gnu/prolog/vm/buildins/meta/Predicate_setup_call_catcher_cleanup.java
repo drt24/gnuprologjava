@@ -27,6 +27,7 @@ import gnu.prolog.vm.BacktrackInfoWithCleanup;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.interpreter.Predicate_call;
 
 /**
@@ -74,17 +75,30 @@ public class Predicate_setup_call_catcher_cleanup extends ExecuteOnlyCode
 			{
 				// Call cleanup if the 2nd arg fails, has an exception or is finished
 				// But first, unify the port with catcher
+				RC unifyRC = RC.SUCCESS_LAST;
 				if (rc == RC.FAIL)
 				{
-					rc = interpreter.unify(catcher, AtomTerm.get("fail"));
+					unifyRC = interpreter.unify(catcher, AtomTerm.get("fail"));
 				}
 				else if (rc == RC.SUCCESS_LAST)
 				{
-					rc = interpreter.unify(catcher, AtomTerm.get("exit"));
+					unifyRC = interpreter.unify(catcher, AtomTerm.get("exit"));
 				}
-				if (rc == RC.SUCCESS || rc == RC.SUCCESS_LAST)
+				if (unifyRC == RC.SUCCESS || unifyRC == RC.SUCCESS_LAST)
 				{
-					return Predicate_call.staticExecute(interpreter, false, cleanup);
+					RC cleanupRC = RC.SUCCESS;
+					// Save state so the cleanup leaves no choicepoints
+					BacktrackInfo bi = interpreter.peekBacktrackInfo();
+					cleanupRC = Predicate_call.staticExecute(interpreter, false, cleanup);
+					interpreter.popBacktrackInfoUntil(bi);
+					if (cleanupRC == RC.SUCCESS || cleanupRC == RC.SUCCESS_LAST)
+					{
+						return rc;
+					}
+					else
+					{
+						return cleanupRC;
+					}
 				}
 				else
 				{

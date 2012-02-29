@@ -6,7 +6,11 @@
 
 [(setup_call_catcher_cleanup(true, member(A, [a,b]), Catcher, true), !),  [[A <-- a, Catcher <-- !]]].
 
-[setup_call_catcher_cleanup(true, fail, Catcher, true), [[Catcher <-- fail]]].
+[setup_call_catcher_cleanup(true, fail, Catcher, true), failure].
+
+% Unfortunately I dont think it is possible to test for this case, since errors raised in the cleanup are ignored
+% and we expect the goal to fail, so setup_call_catcher_cleanup exits without binding Catcher after the cleanup is run
+% [setup_call_catcher_cleanup(true, fail, Catcher, (Catcher == fail, throw(was_fail))), [unexpected_ball(was_fail)]].
 
 [setup_call_catcher_cleanup(true, throw(egg), Catcher, true), [[Catcher <-- exception(egg)]]].
 
@@ -19,5 +23,10 @@
 [(setup_call_catcher_cleanup(throw(egg), member(_, [a,b,c]), _, Cleanup=done), !, var(Cleanup)), unexpected_ball(egg)].
 
 [setup_call_catcher_cleanup(true, true, Catcher, throw(egg)), unexpected_ball(egg)].
+
+[(setup_call_catcher_cleanup(true, member(A, [a,b,c]), Catcher, true), A == b),  [[A <-- b]]].
+
+[(setup_call_catcher_cleanup(true, member(A, [a,b,c]), Catcher, true), A == b, !),  [[A <-- b, Catcher <-- !]]].
+
 
 /* end of file setup_call_catcher_cleanup  */
