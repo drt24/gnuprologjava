@@ -110,26 +110,20 @@ public class CompoundTerm extends Term
 	 */
 	public static boolean toCollection(Term term, Collection<Term> col)
 	{
-		term = term.dereference();
-		if (term instanceof CompoundTerm)
+               while ((term = term.dereference()) instanceof CompoundTerm)
 		{
 			CompoundTerm ct = (CompoundTerm) term;
-			for (int i = ct.tag.arity - 1; i >= 0; i--)
+                       if (ct.tag != TermConstants.listTag)
 			{
-				if (!toCollection(ct.args[i], col))
-				{
-					return false;
-				}
+                               return false;
+                       }
+                       else
+                       {
+                               col.add(ct.args[0]);
+                               term = ct.args[1];
 			}
 		}
-		else
-		{
-			if (!TermConstants.emptyListAtom.equals(term))
-			{
-				col.add(term);
-			}
-		}
-		return true;
+               return term instanceof AtomTerm && ((AtomTerm) term) == TermConstants.listAtom;
 	}
 
 	/**
