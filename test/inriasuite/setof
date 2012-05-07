@@ -27,7 +27,7 @@
 [setof(X,(X=Y;X=Z;Y=1),L), [[L <-- [Y, Z]], [L <-- [_], Y <-- 1]]].
 
 
-
+[setof(X,member(X,[a,b,a,b]),L), [[L <-- [a,b]]]].
 
 [setof(X, X^(true; 4),L), type_error(callable,(true;4))].
 

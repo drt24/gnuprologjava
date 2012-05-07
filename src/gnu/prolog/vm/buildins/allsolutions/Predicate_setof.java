@@ -21,8 +21,8 @@ import gnu.prolog.term.Term;
 import gnu.prolog.term.TermComparator;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * prolog code
@@ -36,17 +36,18 @@ public class Predicate_setof extends Predicate_bagof
 		TermComparator tc = new TermComparator();
 		Collections.sort(curTList, tc);
 		// remove duplicates
-		ListIterator<Term> i = curTList.listIterator();
-		if (!i.hasNext())
+		Iterator<Term> it = curTList.iterator();
+		Term prev = null; // initially there is no "previous element"
+		while (it.hasNext())
 		{
-			return;
-		}
-		Term cur = i.next();
-		while (i.hasNext())
-		{
-			if (tc.compare(cur, i.next()) == 0)
+			Term cur = it.next();
+			if (prev != null && tc.compare(prev, cur) == 0)
 			{
-				i.remove();
+				it.remove(); // only safe way to remove list element while iterating
+			}
+			else
+			{
+				prev = cur;
 			}
 		}
 	}
