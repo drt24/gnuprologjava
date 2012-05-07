@@ -60,7 +60,7 @@ public class Predicate_length extends ExecuteOnlyCode
 				{
 					break;
 				}
-				if ((lst.dereference() instanceof VariableTerm))
+				if ((lst instanceof VariableTerm))
 				{
 					((VariableTerm) lst).value = TermConstants.emptyListAtom;
 					// TODO on backtracking we need to unify with [_] etc.
@@ -76,7 +76,7 @@ public class Predicate_length extends ExecuteOnlyCode
 					return RC.FAIL;
 				}
 				++length;
-				lst = ct.args[1];
+				lst = ct.args[1].dereference();
 			}
 
 			return interpreter.unify(lengthTerm, IntegerTerm.get(length));
