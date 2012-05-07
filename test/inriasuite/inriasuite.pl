@@ -736,6 +736,7 @@ file(current_output).
 file(current_predicate).
 file(current_prolog_flag).
 file(cut).
+file(fail_if).
 %file(file_manip).  % needs complete rewite.
 file(findall).
 file(float).

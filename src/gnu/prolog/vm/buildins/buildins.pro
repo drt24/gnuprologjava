@@ -190,6 +190,9 @@ write_canonical(S,Term):-write_term(S,Term,[quoted(true),ignore_ops(true)]).
 '\\+'(Goal) :- call(Goal),!,fail.
 '\\+'(Goal).
 
+not(Goal) :- '\\+'(Goal).
+fail_if(Goal) :- '\\+'(Goal).
+
 once(Goal) :- call(Goal),!.
 
 repeat.

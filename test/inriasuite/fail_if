@@ -1,0 +1,12 @@
+/* file fail_if */
+
+[fail_if((!, fail)),success].
+[fail_if(4=5),success].
+[fail_if(true),failure].
+[fail_if(!),failure].
+[((X=1; X=2),fail_if((!, fail))),[[X <-- 1],[X<--2]]].
+[fail_if(3),type_error(callable,3)].
+[fail_if(X),instantiation_error].
+
+
+/* end of fail_if */
