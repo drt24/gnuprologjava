@@ -67,13 +67,6 @@ public class Predicate_arg extends ExecuteOnlyCode
 		{
 			return RC.FAIL;
 		}
-		int undoPos = interpreter.getUndoPosition();
-		RC rc = interpreter.unify(ct.args[in.value - 1], arg);
-		if (rc == RC.FAIL)
-		{
-			interpreter.undo(undoPos);
-			return RC.FAIL;
-		}
-		return RC.SUCCESS_LAST;
+		return interpreter.unify(ct.args[in.value - 1].dereference(), arg);
 	}
 }
