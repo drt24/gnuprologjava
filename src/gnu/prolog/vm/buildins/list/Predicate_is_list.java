@@ -19,6 +19,7 @@
  */
 package gnu.prolog.vm.buildins.list;
 
+import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.ExecuteOnlyCode;
@@ -41,7 +42,7 @@ public class Predicate_is_list extends ExecuteOnlyCode
 		Term lst = args[0];
 		while (lst != null)
 		{
-			if (interpreter.unify(TermConstants.emptyListAtom, lst) == RC.SUCCESS_LAST)
+			if (lst instanceof AtomTerm && TermConstants.emptyListAtom.equals(lst))
 			{
 				return RC.SUCCESS_LAST;
 			}
@@ -50,11 +51,7 @@ public class Predicate_is_list extends ExecuteOnlyCode
 				return RC.FAIL;
 			}
 			CompoundTerm ct = (CompoundTerm) lst;
-			if (ct.args.length != 2)
-			{
-				return RC.FAIL;
-			}
-			lst = ct.args[1];
+			lst = ct.args[1].dereference();
 		}
 		return RC.FAIL;
 	}
