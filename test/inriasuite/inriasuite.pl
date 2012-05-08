@@ -760,6 +760,7 @@ file(setof).
 file(sub_atom).
 file(true).
 file(unify).
+file(univ).
 
 file(F) :- arith(N), atom_concat('arith/',N,F).
 file(F) :- terms(N), atom_concat('terms/',N,F).

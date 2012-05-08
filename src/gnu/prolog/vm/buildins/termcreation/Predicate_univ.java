@@ -54,6 +54,10 @@ public class Predicate_univ extends ExecuteOnlyCode
 				lvar.value = CompoundTerm.getList(term, TermConstants.emptyListAtom);
 				return RC.SUCCESS_LAST;
 			}
+			else if (list instanceof AtomTerm && ((AtomTerm) list) == TermConstants.emptyListAtom)
+			{
+				return RC.FAIL;
+			}
 			CompoundTerm ct = (CompoundTerm) list;
 			Term head = ct.args[0].dereference();
 			Term tail = ct.args[1].dereference();
