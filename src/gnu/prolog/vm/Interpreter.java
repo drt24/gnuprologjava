@@ -665,7 +665,7 @@ public final class Interpreter implements HasEnvironment
 		}
 		finally
 		{
-			if (!goal.isStopped())
+			if (currentGoal == goal && !goal.isStopped())
 			{
 				stop(goal);
 			}
