@@ -15,13 +15,12 @@
 This manual is for GNU Prolog for Java @value{VERSION},
 which is a Java library for utilising Prolog.
 
-Copyright @copyright{} 2010 Free Software Foundation, Inc.
+Copyright @copyright{} 2010 Daniel Thomas
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.3 or
-any later version published by the Free Software Foundation; with no
-Invariant Sections.
+under the terms of the GNU Lesser General Public License, Version 3 or
+any later version published by the Free Software Foundation.
 @end quotation
 
 @end copying
@@ -48,7 +47,7 @@ This manual is for GNU Prolog for Java (version @value{VERSION}, @value{UPDATED}
 * Using the API:: Loading prolog code, constructing questions and getting answers.
 * Installation:: Instructions on how to install GNU Prolog for Java
 * Extending:: Instructions on how to extend GNU Prolog for Java
-* GNU Free Documentation License::
+* GNU Lesser General Public License::
 * Index::
 @end menu
 
@@ -161,10 +160,11 @@ Should you have difficulty finding this file then Daniel Thomas may be able to h
 The ISO working group on the Prolog standard publishes a reference implementation of the part 3 draft which it should be possible to load as with any other Prolog file. @uref{http://www.sju.edu/~jhodgson/wg17/Drafts/DCGs/reference_implementation}. Should you have difficulty finding it it is also in the git repository for GPJ.
 This should then provide support for part 3 of the standard. This currently does not work as it depends on some of the 2006 ISO extensions which we should have implemented for 0.3.0.
 
-@node GNU Free Documentation License
-@appendix GNU Free Documentation License
+@node GNU Lesser General Public License
+@appendix GNU Lesser General Public License
 
-@include fdl.texinfo
+@include gpl.texinfo
+@include lgpl.texinfo
 
 
 @node Index

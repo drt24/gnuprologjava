@@ -1,34 +1,35 @@
-This package was Debianised by Daniel Thomas <drt24-debian@srcf.ucam.org> on 
-Tue Aug 17 12:46:20 BST 2010
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: GNU Prolog for Java
+Upstream-Contact: Daniel Thomas <info-gnuprologjava@gnu.org>
+Source: http://www.gnu.org/software/gnuprologjava/
 
-This package was downloaded from <http://www.gnu.org/software/gnuprologjava/>.
+Files: *
+Copyright: 2010,2011,2012 Daniel Thomas
+           2012 Paul Singleton
+           2011,2012 Matt Lilley
+           2009 Michiel Hendriks
+           1997-1999 Constantine Plotnikov
+License: LGPL-3+
 
-Upstream Author: Daniel Thomas <info-gnuprologjava@gnu.org>
+Files: debian/*
+Copyright: 2010,2011,2012 Daniel Thomas
+License: LGPL-3+
 
-Copyright 2010 Daniel Thomas, 2009 Michiel Hendriks, 1997-1999 Constantine Plotnikov
+License: LGPL-3+
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public
+ License as published by the Free Software Foundation; either
+ version 3 of the License, or (at your option) any later version.
+ .
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Library General Public License for more details.
+ .
+ You should have received a copy of the GNU Library General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA  02110-1301 USA
+ .
+ On Debian systems the full text of the GNU Library Public License, can be
+ found in the file /usr/share/common-licenses/LGPL-3.
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 3 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
-
-    You should have received a copy of the GNU Library General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA  02110-1301 USA
-
-On Debian systems the full text of the GNU Library Public License, can be
-found in the file /usr/share/common-licenses/LGPL-3.
-
-The manual is available under GNU Free Documentation License version 1.3.
-The full text of the license is included in the manual as an appendix.
-The manual is Copyright 2010 Free Software Foundation, Inc and was written by
-Daniel Thomas.
-
-The packaging is Copyright 2010 Daniel Thomas <drt24-debian@srcf.ucam.org> and
-is licenced under the terms of the GPL licence. On Debian systems the GPL
-licence can be found in /usr/share/common-licenses/GPL.
