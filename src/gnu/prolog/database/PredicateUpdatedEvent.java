@@ -51,4 +51,10 @@ public class PredicateUpdatedEvent extends java.util.EventObject
 	{
 		return (Module) getSource();
 	}
+
+	@Override
+	public String toString()
+	{
+		return "(" + tag + ", " + getModule() + ")";
+	}
 }
