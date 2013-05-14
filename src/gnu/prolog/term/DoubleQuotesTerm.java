@@ -18,8 +18,8 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.vm.DoubleQuotesValue;
 import gnu.prolog.vm.Environment;
-import gnu.prolog.vm.Environment.DoubleQuotesValue;
 
 /**
  * Term for storing a double quoted string as what this resolves to varies
