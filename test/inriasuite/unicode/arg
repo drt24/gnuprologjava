@@ -1,0 +1,12 @@
+/*UNICODE
+/* file arg */
+
+[arg(2, fōõ(å, ë), ë), success].
+
+[arg(2, łâmbdā(ÿ, ñ), ń), failure]. 
+
+[arg(2, bęæf(å, ë(X, ž), ç), ë(å, Ÿ)), [[X <-- å, Ÿ <-- ž]]].
+
+[arg(Ę, fōõdłłè(å, ë), ë), instantiation_error].
+
+/* end of arg */

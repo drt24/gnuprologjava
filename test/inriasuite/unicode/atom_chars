@@ -1,0 +1,14 @@
+/*UNICODE
+/* file atom_chars */
+
+[atom_chars('',Ł), [[Ł <-- []]]].
+
+[atom_chars('įßœ', Ž), [[Ž <-- ['į','ß','œ']]]].
+
+[atom_chars(A,['p','r','o','l','o','g']), [[A <-- 'prolog']]].
+
+[atom_chars('Ñörth',['N'|Ç]), [[Ç <-- ['ö','r','t','h']]]].
+
+[atom_chars('îßô',['i','s', 'o']), failure].
+
+/* end of atom_chars */

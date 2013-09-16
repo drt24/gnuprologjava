@@ -1,0 +1,12 @@
+/*UNICODE
+/* file is */
+
+['is'(Rēßÿłš,3 + 11.0),[[Rēßÿłš <-- 14.0]]].
+
+['is'(Ž,float(3)),[[Ž <-- 3.0]]].
+
+['is'(77, foo), type_error(evaluable, foo/0)].
+
+['is'(77, _foo), [[_foo <-- 77]]].
+
+/* end of is */

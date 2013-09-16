@@ -1,0 +1,12 @@
+/*UNICODE
+/* file functor */
+
+[functor(fôœ(ä,b,ç),fôœ,3),    % The goal
+                     success]. % The 'expected' answer
+
+[functor(footįÿårì(a,b,c),_X,Ÿ),
+      [[_X <-- footįÿårì, Ÿ <-- 2]]]. % Must instantiate Ÿ by 3
+
+[functor(footįÿårì(a),footiyari,1), failure].
+
+/* end of functor */

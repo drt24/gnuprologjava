@@ -798,6 +798,13 @@ terms('term_gt=').
 terms(term_lt).
 terms('term_lt=').
 
+%unicode
+unicode(arg).
+unicode(atom).
+unicode(atom_chars).
+unicode(functor).
+unicode(is).
+
 % io
 io(at_end_of_stream).
 io(char_conversion,'char_conversion.pl').
