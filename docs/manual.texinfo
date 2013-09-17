@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
 @setfilename manual.info
-@include version.texinfo
+@include version.tex
 @settitle GNU Prolog for Java @value{VERSION} Manual
 @c %**end of header
 
@@ -29,10 +29,11 @@ any later version published by the Free Software Foundation.
 @titlepage
 @title GNU Prolog for Java
 @subtitle for version @value{VERSION}, @value{UPDATED}
-@author Daniel Thomas (@email{info-gnuprolog@gnu.org})
+@author Daniel Thomas @email{info-gnuprolog@@gnu.org}
+@author Rishabh Garg
 @insertcopying
 @end titlepage
-
+@c Output the table of contents at the beginning.
 @contents
 
 @ifnottex
@@ -44,88 +45,169 @@ This manual is for GNU Prolog for Java (version @value{VERSION}, @value{UPDATED}
 
 @menu
 * Overview:: Getting started with GNU Prolog for Java
-* Using the API:: Loading prolog code, constructing questions and getting answers.
+* Using the API:: Loading prolog code, constructing questions and getting answers
 * Installation:: Instructions on how to install GNU Prolog for Java
 * Extending:: Instructions on how to extend GNU Prolog for Java
+* Contributing:: Instructions on how user could contribute to GNU Prolog For Java
 * GNU Lesser General Public License::
 * Index::
 @end menu
 
-
 @node Overview
 @chapter Overview
 
-GNU Prolog for Java (GPJ) is a Java library (gnu.prolog) which allows the use of Prolog from within Java programs.  It supports part 1 of the ISO standard for Prolog with some extensions. It is licenced under the LGPLv3 which can be found in the COPYING and COPYING.LIBRARY files distributed with GNU Prolog for Java (GPJ) and published by the Free Software Foundation.
+GNU Prolog for Java (GPJ) is a Java library (gnu.prolog) which allows the use of Prolog from within Java applications that need Prolog to solve some tasks. The interpreter intended for applications where Prolog performs combinatorial search and Java does the rest. The library allows for easy communication between Java and Prolog. Suppose, In the context of a Java application you would like to use Prolog for a particular task. You should probably be using GNU Prolog For Java. It supports part 1 of the ISO standard for Prolog with some extensions. The goals or rules can be written using Unicode input, details about which can be found in unicode.txt. It is licensed under the LGPLv3, which can be found in the COPYING and COPYING.LIBRARY files distributed with GNU Prolog for Java (GPJ) and published by the Free Software Foundation.
 
-For normal usage there are only a few classes which you will need to interact with.
-gnu.prolog.vm.Environment which provides the core of the prolog environment.
-gnu.prolog.vm.Interpreter which is what you use to run your prolog queries.
-gnu.prolog.term which contains the various types of Prolog terms which exist and which you use to construct your prolog questions if you want answers (beyond RC.SUCCESS, RC.SUCCESS_LAST and RC.FAIL).
-
+For normal usage there are only a few classes that you will need to interact with:
+@itemize @bullet
+@item 
+@strong{gnu.prolog.vm.Environment} which provides the core of the prolog environment. It represents the prolog processor.
+@item
+@strong{gnu.prolog.vm.Interpreter} which is what you use to run your prolog queries.
+@item
+@strong{gnu.prolog.term package} which contains the various types of Prolog terms which exist and which you use to construct your prolog questions if you want answers (beyond RC.SUCCESS, RC.SUCCESS_LAST and RC.FAIL).
+@end itemize
+@sp 2
+@itemize @arrow
+@item
 The use of the API is explained in the next chapter: @ref{Using the API}.
-
+@item
 If you wish to install GPJ then instructions are provided in the @ref{Installation} chapter.
-
+@item
 If you wish to extend GPJ by writing your own predicates (for example to allow prolog code to make calls into your Java code) then see the chapter on @ref{Extending} GPJ.
-
-Further documentation is provided in the README file and changes brought about by new versions will be detailed in the NEWS file. The @uref{http://www.gnu.org/software/gnuprologjava/api/ java API has javadoc based documentation}.
-
+@item
+Further documentation is provided in the README file and changes brought about by new versions will be detailed in the NEWS file.
+@item
+The @uref{http://www.gnu.org/software/gnuprologjava/api/} java API has javadoc based documentation.
+@item
 The gnu.prolog.demo package contains various example programs which use the API.
+@end itemize
+
 
 @node Using the API
 @chapter Using the API
 @menu
 * Setup:: Setting up the VM to run
 * Constructing Terms:: Constructing questions to ask
+* Complete Example:: An example to read predicates from a file and execute them
 @end menu
-You may also find the demo programs in gnu.prolog.demo which are distributed with the docs useful in showing the use of the API.
-
-The basic usage is quite simple if you are already familiar with both Prolog and Java.
+You may also find the demo programs in gnu.prolog.demo which are distributed with the docs useful in showing the use of the API. The basic usage is quite simple if you are already familiar with both Prolog and Java.
 
 @node Setup, Constructing Terms, Using the API, Using the API
 @section Setup
-First construct a gnu.prolog.vm.Environment which is the core of the VM using @code{new Environment()}.
+First construct a @emph{gnu.prolog.vm.Environment} which is the core of the VM using @code{new Environment()}. Say the name we use for the Environment we create is `environment'. 
 
-Then load any prolog files you want to which define additional predicates etc using @code{environment.ensureLoaded(AtomTerm.get(``URL of file''))} for each file. Though if you already have an gnu.prolog.vm.AtomTerm representation of the file then you can use that.
+@code{gnu.prolog.vm.Environment environment = new Environment();}
+@sp 1
+Then load any prolog files you want to which define additional predicates etc. using @code{environment.ensureLoaded(AtomTerm.get(``URl of file''))} for each file. The file can contain facts, rules, clauses, etc. and these files can have any kind of Unicode input. Make sure you save the file in Unicode(UTF-8) format. Also, it is good practice to have the extension of such files @code{.pl}. Though if you already have a @emph{gnu.prolog.vm.AtomTerm} representation of the file then you can use that but reading predicates from a file is simpler.
+Instances of Terms should be got using their relevant @code{get(Type)} methods as we ensure only one @emph{gnu.prolog.term.Term} instance for each distinct object they represent.
+@sp 1
+Then you will need to create at least one gnu.prolog.vm.Interpreter which is used to execute goals. You do this using @code{environment.createInterpreter()}. You might want multiple Interpreters if you want to run goals in multiple threads. You will not be able to execute the goals without an interpreter and this step is essential. Say the name we use for the Interpreter we create is `interp'.
 
-Instances of Terms should be got using their relevant @code{get(Type)} methods as we ensure only one gnu.prolog.term.Term instance for each distinct object they represent.
+@code{gnu.prolog.vm.Interpreter interp = environment.createInterpreter();}
+@sp 1
 
-Then you will need to create at least one gnu.prolog.vm.Interpreter which is used to execute goals. You do this using @code{environment.createInterpreter()}. You might want multiple Interpreters if you want to run goals in multiple threads. 
-
-Having created it you need to use it to run the initialization of any files you have loaded by using @code{env.runInitialization(interpreter);}. This ensures the goals contained in any ``:- initialization(goal).'' or ``:- goal.''s in the files you have loaded are run.
-
+Having created it you need to use it to run the initialization of any files you have loaded by using @code{environment.runInitialization(interpreter);}. This ensures the goals contained in any ``:- initialization(goal).'' or ``:- goal.''s in the files you have loaded are run.
+@sp 1
 At this point the setup is completed and you can start running goals. This is done using @code{interpreter.runOnce(Term);} where Term is the goal you want to execute. This does one execution of the goal and then stops.
+
 The construction of Terms is explained in the next section. If you need something more complex than that then you will need to use @code{goal = interpreter.prepareGoal(goalTerm); RC rc = interpreter.execute(goal)} and then depending on the value of rc possibly run @code{execute(goal)} again. If you stop running @code{execute(goal)} while rc is still RC.SUCCESS then you need to run @code{interpreter.stop(goal)}.
 
 @node Constructing Terms
 @section Constructing Terms
-Terms are contained in the gnu.prolog.term package. They all extend Term and there are four basic types: @code{VariableTerm}s, @code{CompoundTerm}s and @code{AtomicTerm}s (including @code{AtomTerm}, @code{FloatTerm}, @code{IntegerTerm}).
+Terms are contained in the @emph{gnu.prolog.term} package. They all extend Term and there are three basic types: @code{VariableTerm}s, @code{CompoundTerm}s and @code{AtomicTerm}s (including @code{AtomTerm}, @code{FloatTerm}, @code{IntegerTerm}).
+@sp 1
+@code{VariableTerm}s are used to represent prolog variables which are written as `A' or `X' in Prolog. Variable Terms start with a capital letter. During execution a VariableTerm may become unified with some other Term. To extract the value from a VariableTerm after execution use the #dereference() method (which is implemented by Term) which finds the value which may lie at the end of an arbitary long chain of VariableTerms. There is a subclass of @code{VariableTerm}: @code{ChangeableTerm} which is used for Terms the value of which varies depending on the value of Prolog flags. This is currently used only for the @code{double_quotes} flag. The value of a @code{ChangeableTerm} is updated when the #dereference() method is called. A VariableTerm can be constructed using either the @code{VariableTerm()} or the @code{VariableTerm(``VariableName'')} constructors, the second is preferable as it helps when debugging to know which VariableTerm is which.
+@sp 1
+@code{CompoundTerm}s are the mechanism by which terms can be combined together and are the basic component of everything from lists to relations. They consist of a @code{CompoundTermTag} which contains the functor such as the `foo' in `foo(a,b)' or the `.' in `[a,b,c]' (by the representation of lists in Prolog) and the arity (number of arguments) such as 2 in the foo case above. This leads to the notation of foo/2 for a term with a functor of foo and an arity of 2. A @code{CompoundTerm} also has an array of arguments (@code{Term[]}). There are a variety of different constructors but @code{CompoundTerm(AtomTerm functor, Term[] args)}, @code{CompoundTerm(String functor, Term[] args)} which provide the functor and the arguments are useful. Suppose you have @code{b(12).} in your prolog goal file. Now, you can create a compound term b(X) using:
 
-@code{VariableTerm}s are used to represent prolog variables which are written as `A' or `X' in Prolog. During exectuion a VariableTerm may become unified with some other Term. To extract the value from a VariableTerm after execution use the #dereference() method (which is implemented by Term) which finds the value which may lie at the end of an arbitary long chain of VariableTerms.
-There is a subclass of @code{VariableTerm}: @code{ChangeableTerm} which is used for Terms the value of which varies depending on the value of Prolog flags. This is currently used only for the double_quotes flag. The value of a @code{ChangeableTerm} is updated when the #dereference() method is called.
-A VariableTerm can be constructed using either the @code{VariableTerm()} or the @code{VariableTerm(``VariableName'')} constructors, the second is preferable as it helps when debugging to know more easily which VariableTerm is which.
+@code{VariableTerm term = new VariableTerm("X");}
 
-@code{CompoundTerm}s are the mechanism by which terms can be combined together and are the basic component of everything from lists to relations. They consist of a @code{CompoundTermTag} which contains the functor such as the `foo' in `foo(a,b)' or the `.' in `[a,b,c]' (by the representation of lists in Prolog) and the arity (number of arguments) such as 2 in the foo case above. This leads to the notation of foo/2 for a term with a functor of foo and an arity of 2. A @code{CompoundTerm} also has an array of arguments (Term[]). There are a variety of different constructors but @code{CompoundTerm(AtomTerm functor, Term[] args)} @code{CompoundTerm(String functor, Term[] args)} which provide the functor and the arguments are probably the most useful.
+@code{Term[] ter = new Term[1];}
 
+@code{ter[0] = term;}
+
+@code{CompoundTerm comp = new CompoundTerm("b",ter);}
+
+And finally you can find the value of X by executing the goal and running
+
+@code{Term answer = term.dereference()};
+@sp 1
 @code{AtomicTerm}s extend the abstract @code{AtomicTerm} class and are used for representing constants such as Strings and chars (@code{AtomTerm}); Numbers (@code{NumericTerm}) including doubles (@code{FloatTerm}) and integers (@code{IntegerTerm}) and finally Java Objects which can be embedded using @code{JavaObjectTerm}s. @code{AtomTerm} and @code{IntegerTerm} have static get(Type) methods rather than constructors while FloatTerm and JavaObjectTerm have normal constructors.
 
-For example (using @code{gnu.prolog.demo.mentalarithmetic.MentalArithmetic#generateQuestion(int limit, int length)}: 
+For example 
+
+(using 
+@code{gnu.prolog.demo.mentalarithmetic.MentalArithmetic}
+
+@code{#generateQuestion(int limit, int length)}: 
 @example
-// // Construct the question.
+// Construct the question
 // Create variable terms so that we can pull the answers out later
 VariableTerm listTerm = new VariableTerm("List");
 VariableTerm answerTerm = new VariableTerm("Answer");
 // Create the arguments to the compound term which is the question
-Term[] args = @{ new IntegerTerm(limit), new IntegerTerm(length), listTerm, answerTerm @};
+Term[] args = @{new IntegerTerm(limit), new IntegerTerm(length), listTerm, answerTerm@};
 // Construct the question
-CompoundTerm goalTerm = new CompoundTerm(AtomTerm.get("arithmetic"), args);
+CompoundTerm goalTerm = 
+				new CompoundTerm(AtomTerm.get("arithmetic"),args);
 @end example
+
+@node Complete Example
+@subsection Complete Example
+@example
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologException;
+/*
+* Create an Environment environment (gnu.prolog.vm.Environment) 
+* which provides the core of the prolog environment
+*/
+Environment environment = new Environment();
+/*
+* Then load any prolog files you want to which define additional predicates
+* Say the file contains: 
+* b(Z) :- a(Z).
+* a(12).
+*/
+environment.ensureLoaded(AtomTerm.get(Some file));
+/*
+* Create an Interpreter `interp' to execute goals. 
+* You need at least one in your program
+*/
+Interpreter interp = environment.createInterpreter();
+environment.runInitialization(interp);
+/* 
+* Set a goal b(X) by defining 
+* A variable term X
+* A compound term with functor b and arguments X
+*/
+VariableTerm term = new VariableTerm("X");
+Term[] ter = new Term[1];
+ter[0] = term;
+CompoundTerm comp = new CompoundTerm("b",ter);
+/*
+* Run the interpreter on the compound term b(X)
+*/
+interp.runOnce(comp);
+/* 
+* Value of X gets matched after running the goal 
+* Can be found by using #dereference method
+*/
+System.out.println(term.dereference()); 
+@end example
+@sp 1
+The last line of code will print a 12 on the terminal/console.
 
 @node Installation
 @chapter Installation
-If you download the jar file according to the instructions on the @uref{http://www.gnu.org/software/gnuprologjava/ GNU Prolog for Java website} and put it in your path then installation should be complete.
+If you download the jar file according to the instructions on the @uref{http://www.gnu.org/software/gnuprologjava/} GNU Prolog for Java website and put it in your path then installation should be complete. Best way to contribute at the same time to the project is to import the downloaded zip as an archive file and then create files in a default package.
 
-It is our intention that GNU Prolog for Java be shipped with various distributions notably Debian and also the distributions approved of by GNU. At time of writing this had not been done. Assistance in doing this is appricated.
+It is our intention that GNU Prolog for Java be shipped with various distributions notably Debian and also the distributions approved of by GNU. At time of writing this had not been done except for the creation of a debian package. Assistance in doing this is appricated.
 @c MAY-NEED-UPDATE
 
 @node Extending
@@ -138,7 +220,7 @@ It is our intention that GNU Prolog for Java be shipped with various distributio
 
 @node Creating new predicates
 @section Creating new predicates
-GPJ is easily extendible by creating new java predicates such as those in gnu.prolog.vm.builtins. They need to implement @code{gnu.prolog.vm.PrologCode}. @code{gnu.prolog.vm.ExecuteOnlyCode} is provided for convenience as most will not need to implement the @code{install} or @code{uninstall} methods.
+GPJ is easily extendible by creating new java predicates such as those in @emph{gnu.prolog.vm.builtins}. They need to implement @code{gnu.prolog.vm.PrologCode}. @code{gnu.prolog.vm.ExecuteOnlyCode} is provided for convenience as most will not need to implement the @code{install} or @code{uninstall} methods.
 @c TODO
 
 @node Adding more Prolog functionality
@@ -157,16 +239,29 @@ Should you have difficulty finding this file then Daniel Thomas may be able to h
 
 @node Definite clause grammar (DCG)
 @subsection Definite clause grammar (DCG)
-The ISO working group on the Prolog standard publishes a reference implementation of the part 3 draft which it should be possible to load as with any other Prolog file. @uref{http://www.sju.edu/~jhodgson/wg17/Drafts/DCGs/reference_implementation}. Should you have difficulty finding it it is also in the git repository for GPJ.
+The ISO working group on the Prolog standard publishes a reference implementation of the part 3 draft which it should be possible to load as with any other Prolog file. @uref{http://www.sju.edu/~jhodgson/wg17/Drafts/DCGs/reference_implementation}. Should you have difficulty finding it, it is also in the git repository for GPJ.
 This should then provide support for part 3 of the standard. This currently does not work as it depends on some of the 2006 ISO extensions which we should have implemented for 0.3.0.
+
+@node Contributing
+@chapter Contributing
+The GNU Prolog For Java provides users with a great way of performing Prolog tasks through Java. This project could do with contributions from increasing number of users.
+
+@itemize @arrow
+@item
+The canonical git repository is the one on savannah. The other active github repositories for GNU Prolog For Java can be found 
+@uref{https://github.com/drt24/gnuprologjava} and @uref{https://github.com/rishabhgarg/gnuprologjava-1}. You can submit issues on the same; but preferably you must submit the issues here @uref{https://savannah.gnu.org/bugs/?group=gnuprologjava}. 
+@item
+You are also welcome to submit the patches on the same. The savannah site contains several bugs that GPJ currently has.
+@item
+You can participate in discussions and view the archives on the following @uref{http://lists.gnu.org/archive/html/info-gnuprologjava/}
+@item
+You can also have your queries handled by mailing at @email{info-gnuprolog@@gnu.org}.
+@end itemize
 
 @node GNU Lesser General Public License
 @appendix GNU Lesser General Public License
-
 @include gpl.texinfo
 @include lgpl.texinfo
-
-
 @node Index
 @unnumbered Index
 
