@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
 @setfilename manual.info
-@include version.tex
+@include version.texinfo
 @settitle GNU Prolog for Java @value{VERSION} Manual
 @c %**end of header
 
@@ -154,7 +154,7 @@ CompoundTerm goalTerm =
 @end example
 
 @node Complete Example
-@subsection Complete Example
+@section Complete Example
 @example
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
