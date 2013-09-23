@@ -35,9 +35,10 @@ import java.util.HashMap;
 
 /**
  * This class is intendent for printing terms.
- * 
+ *
  * @author Constantine A. Plotnikov.
- * @version 0.0.1
+ * @author Rishabh Garg
+ * @version 0.3
  */
 
 public class TermWriter extends PrintWriter
@@ -551,7 +552,7 @@ public class TermWriter extends PrintWriter
 		}
 		else
 		{
-			return true;
+			return false;
 		}
 	}
 
@@ -625,7 +626,7 @@ public class TermWriter extends PrintWriter
 	 */
 	protected static boolean isAtomStartChar(char c)
 	{
-		return 'a' <= c && c <= 'z';
+		return ('a' <= c && c <= 'z') || UnicodeWriter.isAtomStartCharUnicode(c);
 	}
 
 	/**
@@ -637,7 +638,10 @@ public class TermWriter extends PrintWriter
 	 */
 	protected static boolean isAtomChar(char c)
 	{
-		return 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || '0' <= c && c <= '9' || c == '_';
+		return ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')
+        || ('0' <= c && c <= '9')
+        || (c == '_')
+        || UnicodeWriter.isAtomCharUnicode(c);
 	}
 
 	/**
@@ -659,34 +663,41 @@ public class TermWriter extends PrintWriter
 		}
 		else if (ch <= ' ' || ch >= 127) // if control character or non ascii
 		{
-			buf.append('\\');
 			switch (ch)
 			{
 				case '\u0007':
+                    buf.append('\\');
 					buf.append('a');
 					break;
 				case '\b':
-					buf.append('b');
+                    buf.append('\\');
+                    buf.append('b');
 					break;
 				case '\f':
-					buf.append('f');
+                    buf.append('\\');
+                    buf.append('f');
 					break;
 				case '\n':
-					buf.append('n');
+                    buf.append('\\');
+                    buf.append('n');
 					break;
 				case '\t':
-					buf.append('t');
+                    buf.append('\\');
+                    buf.append('t');
 					break;
 				case '\u000b':
-					buf.append('v');
+                    buf.append('\\');
+                    buf.append('v');
 					break;
 				case '\r':
-					buf.append('r');
+                    buf.append('\\');
+                    buf.append('r');
 					break;
 				default:
-					buf.append('x');
-					buf.append(Integer.toHexString(ch));
-					buf.append('\\');
+                    buf.append(ch);
+                    //buf.append('x');
+					//buf.append(Integer.toHexString(ch));
+					//buf.append('\\');
 			}
 		}
 		else
