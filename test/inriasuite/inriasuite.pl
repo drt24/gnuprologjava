@@ -766,6 +766,7 @@ file(F) :- arith(N), atom_concat('arith/',N,F).
 file(F) :- terms(N), atom_concat('terms/',N,F).
 file(F) :- extra(N), atom_concat('extra/',N,F).
 file(F) :- inria(N), atom_concat('inria/',N,F).
+file(F) :- unicode(N), atom_concat('unicode/',N,F).
 file(F) :- io(N), atom_concat('io/',N,F).
 file(F) :-
 	file(F,IF),
