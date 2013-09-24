@@ -2,8 +2,6 @@
 /* file atom */
 
 [atom(joːgɑ), success].
-[atom(ˈʏpsilɔn), success].
-[atom('jɛn'), success].
 [atom(â(é)), failure].
 [atom(Kαλημέρα), failure].
 [atom(κόσμε), success].
