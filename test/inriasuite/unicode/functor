@@ -5,7 +5,7 @@
                      success]. % The 'expected' answer
 
 [functor(footįÿårì(a,b,c),_X,Ÿ),
-      [[_X <-- footįÿårì, Ÿ <-- 2]]]. % Must instantiate Ÿ by 3
+      [[_X <-- footįÿårì, Ÿ <-- 3]]]. % Must instantiate Ÿ by 3
 
 [functor(footįÿårì(a),footiyari,1), failure].
 
