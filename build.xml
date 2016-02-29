@@ -86,10 +86,13 @@ Ant Buildfile for GNU Prolog for Java.
 	<target name="compile" depends="init">
 		<mkdir dir="build/code" />
 		<javac srcdir="src" destdir="build/code"
-			includeantruntime="false"
-			classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar"
-			debug="${java.debug}" debuglevel="lines,vars,source"
-			excludes="**/package-info.java" />
+		       includeantruntime="false"
+                       fork="true"
+		       classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar"
+		       debug="${java.debug}" debuglevel="lines,vars,source"
+		       excludes="**/package-info.java" >
+                  <compilerarg value="-J-Xss2M"/>
+                </javac>
 		<copy todir="build/code">
 			<fileset dir="src">
 				<include name="**/*.pro" />
