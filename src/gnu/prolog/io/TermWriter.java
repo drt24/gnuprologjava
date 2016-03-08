@@ -552,7 +552,7 @@ public class TermWriter extends PrintWriter
 		}
 		else
 		{
-			return false;
+                        return true;
 		}
 	}
 
