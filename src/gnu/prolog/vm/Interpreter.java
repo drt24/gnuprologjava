@@ -635,7 +635,8 @@ public final class Interpreter implements HasEnvironment
 			backtrackInfoAmount = rp.rBacktrackInfoAmount;
 			backtrackInfoMax = rp.rBacktrackInfoMax;
 			variables = rp.rVariables;
-			undoData = rp.rUndoData;
+                        variablesAmount = rp.rVariablesAmount;
+                        undoData = rp.rUndoData;
 			undoDataAmount = rp.rUndoDataAmount;
 			undoPositionAsked = rp.rUndoPositionAsked;
 			currentGoal = rp.rCurrentGoal;
