@@ -53,8 +53,6 @@ import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -76,8 +74,6 @@ public class Environment implements PredicateListener
 	protected PrologTextLoaderState prologTextLoaderState;
 	/** predicate which used instead of real code when predicate is not defined */
 	protected PrologCode undefinedPredicate;
-	/** PredicateTag to code mapping */
-	protected Map<CompoundTermTag, PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
 
 	// TODO move into TermConstants, possibly consider using enums.
 	// flag atoms
@@ -155,7 +151,11 @@ public class Environment implements PredicateListener
 
 	protected void createTextLoader()
 	{
-		prologTextLoaderState = new PrologTextLoaderState(this);
+		// Create a user module to act as the default
+		userModule = new Module(Module.userAtom, new ArrayList<CompoundTermTag>());
+		modules.put(Module.userAtom, userModule);
+		moduleStack.push(Module.userAtom);
+		prologTextLoaderState = new PrologTextLoaderState(this, userModule);
 	}
 
 	/**
@@ -372,7 +372,16 @@ public class Environment implements PredicateListener
 	 * */
 	public synchronized void ensureLoaded(Term term)
 	{
-		prologTextLoaderState.ensureLoaded(term);
+		Stack<AtomTerm> currentModuleStack = new Stack<AtomTerm>();
+		currentModuleStack.addAll(moduleStack);
+		try
+		{
+			prologTextLoaderState.ensureLoaded(term);
+		}
+		finally
+		{
+			moduleStack = currentModuleStack;
+		}
 	}
 
 	/**
@@ -390,7 +399,7 @@ public class Environment implements PredicateListener
 
 	public Module getModule()
 	{
-		return prologTextLoaderState.getModule();
+		return modules.get(moduleStack.peek());
 	}
 
 	/**
@@ -407,7 +416,22 @@ public class Environment implements PredicateListener
 		Predicate p = getModule().getDefinedPredicate(tag);
 		if (p == null) // case of undefined predicate
 		{
-			return getUndefinedPredicateCode(tag);
+			// tag is not defined in the current module. Check user
+			if (!getModule().equals(userModule))
+			{
+				p = userModule.getDefinedPredicate(tag);
+				if (p == null)
+				{
+					// tag is just not defined anywhere
+					return getUndefinedPredicateCode(tag);
+				}
+				// At this point we can fall back to the switch statement below
+			}
+			else
+			{
+				// We were already looking in the user module. Tag must not be defined
+				return getUndefinedPredicateCode(tag);
+			}
 		}
 		switch (p.getType())
 		{
@@ -461,46 +485,9 @@ public class Environment implements PredicateListener
 	 */
 	public synchronized PrologCode getPrologCode(CompoundTermTag tag) throws PrologException
 	{
-		PrologCode code = tag2code.get(tag);
-		if (code == null)
-		{
-			code = loadPrologCode(tag);
-			tag2code.put(tag, code);
-		}
-		return code;
+		return getModule().getPrologCode(this, tag);
 	}
 
-	protected final Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
-	protected final ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
-
-	/**
-	 * A {@link WeakReference} to a {@link PrologCodeListener}
-	 * 
-	 */
-	private static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
-	{
-		PrologCodeListenerRef(ReferenceQueue<? super PrologCodeListener> queue, PrologCodeListener listener,
-				CompoundTermTag tag)
-		{
-			super(listener, queue);
-			this.tag = tag;
-		}
-
-		CompoundTermTag tag;
-	}
-
-	protected void pollPrologCodeListeners()
-	{
-		PrologCodeListenerRef ref;
-		synchronized (tag2listeners)
-		{
-			while (null != (ref = (PrologCodeListenerRef) prologCodeListenerReferenceQueue.poll()))
-			{
-				List<PrologCodeListenerRef> list = tag2listeners.get(ref.tag);
-				list.remove(ref);
-			}
-		}
-	}
 
 	// this functionality will be needed later, but I need to think more ;-)
 	/**
@@ -511,17 +498,7 @@ public class Environment implements PredicateListener
 	 */
 	public void addPrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
-		synchronized (tag2listeners)
-		{
-			pollPrologCodeListeners();
-			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
-			if (list == null)
-			{
-				list = new ArrayList<PrologCodeListenerRef>();
-				tag2listeners.put(tag, list);
-			}
-			list.add(new PrologCodeListenerRef(prologCodeListenerReferenceQueue, listener, tag));
-		}
+		getModule().addPrologCodeListener(this, tag, listener);
 	}
 
 	/**
@@ -532,63 +509,12 @@ public class Environment implements PredicateListener
 	 */
 	public void removePrologCodeListener(CompoundTermTag tag, PrologCodeListener listener)
 	{
-		synchronized (tag2listeners)
-		{
-			pollPrologCodeListeners();
-			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
-			if (list != null)
-			{
-				ListIterator<PrologCodeListenerRef> i = list.listIterator();
-				while (i.hasNext())
-				{
-					PrologCodeListenerRef ref = i.next();
-					PrologCodeListener lst = ref.get();
-					if (lst == null)
-					{
-						i.remove();
-					}
-					else if (lst == listener)
-					{
-						i.remove();
-						return;
-					}
-				}
-			}
-		}
+		getModule().removePrologCodeListener(this, tag, listener);
 	}
 
 	public void predicateUpdated(PredicateUpdatedEvent evt)
 	{
-		PrologCode code = tag2code.remove(evt.getTag());
-		pollPrologCodeListeners();
-		if (code == null) // if code was not loaded yet
-		{
-			return;
-		}
-		CompoundTermTag tag = evt.getTag();
-		synchronized (tag2listeners)
-		{
-			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
-			if (list != null)
-			{
-				PrologCodeUpdatedEvent uevt = new PrologCodeUpdatedEvent(this, tag);
-				ListIterator<PrologCodeListenerRef> i = list.listIterator();
-				while (i.hasNext())
-				{
-					PrologCodeListenerRef ref = i.next();
-					PrologCodeListener lst = ref.get();
-					if (lst == null)
-					{
-						i.remove();
-					}
-					else
-					{
-						lst.prologCodeUpdated(uevt);
-						return;
-					}
-				}
-			}
-		}
+		getModule().predicateUpdated(this, evt);
 	}
 
 	private static InputStream defaultInputStream;
@@ -918,8 +844,8 @@ public class Environment implements PredicateListener
 	}
 
 
-
-	private Map<AtomTerm, Module> modules;
+	private Module userModule;
+	private Map<AtomTerm, Module> modules = new HashMap<AtomTerm, Module>();
 	public Stack<AtomTerm> moduleStack = new Stack<AtomTerm>();
 
 	public Module startNewModule(AtomTerm name, List<CompoundTermTag> exports) throws PrologException
@@ -928,11 +854,11 @@ public class Environment implements PredicateListener
 		{
 			PrologException.permissionError(AtomTerm.get("create"), AtomTerm.get("module"), name);
 		}
+		// We must also compile some shims in user for our new module
+		userModule.importPredicates(this, name, exports);
 		Module newModule = new Module(name, exports);
 		modules.put(name, newModule);
 		moduleStack.push(name);
-		// Enable us to get out later!
-		// installBuiltin(":", 2);
 		return newModule;
 	}
 	public void pushModule(AtomTerm moduleName) throws PrologException

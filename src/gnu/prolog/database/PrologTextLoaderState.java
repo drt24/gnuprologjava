@@ -52,7 +52,7 @@ import java.util.Set;
  */
 public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvironment
 {
-	protected Module module = new Module(AtomTerm.get("user"), new ArrayList<CompoundTermTag>());
+	protected Module module = null;
 	protected final Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
 	protected Predicate currentPredicate = null;
 	private final Object currentPredicateLock = new Object();
@@ -67,10 +67,10 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	protected final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
 	protected final static CompoundTermTag urlTag = CompoundTermTag.get("url", 1);
 	protected final static CompoundTermTag fileTag = CompoundTermTag.get("file", 1);
-
-	public PrologTextLoaderState(Environment env)
+	public PrologTextLoaderState(Environment env, Module module)
 	{
 		environment = env;
+		this.module = module;
 	}
 
 	public Environment getEnvironment()
@@ -402,51 +402,45 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		}
 	}
 
-	public void addInitialization(PrologTextLoader loader, Term term) throws PrologException
+	public void startNewModule(PrologTextLoader loader, AtomTerm moduleName, Term list) throws PrologException
 	{
-		if (term instanceof CompoundTerm && ((CompoundTerm)term).tag == Module.moduleTag)
+		List<CompoundTermTag> exports = new ArrayList<CompoundTermTag>();
+		while ((list = list.dereference()) instanceof CompoundTerm)
 		{
-			CompoundTerm directive = (CompoundTerm)term;
-			if (!(directive.args[0] instanceof AtomTerm))
-				PrologException.typeError(TermConstants.atomAtom, directive.args[0]);
-			AtomTerm moduleName = (AtomTerm)directive.args[0];
-			List<CompoundTermTag> exports = new ArrayList<CompoundTermTag>();
-			Term list = directive.args[1];
-			while ((list = list.dereference()) instanceof CompoundTerm)
+			CompoundTerm ct = (CompoundTerm)list;
+			if (ct.tag != TermConstants.listTag)
 			{
-				CompoundTerm ct = (CompoundTerm)list;
-				if (ct.tag != TermConstants.listTag)
+				PrologException.typeError(TermConstants.listAtom, ct);
+			}
+			else
+			{
+				Term head = ct.args[0];
+				if (head instanceof CompoundTerm && ((CompoundTerm)head).tag == CompoundTermTag.get("/", 2))
 				{
-					PrologException.typeError(TermConstants.listAtom, ct);
-				}
-				else
-				{
-					Term head = ct.args[0];
-					if (head instanceof CompoundTerm && ((CompoundTerm)head).tag == CompoundTermTag.get("/", 2))
+					CompoundTerm predicateIndicator = (CompoundTerm)head;
+					if (predicateIndicator.args[0] instanceof AtomTerm && predicateIndicator.args[1] instanceof IntegerTerm)
 					{
-						CompoundTerm predicateIndicator = (CompoundTerm)head;
-						if (predicateIndicator.args[0] instanceof AtomTerm && predicateIndicator.args[1] instanceof IntegerTerm)
-						{
-							exports.add(CompoundTermTag.get(predicateIndicator));
-						}
-						else
-						{
-							PrologException.typeError(TermConstants.predicateIndicatorAtom, predicateIndicator);
-						}
+						exports.add(CompoundTermTag.get(predicateIndicator));
+					}
+					else
+					{
+						PrologException.typeError(TermConstants.predicateIndicatorAtom, predicateIndicator);
 					}
 				}
 			}
-			if (!TermConstants.emptyListAtom.equals(list))
-			{
-				PrologException.typeError(TermConstants.listAtom, list);
-			}
-			module = environment.startNewModule(moduleName, exports);
-			currentPredicate = null;
+			list = ct.args[1];
 		}
-		else
+		if (!TermConstants.emptyListAtom.equals(list))
 		{
-			module.addInitialization(loader.getCurrentPartialLoaderError(), term);
+			PrologException.typeError(TermConstants.listAtom, list);
 		}
+		module = environment.startNewModule(moduleName, exports);
+		currentPredicate = null;
+	}
+
+	public void addInitialization(PrologTextLoader loader, Term term)
+	{
+		module.addInitialization(loader.getCurrentPartialLoaderError(), term);
 	}
 
 	public void ensureLoaded(Term term)

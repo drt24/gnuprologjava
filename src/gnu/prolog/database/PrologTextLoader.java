@@ -29,6 +29,7 @@ import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.TermConstants;
+import gnu.prolog.vm.PrologException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -75,6 +76,7 @@ public class PrologTextLoader
 	public static final CompoundTermTag externalTag = CompoundTermTag.get("external", 2);
 	public static final CompoundTermTag build_inTag = CompoundTermTag.get("build_in", 2);
 	public static final CompoundTermTag controlTag = CompoundTermTag.get("control", 2);
+	public static final CompoundTermTag moduleTag = CompoundTermTag.get("module", 2);
 
 	// include/ensure loaded argument terms
 	public static final CompoundTermTag url1Tag = CompoundTermTag.get("url", 1);
@@ -277,6 +279,10 @@ public class PrologTextLoader
 					{
 						processBuildInDirective(dirTerm.args[0], dirTerm.args[1]);
 					}
+					else if (dirTag == moduleTag)
+					{
+						processModuleDirective(dirTerm.args[0], dirTerm.args[1]);
+					}
 					else
 					{// treat it as a goal to run at runtime not in ISO but common
 						// (NONISO)
@@ -312,6 +318,17 @@ public class PrologTextLoader
 		}
 		prologTextLoaderState.defineExternal(this, ((CompoundTerm) pi), ((AtomTerm) className).value,
 				Predicate.TYPE.BUILD_IN);
+	}
+
+	protected void processModuleDirective(Term moduleName, Term exports)
+	{
+		if (!(moduleName instanceof AtomTerm))
+		{
+			logError("module name should be an atom");
+			//PrologException.typeError(TermConstants.atomAtom, moduleName);
+			return;
+		}
+		prologTextLoaderState.startNewModule(this, (AtomTerm)moduleName, exports);
 	}
 
 	protected void processControlDirective(Term pi, Term className)
