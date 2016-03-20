@@ -77,37 +77,43 @@ public class Module
 		{
 			for (CompoundTermTag export: exports)
 			{
-				Predicate p = null;
-				try
-				{
-					p = createDefinedPredicate(export);
-				}
-				catch(IllegalStateException e)
-				{
-					PrologException.permissionError(AtomTerm.get("redefine"), AtomTerm.get("predicate"), export.getPredicateIndicator());
-				}
-				Term[] args = new Term[export.arity];
-				for (int i = 0; i < args.length; i++)
-					args[i] = new VariableTerm();
-				Term head = new CompoundTerm(export, args);
-				Term body = crossModuleCall(exportingModule.value, head);
-				Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
-				p.setType(Predicate.TYPE.USER_DEFINED);
-				p.addClauseLast(linkClause);
-				environment.pushModule(exportingModule);
-				try
-				{
-					environment.loadPrologCode(export);
-				}
-				finally
-				{
-					environment.popModule();
-				}
+				importPredicate(environment, exportingModule, export);
 			}
 		}
 		catch(Throwable builtin)
 		{
 			// FIXME: It is quite bad if this happens
+		}
+		finally
+		{
+			environment.popModule();
+		}
+	}
+
+	public Predicate importPredicate(Environment environment, AtomTerm exportingModule, CompoundTermTag export) throws PrologException
+	{
+		Predicate p = null;
+		try
+		{
+			p = createDefinedPredicate(export);
+		}
+		catch(IllegalStateException e)
+		{
+			PrologException.permissionError(AtomTerm.get("redefine"), AtomTerm.get("predicate"), export.getPredicateIndicator());
+		}
+		Term[] args = new Term[export.arity];
+		for (int i = 0; i < args.length; i++)
+			args[i] = new VariableTerm();
+		Term head = new CompoundTerm(export, args);
+		Term body = crossModuleCall(exportingModule.value, head);
+		Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
+		p.setType(Predicate.TYPE.USER_DEFINED);
+		p.addClauseLast(linkClause);
+		environment.pushModule(exportingModule);
+		try
+		{
+			environment.loadPrologCode(export);
+			return p;
 		}
 		finally
 		{
@@ -406,5 +412,11 @@ public class Module
 				list.remove(ref);
 			}
 		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return name.toString();
 	}
 }

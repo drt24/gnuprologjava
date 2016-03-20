@@ -425,6 +425,15 @@ public class Environment implements PredicateListener
 					// tag is just not defined anywhere
 					return getUndefinedPredicateCode(tag);
 				}
+				else if (!tag.equals(CompoundTermTag.get(":", 2)))
+				{
+					// If this happens, we need to instead define a predicate user:Head in the current module and return THAT/
+					// Otherwise when we call Goal in user, the module will still be the current module. If both user and the local module
+					// both define a clause of something, when the user module calls it, we will get the one in the current module, which
+					// is wrong!
+					p = getModule().importPredicate(this, Module.userAtom, tag);
+
+				}
 				// At this point we can fall back to the switch statement below
 			}
 			else
