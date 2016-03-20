@@ -63,6 +63,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * this class represent prolog processor.
@@ -914,5 +915,35 @@ public class Environment implements PredicateListener
 	public CharConversionTable getConversionTable()
 	{
 		return prologTextLoaderState.getConversionTable();
+	}
+
+
+
+	private Map<AtomTerm, Module> modules;
+	public Stack<AtomTerm> moduleStack = new Stack<AtomTerm>();
+
+	public Module startNewModule(AtomTerm name, List<CompoundTermTag> exports) throws PrologException
+	{
+		if (modules.get(name.value) != null)
+		{
+			PrologException.permissionError(AtomTerm.get("create"), AtomTerm.get("module"), name);
+		}
+		Module newModule = new Module(name, exports);
+		modules.put(name, newModule);
+		moduleStack.push(name);
+		// Enable us to get out later!
+		// installBuiltin(":", 2);
+		return newModule;
+	}
+	public void pushModule(AtomTerm moduleName) throws PrologException
+	{
+		if (modules.get(moduleName) == null)
+			PrologException.existenceError(AtomTerm.get("module"), moduleName);
+		moduleStack.push(moduleName);
+	}
+
+	public void popModule()
+	{
+		moduleStack.pop();
 	}
 }

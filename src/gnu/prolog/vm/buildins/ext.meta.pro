@@ -22,3 +22,6 @@
 
 % setup_call_catcher_cleanup(+Setup, +Call, -Catcher, +Cleanup)
 :-build_in(setup_call_catcher_cleanup/4,'gnu.prolog.vm.buildins.meta.Predicate_setup_call_catcher_cleanup'). 
+
+% :(+Module, +Goal)
+:-build_in(:/2,'gnu.prolog.vm.buildins.meta.Predicate_colon').

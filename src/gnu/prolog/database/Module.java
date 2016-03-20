@@ -20,6 +20,7 @@ package gnu.prolog.database;
 
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.AtomTerm;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
 
@@ -43,6 +44,16 @@ public class Module
 	/** initialization */
 	protected List<Pair<PrologTextLoaderError, Term>> initialization = Collections
 			.synchronizedList(new ArrayList<Pair<PrologTextLoaderError, Term>>());
+
+	protected AtomTerm name = null;
+	protected List<CompoundTermTag> exports = null;
+	public static final CompoundTermTag moduleTag = CompoundTermTag.get("module", 2);
+
+	public Module(AtomTerm name, List<CompoundTermTag> exports)
+	{
+		this.name = name;
+		this.exports = exports;
+	}
 
 	/**
 	 * create new predicate defined in this module
