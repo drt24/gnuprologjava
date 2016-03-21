@@ -372,16 +372,20 @@ public class Environment implements PredicateListener
 	 * */
 	public synchronized void ensureLoaded(Term term)
 	{
+		prologTextLoaderState.ensureLoaded(term);
+	}
+
+	public Stack<AtomTerm> cloneModuleStack()
+	{
 		Stack<AtomTerm> currentModuleStack = new Stack<AtomTerm>();
 		currentModuleStack.addAll(moduleStack);
-		try
-		{
-			prologTextLoaderState.ensureLoaded(term);
-		}
-		finally
-		{
-			moduleStack = currentModuleStack;
-		}
+		return currentModuleStack;
+	}
+
+	public void restoreModuleStack(Stack<AtomTerm> savedStack)
+	{
+		moduleStack = savedStack;
+
 	}
 
 	/**
@@ -859,7 +863,7 @@ public class Environment implements PredicateListener
 
 	public Module startNewModule(AtomTerm name, List<CompoundTermTag> exports) throws PrologException
 	{
-		if (modules.get(name.value) != null)
+		if (modules.get(name) != null)
 		{
 			PrologException.permissionError(AtomTerm.get("create"), AtomTerm.get("module"), name);
 		}

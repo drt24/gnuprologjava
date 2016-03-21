@@ -44,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * Stores the state of all the {@link PrologTextLoader PrologTextLoaders} for
@@ -451,7 +452,18 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 			if (!loadedFiles.contains(inputName))
 			{
 				loadedFiles.add(inputName);
-				new PrologTextLoader(this, term);
+				// Instead of this I suppose we could have a module-stack-stack?
+				// When we load a new file we push the current stack and pop the stack from the stack-stack afterwards...
+				Stack<AtomTerm> currentModuleStack = environment.cloneModuleStack();
+				try
+				{
+					new PrologTextLoader(this, term);
+				}
+				finally
+				{
+					environment.restoreModuleStack(currentModuleStack);
+					module = environment.getModule();
+				}
 			}
 		}
 	}
