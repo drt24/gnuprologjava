@@ -72,22 +72,10 @@ public class Module
 
 	public void importPredicates(Environment environment, AtomTerm exportingModule, List<CompoundTermTag> exports) throws PrologException
 	{
-		environment.pushModule(name);
-		try
-		{
-			for (CompoundTermTag export: exports)
-			{
-				importPredicate(environment, exportingModule, export);
-			}
-		}
-		catch(Throwable builtin)
-		{
-			// FIXME: It is quite bad if this happens
-		}
-		finally
-		{
-			environment.popModule();
-		}
+	   for (CompoundTermTag export: exports)
+	   {
+	      importPredicate(environment, exportingModule, export);
+	   }
 	}
 
 	public Predicate importPredicate(Environment environment, AtomTerm exportingModule, CompoundTermTag export) throws PrologException
@@ -109,7 +97,7 @@ public class Module
 		Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
 		p.setType(Predicate.TYPE.USER_DEFINED);
 		p.addClauseLast(linkClause);
-		environment.pushModule(exportingModule);
+		environment.pushModule(name);
 		try
 		{
 			environment.loadPrologCode(export);

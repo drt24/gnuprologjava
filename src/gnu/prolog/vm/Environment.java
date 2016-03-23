@@ -868,9 +868,9 @@ public class Environment implements PredicateListener
 			PrologException.permissionError(AtomTerm.get("create"), AtomTerm.get("module"), name);
 		}
 		// We must also compile some shims in user for our new module
-		userModule.importPredicates(this, name, exports);
 		Module newModule = new Module(name, exports);
 		modules.put(name, newModule);
+		userModule.importPredicates(this, name, exports);
 		moduleStack.push(name);
 		return newModule;
 	}
