@@ -112,11 +112,11 @@ public class Module
 	/**
 	 * convenience method for getting a Module:Goal term
 	 *
-	 * @ param targetModule
+	 * @param targetModule
 	 *         Module to exeucte Goal in
-	 * @ param goal
+	 * @param goal
 	 *         Goal to execute
-	 * @ return cross-module goal
+	 * @return cross-module goal
 	 */
 	public static Term crossModuleCall(String targetModule, Term goal)
 	{
@@ -305,7 +305,8 @@ public class Module
 
 	/**
 	 * remove prolog code listener
-	 * 
+	 *
+	 * @param env
 	 * @param tag
 	 * @param listener
 	 */
