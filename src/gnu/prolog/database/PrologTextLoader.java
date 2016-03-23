@@ -328,7 +328,15 @@ public class PrologTextLoader
 			//PrologException.typeError(TermConstants.atomAtom, moduleName);
 			return;
 		}
-		prologTextLoaderState.startNewModule(this, (AtomTerm)moduleName, exports);
+		try
+		{
+			prologTextLoaderState.startNewModule(this, (AtomTerm)moduleName, exports);
+		}
+		catch (PrologException e)
+		{
+			e.printStackTrace();
+			logError("unable to start new module");
+		}
 	}
 
 	protected void processControlDirective(Term pi, Term className)
