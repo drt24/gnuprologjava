@@ -526,9 +526,14 @@ Term curly_term(ReadOptions options):
 {Term t = null;}
 {
   open_curly()
-  [
-    t = term(options, 1201)
-  ] close_curly()
+  (
+    LOOKAHEAD(<CLOSE_CURLY_TOKEN>)
+    {
+    }
+  | [
+      t = term(options, 1201)
+    ]
+  ) close_curly()
   {
     if (t == null)
     {
