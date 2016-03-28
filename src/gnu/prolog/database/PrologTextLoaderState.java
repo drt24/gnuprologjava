@@ -22,6 +22,7 @@ import gnu.prolog.io.CharConversionTable;
 import gnu.prolog.io.ParseException;
 import gnu.prolog.io.TermWriter;
 import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
@@ -43,6 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * Stores the state of all the {@link PrologTextLoader PrologTextLoaders} for
@@ -51,7 +53,7 @@ import java.util.Set;
  */
 public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvironment
 {
-	protected final Module module = new Module();
+	protected Module module = null;
 	protected final Map<Predicate, Map<String, Set<PrologTextLoader>>> predicate2options2loaders = new HashMap<Predicate, Map<String, Set<PrologTextLoader>>>();
 	protected Predicate currentPredicate = null;
 	private final Object currentPredicateLock = new Object();
@@ -66,10 +68,10 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 	protected final static CompoundTermTag resourceTag = CompoundTermTag.get("resource", 1);
 	protected final static CompoundTermTag urlTag = CompoundTermTag.get("url", 1);
 	protected final static CompoundTermTag fileTag = CompoundTermTag.get("file", 1);
-
-	public PrologTextLoaderState(Environment env)
+	public PrologTextLoaderState(Environment env, Module module)
 	{
 		environment = env;
+		this.module = module;
 	}
 
 	public Environment getEnvironment()
@@ -401,6 +403,42 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		}
 	}
 
+	public void startNewModule(PrologTextLoader loader, AtomTerm moduleName, Term list) throws PrologException
+	{
+		List<CompoundTermTag> exports = new ArrayList<CompoundTermTag>();
+		while ((list = list.dereference()) instanceof CompoundTerm)
+		{
+			CompoundTerm ct = (CompoundTerm)list;
+			if (ct.tag != TermConstants.listTag)
+			{
+				PrologException.typeError(TermConstants.listAtom, ct);
+			}
+			else
+			{
+				Term head = ct.args[0];
+				if (head instanceof CompoundTerm && ((CompoundTerm)head).tag == CompoundTermTag.get("/", 2))
+				{
+					CompoundTerm predicateIndicator = (CompoundTerm)head;
+					if (predicateIndicator.args[0] instanceof AtomTerm && predicateIndicator.args[1] instanceof IntegerTerm)
+					{
+						exports.add(CompoundTermTag.get(predicateIndicator));
+					}
+					else
+					{
+						PrologException.typeError(TermConstants.predicateIndicatorAtom, predicateIndicator);
+					}
+				}
+			}
+			list = ct.args[1];
+		}
+		if (!TermConstants.emptyListAtom.equals(list))
+		{
+			PrologException.typeError(TermConstants.listAtom, list);
+		}
+		module = environment.startNewModule(moduleName, exports);
+		currentPredicate = null;
+	}
+
 	public void addInitialization(PrologTextLoader loader, Term term)
 	{
 		module.addInitialization(loader.getCurrentPartialLoaderError(), term);
@@ -414,7 +452,18 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 			if (!loadedFiles.contains(inputName))
 			{
 				loadedFiles.add(inputName);
-				new PrologTextLoader(this, term);
+				// Instead of this I suppose we could have a module-stack-stack?
+				// When we load a new file we push the current stack and pop the stack from the stack-stack afterwards...
+				Stack<AtomTerm> currentModuleStack = environment.cloneModuleStack();
+				try
+				{
+					new PrologTextLoader(this, term);
+				}
+				finally
+				{
+					environment.restoreModuleStack(currentModuleStack);
+					module = environment.getModule();
+				}
 			}
 		}
 	}

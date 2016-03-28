@@ -1,6 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
  * Copyright (C) 2010       Daniel Thomas
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -20,15 +21,26 @@ package gnu.prolog.database;
 
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.term.AtomTerm;
+import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.PrologCode;
+import gnu.prolog.vm.PrologCodeUpdatedEvent;
+import gnu.prolog.vm.PrologCodeListener;
+import gnu.prolog.vm.PrologException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+import java.lang.ref.WeakReference;
+import java.lang.ref.ReferenceQueue;
+
 
 /**
  * Module in database
@@ -43,6 +55,74 @@ public class Module
 	/** initialization */
 	protected List<Pair<PrologTextLoaderError, Term>> initialization = Collections
 			.synchronizedList(new ArrayList<Pair<PrologTextLoaderError, Term>>());
+
+	protected AtomTerm name = null;
+	protected List<CompoundTermTag> exports = null;
+	public final static AtomTerm userAtom = AtomTerm.get("user");
+
+	/** PredicateTag to code mapping */
+	protected Map<CompoundTermTag, PrologCode> tag2code = new HashMap<CompoundTermTag, PrologCode>();
+	protected final Map<CompoundTermTag, List<PrologCodeListenerRef>> tag2listeners = new HashMap<CompoundTermTag, List<PrologCodeListenerRef>>();
+
+
+	public Module(AtomTerm name, List<CompoundTermTag> exports)
+	{
+		this.name = name;
+		this.exports = exports;
+	}
+
+	public void importPredicates(Environment environment, AtomTerm exportingModule, List<CompoundTermTag> exports) throws PrologException
+	{
+	   for (CompoundTermTag export: exports)
+	   {
+	      importPredicate(environment, exportingModule, export);
+	   }
+	}
+
+	public Predicate importPredicate(Environment environment, AtomTerm exportingModule, CompoundTermTag export) throws PrologException
+	{
+		Predicate p = null;
+		try
+		{
+			p = createDefinedPredicate(export);
+		}
+		catch(IllegalStateException e)
+		{
+			PrologException.permissionError(AtomTerm.get("redefine"), AtomTerm.get("predicate"), export.getPredicateIndicator());
+		}
+		Term[] args = new Term[export.arity];
+		for (int i = 0; i < args.length; i++)
+			args[i] = new VariableTerm();
+		Term head = new CompoundTerm(export, args);
+		Term body = crossModuleCall(exportingModule.value, head);
+		Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
+		p.setType(Predicate.TYPE.USER_DEFINED);
+		p.addClauseLast(linkClause);
+		environment.pushModule(name);
+		try
+		{
+			environment.loadPrologCode(export);
+			return p;
+		}
+		finally
+		{
+			environment.popModule();
+		}
+	}
+
+	/**
+	 * convenience method for getting a Module:Goal term
+	 *
+	 * @param targetModule
+	 *         Module to exeucte Goal in
+	 * @param goal
+	 *         Goal to execute
+	 * @return cross-module goal
+	 */
+	public static Term crossModuleCall(String targetModule, Term goal)
+	{
+		return new CompoundTerm(AtomTerm.get(":"), new Term[]{AtomTerm.get(targetModule), goal});
+	}
 
 	/**
 	 * create new predicate defined in this module
@@ -183,4 +263,154 @@ public class Module
 		}
 	}
 
+
+	protected final ReferenceQueue<? super PrologCodeListener> prologCodeListenerReferenceQueue = new ReferenceQueue<PrologCodeListener>();
+
+	/**
+	 * A {@link WeakReference} to a {@link PrologCodeListener}
+	 * 
+	 */
+	private static class PrologCodeListenerRef extends WeakReference<PrologCodeListener>
+	{
+		PrologCodeListenerRef(ReferenceQueue<? super PrologCodeListener> queue, PrologCodeListener listener,
+				CompoundTermTag tag)
+		{
+			super(listener, queue);
+			this.tag = tag;
+		}
+
+		CompoundTermTag tag;
+	}
+
+
+	/**
+	 * add prolog code listener
+	 * 
+	 * @param tag
+	 * @param listener
+	 */
+	public void addPrologCodeListener(Environment env, CompoundTermTag tag, PrologCodeListener listener)
+	{
+		synchronized (tag2listeners)
+		{
+			pollPrologCodeListeners();
+			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
+			if (list == null)
+			{
+				list = new ArrayList<PrologCodeListenerRef>();
+				tag2listeners.put(tag, list);
+			}
+			list.add(new PrologCodeListenerRef(prologCodeListenerReferenceQueue, listener, tag));
+		}
+	}
+
+	/**
+	 * remove prolog code listener
+	 *
+	 * @param env
+	 * @param tag
+	 * @param listener
+	 */
+	public void removePrologCodeListener(Environment env, CompoundTermTag tag, PrologCodeListener listener)
+	{
+		synchronized (tag2listeners)
+		{
+			pollPrologCodeListeners();
+			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
+			if (list != null)
+			{
+				ListIterator<PrologCodeListenerRef> i = list.listIterator();
+				while (i.hasNext())
+				{
+					PrologCodeListenerRef ref = i.next();
+					PrologCodeListener lst = ref.get();
+					if (lst == null)
+					{
+						i.remove();
+					}
+					else if (lst == listener)
+					{
+						i.remove();
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	public void predicateUpdated(Environment env, PredicateUpdatedEvent evt)
+	{
+		PrologCode code = tag2code.remove(evt.getTag());
+		pollPrologCodeListeners();
+		if (code == null) // if code was not loaded yet
+		{
+			return;
+		}
+		CompoundTermTag tag = evt.getTag();
+		synchronized (tag2listeners)
+		{
+			List<PrologCodeListenerRef> list = tag2listeners.get(tag);
+			if (list != null)
+			{
+				PrologCodeUpdatedEvent uevt = new PrologCodeUpdatedEvent(env, tag);
+				ListIterator<PrologCodeListenerRef> i = list.listIterator();
+				while (i.hasNext())
+				{
+					PrologCodeListenerRef ref = i.next();
+					PrologCodeListener lst = ref.get();
+					if (lst == null)
+					{
+						i.remove();
+					}
+					else
+					{
+						lst.prologCodeUpdated(uevt);
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Retrieve prolog code for a given tag
+	 *   If the code is not already loaded, load it here by invoking loadPrologCode on the environment
+	 *
+	 * @param env
+	 *   Environment to use for loading the code if not already compiled
+	 * @param tag
+	 *   Tag of the predicate to load
+	 * @return the {@link PrologCode} for the tag
+	 * @throws PrologException
+	 */
+	public synchronized PrologCode getPrologCode(Environment env, CompoundTermTag tag) throws PrologException
+	{
+		PrologCode code = tag2code.get(tag);
+		if (code == null)
+		{
+			code = env.loadPrologCode(tag);
+			tag2code.put(tag, code);
+		}
+		return code;
+
+	}
+
+	protected void pollPrologCodeListeners()
+	{
+		PrologCodeListenerRef ref;
+		synchronized (tag2listeners)
+		{
+			while (null != (ref = (PrologCodeListenerRef) prologCodeListenerReferenceQueue.poll()))
+			{
+				List<PrologCodeListenerRef> list = tag2listeners.get(ref.tag);
+				list.remove(ref);
+			}
+		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return name.toString();
+	}
 }

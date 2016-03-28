@@ -216,9 +216,9 @@ Ant Buildfile for GNU Prolog for Java.
 		</exec>
 	</target>
 
-	<target name="test" depends="compile,test-inriasuite,test-vanilla" description="Execute tests"/><!--,test-dcg -->
+	<target name="test" depends="compile,test-inriasuite,test-vanilla,test-modules" description="Execute tests"/><!--,test-dcg -->
 
-	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg"/>
+	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg,clean-modules"/>
 
 	<target name="test-vanilla" depends="compile">
 		<echo>Verify output in test/test-vanilla.out
@@ -279,6 +279,22 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 	<target name="clean-dcg">
 		<delete file="test/test-dcg.out" failonerror="false" />
 	</target>
+	<target name="test-modules" depends="compile">
+		<echo>Verify output in test/test-modules.out</echo>
+		<java classname="gnu.prolog.test.GoalRunner" dir="test/extending/modules" fork="true" logerror="true" output="test/test-modules.out">
+			<arg value="--once" />
+			<arg value="test_with_modules.pl" />
+			<arg value="test" />
+			<classpath>
+				<pathelement location="build/code/" />
+				<pathelement path="${java.class.path}" />
+			</classpath>
+		</java>
+	</target>
+	<target name="clean-modules">
+		<delete file="test/test-modules.out" failonerror="false" />
+	</target>
+	
 
 	<!-- Dangerous Regenerate the parser. WARNING: This may BREAK the parser. Use with Care.-->
 	<target name="regenerate-parser" depends="init">
