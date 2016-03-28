@@ -1,6 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
  * Copyright (C) 2010       Daniel Thomas
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -372,9 +373,13 @@ public class Module
 	}
 
 	/**
-	 * get prolog code
-	 * 
+	 * Retrieve prolog code for a given tag
+	 *   If the code is not already loaded, load it here by invoking loadPrologCode on the environment
+	 *
+	 * @param env
+	 *   Environment to use for loading the code if not already compiled
 	 * @param tag
+	 *   Tag of the predicate to load
 	 * @return the {@link PrologCode} for the tag
 	 * @throws PrologException
 	 */
