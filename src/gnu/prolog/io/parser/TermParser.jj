@@ -22,6 +22,7 @@ options {
   JAVA_UNICODE_ESCAPE = true;
   UNICODE_INPUT = true;
   FORCE_LA_CHECK = true;
+  TOKEN_FACTORY = "gnu.prolog.io.parser.TokenFactory";
 }
 
 PARSER_BEGIN(TermParser)
@@ -36,7 +37,7 @@ import java.util.*;
 
 public final class TermParser
 {
-  CharStream stream;
+  JavaCharStream stream;
   protected Environment environment;
 
   public int getCurrentLine()
@@ -525,9 +526,14 @@ Term curly_term(ReadOptions options):
 {Term t = null;}
 {
   open_curly()
-  [
-    t = term(options, 1201)
-  ] close_curly()
+  (
+    LOOKAHEAD(<CLOSE_CURLY_TOKEN>)
+    {
+    }
+  | [
+      t = term(options, 1201)
+    ]
+  ) close_curly()
   {
     if (t == null)
     {

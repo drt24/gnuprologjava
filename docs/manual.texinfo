@@ -229,6 +229,7 @@ If you wish to add further Prolog functionality, for example to support golog or
 @menu
 * Golog:: Using Prolog for situation calculus.
 * Definite clause grammar (DCG):: Support for part 3 of the ISO Prolog standard (ISO/IEC DTR 13211-3:2006) ``provide convenient and simple functionality for parsing and processing text in a variety of languages.''
+* Modules:: Support for modular code
 @end menu
 
 @node Golog
@@ -241,6 +242,17 @@ Should you have difficulty finding this file then Daniel Thomas may be able to h
 @subsection Definite clause grammar (DCG)
 The ISO working group on the Prolog standard publishes a reference implementation of the part 3 draft which it should be possible to load as with any other Prolog file. @uref{http://www.sju.edu/~jhodgson/wg17/Drafts/DCGs/reference_implementation}. Should you have difficulty finding it, it is also in the git repository for GPJ.
 This should then provide support for part 3 of the standard. This currently does not work as it depends on some of the 2006 ISO extensions which we should have implemented for 0.3.0.
+
+@node Modules
+@subsection Module support in GPJ
+GPJ supports SWI-Prolog-style modules. A single file can define 0..N modules, using the directive :-module/2. The first argument is the name of the module you would like to define, and must be an atom. The second argument is a list of predicate indicators which comprise the exported predicates - those accessible to other modules. By default, code is compiled into the module 'user' - if you never use the :-module/2 directive, this is where all your code will end up.
+
+A meta-predicate :/2 is provided to call code directly in other modules. The first argument is the name of the module, the second is the goal. Doing this changes the value of the current module to the named one, then executes the goal directly.
+
+When compiling a module, shims are installed in user for exported predicate. Suppose you export foo/3 from your module bar. This will result in the following predicate being created in the user module:
+@code{foo(A,B,C):- bar:foo(A,B,C).}
+
+The final element that is required for the module system is the fallback to the user module. If the currently executing code tries to call a predicate which is not defined in the current module, it will not decide that the predicate is undefined until it has further checked the user module. Continuing the example above, that means that if you are executing code in a module qux, and call foo(a,b,c) then - assuming there is not a foo/3 also defined in qux, which would take preference - the foo/3 definition in user would be used. This would call :/2, changing the current module to bar, then call foo/3 again, only this time the definition of the exported predicate would be found and executed. The current module is implemented via a stack, and manages restoring the state on backtrack as well as popping modules off the top once the :/2 goal has completed.
 
 @node Contributing
 @chapter Contributing

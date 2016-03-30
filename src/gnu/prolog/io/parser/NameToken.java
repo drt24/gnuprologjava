@@ -29,6 +29,11 @@ public class NameToken extends Token
 	public Operator xfOp; // postfix of infix operator
 	public String value; // converted value
 
+	public NameToken(int kind, String image)
+	{
+		this.kind = kind;
+		this.image = image;
+	}
 	public String getValue()
 	{
 		if (value == null)
