@@ -855,7 +855,7 @@ TOKEN :
 
 | <#NAMED_VARIABLE
 	: 	  <VARIABLE_INDICATOR_CHAR> (<ID_CONTINUE>)+
-              	| <LU> (<ID_CONTINUE>)					>
+		| <LU> (<ID_CONTINUE>)*					>
               	
 | <#VARIABLE_INDICATOR_CHAR
 	: 	  <UNDERSCORE_CHAR>			/* 6.5.2*/	>
