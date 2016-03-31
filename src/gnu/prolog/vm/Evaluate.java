@@ -24,10 +24,15 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.BigIntegerTerm;
+import gnu.prolog.term.RationalTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.NumericTerm;
 import gnu.prolog.term.VariableTerm;
 
 import java.util.Random;
+import java.math.BigInteger;
+import gnu.prolog.term.Rational;
 
 /**
  * Evaluates mathematical expressions as instructed by the
@@ -69,6 +74,7 @@ public class Evaluate
 	public final static CompoundTermTag band2 = CompoundTermTag.get("/\\", 2);
 	public final static CompoundTermTag bor2 = CompoundTermTag.get("\\/", 2);
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
+	public final static CompoundTermTag rdiv2 = CompoundTermTag.get("rdiv", 2);
 	/**
 	 * Implementation of the random/1 predicate <a
 	 * href="http://www.swi-prolog.org/man/arith.html#random/1">defined in
@@ -143,11 +149,7 @@ public class Evaluate
 	{
 		term = term.dereference();// ensure we are looking at most instantiated
 		// value
-		if (term instanceof FloatTerm)
-		{
-			return term;
-		}
-		else if (term instanceof IntegerTerm)
+		if (term instanceof NumericTerm)
 		{
 			return term;
 		}
@@ -774,6 +776,41 @@ public class Evaluate
 				}
 				int res = (int) (rand * limit.value);// scale it and cast it
 				return IntegerTerm.get(res);
+			}
+			else if (tag == rdiv2) // ***************************************
+			{
+				Term arg0 = args[0];
+				Term arg1 = args[1];
+				if (!(arg0 instanceof NumericTerm))
+				{
+					PrologException.typeError(TermConstants.numericAtom, arg0);
+				}
+				if (!(arg1 instanceof NumericTerm))
+				{
+					PrologException.typeError(TermConstants.numericAtom, arg1);
+				}
+				NumericTerm dividendTerm = (NumericTerm) arg0;
+				NumericTerm divisorTerm = (NumericTerm) arg1;
+				Rational dividend = null;
+				Rational divisor = null;
+				if (dividendTerm instanceof FloatTerm)
+					dividend = Rational.get(((FloatTerm)dividendTerm).value);
+				else if (dividendTerm instanceof IntegerTerm)
+					dividend = new Rational(BigInteger.valueOf(((IntegerTerm)dividendTerm).value), BigInteger.valueOf(1));
+				else if (dividendTerm instanceof BigIntegerTerm)
+					dividend = new Rational(((BigIntegerTerm)dividendTerm).value, BigInteger.valueOf(1));
+				else
+					undefined();
+
+				if (divisorTerm instanceof FloatTerm)
+					divisor = Rational.get(((FloatTerm)divisorTerm).value);
+				else if (divisorTerm instanceof IntegerTerm)
+					divisor = new Rational(BigInteger.valueOf(((IntegerTerm)divisorTerm).value), BigInteger.valueOf(1));
+				else if (divisorTerm instanceof BigIntegerTerm)
+					divisor = new Rational(((BigIntegerTerm)divisorTerm).value, BigInteger.valueOf(1));
+				else
+					undefined();
+				return RationalTerm.rationalize(dividend, divisor);
 			}
 			else
 			// ***************************************

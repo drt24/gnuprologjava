@@ -23,6 +23,8 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.BigIntegerTerm;
+import gnu.prolog.term.RationalTerm;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -190,6 +192,14 @@ public class TermWriter extends PrintWriter
 			{
 				print(")");
 			}
+		}
+		else if (term instanceof BigIntegerTerm)
+		{
+			displayBigInteger(options, (BigIntegerTerm) term);
+		}
+		else if (term instanceof RationalTerm)
+		{
+			displayRational(options, (RationalTerm) term);
 		}
 		else if (term instanceof IntegerTerm)
 		{
@@ -391,6 +401,34 @@ public class TermWriter extends PrintWriter
 	{
 		print(term.value);
 	}
+
+
+   	/**
+	 * display biginteger term
+	 * 
+	 * @param options
+	 *          current write options
+	 * @param term
+	 *          biginteger term to write
+	 */
+	protected void displayBigInteger(WriteOptions options, BigIntegerTerm term)
+	{
+		print(term.value);
+	}
+
+	/**
+	 * display rational term
+	 * 
+	 * @param options
+	 *          current write options
+	 * @param term
+	 *          rational term to write
+	 */
+	protected void displayRational(WriteOptions options, RationalTerm term)
+	{
+		print(term.value);
+	}
+
 
 	/**
 	 * display variable term

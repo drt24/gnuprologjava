@@ -100,6 +100,10 @@ public class TermComparator implements Comparator<Term>
 				{
 					return 0;
 				}
+			case Term.BIG_INTEGER:
+				BigIntegerTerm bit1 = (BigIntegerTerm) t1;
+				BigIntegerTerm bit2 = (BigIntegerTerm) t2;
+				return bit1.compareTo(bit2);
 			case Term.INTEGER:
 				IntegerTerm it1 = (IntegerTerm) t1;
 				IntegerTerm it2 = (IntegerTerm) t2;

@@ -81,6 +81,12 @@ public class TermUtils
 			FloatTerm f2 = (FloatTerm) term2;
 			return f1.value == f2.value;
 		}
+		else if (term1 instanceof BigIntegerTerm)
+		{
+			BigIntegerTerm bi1 = (BigIntegerTerm) term1;
+			BigIntegerTerm bi2 = (BigIntegerTerm) term2;
+			return bi1.value.equals(bi2.value);
+		}
 		else if (term1 instanceof IntegerTerm)
 		{
 			IntegerTerm i1 = (IntegerTerm) term1;

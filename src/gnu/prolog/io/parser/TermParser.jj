@@ -614,12 +614,12 @@ VariableTerm variable(ReadOptions options):
   }
 }
 
-IntegerTerm integer():
+NumericTerm integer():
 {}
 {
    <INTEGER_TOKEN>           // 6.4.4
    {
-     return IntegerTerm.get(token.image);
+     return NumericTerm.get(token.image);
    }
 }
 FloatTerm float_number():

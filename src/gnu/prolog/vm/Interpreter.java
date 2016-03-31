@@ -22,6 +22,7 @@ import gnu.prolog.io.PrologStream;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.BigIntegerTerm;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -346,6 +347,15 @@ public final class Interpreter implements HasEnvironment
 			IntegerTerm ct1 = (IntegerTerm) t1;
 			IntegerTerm ct2 = (IntegerTerm) t2;
 			if (ct1.value != ct2.value)
+			{
+				rc = PrologCode.RC.FAIL;
+			}
+		}
+		else if (t1 instanceof BigIntegerTerm /* && t2 instanceof BigIntegerTerm */)
+		{
+			BigIntegerTerm bit1 = (BigIntegerTerm) t1;
+			BigIntegerTerm bit2 = (BigIntegerTerm) t2;
+			if (bit1.value != bit2.value)
 			{
 				rc = PrologCode.RC.FAIL;
 			}

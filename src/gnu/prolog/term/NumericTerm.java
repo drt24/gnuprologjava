@@ -26,5 +26,16 @@ package gnu.prolog.term;
 public abstract class NumericTerm extends AtomicTerm
 {
 	private static final long serialVersionUID = 5912071498872487301L;
+	public static NumericTerm get(String s)
+	{
+		try
+		{
+			return IntegerTerm.get(s);
+		}
+		catch (IllegalArgumentException nfx)
+		{
+			return BigIntegerTerm.get(s);
+		}
+	}
 
 }
