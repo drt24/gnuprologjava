@@ -45,11 +45,11 @@ public class ModuleTest
 		{
 			System.err.println("Prolog compile error: " + error);
 		}
-                assertEquals(env.getLoadingErrors().size(), 0);
+                assertEquals(0, env.getLoadingErrors().size());
 		Term goalTerm = AtomTerm.get("test");
 		Interpreter.Goal g = interpreter.prepareGoal(goalTerm);
                 PrologCode.RC rc = interpreter.execute(g);
-                assertEquals(rc, PrologCode.RC.SUCCESS_LAST);
+                assertEquals(PrologCode.RC.SUCCESS_LAST, rc);
 	}
 
 	@Test
@@ -64,12 +64,12 @@ public class ModuleTest
 		{
 			System.err.println("Prolog compile error: " + error);
 		}
-                assertEquals(env.getLoadingErrors().size(), 0);
+                assertEquals(0, env.getLoadingErrors().size());
 		Term goalTerm = AtomTerm.get("test");
 		Interpreter.Goal g = interpreter.prepareGoal(goalTerm);
 		PrologCode.RC rc = interpreter.execute(g);
 		assertTrue(rc == PrologCode.RC.SUCCESS);
-		assertEquals(bos.toString(), ">predicate_in_user\n>a:predicate_exported_from_a\n>a:local_predicate\n>b:predicate_exported_from_b\n>a:predicate_exported_from_a\n>a:local_predicate\n>c:local_predicate\n");
+                assertEquals(">predicate_in_user\n>a:predicate_exported_from_a\n>a:local_predicate\n>b:predicate_exported_from_b\n>a:predicate_exported_from_a\n>a:local_predicate\n>c:local_predicate\n", bos.toString());
 	}
 
 }
