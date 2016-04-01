@@ -110,40 +110,158 @@ public class Evaluate
 		PrologException.evalutationError(TermConstants.undefinedAtom);
 	}
 
-	private static Pair<Double, Double> toDouble(Term arg0, Term arg1)
+	// The rule is that we need both args to be of the same type before we can add them
+	// If they are not, then convert them both to the highest value in this mapping:
+	// Integer: 0
+	// BigInteger: 1
+	// Float: 2
+	// Rational: 3
+	// This means that 10**500 + 0.2 is an overflow error, but 10**500 + 1 rdiv 5 is a rational
+	// Perhaps it would be better to detect this particular case and make them both rationals, but
+	// this is the behaviour SWI-Prolog uses so for now it is probably good enough.
+
+	private static int commonType(Term arg0, Term arg1) throws PrologException
 	{
-		double d0 = 0;
-		double d1 = 0;
-		if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+		int targetType = 0;
+		if (arg0 instanceof IntegerTerm)
 		{
-			IntegerTerm i0 = (IntegerTerm) arg0;
-			IntegerTerm i1 = (IntegerTerm) arg1;
-			d0 = i0.value;
-			d1 = i1.value;
 		}
-		else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
+		else if (arg0 instanceof BigIntegerTerm)
 		{
-			FloatTerm f0 = (FloatTerm) arg0;
-			IntegerTerm i1 = (IntegerTerm) arg1;
-			d0 = f0.value;
-			d1 = i1.value;
+			if (targetType < 1)
+				targetType = 1;
 		}
-		else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
+		else if (arg0 instanceof FloatTerm)
 		{
-			IntegerTerm i0 = (IntegerTerm) arg0;
-			FloatTerm f1 = (FloatTerm) arg1;
-			d0 = i0.value;
-			d1 = f1.value;
+			if (targetType < 2)
+				targetType = 2;
 		}
-		else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
+		else if (arg0 instanceof RationalTerm)
 		{
-			FloatTerm f0 = (FloatTerm) arg0;
-			FloatTerm f1 = (FloatTerm) arg1;
-			d0 = f0.value;
-			d1 = f1.value;
+			if (targetType < 3)
+				targetType = 3;
 		}
-		return new Pair<Double, Double>(d0, d1);
+		else
+		{
+			PrologException.typeError(TermConstants.numericAtom, arg0);
+		}
+
+		if (arg1 instanceof IntegerTerm)
+		{
+		}
+		else if (arg1 instanceof BigIntegerTerm)
+		{
+			if (targetType < 1)
+				targetType = 1;
+		}
+		else if (arg1 instanceof FloatTerm)
+		{
+			if (targetType < 2)
+				targetType = 2;
+		}
+		else if (arg1 instanceof RationalTerm)
+		{
+			if (targetType < 3)
+				targetType = 3;
+		}
+		else
+		{
+			PrologException.typeError(TermConstants.numericAtom, arg1);
+		}
+		return targetType;
 	}
+
+	private static double[] toDouble(Term... args) throws PrologException
+	{
+		double[] result = new double[args.length];
+		int i = 0;
+		for (Term t : args)
+		{
+			if (t instanceof IntegerTerm)
+			{
+				result[i++] = ((IntegerTerm)t).value;
+			}
+			else if (t instanceof FloatTerm)
+			{
+				result[i++] = ((FloatTerm)t).value;
+			}
+			else if (t instanceof BigIntegerTerm)
+			{
+				double d0 = ((BigIntegerTerm)t).value.doubleValue();
+				if (d0 == Double.POSITIVE_INFINITY || d0 == Double.NEGATIVE_INFINITY)
+					floatOverflow();
+				result[i++] = d0;
+			}
+			else if (t instanceof RationalTerm)
+			{
+				double d0 = ((RationalTerm)t).value.doubleValue();
+				if (d0 == Double.POSITIVE_INFINITY || d0 == Double.NEGATIVE_INFINITY)
+					floatOverflow();
+				result[i++] = d0;
+			}
+			else
+			{
+				PrologException.typeError(TermConstants.numericAtom, t);
+			}
+
+		}
+		return result;
+	}
+
+	private static BigInteger[] toBigInteger(Term... args) throws PrologException
+	{
+		BigInteger[] result = new BigInteger[args.length];
+		int i = 0;
+		for (Term t : args)
+		{
+			if (t instanceof IntegerTerm)
+			{
+				result[i++] = BigInteger.valueOf(((IntegerTerm)t).value);
+			}
+			else if (t instanceof BigIntegerTerm)
+			{
+				result[i++] = ((BigIntegerTerm)t).value;
+			}
+			else
+			{
+				PrologException.typeError(TermConstants.integerAtom, t);
+			}
+
+		}
+		return result;
+	}
+
+	private static Rational[] toRational(Term... args) throws PrologException
+	{
+		Rational[] result = new Rational[args.length];
+		int i = 0;
+		for (Term t : args)
+		{
+			if (t instanceof IntegerTerm)
+			{
+				result[i++] = Rational.get(((IntegerTerm)t).value);
+			}
+			else if (t instanceof BigIntegerTerm)
+			{
+				result[i++] = Rational.get(((BigIntegerTerm)t).value);
+			}
+			else if (t instanceof FloatTerm)
+			{
+				result[i++] = Rational.get(((FloatTerm)t).value);
+			}
+			else if (t instanceof RationalTerm)
+			{
+				result[i++] = ((RationalTerm)t).value;
+			}
+			else
+			{
+				PrologException.typeError(TermConstants.integerAtom, t);
+			}
+
+		}
+		return result;
+	}
+
 
 	public static Term evaluate(Term term) throws PrologException
 	{
@@ -173,7 +291,10 @@ public class Evaluate
 			{
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				int targetType = commonType(arg0, arg1);
+				switch(targetType)
+				{
+				case 0:
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					IntegerTerm i1 = (IntegerTerm) arg1;
@@ -184,45 +305,38 @@ public class Evaluate
 					}
 					return IntegerTerm.get((int) res);
 				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
+				case 1:
 				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					double res = f0.value + i1.value;
+					BigInteger[] bi = toBigInteger(arg0, arg1);
+					BigInteger res = bi[0].add(bi[1]);
+					return BigIntegerTerm.get(res);
+				}
+				case 2:
+				{
+					double[] f = toDouble(arg0, arg1);
+					double res = f[0] + f[1];
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
 						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
-				else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
+				case 3:
 				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					double res = i0.value + f1.value;
-					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
-					{
-						floatOverflow();
-					}
-					return new FloatTerm(res);
+					Rational[] bi = toRational(arg0, arg1);
+					Rational res = bi[0].add(bi[1]);
+					return RationalTerm.get(res);
 				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					double res = f0.value + f1.value;
-					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
-					{
-						floatOverflow();
-					}
-					return new FloatTerm(res);
 				}
 			}
 			else if (tag == sub2) // ***************************************
 			{
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				int targetType = commonType(arg0, arg1);
+				switch(targetType)
+				{
+				case 0:
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					IntegerTerm i1 = (IntegerTerm) arg1;
@@ -233,42 +347,37 @@ public class Evaluate
 					}
 					return IntegerTerm.get((int) res);
 				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
+				case 1:
 				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					double res = f0.value - i1.value;
+					BigInteger[] bi = toBigInteger(arg0, arg1);
+					BigInteger res = bi[0].subtract(bi[1]);
+					return BigIntegerTerm.get(res);
+				}
+				case 2:
+				{
+					double[] f = toDouble(arg0, arg1);
+					double res = f[0] - f[1];
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
 						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
-				else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
+				case 3:
 				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					double res = i0.value - f1.value;
-					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
-					{
-						floatOverflow();
-					}
-					return new FloatTerm(res);
+					Rational[] bi = toRational(arg0, arg1);
+					Rational res = bi[0].subtract(bi[1]);
+					return RationalTerm.get(res);
 				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					double res = f0.value - f1.value;
-					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
-					{
-						floatOverflow();
-					}
-					return new FloatTerm(res);
 				}
 			}
 			else if (tag == mul2) // ***************************************
 			{
+				// FIXME: does not handle rationals or bigints
+				// This is a bit more complicated because Integer * Integer can be BigInteger
+				// We really need a method that takes a BigInteger and returns either an IntegerTerm or BigIntegerTerm
+				// Note that float * anything -> float
+				// rational * anything else -> rational
 				Term arg0 = args[0];
 				Term arg1 = args[1];
 				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
@@ -318,6 +427,7 @@ public class Evaluate
 			}
 			else if (tag == intdiv2) // ***************************************
 			{
+				// FIXME: does not handle bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
 				if (!(arg0 instanceof IntegerTerm))
@@ -339,9 +449,11 @@ public class Evaluate
 			}
 			else if (tag == div2) // ***************************************
 			{
-				Pair<Double, Double> doubles = toDouble(args[0], args[1]);
-				double d0 = doubles.left;
-				double d1 = doubles.right;
+				// FIXME: does not handle rationals or bigints
+				// This is the trickiest case of all
+				double[] doubles = toDouble(args[0], args[1]);
+				double d0 = doubles[0];
+				double d1 = doubles[1];
 
 				if (d1 == 0)
 				{
@@ -358,43 +470,84 @@ public class Evaluate
 			{
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				if (!(arg0 instanceof IntegerTerm))
+				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg0);
 				}
-				if (!(arg1 instanceof IntegerTerm))
+				if (!(arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg1);
 				}
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				IntegerTerm i1 = (IntegerTerm) arg1;
-				if (i1.value == 0)
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
 				{
-					zeroDivizor();
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					if (i1.value == 0)
+					{
+						zeroDivizor();
+					}
+					int res = i0.value % i1.value;
+					return IntegerTerm.get(res);
 				}
-				int res = i0.value % i1.value;
-				return IntegerTerm.get(res);
+				else
+				{
+					// Otherwise upgrade both to BigIntegers
+					BigInteger b0;
+					BigInteger b1;
+					if (arg0 instanceof BigIntegerTerm)
+						b0 = ((BigIntegerTerm)arg0).value;
+					else
+						b0 = BigInteger.valueOf(((IntegerTerm)arg0).value);
+					if (arg1 instanceof BigIntegerTerm)
+						b1 = ((BigIntegerTerm)arg1).value;
+					else
+						b1 = BigInteger.valueOf(((IntegerTerm)arg1).value);
+					BigInteger res = b0.remainder(b1);
+					// FIXME: Result might not be a biginteger!
+					return BigIntegerTerm.get(res);
+				}
 			}
 			else if (tag == mod2) // ***************************************
 			{
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				if (!(arg0 instanceof IntegerTerm))
+				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg0);
 				}
-				if (!(arg1 instanceof IntegerTerm))
+				if (!(arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg1);
 				}
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				IntegerTerm i1 = (IntegerTerm) arg1;
-				if (i1.value == 0)
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
 				{
-					zeroDivizor();
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					if (i1.value == 0)
+					{
+						zeroDivizor();
+					}
+					int res = i0.value - (int) Math.floor((double) i0.value / i1.value) * i1.value;
+					return IntegerTerm.get(res);
 				}
-				int res = i0.value - (int) Math.floor((double) i0.value / i1.value) * i1.value;
-				return IntegerTerm.get(res);
+				else
+				{
+					// Otherwise upgrade both to BigIntegers
+					BigInteger b0;
+					BigInteger b1;
+					if (arg0 instanceof BigIntegerTerm)
+						b0 = ((BigIntegerTerm)arg0).value;
+					else
+						b0 = BigInteger.valueOf(((IntegerTerm)arg0).value);
+					if (arg1 instanceof BigIntegerTerm)
+						b1 = ((BigIntegerTerm)arg1).value;
+					else
+						b1 = BigInteger.valueOf(((IntegerTerm)arg1).value);
+					BigInteger res = b0.mod(b1);
+					// FIXME: Result might not be a biginteger!
+					return BigIntegerTerm.get(res);
+				}
+
 			}
 			else if (tag == neg1) // ***************************************
 			{
@@ -418,6 +571,19 @@ public class Evaluate
 					}
 					return new FloatTerm(res);
 				}
+				else if (arg0 instanceof BigIntegerTerm)
+				{
+					BigIntegerTerm f0 = (BigIntegerTerm) arg0;
+					BigInteger res = f0.value.negate();
+					return new BigIntegerTerm(res);
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm f0 = (RationalTerm) arg0;
+					Rational res = f0.value.negate();
+					return new RationalTerm(res);
+				}
+
 			}
 			else if (tag == abs1) // ***************************************
 			{
@@ -441,21 +607,22 @@ public class Evaluate
 					}
 					return new FloatTerm(res);
 				}
+				else if (arg0 instanceof BigIntegerTerm)
+				{
+					BigIntegerTerm f0 = (BigIntegerTerm) arg0;
+					BigInteger res = f0.value.abs();
+					return BigIntegerTerm.get(res);
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm f0 = (RationalTerm) arg0;
+					Rational res = f0.value.abs();
+					return RationalTerm.get(res);
+				}
 			}
 			else if (tag == sqrt1) // ***************************************
 			{
-				double d0 = 0;
-				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					d0 = i0.value;
-				}
-				else if (arg0 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					d0 = f0.value;
-				}
+				double d0 = toDouble(args[0])[0];
 				double res = Math.sqrt(d0);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
@@ -477,6 +644,18 @@ public class Evaluate
 					double res = f0.value >= 0 ? 1 : -1;
 					return new FloatTerm(res);
 				}
+				else if (arg0 instanceof BigIntegerTerm)
+				{
+					BigIntegerTerm i0 = (BigIntegerTerm) arg0;
+					return IntegerTerm.get(i0.value.signum());
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm i0 = (RationalTerm) arg0;
+					return IntegerTerm.get(i0.value.signum());
+
+				}
+
 			}
 			else if (tag == intpart1) // ***************************************
 			{
@@ -487,6 +666,7 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
+					// FIXME: Rationals/bigintegers not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					int sign = f0.value >= 0 ? 1 : -1;
 					double res = sign * Math.floor(Math.abs(f0.value));
@@ -502,6 +682,7 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
+					// FIXME: Rationals/bigintegers not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					int sign = f0.value >= 0 ? 1 : -1;
 					double res = f0.value - sign * Math.floor(Math.abs(f0.value));
@@ -510,16 +691,9 @@ public class Evaluate
 			}
 			else if (tag == float1) // ***************************************
 			{
-				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					return new FloatTerm(i0.value);
-				}
-				else if (arg0 instanceof FloatTerm)
-				{
-					return arg0;
-				}
+				if (args[0] instanceof FloatTerm)
+					return args[0];
+				return new FloatTerm(toDouble(args[0])[0]);
 			}
 			else if (tag == floor1) // ***************************************
 			{
@@ -530,6 +704,7 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
+					// FIXME: Rationals/bigintegers not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = Math.floor(f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
@@ -548,6 +723,7 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
+					// FIXME: Rationals/bigintegers not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					int sign = f0.value >= 0 ? 1 : -1;
 					double res = sign * Math.floor(Math.abs(f0.value));
@@ -567,6 +743,7 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
+					// FIXME: Rationals/bigintegers not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = Math.floor(f0.value + 0.5);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
@@ -581,10 +758,13 @@ public class Evaluate
 				Term arg0 = args[0];
 				if (arg0 instanceof IntegerTerm)
 				{
+					// This is surprising, but it *is* in the standard!
 					PrologException.typeError(floatAtom, arg0);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
+					// FIXME: Rationals/bigintegers not catered for
+					// Consider: X is ceiling(10**500 + 1 rdiv 3)
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = -Math.floor(-f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
@@ -596,9 +776,10 @@ public class Evaluate
 			}
 			else if (tag == power2) // ***************************************
 			{
-				Pair<Double, Double> doubles = toDouble(args[0], args[1]);
-				double d0 = doubles.left;
-				double d1 = doubles.right;
+				// FIXME: This is not right for high-precision values!
+				double[] doubles = toDouble(args[0], args[1]);
+				double d0 = doubles[0];
+				double d1 = doubles[1];
 
 				if (d0 == 0 && d1 < 0)
 				{
@@ -613,69 +794,25 @@ public class Evaluate
 			}
 			else if (tag == sin1) // ***************************************
 			{
-				double d0 = 0;
-				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					d0 = i0.value;
-				}
-				else if (arg0 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					d0 = f0.value;
-				}
+				double d0 = toDouble(args[0])[0];
 				double res = Math.sin(d0);
 				return new FloatTerm(res);
 			}
 			else if (tag == cos1) // ***************************************
 			{
-				double d0 = 0;
-				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					d0 = i0.value;
-				}
-				else if (arg0 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					d0 = f0.value;
-				}
+				double d0 = toDouble(args[0])[0];
 				double res = Math.cos(d0);
 				return new FloatTerm(res);
 			}
 			else if (tag == atan1) // ***************************************
 			{
-				double d0 = 0;
-				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					d0 = i0.value;
-				}
-				else if (arg0 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					d0 = f0.value;
-				}
+				double d0 = toDouble(args[0])[0];
 				double res = Math.atan(d0);
 				return new FloatTerm(res);
 			}
 			else if (tag == exp1) // ***************************************
 			{
-				double d0 = 0;
-				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					d0 = i0.value;
-				}
-				else if (arg0 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					d0 = f0.value;
-				}
+				double d0 = toDouble(args[0])[0];
 				double res = Math.exp(d0);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
@@ -685,18 +822,7 @@ public class Evaluate
 			}
 			else if (tag == log1) // ***************************************
 			{
-				double d0 = 0;
-				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
-				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					d0 = i0.value;
-				}
-				else if (arg0 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					d0 = f0.value;
-				}
+				double d0 = toDouble(args[0])[0];
 				if (d0 <= 0)
 				{
 					undefined();
@@ -799,6 +925,8 @@ public class Evaluate
 					dividend = new Rational(BigInteger.valueOf(((IntegerTerm)dividendTerm).value), BigInteger.valueOf(1));
 				else if (dividendTerm instanceof BigIntegerTerm)
 					dividend = new Rational(((BigIntegerTerm)dividendTerm).value, BigInteger.valueOf(1));
+                                else if (dividendTerm instanceof RationalTerm)
+					dividend = ((RationalTerm)dividendTerm).value;
 				else
 					undefined();
 
@@ -808,6 +936,8 @@ public class Evaluate
 					divisor = new Rational(BigInteger.valueOf(((IntegerTerm)divisorTerm).value), BigInteger.valueOf(1));
 				else if (divisorTerm instanceof BigIntegerTerm)
 					divisor = new Rational(((BigIntegerTerm)divisorTerm).value, BigInteger.valueOf(1));
+				else if (divisorTerm instanceof RationalTerm)
+					divisor = ((RationalTerm)divisorTerm).value;
 				else
 					undefined();
 				return RationalTerm.rationalize(dividend, divisor);
