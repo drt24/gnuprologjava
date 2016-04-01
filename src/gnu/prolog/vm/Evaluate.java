@@ -427,29 +427,52 @@ public class Evaluate
 			}
 			else if (tag == intdiv2) // ***************************************
 			{
-				// FIXME: does not handle bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				if (!(arg0 instanceof IntegerTerm))
+				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg0);
 				}
-				if (!(arg1 instanceof IntegerTerm))
+				if (!(arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg1);
 				}
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				IntegerTerm i1 = (IntegerTerm) arg1;
-				if (i1.value == 0)
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
 				{
-					zeroDivizor();
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					if (i1.value == 0)
+					{
+						zeroDivizor();
+					}
+					int res = i0.value / i1.value;
+					return IntegerTerm.get(res);
 				}
-				int res = i0.value / i1.value;
-				return IntegerTerm.get(res);
+				else
+				{
+					// Otherwise upgrade both to BigIntegers
+					BigInteger b0;
+					BigInteger b1;
+					if (arg0 instanceof BigIntegerTerm)
+						b0 = ((BigIntegerTerm)arg0).value;
+					else
+						b0 = BigInteger.valueOf(((IntegerTerm)arg0).value);
+					if (arg1 instanceof BigIntegerTerm)
+						b1 = ((BigIntegerTerm)arg1).value;
+					else
+						b1 = BigInteger.valueOf(((IntegerTerm)arg1).value);
+					if (b1.equals(BigInteger.ZERO))
+					{
+						zeroDivizor();
+					}
+					BigInteger res = b0.divide(b1);
+					// Note that BigIntegerTerm.get may return an IntegerTerm if appropriate
+					return BigIntegerTerm.get(res);
+				}
 			}
 			else if (tag == div2) // ***************************************
 			{
-				// FIXME: does not handle rationals or bigints
+				// FIXME: does not handle rationals or bigints4
 				// This is the trickiest case of all
 				double[] doubles = toDouble(args[0], args[1]);
 				double d0 = doubles[0];
@@ -503,7 +526,7 @@ public class Evaluate
 					else
 						b1 = BigInteger.valueOf(((IntegerTerm)arg1).value);
 					BigInteger res = b0.remainder(b1);
-					// FIXME: Result might not be a biginteger!
+					// Note that BigIntegerTerm.get may return an IntegerTerm if appropriate
 					return BigIntegerTerm.get(res);
 				}
 			}
@@ -544,7 +567,7 @@ public class Evaluate
 					else
 						b1 = BigInteger.valueOf(((IntegerTerm)arg1).value);
 					BigInteger res = b0.mod(b1);
-					// FIXME: Result might not be a biginteger!
+					// Note that BigIntegerTerm.get may return an IntegerTerm if appropriate
 					return BigIntegerTerm.get(res);
 				}
 
