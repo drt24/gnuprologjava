@@ -70,7 +70,8 @@ public class Rational implements Comparable
 	{
 		if (o instanceof Rational)
 		{
-			// FIXME: Hmm. This is not trivial!
+			Rational subtrahend = (Rational)o;
+			return numerator.multiply(subtrahend.denominator).subtract(subtrahend.numerator.multiply(denominator)).signum();
 		}
 		return hashCode() - o.hashCode();
 	}
