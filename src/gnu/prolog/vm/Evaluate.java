@@ -297,27 +297,28 @@ public class Evaluate
 				int targetType = commonType(arg0, arg1);
 				switch(targetType)
 				{
-				case 0:
+				case 0: // int + int
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					IntegerTerm i1 = (IntegerTerm) arg1;
 					long res = (long) i0.value + (long) i1.value;
-					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
+					if (!(res > Integer.MAX_VALUE || res < Integer.MIN_VALUE))
 					{
-						if (!mpSupport)
-							intOverflow();
-					}
-					else
 						return IntegerTerm.get((int) res);
-					// If mpSupport is true and there was an overflow, fall-through here to retry as BigInteger
+					}
+					else if (!mpSupport)
+					{
+						intOverflow();
+					}
+					// Otherwise, fall-through to biginteger case and try again
 				}
-				case 1:
+				case 1: // bigint + bigint
 				{
 					BigInteger[] bi = toBigInteger(arg0, arg1);
 					BigInteger res = bi[0].add(bi[1]);
 					return BigIntegerTerm.get(res);
 				}
-				case 2:
+				case 2: // float * float
 				{
 					double[] f = toDouble(arg0, arg1);
 					double res = f[0] + f[1];
@@ -327,7 +328,7 @@ public class Evaluate
 					}
 					return new FloatTerm(res);
 				}
-				case 3:
+				case 3: // rational * rational
 				{
 					Rational[] bi = toRational(arg0, arg1);
 					Rational res = bi[0].add(bi[1]);
@@ -342,27 +343,28 @@ public class Evaluate
 				int targetType = commonType(arg0, arg1);
 				switch(targetType)
 				{
-				case 0:
+				case 0: // int - int
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					IntegerTerm i1 = (IntegerTerm) arg1;
 					long res = (long) i0.value - (long) i1.value;
-					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
+					if (!(res > Integer.MAX_VALUE || res < Integer.MIN_VALUE))
 					{
-						if (!mpSupport)
-							intOverflow();
-					}
-					else
 						return IntegerTerm.get((int) res);
-					// If mpSupport is true and there was an overflow, fall-through here to retry as BigInteger
+					}
+					else if (!mpSupport)
+					{
+						intOverflow();
+					}
+					// Otherwise, fall-through to biginteger case and try again
 				}
-				case 1:
+				case 1: // bigint - bigint
 				{
 					BigInteger[] bi = toBigInteger(arg0, arg1);
 					BigInteger res = bi[0].subtract(bi[1]);
 					return BigIntegerTerm.get(res);
 				}
-				case 2:
+				case 2: // float - float
 				{
 					double[] f = toDouble(arg0, arg1);
 					double res = f[0] - f[1];
@@ -372,7 +374,7 @@ public class Evaluate
 					}
 					return new FloatTerm(res);
 				}
-				case 3:
+				case 3: // rational - rational
 				{
 					Rational[] bi = toRational(arg0, arg1);
 					Rational res = bi[0].subtract(bi[1]);
@@ -382,56 +384,50 @@ public class Evaluate
 			}
 			else if (tag == mul2) // ***************************************
 			{
-				// FIXME: does not handle rationals or bigints
-				// This is a bit more complicated because Integer * Integer can be BigInteger
-				// We really need a method that takes a BigInteger and returns either an IntegerTerm or BigIntegerTerm
-				// Note that float * anything -> float
-				// rational * anything else -> rational
+				// This is quite complicated
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				int targetType = commonType(arg0, arg1);
+
+				switch(targetType)
+				{
+				case 0: // integer * integer
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					IntegerTerm i1 = (IntegerTerm) arg1;
 					long res = (long) i0.value * (long) i1.value;
-					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
+					if (!(res > Integer.MAX_VALUE || res < Integer.MIN_VALUE))
+					{
+						return IntegerTerm.get((int) res);
+					}
+					else if (!mpSupport)
 					{
 						intOverflow();
 					}
-					return IntegerTerm.get((int) res);
+					// Otherwise, fall-through to biginteger case and try again
 				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
+				case 1: // bigint * bigint
 				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					double res = f0.value * i1.value;
+					BigInteger[] bi = toBigInteger(arg0, arg1);
+					BigInteger product = bi[0].multiply(bi[1]);
+					return BigIntegerTerm.get(product);
+				}
+				case 2: // float * float
+				{
+					double[] f = toDouble(arg0, arg1);
+					double res = f[0] * f[1];
 					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 					{
 						floatOverflow();
 					}
 					return new FloatTerm(res);
 				}
-				else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
+				case 3: // rational * rational
 				{
-					IntegerTerm i0 = (IntegerTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					double res = i0.value * f1.value;
-					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
-					{
-						floatOverflow();
-					}
-					return new FloatTerm(res);
+					Rational[] r = toRational(arg0, arg1);
+					Rational product = r[0].multiply(r[1]);
+					return RationalTerm.get(product);
 				}
-				else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
-				{
-					FloatTerm f0 = (FloatTerm) arg0;
-					FloatTerm f1 = (FloatTerm) arg1;
-					double res = f0.value * f1.value;
-					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
-					{
-						floatOverflow();
-					}
-					return new FloatTerm(res);
 				}
 			}
 			else if (tag == intdiv2) // ***************************************
@@ -481,22 +477,40 @@ public class Evaluate
 			}
 			else if (tag == div2) // ***************************************
 			{
-				// FIXME: does not handle rationals or bigints
-				// This is the trickiest case of all
-				double[] doubles = toDouble(args[0], args[1]);
-				double d0 = doubles[0];
-				double d1 = doubles[1];
+				Term arg0 = args[0];
+				Term arg1 = args[1];
+				// If a rational is NOT involved, convert everything to a float and do float division
+				if (arg0 instanceof RationalTerm || arg1 instanceof RationalTerm)
+				{
+					// Rational arithmetic
+					// Convert both to rationals
+					Rational[] r = toRational(arg0, arg1);
+					Rational res = r[0].divide(r[1]);
+					if (res.denominator().equals(BigInteger.ONE))
+					{
+						// This will either return an IntegerTerm or a BigIntegerTerm
+						return BigIntegerTerm.get(res.numerator());
+					}
+					return RationalTerm.get(res);
+				}
+				else
+				{
+					// Convert to floats
+					double[] doubles = toDouble(args[0], args[1]);
+					double d0 = doubles[0];
+					double d1 = doubles[1];
 
-				if (d1 == 0)
-				{
-					zeroDivizor();
+					if (d1 == 0)
+					{
+						zeroDivizor();
+					}
+					double res = d0 / d1;
+					if (Double.isInfinite(res))
+					{
+						floatOverflow();
+					}
+					return new FloatTerm(res);
 				}
-				double res = d0 / d1;
-				if (Double.isInfinite(res))
-				{
-					floatOverflow();
-				}
-				return new FloatTerm(res);
 			}
 			else if (tag == rem2) // ***************************************
 			{
@@ -753,7 +767,7 @@ public class Evaluate
 					double res = Math.floor(f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						// FIXME: return a bigint
+						// FIXME: return a bigint?
 						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
@@ -762,19 +776,19 @@ public class Evaluate
 			else if (tag == truncate1) // ***************************************
 			{
 				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
+				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					PrologException.typeError(floatAtom, arg0);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals/bigintegers not catered for
+					// FIXME: Rationals not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					int sign = f0.value >= 0 ? 1 : -1;
 					double res = sign * Math.floor(Math.abs(f0.value));
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						// FIXME: return a bigint
+						// FIXME: return a bigint?
 						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
@@ -783,18 +797,18 @@ public class Evaluate
 			else if (tag == round1) // ***************************************
 			{
 				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
+				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					PrologException.typeError(floatAtom, arg0);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals/bigintegers not catered for
+					// FIXME: Rationals not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = Math.floor(f0.value + 0.5);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						// FIXME: return a bigint
+						// FIXME: return a bigint?
 						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
@@ -803,14 +817,14 @@ public class Evaluate
 			else if (tag == ceiling1) // ***************************************
 			{
 				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
+				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					// This is surprising, but it *is* in the standard!
 					PrologException.typeError(floatAtom, arg0);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals/bigintegers not catered for
+					// FIXME: Rationals not catered for
 					// Consider: X is ceiling(10**500 + 1 rdiv 3)
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = -Math.floor(-f0.value);
@@ -824,7 +838,6 @@ public class Evaluate
 			}
 			else if (tag == power2) // ***************************************
 			{
-				// FIXME: This is not right for high-precision values!
 				// If either argument is a float, then the result is a float
 				// If the exponent is an rdiv, then the result is a float
 				// If the base is a rational and the exponent is a [big]integer, then the result is a rational
@@ -853,12 +866,25 @@ public class Evaluate
 				}
 				else if (args[0] instanceof RationalTerm)
 				{
-					// args[1] is a kind of integer, the result is a rational
+					// args[1] is a kind of integer, the result is a rational, except...
 					RationalTerm r = (RationalTerm)args[0];
 					if (args[1] instanceof BigIntegerTerm)
 					{
-						// FIXME: This is really just not implemented. 1/10 ^ (2 ** 500) is not undefined
-						undefined();
+						// This is what SWI-Prolog does, but they do it for IntegerTerm as well
+						// Here we take things a bit further and return (2/3)**10 as (2**10)/(3**10)
+						double[] doubles = toDouble(args[0], args[1]);
+						double d0 = doubles[0];
+						double d1 = doubles[1];
+						if (d0 == 0 && d1 < 0)
+						{
+							undefined();
+						}
+						double res = Math.pow(d0, d1);
+						if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
+						{
+							floatOverflow();
+						}
+						return new FloatTerm(res);
 					}
 					IntegerTerm i0 = (IntegerTerm)args[1];
 					if (r.value.numerator().equals(BigInteger.ZERO) && i0.value <= 0)
@@ -1048,7 +1074,6 @@ public class Evaluate
 					divisor = ((RationalTerm)divisorTerm).value;
 				else
 					undefined();
-				// FIXME: Check for zero divisor here, or in rationalize
 				return RationalTerm.rationalize(dividend, divisor);
 			}
 			else

@@ -196,6 +196,12 @@ public class Rational implements Comparable
 		return new Rational(numerator.multiply(BigInteger.valueOf(i)), denominator);
 	}
 
+	public Rational multiply(Rational multiplicand)
+	{
+		return new Rational(numerator.multiply(multiplicand.numerator), denominator.multiply(multiplicand.denominator));
+	}
+
+
 	public BigInteger denominator()
 	{
 		return denominator;

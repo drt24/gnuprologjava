@@ -17,6 +17,8 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -58,8 +60,12 @@ public class RationalTerm extends NumericTerm
 		return rc;
 	}
 
-	public static NumericTerm rationalize(Rational numerator, Rational denominator)
+	public static NumericTerm rationalize(Rational numerator, Rational denominator) throws PrologException
 	{
+		if (denominator.equals(BigInteger.ZERO))
+		{
+			PrologException.evalutationError(TermConstants.zeroDivizorAtom);
+		}
 		Rational result = numerator.divide(denominator);
 		if (result.isInt32())
 		{
