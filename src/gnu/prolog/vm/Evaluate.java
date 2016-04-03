@@ -75,6 +75,9 @@ public class Evaluate
 	public final static CompoundTermTag bor2 = CompoundTermTag.get("\\/", 2);
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
 	public final static CompoundTermTag rdiv2 = CompoundTermTag.get("rdiv", 2);
+
+	private final static boolean mpSupport = true;
+
 	/**
 	 * Implementation of the random/1 predicate <a
 	 * href="http://www.swi-prolog.org/man/arith.html#random/1">defined in
@@ -301,9 +304,12 @@ public class Evaluate
 					long res = (long) i0.value + (long) i1.value;
 					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
 					{
-						intOverflow();
+						if (!mpSupport)
+							intOverflow();
 					}
-					return IntegerTerm.get((int) res);
+					else
+						return IntegerTerm.get((int) res);
+					// If mpSupport is true and there was an overflow, fall-through here to retry as BigInteger
 				}
 				case 1:
 				{
@@ -343,9 +349,12 @@ public class Evaluate
 					long res = (long) i0.value - (long) i1.value;
 					if (res > Integer.MAX_VALUE || res < Integer.MIN_VALUE)
 					{
-						intOverflow();
+						if (!mpSupport)
+							intOverflow();
 					}
-					return IntegerTerm.get((int) res);
+					else
+						return IntegerTerm.get((int) res);
+					// If mpSupport is true and there was an overflow, fall-through here to retry as BigInteger
 				}
 				case 1:
 				{
@@ -472,7 +481,7 @@ public class Evaluate
 			}
 			else if (tag == div2) // ***************************************
 			{
-				// FIXME: does not handle rationals or bigints4
+				// FIXME: does not handle rationals or bigints
 				// This is the trickiest case of all
 				double[] doubles = toDouble(args[0], args[1]);
 				double d0 = doubles[0];
@@ -683,33 +692,45 @@ public class Evaluate
 			else if (tag == intpart1) // ***************************************
 			{
 				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
+				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					PrologException.typeError(floatAtom, arg0);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals/bigintegers not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					int sign = f0.value >= 0 ? 1 : -1;
 					double res = sign * Math.floor(Math.abs(f0.value));
 					return new FloatTerm(res);
 				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm f0 = (RationalTerm) arg0;
+					BigInteger quotient = f0.value.numerator().divide(f0.value.denominator());
+					return BigIntegerTerm.get(quotient);
+				}
 			}
 			else if (tag == fractpart1) // ***************************************
 			{
 				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
+				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					PrologException.typeError(floatAtom, arg0);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals/bigintegers not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					int sign = f0.value >= 0 ? 1 : -1;
 					double res = f0.value - sign * Math.floor(Math.abs(f0.value));
 					return new FloatTerm(res);
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm f0 = (RationalTerm) arg0;
+					BigInteger quotient = f0.value.numerator().divide(f0.value.denominator());
+					Rational r = new Rational(quotient, BigInteger.ONE);
+					Rational res = f0.value.subtract(r);
+					return new RationalTerm(res);
 				}
 			}
 			else if (tag == float1) // ***************************************
@@ -721,17 +742,18 @@ public class Evaluate
 			else if (tag == floor1) // ***************************************
 			{
 				Term arg0 = args[0];
-				if (arg0 instanceof IntegerTerm)
+				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					PrologException.typeError(floatAtom, arg0);
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals/bigintegers not catered for
+					// FIXME: Rationals not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = Math.floor(f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
+						// FIXME: return a bigint
 						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
@@ -752,6 +774,7 @@ public class Evaluate
 					double res = sign * Math.floor(Math.abs(f0.value));
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
+						// FIXME: return a bigint
 						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
@@ -771,6 +794,7 @@ public class Evaluate
 					double res = Math.floor(f0.value + 0.5);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
+						// FIXME: return a bigint
 						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
@@ -792,6 +816,7 @@ public class Evaluate
 					double res = -Math.floor(-f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
+						// FIXME: return a bigint
 						intOverflow();
 					}
 					return IntegerTerm.get((int) Math.round(res));
@@ -800,20 +825,80 @@ public class Evaluate
 			else if (tag == power2) // ***************************************
 			{
 				// FIXME: This is not right for high-precision values!
-				double[] doubles = toDouble(args[0], args[1]);
-				double d0 = doubles[0];
-				double d1 = doubles[1];
+				// If either argument is a float, then the result is a float
+				// If the exponent is an rdiv, then the result is a float
+				// If the base is a rational and the exponent is a [big]integer, then the result is a rational
+				// If the base and rational are both [big]integers then the result is a [big]integer
+				// int ** int is either int or bigint
+				// Actually if the exponent is a bigint, and the base is an int, we have a very big problem
+				// Unless the base is 1, every number is going to result in memory exhaustion
+				if (args[0] instanceof FloatTerm ||
+				    args[1] instanceof FloatTerm ||
+				    args[1] instanceof RationalTerm)
+				{
+					double[] doubles = toDouble(args[0], args[1]);
+					double d0 = doubles[0];
+					double d1 = doubles[1];
 
-				if (d0 == 0 && d1 < 0)
-				{
-					undefined();
+					if (d0 == 0 && d1 < 0)
+					{
+						undefined();
+					}
+					double res = Math.pow(d0, d1);
+					if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
+					{
+						floatOverflow();
+					}
+					return new FloatTerm(res);
 				}
-				double res = Math.pow(d0, d1);
-				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
+				else if (args[0] instanceof RationalTerm)
 				{
-					floatOverflow();
+					// args[1] is a kind of integer, the result is a rational
+					RationalTerm r = (RationalTerm)args[0];
+					if (args[1] instanceof BigIntegerTerm)
+					{
+						// FIXME: This is really just not implemented. 1/10 ^ (2 ** 500) is not undefined
+						undefined();
+					}
+					IntegerTerm i0 = (IntegerTerm)args[1];
+					if (r.value.numerator().equals(BigInteger.ZERO) && i0.value <= 0)
+					{
+						undefined();
+					}
+					return RationalTerm.get(r.value.pow(i0.value));
 				}
-				return new FloatTerm(res);
+				else
+				{
+					if (args[1] instanceof BigIntegerTerm)
+					{
+						if (args[0] instanceof IntegerTerm)
+						{
+							if (((IntegerTerm)args[0]).value == 1)
+								return IntegerTerm.get(1);
+							else if (((IntegerTerm)args[0]).value == 0)
+								return IntegerTerm.get(0);
+							else if (((IntegerTerm)args[0]).value == -1)
+							{
+								BigInteger mod = ((BigIntegerTerm)args[0]).value.mod(BigInteger.valueOf(2));
+								if (mod.equals(BigInteger.ONE))
+									return IntegerTerm.get(-1);
+								else
+									return IntegerTerm.get(1);
+
+							}
+						}
+						// Otherwise this is just too big!
+						intOverflow();
+					}
+					// base is either an integer or a biginteger. Exponent is an integer
+					BigInteger[] bi = toBigInteger(args[0]);
+					IntegerTerm i0 = (IntegerTerm)args[1];
+					if (bi[0].equals(BigInteger.ZERO) && i0.value < 0)
+					{
+						undefined();
+					}
+					return BigIntegerTerm.get(bi[0].pow(i0.value));
+				}
 			}
 			else if (tag == sin1) // ***************************************
 			{
@@ -963,6 +1048,7 @@ public class Evaluate
 					divisor = ((RationalTerm)divisorTerm).value;
 				else
 					undefined();
+				// FIXME: Check for zero divisor here, or in rationalize
 				return RationalTerm.rationalize(dividend, divisor);
 			}
 			else

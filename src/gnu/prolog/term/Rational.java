@@ -191,5 +191,25 @@ public class Rational implements Comparable
 				    subtrahend.denominator.multiply(denominator));
 	}
 
+	public Rational multiply(long i)
+	{
+		return new Rational(numerator.multiply(BigInteger.valueOf(i)), denominator);
+	}
+
+	public BigInteger denominator()
+	{
+		return denominator;
+	}
+
+	public BigInteger numerator()
+	{
+		return numerator;
+	}
+
+	public Rational pow(int i)
+	{
+		return new Rational(numerator.pow(i),
+				    denominator.pow(i));
+	}
 
 }
