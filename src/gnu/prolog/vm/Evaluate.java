@@ -123,7 +123,7 @@ public class Evaluate
 	// Perhaps it would be better to detect this particular case and make them both rationals, but
 	// this is the behaviour SWI-Prolog uses so for now it is probably good enough.
 
-	private static int commonType(Term arg0, Term arg1) throws PrologException
+	public static int commonType(Term arg0, Term arg1) throws PrologException
 	{
 		int targetType = 0;
 		if (arg0 instanceof IntegerTerm)
@@ -174,7 +174,8 @@ public class Evaluate
 		return targetType;
 	}
 
-	private static double[] toDouble(Term... args) throws PrologException
+	// Maybe these should be in NumericTerm?
+	public static double[] toDouble(Term... args) throws PrologException
 	{
 		double[] result = new double[args.length];
 		int i = 0;
@@ -211,7 +212,7 @@ public class Evaluate
 		return result;
 	}
 
-	private static BigInteger[] toBigInteger(Term... args) throws PrologException
+	public static BigInteger[] toBigInteger(Term... args) throws PrologException
 	{
 		BigInteger[] result = new BigInteger[args.length];
 		int i = 0;
@@ -234,7 +235,7 @@ public class Evaluate
 		return result;
 	}
 
-	private static Rational[] toRational(Term... args) throws PrologException
+	public static Rational[] toRational(Term... args) throws PrologException
 	{
 		Rational[] result = new Rational[args.length];
 		int i = 0;
