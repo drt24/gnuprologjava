@@ -230,9 +230,9 @@ Ant Buildfile for GNU Prolog for Java.
 		</exec>
 	</target>
 
-	<target name="test" depends="compile,test-inriasuite,test-vanilla,test-modules" description="Execute tests"/><!--,test-dcg -->
+        <target name="test" depends="compile,test-inriasuite,test-vanilla,test-modules,test-mp" description="Execute tests"/><!--,test-dcg -->
 
-	<target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg,clean-modules"/>
+        <target name="clean-test" depends="clean-vanilla,clean-inria,clean-dcg,clean-modules,clean-mp"/>
 
 	<target name="test-vanilla" depends="compile">
 		<echo>Verify output in test/test-vanilla.out
@@ -319,6 +319,26 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 	</target>
 	<target name="clean-modules">
 		<delete file="test/test-modules.out" failonerror="false" />
+        </target>
+
+        <target name="test-mp" depends="compile">
+		<junit printsummary="on"
+		       fork="true"
+		       haltonfailure="yes"
+                       dir="test/extending/mp">
+			<classpath refid="junit.class.path" />
+			<classpath>
+				<pathelement location="${build.test.dir}"/>
+			</classpath>
+			<formatter type="xml" />
+                        <test name="gnu.prolog.test.MPTest" haltonfailure="no" todir="${test.report.dir}">
+				<formatter type="plain" />
+				<formatter type="xml" />
+			</test>
+		</junit>
+	</target>
+        <target name="clean-mp">
+                <delete file="test/test-mp.out" failonerror="false" />
 	</target>
 	
 
