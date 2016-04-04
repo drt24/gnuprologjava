@@ -77,6 +77,7 @@ public class Evaluate
 	public final static CompoundTermTag rdiv2 = CompoundTermTag.get("rdiv", 2);
 
 	public final static boolean isUnbounded = true;
+	public final static boolean strictISO = false;
 
 	/**
 	 * Implementation of the random/1 predicate <a
@@ -385,7 +386,6 @@ public class Evaluate
 			}
 			else if (tag == mul2) // ***************************************
 			{
-				// This is quite complicated
 				Term arg0 = args[0];
 				Term arg1 = args[1];
 				int targetType = commonType(arg0, arg1);
@@ -456,7 +456,7 @@ public class Evaluate
 				}
 				else
 				{
-					// Otherwise upgrade both to BigIntegers
+					// Otherwise upgrade both to BigIntegers if one of them is already
 					BigInteger b0;
 					BigInteger b1;
 					if (arg0 instanceof BigIntegerTerm)
@@ -538,7 +538,7 @@ public class Evaluate
 				}
 				else
 				{
-					// Otherwise upgrade both to BigIntegers
+					// Otherwise upgrade both to BigIntegers if one is already
 					BigInteger b0;
 					BigInteger b1;
 					if (arg0 instanceof BigIntegerTerm)
@@ -579,7 +579,7 @@ public class Evaluate
 				}
 				else
 				{
-					// Otherwise upgrade both to BigIntegers
+					// Otherwise upgrade both to BigIntegers if one is already
 					BigInteger b0;
 					BigInteger b1;
 					if (arg0 instanceof BigIntegerTerm)
@@ -604,7 +604,14 @@ public class Evaluate
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					if (i0.value == Integer.MIN_VALUE)
 					{
-						intOverflow();
+						if (isUnbounded)
+						{
+							return new BigIntegerTerm(BigInteger.valueOf(i0.value).negate());
+						}
+						else
+						{
+							intOverflow();
+						}
 					}
 					return IntegerTerm.get(-i0.value);
 				}
@@ -640,7 +647,14 @@ public class Evaluate
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					if (i0.value == Integer.MIN_VALUE)
 					{
-						intOverflow();
+						if (isUnbounded)
+						{
+							return new BigIntegerTerm(BigInteger.valueOf(i0.value).abs());
+						}
+						else
+						{
+							intOverflow();
+						}
 					}
 					return IntegerTerm.get(Math.abs(i0.value));
 				}
@@ -709,7 +723,15 @@ public class Evaluate
 				Term arg0 = args[0];
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
-					PrologException.typeError(floatAtom, arg0);
+					if (strictISO)
+					{
+						PrologException.typeError(floatAtom, arg0);
+					}
+					else
+					{
+						// This seems a lot more logical to me
+						return arg0;
+					}
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
@@ -730,7 +752,15 @@ public class Evaluate
 				Term arg0 = args[0];
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
-					PrologException.typeError(floatAtom, arg0);
+					if (strictISO)
+					{
+						PrologException.typeError(floatAtom, arg0);
+					}
+					else
+					{
+						// This seems a lot more logical to me
+						return IntegerTerm.get(0);
+					}
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
@@ -759,7 +789,14 @@ public class Evaluate
 				Term arg0 = args[0];
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
-					PrologException.typeError(floatAtom, arg0);
+					if (strictISO)
+					{
+						PrologException.typeError(floatAtom, arg0);
+					}
+					else
+					{
+						return arg0;
+					}
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
@@ -779,7 +816,14 @@ public class Evaluate
 				Term arg0 = args[0];
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
-					PrologException.typeError(floatAtom, arg0);
+					if (strictISO)
+					{
+						PrologException.typeError(floatAtom, arg0);
+					}
+					else
+					{
+						return arg0;
+					}
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
@@ -800,7 +844,14 @@ public class Evaluate
 				Term arg0 = args[0];
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
-					PrologException.typeError(floatAtom, arg0);
+					if (strictISO)
+					{
+						PrologException.typeError(floatAtom, arg0);
+					}
+					else
+					{
+						return arg0;
+					}
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
@@ -820,8 +871,14 @@ public class Evaluate
 				Term arg0 = args[0];
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
-					// This is surprising, but it *is* in the standard!
-					PrologException.typeError(floatAtom, arg0);
+					if (strictISO)
+					{
+						PrologException.typeError(floatAtom, arg0);
+					}
+					else
+					{
+						return arg0;
+					}
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
@@ -924,6 +981,7 @@ public class Evaluate
 					{
 						undefined();
 					}
+					// FIXME: Does not respect isUnbounded
 					return BigIntegerTerm.get(bi[0].pow(i0.value));
 				}
 			}
