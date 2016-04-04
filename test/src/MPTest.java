@@ -28,6 +28,7 @@ import gnu.prolog.term.BigIntegerTerm;
 import gnu.prolog.term.RationalTerm;
 import gnu.prolog.term.Rational;
 import gnu.prolog.vm.Interpreter;
+import gnu.prolog.vm.Evaluate;
 import gnu.prolog.vm.Environment;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.database.PrologTextLoaderError;
@@ -129,66 +130,316 @@ public class MPTest
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(2), BigInteger.valueOf(3))));
         }
 
+
+        /* Now run all the SWI Prolog tests */
+        // div
         @Test
-        public void shiftRightLarge() throws PrologException
+        public void testDivMod() throws PrologException
         {
-                Term result = callPredicate("shift_right_large");
+                Term result = callPredicate("test_div_mod");
+        }
+
+        @Test
+        public void testDivMinint() throws PrologException
+        {
+                Term result = callPredicate("test_div_minint");
                 assertThat(result, instanceOf(IntegerTerm.class));
-                assertThat(((IntegerTerm)result).value, equalTo(0));
+                assertThat(((IntegerTerm)result).value, equalTo(-2147483648));
+        }
+
+        // gdiv
+        @Test
+        public void testGdivMinint() throws PrologException
+        {
+                Term result = callPredicate("test_gdiv_minint");
+                if (Evaluate.isUnbounded)
+                {
+                        assertThat(result, instanceOf(BigIntegerTerm.class));
+                        assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("9223372036854775808")));
+                }
+                else
+                {
+                        // FIXME: Should catch the exception here
+                }
+        }
+
+        // rem
+        @Test
+        public void testRemSmall() throws PrologException
+        {
+                Term result = callPredicate("test_rem_small");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(2));
         }
 
         @Test
-        public void shiftLeftLarge() throws PrologException
+        public void testRemSmallDivneg() throws PrologException
         {
-                Term result = callPredicate("shift_left_large");
-                assertThat(result, instanceOf(BigIntegerTerm.class));
-                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("-18446744073709551616")));
+                Term result = callPredicate("test_rem_small_divneg");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(2));
         }
 
         @Test
-        public void largeMod() throws PrologException
+        public void testRemSmallNeg() throws PrologException
         {
-                Term result = callPredicate("large_mod");
-                assertThat(result, instanceOf(BigIntegerTerm.class));
-                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("99999999999999999999999999999999999999999999999997")));
+                Term result = callPredicate("test_rem_small_neg");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(-2));
         }
 
         @Test
-        public void minInt() throws PrologException
+        public void testRemBig() throws PrologException
         {
-                Term result = callPredicate("min_int");
-                assertThat(result, instanceOf(BigIntegerTerm.class));
-                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("9223372036854775808")));
-        }
-
-        @Test
-        public void big_int_rem() throws PrologException
-        {
-                Term result = callPredicate("big_int_rem");
+                Term result = callPredicate("test_rem_big");
                 assertThat(result, instanceOf(IntegerTerm.class));
                 assertThat(((IntegerTerm)result).value, equalTo(6));
         }
 
         @Test
-        public void big_int_neg_rem() throws PrologException
+        public void testRemBigNeg() throws PrologException
         {
-                Term result = callPredicate("big_int_neg_rem");
+                Term result = callPredicate("test_rem_big_neg");
                 assertThat(result, instanceOf(IntegerTerm.class));
-                assertThat(((IntegerTerm)result).value, equalTo(-6));
+                assertThat(((IntegerTerm)result).value, equalTo(-6)); // FIXME: Only if MP
         }
 
         @Test
-        public void test_mod() throws PrologException
+        public void testRemExhaust() throws PrologException
         {
-                callPredicate("test_mod");
+                Term result = callPredicate("test_rem_exhaust");
         }
 
         @Test
-        public void min_int_div() throws PrologException
+        public void testRemBig2() throws PrologException
         {
-                Term result = callPredicate("minint");
+                Term result = callPredicate("test_rem_big2");
                 assertThat(result, instanceOf(IntegerTerm.class));
-                assertThat(((IntegerTerm)result).value, equalTo(-2147483648));
+                assertThat(((IntegerTerm)result).value, equalTo(-3));
         }
+
+        @Test
+        public void testRemAllq() throws PrologException
+        {
+                Term result = callPredicate("test_rem_allq");
+        }
+
+        // mod
+        @Test
+        public void testModSmall() throws PrologException
+        {
+                Term result = callPredicate("test_mod_small");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(2));
+        }
+
+        @Test
+        public void testModSmallDivNeg() throws PrologException
+        {
+                Term result = callPredicate("test_mod_small_divneg");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(-1));
+        }
+
+        @Test
+        public void testModSmallNeg() throws PrologException
+        {
+                Term result = callPredicate("test_mod_small_neg");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(1));
+        }
+
+        @Test
+        public void testModBig() throws PrologException
+        {
+                Term result = callPredicate("test_mod_big");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(6)); // FIXME: Only if MP
+        }
+
+        @Test
+        public void testModBigNeg() throws PrologException
+        {
+                Term result = callPredicate("test_mod_big_neg");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(4)); // FIXME: Only if MP
+        }
+
+        @Test
+        public void testModExhaust() throws PrologException
+        {
+                Term result = callPredicate("test_mod_exhaust");
+        }
+
+        @Test
+        public void testModBig2() throws PrologException
+        {
+                Term result = callPredicate("test_mod_big2");
+                assertThat(result, instanceOf(BigIntegerTerm.class));
+                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("99999999999999999999999999999999999999999999999997"))); // FIXME: Only if MP
+        }
+
+        // shift
+        @Test
+        public void testShiftRightLarge1() throws PrologException
+        {
+                Term result = callPredicate("test_shift_right_large_1");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(0));
+        }
+
+        @Test
+        public void testShiftRightLarge2() throws PrologException
+        {
+                Term result = callPredicate("test_shift_right_large_2");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(-1));
+        }
+
+        @Test
+        public void testShiftRightLarge3() throws PrologException
+        {
+                Term result = callPredicate("test_shift_right_large_3");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(0));
+        }
+
+        @Test
+        public void testShiftRightLarge4() throws PrologException
+        {
+                Term result = callPredicate("test_shift_right_large_4");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(0)); // FIXME: Only if MP
+        }
+
+        @Test
+        public void testShiftLeftLarge() throws PrologException
+        {
+                Term result = callPredicate("test_shift_left_large");
+                assertThat(result, instanceOf(BigIntegerTerm.class));
+                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("-18446744073709551616"))); // FIXME: Only if MP
+        }
+
+        // gcd
+        @Test
+        public void testGcd() throws PrologException
+        {
+                Term result = callPredicate("test_gcd");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(4));
+        }
+
+        @Test
+        public void testGcd2() throws PrologException
+        {
+                Term result = callPredicate("test_gcd_2");
+                assertThat(result, instanceOf(IntegerTerm.class));
+                assertThat(((IntegerTerm)result).value, equalTo(4));
+        }
+
+        // hyperbolic (not implemented!)
+        /*
+        @Test
+        public void testHyperbolicSinh() throws PrologException
+        {
+                Term result = callPredicate("test_hyperbolic_sinh");
+                assertThat(result, instanceOf(FloatTerm.class));
+                assertThat(((FloatTerm)result).value, equalTo(1.175));
+        }
+
+        @Test
+        public void testHyperbolicCosh() throws PrologException
+        {
+                Term result = callPredicate("test_hyperbolic_cosh");
+                assertThat(result, instanceOf(FloatTerm.class));
+                assertThat(((FloatTerm)result).value, equalTo(1.543));
+        }
+
+        @Test
+        public void testHyperbolicTanh() throws PrologException
+        {
+                Term result = callPredicate("test_hyperbolic_tanh");
+                assertThat(result, instanceOf(FloatTerm.class));
+                assertThat(((FloatTerm)result).value, equalTo(0.762));
+        }
+
+        @Test
+        public void testHyperbolicASinh() throws PrologException
+        {
+                Term result = callPredicate("test_hyperbolic_asinh");
+                assertThat(result, instanceOf(FloatTerm.class));
+                assertThat(((FloatTerm)result).value, equalTo(1.000));
+        }
+
+        @Test
+        public void testHyperbolicACosh() throws PrologException
+        {
+                Term result = callPredicate("test_hyperbolic_acosh");
+                assertThat(result, instanceOf(FloatTerm.class));
+                assertThat(((FloatTerm)result).value, equalTo(1.000));
+        }
+
+        @Test
+        public void testHyperbolicATanh() throws PrologException
+        {
+                Term result = callPredicate("test_hyperbolic_atanh");
+                assertThat(result, instanceOf(FloatTerm.class));
+                assertThat(((FloatTerm)result).value, equalTo(1.000));
+        }
+        */
+        // rationalize
+        @Test
+        public void testRationalize() throws PrologException
+        {
+                Term result = callPredicate("test_rationalize");
+                assertThat(result, instanceOf(RationalTerm.class));
+                assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(51), BigInteger.valueOf(10))));
+        }
+
+        // minint
+        @Test
+        public void testMinInt() throws PrologException
+        {
+                Term result = callPredicate("minint_tests");
+        }
+
+        // minint_promotion
+        @Test
+        public void testMinIntPromotion() throws PrologException
+        {
+                Term result = callPredicate("minint_promotion_tests");
+        }
+
+        // maxint
+        @Test
+        public void testMaxInt() throws PrologException
+        {
+                Term result = callPredicate("maxint_tests");
+        }
+
+        // maxint_promotion
+        @Test
+        public void testMaxIntPromotion() throws PrologException
+        {
+                Term result = callPredicate("maxint_promotion_tests");
+        }
+
+        // float_zero (not implemented)
+
+        // float_special
+        @Test
+        public void testFloatSpecial() throws PrologException
+        {
+                Term result = callPredicate("test_float_zero_cmp");
+        }
+
+        // arith_misc (not implemented)
+        /*
+        @Test
+        public void testArithMisc() throws PrologException
+        {
+                Term result = callPredicate("test_arith_misc_string");
+        }
+        */
 
 }

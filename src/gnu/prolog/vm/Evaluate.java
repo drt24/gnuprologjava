@@ -76,7 +76,10 @@ public class Evaluate
 	public final static CompoundTermTag band2 = CompoundTermTag.get("/\\", 2);
 	public final static CompoundTermTag bor2 = CompoundTermTag.get("\\/", 2);
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
-	public final static CompoundTermTag rdiv2 = CompoundTermTag.get("rdiv", 2);
+        public final static CompoundTermTag rdiv2 = CompoundTermTag.get("rdiv", 2);
+        public final static CompoundTermTag rationalize1 = CompoundTermTag.get("rationalize", 1);
+        public final static CompoundTermTag gcd2 = CompoundTermTag.get("gcd", 2);
+        public final static AtomTerm atomNan = AtomTerm.get("nan");
 
 	public final static boolean isUnbounded = true;
 	public final static boolean strictISO = false;
@@ -281,7 +284,11 @@ public class Evaluate
 		else if (term instanceof VariableTerm)
 		{
 			PrologException.instantiationError(term);
-		}
+                }
+                else if (atomNan.equals(term) && !strictISO)
+                {
+                        return new FloatTerm(Float.NaN);
+                }
 		else if (term instanceof CompoundTerm)
 		{
 			CompoundTerm ct = (CompoundTerm) term;
@@ -1333,7 +1340,30 @@ public class Evaluate
 				else
 					undefined();
 				return RationalTerm.rationalize(dividend, divisor);
-			}
+                        }
+                        else if (tag == rationalize1 && isUnbounded) // ***************************************
+			{
+				Term arg0 = args[0];
+                                if (!(arg0 instanceof FloatTerm))
+				{
+                                        PrologException.typeError(TermConstants.floatAtom, arg0);
+                                }
+                                return RationalTerm.get(Rational.get(((FloatTerm)arg0).value));
+                        }
+
+                        else if (tag == gcd2 && !strictISO)
+                        {
+                                Term arg0 = args[0];
+                                Term arg1 = args[1];
+                                typeTestInt(arg0);
+                                typeTestInt(arg1);
+                                if (arg0 instanceof IntegerTerm &&  arg1 instanceof IntegerTerm)
+                                {
+                                        return IntegerTerm.get(gcd(((IntegerTerm)arg0).value, ((IntegerTerm)arg1).value));
+                                }
+                                BigInteger[] bi = toBigInteger(arg0, arg1);
+                                return BigIntegerTerm.get(bi[0].gcd(bi[1]));
+                        }
 			else
 			// ***************************************
 			{
@@ -1351,6 +1381,12 @@ public class Evaluate
 		}
 		return null; // fake return
 	}
+
+        // Euclidean algorithm for GCD. java.lang.Math doesnt appear to have this
+        private static int gcd(int a, int b)
+        {
+                return b==0 ? a : gcd(b, a%b);
+        }
 
 	/**
 	 * Test the term for an integer term
