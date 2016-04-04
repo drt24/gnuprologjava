@@ -76,7 +76,7 @@ public class Evaluate
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
 	public final static CompoundTermTag rdiv2 = CompoundTermTag.get("rdiv", 2);
 
-	private final static boolean mpSupport = true;
+	public final static boolean isUnbounded = true;
 
 	/**
 	 * Implementation of the random/1 predicate <a
@@ -307,7 +307,7 @@ public class Evaluate
 					{
 						return IntegerTerm.get((int) res);
 					}
-					else if (!mpSupport)
+					else if (!isUnbounded)
 					{
 						intOverflow();
 					}
@@ -353,7 +353,7 @@ public class Evaluate
 					{
 						return IntegerTerm.get((int) res);
 					}
-					else if (!mpSupport)
+					else if (!isUnbounded)
 					{
 						intOverflow();
 					}
@@ -401,7 +401,7 @@ public class Evaluate
 					{
 						return IntegerTerm.get((int) res);
 					}
-					else if (!mpSupport)
+					else if (!isUnbounded)
 					{
 						intOverflow();
 					}
@@ -1038,7 +1038,7 @@ public class Evaluate
 				int res = (int) (rand * limit.value);// scale it and cast it
 				return IntegerTerm.get(res);
 			}
-			else if (tag == rdiv2) // ***************************************
+			else if (tag == rdiv2 && isUnbounded) // ***************************************
 			{
 				Term arg0 = args[0];
 				Term arg1 = args[1];
