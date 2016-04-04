@@ -162,15 +162,15 @@ test_minint(unbounded, N):-
         integer(N),
         N == -9223372036854775808.
 
-minint_tests(_):-
-        test_minint(unbounded, -9223372036854775808),
-        %test_minint(unbounded, -9 223 372 036 854 775 808),
-        test_minint(unbounded,  -0b1000000000000000000000000000000000000000000000000000000000000000),
-        %test_minint(-0b10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000),
-        test_minint(unbounded, -0o1000000000000000000000),
-        %test_minint(-0o10 0000 0000 0000 0000 0000),
-        test_minint(unbounded, -0x8000000000000000),
-        %test_minint(-0x8000_0000_0000_0000).
+minint_tests(IsBounded, _):-
+        test_minint(IsBounded, -9223372036854775808),
+        %test_minint(IsBounded, -9 223 372 036 854 775 808),
+        test_minint(IsBounded,  -0b1000000000000000000000000000000000000000000000000000000000000000),
+        %test_minint(IsBounded, -0b10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000),
+        test_minint(IsBounded, -0o1000000000000000000000),
+        %test_minint(IsBounded, -0o10 0000 0000 0000 0000 0000),
+        test_minint(IsBounded, -0x8000000000000000),
+        %test_minint(IsBounded, -0x8000_0000_0000_0000).
         true.
 
 
@@ -181,39 +181,37 @@ test_minint_promotion(unbounded, N):-
         integer(N),
         N == -9223372036854775809.
 
-minint_promotion_tests(_):-
-        write(a),
-        test_minint_promotion(unbounded, -9223372036854775809),
-        write(b),
-        %test_minint_promotion(unbounded, -9 223 372 036 854 775 809),
-        test_minint_promotion(unbounded, -0b1000000000000000000000000000000000000000000000000000000000000001),
-        write(c),
-        %test_minint_promotion(unbounded, -0b10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001),
-        test_minint_promotion(unbounded, -0o1000000000000000000001),
-        write(d),
-        %test_minint_promotion(unbounded, -0o10 0000 0000 0000 0000 0001),
-        test_minint_promotion(unbounded, -0x8000000000000001),
-        write(e),
-        %test_minint_promotion(unbounded, -0x8000_0000_0000_0001).
+minint_promotion_tests(IsBounded, _):-
+        test_minint_promotion(IsBounded, -9223372036854775809),
+        %test_minint_promotion(IsBounded, -9 223 372 036 854 775 809),
+        test_minint_promotion(IsBounded, -0b1000000000000000000000000000000000000000000000000000000000000001),
+        %test_minint_promotion(IsBounded, -0b10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001),
+        test_minint_promotion(IsBounded, -0o1000000000000000000001),
+        %test_minint_promotion(IsBounded, -0o10 0000 0000 0000 0000 0001),
+        test_minint_promotion(IsBounded, -0x8000000000000001),
+        %test_minint_promotion(IsBounded, -0x8000_0000_0000_0001).
         true.
 
 minint_promotion_test(A):- % Expect A == -9223372036854775808 if MP
 	A is -9223372036854775808-1+1.
 
 % maxint
-test_maxint(N) :-
+test_maxint(bounded, N):-
+        float(N).
+
+test_maxint(unbounded, N) :-
         integer(N),
         N == 9223372036854775807.
 
-maxint_tests(_):-
-        test_maxint(9223372036854775807),
-        %test_maxint(9 223 372 036 854 775 807),
-        test_maxint(0b111111111111111111111111111111111111111111111111111111111111111),
-        %test_maxint(0b1111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111),
-        test_maxint(0o777777777777777777777),
-        %test_maxint(0o7 7777 7777 7777 7777 7777),
-        test_maxint(0x7fffffffffffffff),
-        %test_maxint(0x7fff_ffff_ffff_ffff).
+maxint_tests(IsBounded, _):-
+        test_maxint(IsBounded, 9223372036854775807),
+        %test_maxint(IsBounded, 9 223 372 036 854 775 807),
+        test_maxint(IsBounded, 0b111111111111111111111111111111111111111111111111111111111111111),
+        %test_maxint(IsBounded, 0b1111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111),
+        test_maxint(IsBounded, 0o777777777777777777777),
+        %test_maxint(IsBounded, 0o7 7777 7777 7777 7777 7777),
+        test_maxint(IsBounded, 0x7fffffffffffffff),
+        %test_maxint(IsBounded, 0x7fff_ffff_ffff_ffff).
         true.
 
 % maxint_promotion_tests
@@ -223,21 +221,21 @@ test_maxint_promotion(unbounded, N) :-
         integer(N),
         N == 9223372036854775808.
 
-maxint_promotion_tests(_):-
-        test_maxint_promotion(unbounded, 9223372036854775808),
-        %test_maxint_promotion(unbounded, 9 223 372 036 854 775 808),
-        test_maxint_promotion(unbounded, 0b1000000000000000000000000000000000000000000000000000000000000000),
-        %test_maxint_promotion(unbounded, 0b10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000),
-        test_maxint_promotion(unbounded, 0o1000000000000000000000),
-        %test_maxint_promotion(unbounded, 0o10 0000 0000 0000 0000 0000),
-        test_maxint_promotion(unbounded, 0x8000000000000000),
-        %test_maxint_promotion(unbounded, 0x8000_0000_0000_0000).
+maxint_promotion_tests(IsBounded, _):-
+        test_maxint_promotion(IsBounded, 9223372036854775808),
+        %test_maxint_promotion(IsBounded, 9 223 372 036 854 775 808),
+        test_maxint_promotion(IsBounded, 0b1000000000000000000000000000000000000000000000000000000000000000),
+        %test_maxint_promotion(IsBounded, 0b10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000),
+        test_maxint_promotion(IsBounded, 0o1000000000000000000000),
+        %test_maxint_promotion(IsBounded, 0o10 0000 0000 0000 0000 0000),
+        test_maxint_promotion(IsBounded, 0x8000000000000000),
+        %test_maxint_promotion(IsBounded, 0x8000_0000_0000_0000).
         true.
 
 %  FIXME: Put float_overflow tests here, but only if MP is off
 
 % float_zero
-/* FIXME: Parser cannot parse 10e300 :(
+/* Unfortunately the parser cannot (yet) parse 10e300 :(
 min_zero(X) :-
 	X is -1.0/10e300/10e300.
 

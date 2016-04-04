@@ -30,6 +30,7 @@ import gnu.prolog.term.Rational;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.Evaluate;
 import gnu.prolog.vm.Environment;
+import gnu.prolog.vm.TermConstants;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.vm.PrologCode.RC;
@@ -40,6 +41,8 @@ import org.junit.Ignore;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assume.assumeThat;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -48,6 +51,9 @@ import static org.junit.Assert.assertEquals;
 
 public class MPTest
 {
+        private static Term intOverflowError = new CompoundTerm(PrologException.errorTag, new CompoundTerm(PrologException.evaluationErrorTag, TermConstants.intOverflowAtom), PrologException.errorAtom);
+        private static AtomTerm atomBounded = AtomTerm.get("bounded");
+        private static AtomTerm atomUnbounded = AtomTerm.get("unbounded");
         public Term callPredicate(String name, Term... args) throws PrologException
         {
                 VariableTerm result = new VariableTerm("Result");
@@ -151,15 +157,22 @@ public class MPTest
         @Test
         public void testGdivMinint() throws PrologException
         {
-                Term result = callPredicate("test_gdiv_minint");
                 if (Evaluate.isUnbounded)
                 {
+                        Term result = callPredicate("test_gdiv_minint");
                         assertThat(result, instanceOf(BigIntegerTerm.class));
                         assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("9223372036854775808")));
                 }
                 else
                 {
-                        // FIXME: Should catch the exception here
+                        try
+                        {
+                                Term result = callPredicate("test_gdiv_minint");
+                        }
+                        catch(PrologException pe)
+                        {
+                                assertThat(pe.getTerm(), equalTo(intOverflowError));
+                        }
                 }
         }
 
@@ -191,6 +204,7 @@ public class MPTest
         @Test
         public void testRemBig() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_rem_big");
                 assertThat(result, instanceOf(IntegerTerm.class));
                 assertThat(((IntegerTerm)result).value, equalTo(6));
@@ -199,9 +213,10 @@ public class MPTest
         @Test
         public void testRemBigNeg() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_rem_big_neg");
                 assertThat(result, instanceOf(IntegerTerm.class));
-                assertThat(((IntegerTerm)result).value, equalTo(-6)); // FIXME: Only if MP
+                assertThat(((IntegerTerm)result).value, equalTo(-6));
         }
 
         @Test
@@ -213,6 +228,7 @@ public class MPTest
         @Test
         public void testRemBig2() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_rem_big2");
                 assertThat(result, instanceOf(IntegerTerm.class));
                 assertThat(((IntegerTerm)result).value, equalTo(-3));
@@ -252,17 +268,19 @@ public class MPTest
         @Test
         public void testModBig() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_mod_big");
                 assertThat(result, instanceOf(IntegerTerm.class));
-                assertThat(((IntegerTerm)result).value, equalTo(6)); // FIXME: Only if MP
+                assertThat(((IntegerTerm)result).value, equalTo(6));
         }
 
         @Test
         public void testModBigNeg() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_mod_big_neg");
                 assertThat(result, instanceOf(IntegerTerm.class));
-                assertThat(((IntegerTerm)result).value, equalTo(4)); // FIXME: Only if MP
+                assertThat(((IntegerTerm)result).value, equalTo(4));
         }
 
         @Test
@@ -274,9 +292,10 @@ public class MPTest
         @Test
         public void testModBig2() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_mod_big2");
                 assertThat(result, instanceOf(BigIntegerTerm.class));
-                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("99999999999999999999999999999999999999999999999997"))); // FIXME: Only if MP
+                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("99999999999999999999999999999999999999999999999997")));
         }
 
         // shift
@@ -307,17 +326,19 @@ public class MPTest
         @Test
         public void testShiftRightLarge4() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_shift_right_large_4");
                 assertThat(result, instanceOf(IntegerTerm.class));
-                assertThat(((IntegerTerm)result).value, equalTo(0)); // FIXME: Only if MP
+                assertThat(((IntegerTerm)result).value, equalTo(0));
         }
 
         @Test
         public void testShiftLeftLarge() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_shift_left_large");
                 assertThat(result, instanceOf(BigIntegerTerm.class));
-                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("-18446744073709551616"))); // FIXME: Only if MP
+                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("-18446744073709551616")));
         }
 
         // gcd
@@ -391,6 +412,7 @@ public class MPTest
         @Test
         public void testRationalize() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_rationalize");
                 assertThat(result, instanceOf(RationalTerm.class));
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(51), BigInteger.valueOf(10))));
@@ -399,6 +421,7 @@ public class MPTest
         @Test
         public void testRational() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_rational");
                 assertThat(result, instanceOf(RationalTerm.class));
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(new BigInteger("2871044762448691"), new BigInteger("562949953421312"))));
@@ -409,28 +432,28 @@ public class MPTest
         @Test
         public void testMinInt() throws PrologException
         {
-                Term result = callPredicate("minint_tests");
+                Term result = callPredicate("minint_tests", Evaluate.isUnbounded?atomUnbounded:atomBounded);
         }
 
         // minint_promotion
         @Test
         public void testMinIntPromotion() throws PrologException
         {
-                Term result = callPredicate("minint_promotion_tests");
+                Term result = callPredicate("minint_promotion_tests", Evaluate.isUnbounded?atomUnbounded:atomBounded);
         }
 
         // maxint
         @Test
         public void testMaxInt() throws PrologException
         {
-                Term result = callPredicate("maxint_tests");
+                Term result = callPredicate("maxint_tests", Evaluate.isUnbounded?atomUnbounded:atomBounded);
         }
 
         // maxint_promotion
         @Test
         public void testMaxIntPromotion() throws PrologException
         {
-                Term result = callPredicate("maxint_promotion_tests");
+                Term result = callPredicate("maxint_promotion_tests", Evaluate.isUnbounded?atomUnbounded:atomBounded);
         }
 
         // float_zero (not implemented)
