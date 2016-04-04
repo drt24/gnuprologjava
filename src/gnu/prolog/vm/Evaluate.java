@@ -1,6 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
  * Copyright (C) 2010       Daniel Thomas
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -48,7 +49,8 @@ public class Evaluate
 	public final static CompoundTermTag add2 = CompoundTermTag.get("+", 2);
 	public final static CompoundTermTag sub2 = CompoundTermTag.get("-", 2);
 	public final static CompoundTermTag mul2 = CompoundTermTag.get("*", 2);
-	public final static CompoundTermTag intdiv2 = CompoundTermTag.get("//", 2);
+        public final static CompoundTermTag intdiv2 = CompoundTermTag.get("//", 2);
+        public final static CompoundTermTag safeintdiv2 = CompoundTermTag.get("div", 2);
 	public final static CompoundTermTag div2 = CompoundTermTag.get("/", 2);
 	public final static CompoundTermTag rem2 = CompoundTermTag.get("rem", 2);
 	public final static CompoundTermTag mod2 = CompoundTermTag.get("mod", 2);
@@ -269,8 +271,8 @@ public class Evaluate
 
 
 	public static Term evaluate(Term term) throws PrologException
-	{
-		term = term.dereference();// ensure we are looking at most instantiated
+        {
+                term = term.dereference();// ensure we are looking at most instantiated
 		// value
 		if (term instanceof NumericTerm)
 		{
@@ -475,6 +477,67 @@ public class Evaluate
 					// Note that BigIntegerTerm.get may return an IntegerTerm if appropriate
 					return BigIntegerTerm.get(res);
 				}
+                        }
+                        else if (tag == safeintdiv2 && !strictISO) // ***************************************
+                        {
+                                // This is div/2. SWI-Prolog seems to think this is ISO, but it doesnt seem to be in the ISO standard
+                                // The SWI-Prolog documentation states:
+                                // Integer division, defined as Result is (IntExpr1 - IntExpr1 mod IntExpr2) // IntExpr2.
+                                // In other words, this is integer division that rounds towards -infinity.
+                                // This function guarantees behaviour that is consistent with mod/2,
+                                //   i.e., the following holds for every pair of integers X,Y where Y =\= 0.
+                                //      Q is div(X, Y),
+                                //      M is mod(X, Y),
+                                //      X =:= Y*Q+M.
+				Term arg0 = args[0];
+				Term arg1 = args[1];
+				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
+				{
+					PrologException.typeError(TermConstants.integerAtom, arg0);
+				}
+				if (!(arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
+				{
+					PrologException.typeError(TermConstants.integerAtom, arg1);
+				}
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				{
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					if (i1.value == 0)
+					{
+						zeroDivizor();
+                                        }
+                                        // Round down
+                                        int res = i0.value / i1.value;
+                                        if ((i0.value > 0) != (i1.value > 0) && (i0.value % i1.value != 0))
+                                                res--;
+                                        return IntegerTerm.get(res);
+				}
+				else
+				{
+					// Otherwise upgrade both to BigIntegers if one of them is already
+					BigInteger b0;
+					BigInteger b1;
+					if (arg0 instanceof BigIntegerTerm)
+						b0 = ((BigIntegerTerm)arg0).value;
+					else
+						b0 = BigInteger.valueOf(((IntegerTerm)arg0).value);
+					if (arg1 instanceof BigIntegerTerm)
+						b1 = ((BigIntegerTerm)arg1).value;
+					else
+						b1 = BigInteger.valueOf(((IntegerTerm)arg1).value);
+					if (b1.equals(BigInteger.ZERO))
+					{
+						zeroDivizor();
+					}
+                                        BigInteger[] res = b0.divideAndRemainder(b1);
+                                        BigInteger quotient = res[0];
+                                        BigInteger remainder = res[1];
+                                        // Round /down/ here
+                                        if (remainder.equals(BigInteger.ZERO) || quotient.signum() >= 0)
+                                                return BigIntegerTerm.get(quotient);
+                                        return BigIntegerTerm.get(quotient.subtract(BigInteger.ONE));
+                                }
 			}
 			else if (tag == div2) // ***************************************
 			{
@@ -1100,8 +1163,12 @@ public class Evaluate
 					// Upgrade first to bigint
 					BigInteger[] bi = toBigInteger(arg0);
 					// If second is bigint, then complain
-					if (arg1 instanceof BigIntegerTerm)
-						intOverflow();
+                                        if (arg1 instanceof BigIntegerTerm)
+                                        {
+                                                // BigInteger can only hold Integer.MAX_VALUE bits.
+                                                // If we are shifting right by that much or more, the answer is always going to be 0
+                                                return IntegerTerm.get(0);
+                                        }
 					return BigIntegerTerm.get(bi[0].shiftRight(((IntegerTerm)arg1).value));
 				}
 				else
@@ -1112,10 +1179,11 @@ public class Evaluate
 				}
 			}
 			else if (tag == blshift2) // ***************************************
-			{
+                        {
 				Term arg0 = args[0];
-				Term arg1 = args[1];
-				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+                                Term arg1 = args[1];
+                                // Note that if we are unbounded then do not even bother trying to do this as an integer shift
+                                if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm && !isUnbounded)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
 					IntegerTerm i1 = (IntegerTerm) arg1;
@@ -1126,10 +1194,12 @@ public class Evaluate
 					 (arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
 				{
 					// Upgrade first to bigint
-					BigInteger[] bi = toBigInteger(arg0);
-					// If second is bigint, then complain
-					if (arg1 instanceof BigIntegerTerm)
-						intOverflow();
+                                        BigInteger[] bi = toBigInteger(arg0);
+                                        // If second is bigint, then complain
+                                        if (arg1 instanceof BigIntegerTerm)
+                                        {
+                                                intOverflow();
+                                        }
 					return BigIntegerTerm.get(bi[0].shiftLeft(((IntegerTerm)arg1).value));
 				}
 				else
