@@ -1,0 +1,3 @@
+This directory contains two libraries, junit and hamcrest. Their licenses are found in LICENSE.junit and LICENSE.hamcrest, respectively.
+
+Neither of these jars are required to run GNU Prolog for Java, they are only used for running unit tests during compilation.

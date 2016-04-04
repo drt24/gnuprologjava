@@ -5,6 +5,7 @@ Ant Buildfile for GNU Prolog for Java.
  Copyright (C) 1997-1999  Constantine Plotnikov,
  Copyright (C) 2009       Michiel Hendriks,
  Copyright (C) 2010       Daniel Thomas
+ Copyright (C) 2016       Matt Lilley
  This library is free software; you can redistribute it and/or
  modify it under the terms of the GNU Library General Public
  License as published by the Free Software Foundation; either
@@ -22,7 +23,6 @@ Ant Buildfile for GNU Prolog for Java.
 -->
 
 <project name="gnuprologjava" default="build">
-
 	<target name="init">
 		<loadproperties srcFile="src/gnu/prolog/version.properties">
 			<filterchain>
@@ -38,7 +38,6 @@ Ant Buildfile for GNU Prolog for Java.
 		<property name="version" value="${gnu.prolog.version.major}.${gnu.prolog.version.minor}.${gnu.prolog.version.revision}" />
 		<property name="ant.build.javac.target" value="1.6" />
 		<property name="ant.build.javac.source" value="1.6" />
-
 		<property name="java.debug" value="off" />
 
 		<property name="javacc.debug" value="false" />
@@ -54,8 +53,18 @@ Ant Buildfile for GNU Prolog for Java.
 		<property name="dist.debdir" value="dist/${dist.name-version}/" />
 
 		<mkdir dir="build" />
+		<mkdir dir="build/test" />
 		<mkdir dir="dist" />
-
+		<mkdir dir="test/output" />
+		<path id="junit.class.path">
+			<pathelement location="lib/junit-4.12.jar" />
+			<pathelement location="lib/hamcrest-core-1.3.jar" />
+			<pathelement location="build/code"/>
+			<pathelement location="${java.class.path}" />
+		</path>
+		<property name="test.dir" location="test/src" />
+		<property name="build.test.dir" location="build/test" />
+		<property name="test.report.dir" location="test/output" />
 	</target>
 
 	<target name="clean" depends="clean-test" description="Clean all generated content">
@@ -92,7 +101,12 @@ Ant Buildfile for GNU Prolog for Java.
 		       debug="${java.debug}" debuglevel="lines,vars,source"
 		       excludes="**/package-info.java" >
                   <compilerarg value="-J-Xss2M"/>
-                </javac>
+		</javac>
+		<javac srcdir="${test.dir}"
+		       destdir="${build.test.dir}"
+		       includeantruntime="false">
+			<classpath refid="junit.class.path" />
+		</javac>
 		<copy todir="build/code">
 			<fileset dir="src">
 				<include name="**/*.pro" />
@@ -279,17 +293,29 @@ Expect: "sec74.pl:LL:CC: predicate is not discontiguous" this is supposed to hap
 	<target name="clean-dcg">
 		<delete file="test/test-dcg.out" failonerror="false" />
 	</target>
+
+	<path id="classpath.test">
+		<pathelement location="/lib/junit-4.10.jar" />
+		<pathelement location="${testdir}" />
+		<pathelement location="${srcdir}" />
+		<path refid="${java.class.path}" />
+	</path>
+
 	<target name="test-modules" depends="compile">
-		<echo>Verify output in test/test-modules.out</echo>
-		<java classname="gnu.prolog.test.GoalRunner" dir="test/extending/modules" fork="true" logerror="true" output="test/test-modules.out">
-			<arg value="--once" />
-			<arg value="test_with_modules.pl" />
-			<arg value="test" />
+		<junit printsummary="on"
+		       fork="true"
+		       haltonfailure="yes"
+		       dir="test/extending/modules">
+			<classpath refid="junit.class.path" />
 			<classpath>
-				<pathelement location="build/code/" />
-				<pathelement path="${java.class.path}" />
+				<pathelement location="${build.test.dir}"/>
 			</classpath>
-		</java>
+			<formatter type="xml" />
+			<test name="gnu.prolog.test.ModuleTest" haltonfailure="no" todir="${test.report.dir}">
+				<formatter type="plain" />
+				<formatter type="xml" />
+			</test>
+		</junit>
 	</target>
 	<target name="clean-modules">
 		<delete file="test/test-modules.out" failonerror="false" />
