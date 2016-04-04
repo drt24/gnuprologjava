@@ -23,6 +23,7 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.BigIntegerTerm;
+import gnu.prolog.term.RationalTerm;
 import gnu.prolog.term.JavaObjectTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
@@ -352,10 +353,19 @@ public final class Interpreter implements HasEnvironment
 			}
 		}
 		else if (t1 instanceof BigIntegerTerm /* && t2 instanceof BigIntegerTerm */)
-		{
-			BigIntegerTerm bit1 = (BigIntegerTerm) t1;
+                {
+                        BigIntegerTerm bit1 = (BigIntegerTerm) t1;
 			BigIntegerTerm bit2 = (BigIntegerTerm) t2;
-			if (bit1.value != bit2.value)
+                        if (bit1.value.equals(bit2.value))
+			{
+				rc = PrologCode.RC.FAIL;
+			}
+                }
+                else if (t1 instanceof RationalTerm /* && t2 instanceof RationalTerm */)
+		{
+                        RationalTerm bit1 = (RationalTerm) t1;
+                        RationalTerm bit2 = (RationalTerm) t2;
+                        if (bit1.value.equals(bit2.value))
 			{
 				rc = PrologCode.RC.FAIL;
 			}
@@ -363,8 +373,8 @@ public final class Interpreter implements HasEnvironment
 		else if (t1 instanceof JavaObjectTerm /* && t2 instanceof JavaObjectTerm */)
 		{
 			JavaObjectTerm ct1 = (JavaObjectTerm) t1;
-			JavaObjectTerm ct2 = (JavaObjectTerm) t2;
-			if (ct1.value != ct2.value)
+                        JavaObjectTerm ct2 = (JavaObjectTerm) t2;
+                        if (ct1.value != ct2.value)
 			{
 				rc = PrologCode.RC.FAIL;
 			}
@@ -386,8 +396,8 @@ public final class Interpreter implements HasEnvironment
 	 */
 	public RC unify(Term t1, Term t2) throws PrologException
 	{
-		int undoPos = getUndoPosition();
-		RC rc = simpleUnify(t1, t2);
+                int undoPos = getUndoPosition();
+                RC rc = simpleUnify(t1, t2);
 		if (rc == PrologCode.RC.FAIL)
 		{
 			undo(undoPos);
