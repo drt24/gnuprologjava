@@ -150,6 +150,11 @@ test_hyperbolic_atanh(R):- % Expect V =:= 1.0
 test_rationalize(R):- % Expect R == 51 rdiv 10 if  MP
         R is rationalize(5.1).
 
+% rational
+test_rational(R):- % Expect R == 2871044762448691 rdiv 562949953421312 if  MP
+        R is rational(5.1).
+
+
 % minint
 test_minint(bounded, N):-
         float(N).

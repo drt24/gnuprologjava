@@ -78,6 +78,7 @@ public class Evaluate
 	public final static CompoundTermTag bnot1 = CompoundTermTag.get("\\", 1);
         public final static CompoundTermTag rdiv2 = CompoundTermTag.get("rdiv", 2);
         public final static CompoundTermTag rationalize1 = CompoundTermTag.get("rationalize", 1);
+        public final static CompoundTermTag rational1 = CompoundTermTag.get("rational", 1);
         public final static CompoundTermTag gcd2 = CompoundTermTag.get("gcd", 2);
         public final static AtomTerm atomNan = AtomTerm.get("nan");
 
@@ -1348,9 +1349,17 @@ public class Evaluate
 				{
                                         PrologException.typeError(TermConstants.floatAtom, arg0);
                                 }
+                                return RationalTerm.get(Rational.getApproximate(((FloatTerm)arg0).value));
+                        }
+                        else if (tag == rational1 && isUnbounded) // ***************************************
+			{
+				Term arg0 = args[0];
+                                if (!(arg0 instanceof FloatTerm))
+				{
+                                        PrologException.typeError(TermConstants.floatAtom, arg0);
+                                }
                                 return RationalTerm.get(Rational.get(((FloatTerm)arg0).value));
                         }
-
                         else if (tag == gcd2 && !strictISO)
                         {
                                 Term arg0 = args[0];

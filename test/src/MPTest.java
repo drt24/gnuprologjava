@@ -396,6 +396,15 @@ public class MPTest
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(51), BigInteger.valueOf(10))));
         }
 
+        @Test
+        public void testRational() throws PrologException
+        {
+                Term result = callPredicate("test_rational");
+                assertThat(result, instanceOf(RationalTerm.class));
+                assertThat(((RationalTerm)result).value, equalTo(new Rational(new BigInteger("2871044762448691"), new BigInteger("562949953421312"))));
+        }
+
+
         // minint
         @Test
         public void testMinInt() throws PrologException
