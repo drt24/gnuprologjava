@@ -1157,12 +1157,12 @@ public class Evaluate
 			{
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+                                if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm && (!isUnbounded || ((IntegerTerm)arg1).value <= 32))
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
-					IntegerTerm i1 = (IntegerTerm) arg1;
-					int res = i0.value >> i1.value;
-					return IntegerTerm.get(res);
+                                        IntegerTerm i1 = (IntegerTerm) arg1;
+                                        int res = i0.value >> i1.value;
+                                        return IntegerTerm.get(res);
 				}
 				else if ((arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm) &&
 					 (arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
