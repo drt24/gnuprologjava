@@ -800,15 +800,31 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = Math.floor(f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						// FIXME: return a bigint?
-						intOverflow();
+						if (isUnbounded)
+						{
+							return RationalTerm.get(Rational.get(res));
+						}
+						else
+						{
+							intOverflow();
+						}
 					}
 					return IntegerTerm.get((int) Math.round(res));
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm r0 = (RationalTerm)arg0;
+					BigInteger[] info = r0.value.numerator().divideAndRemainder(r0.value.denominator());
+					BigInteger quotient = info[0];
+					BigInteger remainder = info[1];
+					// Round down
+					if (remainder.equals(BigInteger.ZERO) || quotient.signum() >= 0)
+						return BigIntegerTerm.get(quotient);
+					return BigIntegerTerm.get(quotient.subtract(BigInteger.ONE));
 				}
 			}
 			else if (tag == truncate1) // ***************************************
@@ -827,16 +843,30 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					int sign = f0.value >= 0 ? 1 : -1;
 					double res = sign * Math.floor(Math.abs(f0.value));
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						// FIXME: return a bigint?
-						intOverflow();
+						if (isUnbounded)
+						{
+							return RationalTerm.get(Rational.get(res));
+						}
+						else
+						{
+							intOverflow();
+						}
 					}
 					return IntegerTerm.get((int) Math.round(res));
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm r0 = (RationalTerm)arg0;
+					BigInteger[] info = r0.value.numerator().divideAndRemainder(r0.value.denominator());
+					BigInteger quotient = info[0];
+					BigInteger remainder = info[1];
+					// Round toward zero
+					return BigIntegerTerm.get(quotient);
 				}
 			}
 			else if (tag == round1) // ***************************************
@@ -855,15 +885,31 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals not catered for
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = Math.floor(f0.value + 0.5);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						// FIXME: return a bigint?
-						intOverflow();
+						if (isUnbounded)
+						{
+							return RationalTerm.get(Rational.get(res));
+						}
+						else
+						{
+							intOverflow();
+						}
 					}
 					return IntegerTerm.get((int) Math.round(res));
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm r0 = (RationalTerm)arg0;
+					BigInteger[] info = r0.value.numerator().divideAndRemainder(r0.value.denominator());
+					BigInteger quotient = info[0];
+					BigInteger remainder = info[1];
+					// Round down - this is what the original implementation in Evaluate does for floats too
+					if (remainder.equals(BigInteger.ZERO) || quotient.signum() >= 0)
+						return BigIntegerTerm.get(quotient);
+					return BigIntegerTerm.get(quotient.subtract(BigInteger.ONE));
 				}
 			}
 			else if (tag == ceiling1) // ***************************************
@@ -882,16 +928,31 @@ public class Evaluate
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
-					// FIXME: Rationals not catered for
-					// Consider: X is ceiling(10**500 + 1 rdiv 3)
 					FloatTerm f0 = (FloatTerm) arg0;
 					double res = -Math.floor(-f0.value);
 					if (res < Integer.MIN_VALUE || res > Integer.MAX_VALUE)
 					{
-						// FIXME: return a bigint
-						intOverflow();
+						if (strictISO)
+						{
+							PrologException.typeError(floatAtom, arg0);
+						}
+						else
+						{
+							return arg0;
+						}
 					}
 					return IntegerTerm.get((int) Math.round(res));
+				}
+				else if (arg0 instanceof RationalTerm)
+				{
+					RationalTerm r0 = (RationalTerm)arg0;
+					BigInteger[] info = r0.value.numerator().divideAndRemainder(r0.value.denominator());
+					BigInteger quotient = info[0];
+					BigInteger remainder = info[1];
+					// Round up
+					if (remainder.equals(BigInteger.ZERO) || quotient.signum() < 0)
+						return BigIntegerTerm.get(quotient);
+					return BigIntegerTerm.get(quotient.add(BigInteger.ONE));
 				}
 			}
 			else if (tag == power2) // ***************************************
@@ -981,7 +1042,6 @@ public class Evaluate
 					{
 						undefined();
 					}
-					// FIXME: Does not respect isUnbounded
 					return BigIntegerTerm.get(bi[0].pow(i0.value));
 				}
 			}
@@ -1029,6 +1089,7 @@ public class Evaluate
 			}
 			else if (tag == brshift2) // ***************************************
 			{
+				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
 				typeTestInt(arg0);
@@ -1040,6 +1101,7 @@ public class Evaluate
 			}
 			else if (tag == blshift2) // ***************************************
 			{
+				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
 				typeTestInt(arg0);
@@ -1051,6 +1113,7 @@ public class Evaluate
 			}
 			else if (tag == band2) // ***************************************
 			{
+				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
 				typeTestInt(arg0);
@@ -1062,6 +1125,7 @@ public class Evaluate
 			}
 			else if (tag == bor2) // ***************************************
 			{
+				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
 				typeTestInt(arg0);
@@ -1073,6 +1137,7 @@ public class Evaluate
 			}
 			else if (tag == bnot1) // ***************************************
 			{
+				// FIXME: bigints
 				Term arg0 = args[0];
 				typeTestInt(arg0);
 				IntegerTerm i0 = (IntegerTerm) arg0;

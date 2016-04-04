@@ -18,6 +18,8 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.vm.Evaluate;
+
 /**
  * Abstract class for all Terms which represent numbers
  * 
@@ -32,9 +34,16 @@ public abstract class NumericTerm extends AtomicTerm
 		{
 			return IntegerTerm.get(s);
 		}
-		catch (IllegalArgumentException nfx)
+		catch (IllegalArgumentException iae)
 		{
-			return BigIntegerTerm.get(s);
+			if (Evaluate.isUnbounded)
+			{
+				return BigIntegerTerm.get(s);
+			}
+			else
+			{
+				throw(iae);
+			}
 		}
 	}
 

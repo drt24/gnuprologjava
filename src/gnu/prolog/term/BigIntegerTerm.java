@@ -17,6 +17,9 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.vm.Evaluate;
+import gnu.prolog.vm.PrologException;
+import gnu.prolog.vm.TermConstants;
 import java.math.BigInteger;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -51,18 +54,27 @@ public class BigIntegerTerm extends NumericTerm
 	 *          value of [big]integer term
 	 * @return new integer term
 	 */
-	public static NumericTerm get(BigInteger val)
+	public static NumericTerm get(BigInteger val) throws PrologException
 	{
 		if (INTEGER_MAX.compareTo(val) >= 0 && INTEGER_MIN.compareTo(val) <= 0)
-			return IntegerTerm.get(val.intValue());
-
-		BigIntegerTerm rc = cache.get(val);
-		if (rc == null)
 		{
-			rc = new BigIntegerTerm(val);
-			cache.put(val, rc);
+			return IntegerTerm.get(val.intValue());
 		}
-		return rc;
+		if (Evaluate.isUnbounded)
+		{
+			BigIntegerTerm rc = cache.get(val);
+			if (rc == null)
+			{
+				rc = new BigIntegerTerm(val);
+				cache.put(val, rc);
+			}
+			return rc;
+		}
+		else
+		{
+			PrologException.evalutationError(TermConstants.intOverflowAtom);
+			return null;
+		}
 	}
 
 	protected static BigInteger parseBigInt(String str)
@@ -191,7 +203,15 @@ public class BigIntegerTerm extends NumericTerm
 	 */
 	public static NumericTerm get(String str)
 	{
-		return get(parseBigInt(str));
+		try
+		{
+			return get(parseBigInt(str));
+		}
+		catch(PrologException impossible)
+		{
+			// This is not possible since we would not be calling get(String) if isUnbounded were false
+			return null;
+		}
 	}
 
 	/**
