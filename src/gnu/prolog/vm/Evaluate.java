@@ -1089,60 +1089,128 @@ public class Evaluate
 			}
 			else if (tag == brshift2) // ***************************************
 			{
-				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				typeTestInt(arg0);
-				typeTestInt(arg1);
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				IntegerTerm i1 = (IntegerTerm) arg1;
-				int res = i0.value >> i1.value;
-				return IntegerTerm.get(res);
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				{
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					int res = i0.value >> i1.value;
+					return IntegerTerm.get(res);
+				}
+				else if ((arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm) &&
+					 (arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
+				{
+					// Upgrade first to bigint
+					BigInteger[] bi = toBigInteger(arg0);
+					// If second is bigint, then complain
+					if (arg1 instanceof BigIntegerTerm)
+						intOverflow();
+					return BigIntegerTerm.get(bi[0].shiftRight(((IntegerTerm)arg1).value));
+				}
+				else
+				{
+					// One of these must fail
+					typeTestInt(arg0);
+					typeTestInt(arg1);
+				}
 			}
 			else if (tag == blshift2) // ***************************************
 			{
-				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				typeTestInt(arg0);
-				typeTestInt(arg1);
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				IntegerTerm i1 = (IntegerTerm) arg1;
-				int res = i0.value << i1.value;
-				return IntegerTerm.get(res);
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				{
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					int res = i0.value << i1.value;
+					return IntegerTerm.get(res);
+				}
+				else if ((arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm) &&
+					 (arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
+				{
+					// Upgrade first to bigint
+					BigInteger[] bi = toBigInteger(arg0);
+					// If second is bigint, then complain
+					if (arg1 instanceof BigIntegerTerm)
+						intOverflow();
+					return BigIntegerTerm.get(bi[0].shiftLeft(((IntegerTerm)arg1).value));
+				}
+				else
+				{
+					// One of these must fail
+					typeTestInt(arg0);
+					typeTestInt(arg1);
+				}
 			}
 			else if (tag == band2) // ***************************************
 			{
-				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				typeTestInt(arg0);
-				typeTestInt(arg1);
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				IntegerTerm i1 = (IntegerTerm) arg1;
-				int res = i0.value & i1.value;
-				return IntegerTerm.get(res);
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				{
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					int res = i0.value & i1.value;
+					return IntegerTerm.get(res);
+				}
+				else if ((arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm) &&
+					 (arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
+				{
+					// Upgrade both to bigint
+					BigInteger[] bi = toBigInteger(arg0, arg1);
+					return BigIntegerTerm.get(bi[0].and(bi[1]));
+				}
+				else
+				{
+					// One of these must fail
+					typeTestInt(arg0);
+					typeTestInt(arg1);
+				}
 			}
 			else if (tag == bor2) // ***************************************
 			{
-				// FIXME: bigints
 				Term arg0 = args[0];
 				Term arg1 = args[1];
-				typeTestInt(arg0);
-				typeTestInt(arg1);
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				IntegerTerm i1 = (IntegerTerm) arg1;
-				int res = i0.value | i1.value;
-				return IntegerTerm.get(res);
+				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+				{
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					IntegerTerm i1 = (IntegerTerm) arg1;
+					int res = i0.value | i1.value;
+					return IntegerTerm.get(res);
+				}
+				else if ((arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm) &&
+					 (arg1 instanceof IntegerTerm || arg1 instanceof BigIntegerTerm))
+				{
+					// Upgrade both to bigint
+					BigInteger[] bi = toBigInteger(arg0, arg1);
+					return BigIntegerTerm.get(bi[0].or(bi[1]));
+				}
+				else
+				{
+					// One of these must fail
+					typeTestInt(arg0);
+					typeTestInt(arg1);
+				}
 			}
 			else if (tag == bnot1) // ***************************************
 			{
-				// FIXME: bigints
 				Term arg0 = args[0];
-				typeTestInt(arg0);
-				IntegerTerm i0 = (IntegerTerm) arg0;
-				int res = ~i0.value;
-				return IntegerTerm.get(res);
+				if (arg0 instanceof IntegerTerm)
+				{
+					IntegerTerm i0 = (IntegerTerm) arg0;
+					int res = ~i0.value;
+					return IntegerTerm.get(res);
+				}
+				else if (arg0 instanceof BigIntegerTerm)
+				{
+					BigIntegerTerm bi0 = (BigIntegerTerm) arg0;
+					return BigIntegerTerm.get(bi0.value.not());
+				}
+				else
+				{
+					PrologException.typeError(TermConstants.integerAtom, arg0);
+				}
 			}
 			else if (tag == random1) // ***************************************
 			{
@@ -1227,6 +1295,10 @@ public class Evaluate
 	protected static void typeTestInt(Term term) throws PrologException
 	{
 		if (term instanceof IntegerTerm)
+		{
+			return;
+		}
+		if (term instanceof BigIntegerTerm)
 		{
 			return;
 		}
