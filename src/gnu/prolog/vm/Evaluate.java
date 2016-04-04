@@ -487,11 +487,7 @@ public class Evaluate
 					// Convert both to rationals
 					Rational[] r = toRational(arg0, arg1);
 					Rational res = r[0].divide(r[1]);
-					if (res.denominator().equals(BigInteger.ONE))
-					{
-						// This will either return an IntegerTerm or a BigIntegerTerm
-						return BigIntegerTerm.get(res.numerator());
-					}
+					// This will either return an IntegerTerm or a BigIntegerTerm
 					return RationalTerm.get(res);
 				}
 				else

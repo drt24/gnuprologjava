@@ -47,10 +47,22 @@ public class RationalTerm extends NumericTerm
 	 * 
 	 * @param val
 	 *          value of rational term
-	 * @return new rational term
+	 * @return new rational term, or biginteger term if denominator is 1
 	 */
-	public static RationalTerm get(Rational val)
+	public static NumericTerm get(Rational val)
 	{
+		if (val.denominator().equals(BigInteger.ONE))
+		{
+			try
+			{
+				return BigIntegerTerm.get(val.numerator());
+			}
+			catch(PrologException impossible)
+			{
+				// This cannot happen if unbounded support is on
+				return null;
+			}
+		}
 		RationalTerm rc = cache.get(val);
 		if (rc == null)
 		{
