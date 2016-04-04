@@ -155,7 +155,7 @@ test_minint(bounded, N):-
         float(N).
 test_minint(unbounded, N):-
         integer(N),
-        A == -9223372036854775808.
+        N == -9223372036854775808.
 
 minint_tests(_):-
         test_minint(unbounded, -9223372036854775808),
@@ -174,16 +174,21 @@ test_minint_promotion(bounded, N) :-
         float(N).
 test_minint_promotion(unbounded, N):-
         integer(N),
-        A == -9223372036854775809.
+        N == -9223372036854775809.
 
 minint_promotion_tests(_):-
+        write(a),
         test_minint_promotion(unbounded, -9223372036854775809),
+        write(b),
         %test_minint_promotion(unbounded, -9 223 372 036 854 775 809),
         test_minint_promotion(unbounded, -0b1000000000000000000000000000000000000000000000000000000000000001),
+        write(c),
         %test_minint_promotion(unbounded, -0b10000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001),
         test_minint_promotion(unbounded, -0o1000000000000000000001),
+        write(d),
         %test_minint_promotion(unbounded, -0o10 0000 0000 0000 0000 0001),
         test_minint_promotion(unbounded, -0x8000000000000001),
+        write(e),
         %test_minint_promotion(unbounded, -0x8000_0000_0000_0001).
         true.
 
@@ -193,7 +198,7 @@ minint_promotion_test(A):- % Expect A == -9223372036854775808 if MP
 % maxint
 test_maxint(N) :-
         integer(N),
-        A == 9223372036854775807.
+        N == 9223372036854775807.
 
 maxint_tests(_):-
         test_maxint(9223372036854775807),
