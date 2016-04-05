@@ -93,7 +93,7 @@ public class Module
                 Term[] headArgs = new Term[export.arity];
 		Term[] bodyArgs = new Term[export.arity];
 		Module exportingModule = environment.getModule(exportingModuleName);
-		MetaPredicateInfo metaPredicateInfo = exportingModule.getMetaPredicateInfo(export);
+		MetaPredicateInfo metaPredicateInfo = exportingModule.getMetaPredicateInfo(environment, export);
                 for (int i = 0; i < export.arity; i++)
                 {
 			headArgs[i] = new VariableTerm();
@@ -433,12 +433,27 @@ public class Module
 		return name;
 	}
 
-	public MetaPredicateInfo getMetaPredicateInfo(CompoundTermTag tag)
+	public MetaPredicateInfo getMetaPredicateInfo(Environment env, CompoundTermTag tag) throws PrologException
 	{
 		Predicate p = tag2predicate.get(tag);
 		if (p == null)
 		{
 			return null;
+		}
+		// We have to also ensure the code is loaded. Foreign predicates that define their
+		// own meta-args will only do so once resolved. We are going to have to load them
+		// very soon anyway if we are about to call them
+		if (p.getType() == Predicate.TYPE.BUILD_IN)
+		{
+			env.pushModule(name);
+			try
+			{
+				getPrologCode(env, tag);
+			}
+			finally
+			{
+				env.popModule();
+			}
 		}
 		return p.getMetaPredicateInfo();
 	}

@@ -17,12 +17,13 @@
  */
 package gnu.prolog.vm.buildins.allsolutions;
 
+import gnu.prolog.database.MetaPredicateInfo;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.TermUtils;
 import gnu.prolog.vm.BacktrackInfo;
-import gnu.prolog.vm.ExecuteOnlyCode;
+import gnu.prolog.vm.ExecuteOnlyMetaCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 
@@ -35,7 +36,7 @@ import java.util.Set;
 /**
  * prolog code
  */
-public class Predicate_bagof extends ExecuteOnlyCode
+public class Predicate_bagof extends ExecuteOnlyMetaCode
 {
 	static final CompoundTermTag plusTag = CompoundTermTag.get("+", 2);
 
@@ -139,5 +140,13 @@ public class Predicate_bagof extends ExecuteOnlyCode
 
 	protected void processList(List<Term> curTList)
 	{}
+
+	private static MetaPredicateInfo metaPredicateInfo = new MetaPredicateInfo(new MetaPredicateInfo.MetaType[]{MetaPredicateInfo.MetaType.NORMAL,
+														    MetaPredicateInfo.MetaType.META,
+														    MetaPredicateInfo.MetaType.NORMAL});
+	public MetaPredicateInfo getMetaPredicateInfo()
+	{
+		return metaPredicateInfo;
+	}
 
 }
