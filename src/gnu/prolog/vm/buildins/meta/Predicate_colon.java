@@ -61,8 +61,7 @@ public class Predicate_colon extends ExecuteOnlyCode
 			if (rc == RC.SUCCESS)
 			{
 				// Make a fake backtrack point here so we get a chance to restore the module context if backtracking
-				if (bi == null)
-					bi = new BacktrackInfo(interpreter.getUndoPosition(), -1);
+                                bi = new BacktrackInfo(interpreter.getUndoPosition(), -1);
 				interpreter.pushBacktrackInfo(bi);
 			}
 		}
