@@ -55,13 +55,15 @@
 :- ensure_loaded(sec94).
 :- ensure_loaded(sec817).
 
+:- ensure_loaded(test_32bit).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %  run the tests
 %
 %
 
-run_tests:-  
+run_tests:-
         test_74,
         test_78,
         test_82,
@@ -83,6 +85,7 @@ run_tests:-
         test_92,		
         test_93,
         test_94,
+        test_32bit,
          test_817.
 
 validate:-
