@@ -142,7 +142,7 @@ public class Predicate_bagof extends ExecuteOnlyMetaCode
 	{}
 
 	private static MetaPredicateInfo metaPredicateInfo = new MetaPredicateInfo(new MetaPredicateInfo.MetaType[]{MetaPredicateInfo.MetaType.NORMAL,
-														    MetaPredicateInfo.MetaType.META,
+														    MetaPredicateInfo.MetaType.EXISTS,
 														    MetaPredicateInfo.MetaType.NORMAL});
 	public MetaPredicateInfo getMetaPredicateInfo()
 	{

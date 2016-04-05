@@ -92,14 +92,49 @@ public class Module
 		}
                 Term[] headArgs = new Term[export.arity];
 		Term[] bodyArgs = new Term[export.arity];
+		Term body = null;
 		Module exportingModule = environment.getModule(exportingModuleName);
 		MetaPredicateInfo metaPredicateInfo = exportingModule.getMetaPredicateInfo(environment, export);
                 for (int i = 0; i < export.arity; i++)
                 {
 			headArgs[i] = new VariableTerm();
-			if (metaPredicateInfo != null && metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.META)
+			if (metaPredicateInfo != null)
 			{
-                                bodyArgs[i] = new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]});
+				if (metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.META)
+				{
+					bodyArgs[i] = new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]});
+				}
+				else if (metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.EXISTS)
+				{
+					// This means that it could be called with ^(Quantifiers, X) or X
+					// We want to substitute that for ^(Quantifiers, Module:X) or (Module:X), respectively
+					// Add this to body:
+					// ;(->(=(InArg, ^(Q, Goal)), =(OutArg, ^(Q, Module:Goal))), =(OutArg, Module:Goal)) which is
+					// (  InArg = ^(Q,Goal)
+					// -> X = ^(Q, Module:Goal)
+					// ;  X = Module:InArg
+					// )
+					VariableTerm quantifier = new VariableTerm("Q");
+					VariableTerm goal = new VariableTerm("Goal");
+					VariableTerm outArg = new VariableTerm("outArg");
+					bodyArgs[i] = outArg;
+					Term determinant = new CompoundTerm(AtomTerm.get(";"), new Term[]{new CompoundTerm(AtomTerm.get("->"), new Term[]{new CompoundTerm(AtomTerm.get("="), new Term[]{headArgs[i], new CompoundTerm(AtomTerm.get("^"), new Term[]{quantifier, goal})}),
+																			  new CompoundTerm(AtomTerm.get("="), new Term[]{outArg, new CompoundTerm(AtomTerm.get("^"), new Term[]{quantifier, new CompoundTerm(AtomTerm.get(":"), new Term[]{name, goal})})})}),
+													  new CompoundTerm(AtomTerm.get("="), new Term[]{outArg,
+																			 new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]})})});
+					if (body == null)
+					{
+						body = determinant;
+					}
+					else
+					{
+						body = new CompoundTerm(AtomTerm.get(","), new Term[]{determinant, body});
+					}
+				}
+				else
+				{
+					bodyArgs[i] = headArgs[i];
+				}
                         }
                         else
                         {
@@ -107,7 +142,14 @@ public class Module
                         }
 		}
                 Term head = new CompoundTerm(export, headArgs);
-		Term body = crossModuleCall(exportingModuleName.value, new CompoundTerm(export, bodyArgs));
+		if (body == null)
+		{
+			body = crossModuleCall(exportingModuleName.value, new CompoundTerm(export, bodyArgs));
+		}
+		else
+		{
+			body = new CompoundTerm(AtomTerm.get(","), new Term[]{body, crossModuleCall(exportingModuleName.value, new CompoundTerm(export, bodyArgs))});
+		}
 		Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
 		p.setType(Predicate.TYPE.USER_DEFINED);
 		p.addClauseLast(linkClause);
