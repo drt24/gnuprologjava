@@ -41,8 +41,8 @@ public abstract class NumericTerm extends AtomicTerm
 				return BigIntegerTerm.get(s);
 			}
 			else
-			{
-				throw(iae);
+                        {
+                                return new FloatTerm(s);
 			}
 		}
 	}
