@@ -156,7 +156,7 @@ test_rational(R):- % Expect R == 2871044762448691 rdiv 562949953421312 if  MP
 
 
 % minint
-test_minint(bounded, N):-
+test_minint(bounded, N):- !,
         float(N).
 test_minint(unbounded, N):-
         integer(N),
@@ -175,7 +175,7 @@ minint_tests(IsBounded, _):-
 
 
 % minint_promotion
-test_minint_promotion(bounded, N) :-
+test_minint_promotion(bounded, N) :- !,
         float(N).
 test_minint_promotion(unbounded, N):-
         integer(N),
@@ -196,7 +196,7 @@ minint_promotion_test(A):- % Expect A == -9223372036854775808 if MP
 	A is -9223372036854775808-1+1.
 
 % maxint
-test_maxint(bounded, N):-
+test_maxint(bounded, N):- !,
         float(N).
 
 test_maxint(unbounded, N) :-
@@ -215,7 +215,7 @@ maxint_tests(IsBounded, _):-
         true.
 
 % maxint_promotion_tests
-test_maxint_promotion(bounded, N) :-
+test_maxint_promotion(bounded, N) :- !,
         float(N).
 test_maxint_promotion(unbounded, N) :-
         integer(N),

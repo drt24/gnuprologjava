@@ -83,6 +83,7 @@ public class MPTest
         @Test
         public void testBigIntegerParsing() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("create_biginteger");
                 assertThat(result, instanceOf(BigIntegerTerm.class));
                 assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("1099511627776")));
@@ -91,6 +92,7 @@ public class MPTest
         @Test
         public void testBigIntegerParsingNotGarbage() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("create_biginteger");
                 assertThat(result, instanceOf(BigIntegerTerm.class));
                 assertThat(((BigIntegerTerm)result).value, not(equalTo(new BigInteger("1099511627777"))));
@@ -99,14 +101,30 @@ public class MPTest
         @Test
         public void testBigIntegerCreatedByExp() throws PrologException
         {
-                Term result = callPredicate("create_biginteger_by_exp");
-                assertThat(result, instanceOf(BigIntegerTerm.class));
-                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("2199023255552")));
+                if (Evaluate.isUnbounded)
+                {
+                        Term result = callPredicate("create_biginteger_by_exp");
+                        assertThat(result, instanceOf(BigIntegerTerm.class));
+                        assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("2199023255552")));
+                }
+                else
+                {
+                        try
+                        {
+                                Term result = callPredicate("create_biginteger_by_exp");
+                        }
+                        catch(PrologException pe)
+                        {
+                                assertThat(pe.getTerm().toString(), equalTo(intOverflowError.toString()));
+                        }
+                }
+
         }
 
         @Test
         public void testRationalCreatedByRdiv() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("create_rational_by_rdiv");
                 assertThat(result, instanceOf(RationalTerm.class));
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(2), BigInteger.valueOf(3))));
@@ -115,6 +133,7 @@ public class MPTest
         @Test
         public void testRationalCanonicalization1() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("create_canonical_rational_1");
                 assertThat(result, instanceOf(RationalTerm.class));
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(2), BigInteger.valueOf(3))));
@@ -123,6 +142,7 @@ public class MPTest
         @Test
         public void testRationalCanonicalization2() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("create_canonical_rational_2");
                 assertThat(result, instanceOf(RationalTerm.class));
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(-2), BigInteger.valueOf(3))));
@@ -131,6 +151,7 @@ public class MPTest
         @Test
         public void testRationalCanonicalization3() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("create_canonical_rational_3");
                 assertThat(result, instanceOf(RationalTerm.class));
                 assertThat(((RationalTerm)result).value, equalTo(new Rational(BigInteger.valueOf(2), BigInteger.valueOf(3))));
@@ -148,6 +169,7 @@ public class MPTest
         @Test
         public void testDivMinint() throws PrologException
         {
+                assumeThat(Evaluate.isUnbounded, is(true));
                 Term result = callPredicate("test_div_minint");
                 assertThat(result, instanceOf(IntegerTerm.class));
                 assertThat(((IntegerTerm)result).value, equalTo(-2147483648));
@@ -157,23 +179,10 @@ public class MPTest
         @Test
         public void testGdivMinint() throws PrologException
         {
-                if (Evaluate.isUnbounded)
-                {
-                        Term result = callPredicate("test_gdiv_minint");
-                        assertThat(result, instanceOf(BigIntegerTerm.class));
-                        assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("9223372036854775808")));
-                }
-                else
-                {
-                        try
-                        {
-                                Term result = callPredicate("test_gdiv_minint");
-                        }
-                        catch(PrologException pe)
-                        {
-                                assertThat(pe.getTerm(), equalTo(intOverflowError));
-                        }
-                }
+                assumeThat(Evaluate.isUnbounded, is(true));
+                Term result = callPredicate("test_gdiv_minint");
+                assertThat(result, instanceOf(BigIntegerTerm.class));
+                assertThat(((BigIntegerTerm)result).value, equalTo(new BigInteger("9223372036854775808")));
         }
 
         // rem
