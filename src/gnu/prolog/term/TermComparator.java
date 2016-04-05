@@ -1,5 +1,6 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -104,7 +105,11 @@ public class TermComparator implements Comparator<Term>
 				BigIntegerTerm bit1 = (BigIntegerTerm) t1;
 				BigIntegerTerm bit2 = (BigIntegerTerm) t2;
 				return bit1.compareTo(bit2);
-			case Term.INTEGER:
+                        case Term.RATIONAL:
+                                RationalTerm rt1 = (RationalTerm) t1;
+                                RationalTerm rt2 = (RationalTerm) t2;
+                                return rt1.compareTo(rt2);
+                        case Term.INTEGER:
 				IntegerTerm it1 = (IntegerTerm) t1;
 				IntegerTerm it2 = (IntegerTerm) t2;
 				return it1.value - it2.value;

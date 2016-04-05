@@ -1,5 +1,6 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -87,7 +88,13 @@ public class TermUtils
 			BigIntegerTerm bi2 = (BigIntegerTerm) term2;
 			return bi1.value.equals(bi2.value);
 		}
-		else if (term1 instanceof IntegerTerm)
+                else if (term1 instanceof RationalTerm)
+		{
+                        RationalTerm r1 = (RationalTerm) term1;
+                        RationalTerm r2 = (RationalTerm) term2;
+                        return r1.value.equals(r2.value);
+                }
+                else if (term1 instanceof IntegerTerm)
 		{
 			IntegerTerm i1 = (IntegerTerm) term1;
 			IntegerTerm i2 = (IntegerTerm) term2;
