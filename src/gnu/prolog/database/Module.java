@@ -79,7 +79,7 @@ public class Module
 	   }
 	}
 
-	public Predicate importPredicate(Environment environment, AtomTerm exportingModule, CompoundTermTag export) throws PrologException
+	public Predicate importPredicate(Environment environment, AtomTerm exportingModuleName, CompoundTermTag export) throws PrologException
 	{
 		Predicate p = null;
 		try
@@ -90,13 +90,26 @@ public class Module
 		{
 			PrologException.permissionError(AtomTerm.get("redefine"), AtomTerm.get("predicate"), export.getPredicateIndicator());
 		}
-		Term[] args = new Term[export.arity];
-		for (int i = 0; i < args.length; i++)
-			args[i] = new VariableTerm();
-		Term head = new CompoundTerm(export, args);
-		Term body = crossModuleCall(exportingModule.value, head);
-		Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
-		p.setType(Predicate.TYPE.USER_DEFINED);
+                Term[] headArgs = new Term[export.arity];
+		Term[] bodyArgs = new Term[export.arity];
+		Module exportingModule = environment.getModule(exportingModuleName);
+		MetaPredicateInfo metaPredicateInfo = exportingModule.getMetaPredicateInfo(export);
+                for (int i = 0; i < export.arity; i++)
+                {
+			headArgs[i] = new VariableTerm();
+			if (metaPredicateInfo != null && metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.META)
+			{
+                                bodyArgs[i] = new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]});
+                        }
+                        else
+                        {
+                                bodyArgs[i] = headArgs[i];
+                        }
+                }
+                Term head = new CompoundTerm(export, headArgs);
+		Term body = crossModuleCall(exportingModuleName.value, new CompoundTerm(export, bodyArgs));
+                Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
+                p.setType(Predicate.TYPE.USER_DEFINED);
 		p.addClauseLast(linkClause);
 		environment.pushModule(name);
 		try
@@ -108,7 +121,7 @@ public class Module
 		{
 			environment.popModule();
 		}
-	}
+        }
 
 	/**
 	 * convenience method for getting a Module:Goal term
@@ -412,5 +425,15 @@ public class Module
 	public String toString()
 	{
 		return name.toString();
+	}
+
+	public MetaPredicateInfo getMetaPredicateInfo(CompoundTermTag tag)
+	{
+		Predicate p = tag2predicate.get(tag);
+		if (p == null)
+		{
+			return null;
+		}
+		return p.getMetaPredicateInfo();
 	}
 }

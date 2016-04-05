@@ -77,6 +77,8 @@ public class Predicate
 	protected boolean propertiesLocked = false;
 	/** dynamic property of predicate */
 	protected boolean dynamicFlag = false;
+	/** meta property of predicate */
+	protected MetaPredicateInfo metaPredicateInfo = null;
 	/** class name for external predicate */
 	protected String javaClassName;
 	/** set files where this predicate is defined */
@@ -307,6 +309,21 @@ public class Predicate
 			throw new IllegalStateException("dynamic property of predicate could not be changed");
 		}
 		dynamicFlag = true;
+	}
+
+	/**
+	 * set "meta" property of predicate to the given value. This method must be called
+	 * before the /goal/ is called, but can be called either before or after the predicate
+	 * has any clauses added to it
+	 */
+	public synchronized void setMeta(MetaPredicateInfo info)
+	{
+		metaPredicateInfo = info;
+	}
+
+	public synchronized MetaPredicateInfo getMetaPredicateInfo()
+	{
+		return metaPredicateInfo;
 	}
 
 	@Override

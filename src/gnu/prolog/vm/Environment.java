@@ -406,6 +406,11 @@ public class Environment implements PredicateListener
 		return modules.get(moduleStack.peek());
 	}
 
+	public Module getModule(AtomTerm name)
+	{
+		return modules.get(name);
+	}
+
 	/**
 	 * load code for prolog
 	 * 
