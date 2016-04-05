@@ -17,4 +17,13 @@ local_predicate:-
 
 % This is a weak override for the one in user
 predicate_with_choicepoint(X):-
-	member(X, [a,b,c]).
+        member(X, [a,b,c]).
+
+
+issue_14(a).
+issue_14(b).
+issue_14(c).
+issue_14(X):- b:issue_14(X).
+issue_14(d).
+issue_14(e).
+issue_14(f).

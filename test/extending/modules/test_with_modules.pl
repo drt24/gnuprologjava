@@ -20,7 +20,14 @@ test:-
 	;  write('FAIL: predicate_exported_from_c should not exist'), nl
 	),
 	% Explicitly call a goal in another module
-	c:local_predicate.
+        c:local_predicate,
+        % Test for issue #14
+        issue_14.
+
+
+issue_14:-
+        findall(X, a:issue_14(X), Xs),
+        Xs == [a,b,c,x,y,z,d,e,f].
 
 local_predicate:-
 	write('>predicate_in_user'), nl.

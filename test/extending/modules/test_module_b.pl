@@ -6,3 +6,7 @@ predicate_exported_from_b:-
 
 local_predicate:-
 	write('>b:local_predicate'), nl.
+
+issue_14(x).
+issue_14(y).
+issue_14(z).
