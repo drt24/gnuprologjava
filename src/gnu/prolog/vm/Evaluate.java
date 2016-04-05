@@ -82,7 +82,7 @@ public class Evaluate
         public final static CompoundTermTag gcd2 = CompoundTermTag.get("gcd", 2);
         public final static AtomTerm atomNan = AtomTerm.get("nan");
 
-	public final static boolean isUnbounded = true;
+        public final static boolean isUnbounded = true;
 	public final static boolean strictISO = false;
 
 	/**
@@ -1162,7 +1162,16 @@ public class Evaluate
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
                                         IntegerTerm i1 = (IntegerTerm) arg1;
-                                        int res = i0.value >> i1.value;
+                                        int res;
+                                        // Only the low 5 bits are used in right shifts on integers. If we want more, we need to use the BigInteger values below
+                                        if (i1.value >= 32)
+                                        {
+                                                res = (i0.value > 0)?0 : -1;
+                                        }
+                                        else
+                                        {
+                                                res = i0.value >> i1.value;
+                                        }
                                         return IntegerTerm.get(res);
 				}
 				else if ((arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm) &&
