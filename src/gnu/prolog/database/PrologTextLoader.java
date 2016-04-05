@@ -66,6 +66,7 @@ public class PrologTextLoader
 	public static final CompoundTermTag multifileTag = CompoundTermTag.get("multifile", 1);
 	public static final CompoundTermTag dynamicTag = CompoundTermTag.get("dynamic", 1);
 	public static final CompoundTermTag discontiguousTag = CompoundTermTag.get("discontiguous", 1);
+	public static final CompoundTermTag metaPredicateTag = CompoundTermTag.get("meta_predicate", 1);
 	public static final CompoundTermTag opTag = CompoundTermTag.get("op", 3);
 	public static final CompoundTermTag char_conversionTag = CompoundTermTag.get("char_conversion", 2);
 	public static final CompoundTermTag initializationTag = CompoundTermTag.get("initialization", 1);
@@ -242,6 +243,10 @@ public class PrologTextLoader
 					else if (dirTag == dynamicTag)
 					{
 						processDynamicDirective(dirTerm.args[0]);
+					}
+					else if (dirTag == metaPredicateTag)
+					{
+						processMetaPredicateDirective(dirTerm.args[0]);
 					}
 					else if (dirTag == discontiguousTag)
 					{
@@ -483,6 +488,33 @@ public class PrologTextLoader
 		// pi is a CompoundTerm as isPredicateIndicator checks that
 		CompoundTermTag tag = CompoundTermTag.get((CompoundTerm) pi);
 		prologTextLoaderState.declareDynamic(this, tag);
+	}
+
+	protected void processMetaPredicateDirective(Term mi)
+	{
+		if (!(mi instanceof CompoundTerm))
+		{
+			logError("the meta predicate indicator is not valid.");
+			return;
+		}
+		CompoundTerm directive = (CompoundTerm)mi;
+		CompoundTermTag tag = directive.tag;
+		MetaPredicateInfo.MetaType[] metaArgs = new MetaPredicateInfo.MetaType[tag.arity];
+		try
+		{
+			for (int i = 0; i < tag.arity; i++)
+			{
+				metaArgs[i] = MetaPredicateInfo.get(directive.args[i]);
+			}
+		}
+		catch(PrologException ex)
+		{
+			ex.printStackTrace();
+			logError("the predicate indicator is not valid.");
+			return;
+		}
+		MetaPredicateInfo info = new MetaPredicateInfo(metaArgs);
+		prologTextLoaderState.declareMeta(this, tag, info);
 	}
 
 	protected void processClause(Term argument)
