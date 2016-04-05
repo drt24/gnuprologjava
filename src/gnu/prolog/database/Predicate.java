@@ -77,12 +77,17 @@ public class Predicate
 	protected boolean propertiesLocked = false;
 	/** dynamic property of predicate */
 	protected boolean dynamicFlag = false;
+	/** meta property of predicate */
+	protected MetaPredicateInfo metaPredicateInfo = null;
 	/** class name for external predicate */
 	protected String javaClassName;
 	/** set files where this predicate is defined */
 	protected Set<String> files = new HashSet<String>();
 	/** current module */
 	protected Module module;
+	/** exporting module */
+	protected Module sourceModule;
+
 
 	/**
 	 * constructor of predicate
@@ -309,6 +314,21 @@ public class Predicate
 		dynamicFlag = true;
 	}
 
+	/**
+	 * set "meta" property of predicate to the given value. This method must be called
+	 * before the /goal/ is called, but can be called either before or after the predicate
+	 * has any clauses added to it
+	 */
+	public synchronized void setMeta(MetaPredicateInfo info)
+	{
+		metaPredicateInfo = info;
+	}
+
+	public synchronized MetaPredicateInfo getMetaPredicateInfo()
+	{
+		return metaPredicateInfo;
+	}
+
 	@Override
 	public synchronized String toString()
 	{
@@ -408,5 +428,15 @@ public class Predicate
 			PrologException.typeError(TermConstants.callableAtom, term);
 			return null;// never happens
 		}
+	}
+
+	public void setSourceModule(Module m)
+	{
+		sourceModule = m;
+	}
+
+	public Module getSourceModule()
+	{
+		return sourceModule;
 	}
 }

@@ -406,6 +406,11 @@ public class Environment implements PredicateListener
 		return modules.get(moduleStack.peek());
 	}
 
+	public Module getModule(AtomTerm name)
+	{
+		return modules.get(name);
+	}
+
 	/**
 	 * load code for prolog
 	 * 
@@ -435,8 +440,8 @@ public class Environment implements PredicateListener
 					// Otherwise when we call Goal in user, the module will still be the current module. If both user and the local module
 					// both define a clause of something, when the user module calls it, we will get the one in the current module, which
 					// is wrong!
-					p = getModule().importPredicate(this, Module.userAtom, tag);
-
+					Module sourceModule = p.getSourceModule();
+					p = getModule().importPredicate(this, (sourceModule==null?Module.userAtom:sourceModule.getName()), tag);
 				}
 				// At this point we can fall back to the switch statement below
 			}

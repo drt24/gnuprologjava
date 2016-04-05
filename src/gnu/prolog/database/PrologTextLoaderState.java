@@ -226,6 +226,17 @@ public class PrologTextLoaderState implements PrologTextLoaderListener, HasEnvir
 		return true;
 	}
 
+	public boolean declareMeta(PrologTextLoader loader, CompoundTermTag tag, MetaPredicateInfo info)
+	{
+		Predicate p = module.getOrCreateDefinedPredicate(tag);
+		if (p.getType() == Predicate.TYPE.UNDEFINED)
+		{
+			p.setType(Predicate.TYPE.USER_DEFINED);
+		}
+		p.setMeta(info);
+		return true;
+	}
+
 	public void declareMultifile(PrologTextLoader loader, CompoundTermTag tag)
 	{
 		Predicate p = module.getOrCreateDefinedPredicate(tag);
