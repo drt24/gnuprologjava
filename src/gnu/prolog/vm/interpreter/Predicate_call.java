@@ -18,6 +18,7 @@
  */
 package gnu.prolog.vm.interpreter;
 
+import gnu.prolog.database.MetaPredicateInfo;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.Term;
@@ -25,7 +26,7 @@ import gnu.prolog.term.VariableTerm;
 import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.BacktrackInfoWithCleanup;
 import gnu.prolog.vm.Environment;
-import gnu.prolog.vm.ExecuteOnlyCode;
+import gnu.prolog.vm.ExecuteOnlyMetaCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologCode;
 import gnu.prolog.vm.PrologException;
@@ -39,7 +40,7 @@ import java.util.Map;
 /**
  * prolog code
  */
-public class Predicate_call extends ExecuteOnlyCode
+public class Predicate_call extends ExecuteOnlyMetaCode
 {
 	/** head functor, it is completly unimportant what it is */
 	public static final AtomTerm headFunctor = AtomTerm.get("$$$call$$$");
@@ -219,4 +220,11 @@ public class Predicate_call extends ExecuteOnlyCode
 			throw new IllegalArgumentException("the term is not callable");
 		}
 	}
+
+	private static MetaPredicateInfo metaPredicateInfo = new MetaPredicateInfo(new MetaPredicateInfo.MetaType[]{MetaPredicateInfo.MetaType.META});
+	public MetaPredicateInfo getMetaPredicateInfo()
+	{
+		return metaPredicateInfo;
+	}
+
 }

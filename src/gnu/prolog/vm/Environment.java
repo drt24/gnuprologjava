@@ -463,6 +463,10 @@ public class Environment implements PredicateListener
 					Class<?> cls = Class.forName(p.getJavaClassName());
 					PrologCode code = (PrologCode) cls.newInstance();
 					code.install(this);
+					if (code instanceof ExecuteOnlyMetaCode)
+					{
+						p.setMeta(((ExecuteOnlyMetaCode)code).getMetaPredicateInfo());
+					}
 					return code;
 				}
 				catch (/* ClassNotFound */Exception ex)
