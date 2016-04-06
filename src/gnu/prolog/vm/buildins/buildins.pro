@@ -194,6 +194,7 @@ write_canonical(S,Term):-write_term(S,Term,[quoted(true),ignore_ops(true)]).
 not(Goal) :- '\\+'(Goal).
 fail_if(Goal) :- '\\+'(Goal).
 
+:-meta_predicate(once(0)).
 once(Goal) :- call(Goal),!.
 
 repeat.
