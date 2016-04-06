@@ -37,6 +37,8 @@ public abstract class Term implements java.io.Serializable, Cloneable
 	public static final int INTEGER = 4;
 	public static final int ATOM = 5;
 	public static final int COMPOUND = 6;
+	public static final int BIG_INTEGER = 7;
+	public static final int RATIONAL = 8;
 
 	/**
 	 * clone the term.

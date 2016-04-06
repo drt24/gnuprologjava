@@ -18,6 +18,7 @@
 package gnu.prolog.vm.buildins.typetesting;
 
 import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.BigIntegerTerm;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
@@ -31,7 +32,7 @@ public class Predicate_integer extends ExecuteOnlyCode
 	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		if (args[0] instanceof IntegerTerm)
+                if (args[0] instanceof IntegerTerm || args[0] instanceof BigIntegerTerm)
 		{
 			return RC.SUCCESS_LAST;
 		}

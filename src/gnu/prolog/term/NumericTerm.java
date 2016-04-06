@@ -1,5 +1,6 @@
 /* GNU Prolog for Java
  * Copyright (C) 2010       Daniel Thomas
+ * Copyright (C) 2016       Matt Lilley
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -18,6 +19,8 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.vm.Evaluate;
+
 /**
  * Abstract class for all Terms which represent numbers
  * 
@@ -26,5 +29,23 @@ package gnu.prolog.term;
 public abstract class NumericTerm extends AtomicTerm
 {
 	private static final long serialVersionUID = 5912071498872487301L;
+	public static NumericTerm get(String s)
+	{
+		try
+		{
+			return IntegerTerm.get(s);
+		}
+		catch (IllegalArgumentException iae)
+		{
+			if (Evaluate.isUnbounded)
+			{
+				return BigIntegerTerm.get(s);
+			}
+			else
+                        {
+                                return new FloatTerm(s);
+			}
+		}
+	}
 
 }

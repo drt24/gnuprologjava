@@ -1,5 +1,6 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -19,11 +20,16 @@ package gnu.prolog.vm.buildins.arithmetics;
 
 import gnu.prolog.term.FloatTerm;
 import gnu.prolog.term.IntegerTerm;
+import gnu.prolog.term.BigIntegerTerm;
+import gnu.prolog.term.RationalTerm;
+import gnu.prolog.term.Rational;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.Evaluate;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
+
+import java.math.BigInteger;
 
 /**
  * prolog code
@@ -37,29 +43,30 @@ public class Predicate_equal extends ExecuteOnlyCode
 	{
 		Term arg0 = Evaluate.evaluate(args[0]);
 		Term arg1 = Evaluate.evaluate(args[1]);
-		if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
+		int targetType = Evaluate.commonType(arg0, arg1);
+		switch(targetType)
+		{
+		case 0: // int, int
 		{
 			IntegerTerm i0 = (IntegerTerm) arg0;
 			IntegerTerm i1 = (IntegerTerm) arg1;
 			return i0.value == i1.value ? RC.SUCCESS_LAST : RC.FAIL;
 		}
-		else if (arg0 instanceof FloatTerm && arg1 instanceof IntegerTerm)
+		case 1: // bigint, bigint
 		{
-			FloatTerm f0 = (FloatTerm) arg0;
-			IntegerTerm i1 = (IntegerTerm) arg1;
-			return f0.value == i1.value ? RC.SUCCESS_LAST : RC.FAIL;
+			BigInteger[] bi = Evaluate.toBigInteger(arg0, arg1);
+			return bi[0].equals(bi[1]) ? RC.SUCCESS_LAST : RC.FAIL;
 		}
-		else if (arg0 instanceof IntegerTerm && arg1 instanceof FloatTerm)
+		case 2: // float, float
 		{
-			IntegerTerm i0 = (IntegerTerm) arg0;
-			FloatTerm f1 = (FloatTerm) arg1;
-			return i0.value == f1.value ? RC.SUCCESS_LAST : RC.FAIL;
+			double[] f = Evaluate.toDouble(arg0, arg1);
+			return f[0] == f[1] ? RC.SUCCESS_LAST : RC.FAIL;
 		}
-		else if (arg0 instanceof FloatTerm && arg1 instanceof FloatTerm)
+		case 3: // rational, rational
 		{
-			FloatTerm f0 = (FloatTerm) arg0;
-			FloatTerm f1 = (FloatTerm) arg1;
-			return f0.value == f1.value ? RC.SUCCESS_LAST : RC.FAIL;
+			Rational[] r = Evaluate.toRational(arg0, arg1);
+			return r[0].equals(r[1]) ? RC.SUCCESS_LAST : RC.FAIL;
+		}
 		}
 		return RC.FAIL;
 	}

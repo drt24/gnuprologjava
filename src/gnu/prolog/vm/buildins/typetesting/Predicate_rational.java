@@ -16,57 +16,29 @@
  * Boston, MA  02111-1307, USA. The text of license can be also found
  * at http://www.gnu.org/copyleft/lgpl.html
  */
-package gnu.prolog.vm.buildins.arithmetics;
+package gnu.prolog.vm.buildins.typetesting;
 
-import gnu.prolog.term.FloatTerm;
-import gnu.prolog.term.IntegerTerm;
-import gnu.prolog.term.Term;
-import gnu.prolog.term.BigIntegerTerm;
 import gnu.prolog.term.RationalTerm;
-import gnu.prolog.term.Rational;
-import gnu.prolog.vm.Evaluate;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 
-import java.math.BigInteger;
 /**
- * prolog code
+ * Predicate variable
  */
-public class Predicate_greater_than_or_equal extends ExecuteOnlyCode
+public class Predicate_rational extends ExecuteOnlyCode
 {
-
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
-		Term arg0 = Evaluate.evaluate(args[0]);
-		Term arg1 = Evaluate.evaluate(args[1]);
-		int targetType = Evaluate.commonType(arg0, arg1);
-		switch(targetType)
+                if (args[0] instanceof RationalTerm)
 		{
-		case 0: // int, int
+			return RC.SUCCESS_LAST;
+		}
+		else
 		{
-			IntegerTerm i0 = (IntegerTerm) arg0;
-			IntegerTerm i1 = (IntegerTerm) arg1;
-			return i0.value >= i1.value ? RC.SUCCESS_LAST : RC.FAIL;
+			return RC.FAIL;
 		}
-		case 1: // bigint, bigint
-		{
-			BigInteger[] bi = Evaluate.toBigInteger(arg0, arg1);
-			return bi[0].compareTo(bi[1]) >= 0 ? RC.SUCCESS_LAST : RC.FAIL;
-		}
-		case 2: // float, float
-		{
-			double[] f = Evaluate.toDouble(arg0, arg1);
-			return f[0] >= f[1] ? RC.SUCCESS_LAST : RC.FAIL;
-		}
-		case 3: // rational, rational
-		{
-			Rational[] r = Evaluate.toRational(arg0, arg1);
-			return r[0].compareTo(r[1]) >= 0 ? RC.SUCCESS_LAST : RC.FAIL;
-		}
-		}
-		return RC.FAIL;
 	}
 }

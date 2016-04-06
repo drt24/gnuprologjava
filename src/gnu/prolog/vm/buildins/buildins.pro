@@ -55,7 +55,8 @@
 :-build_in(compound/1,'gnu.prolog.vm.buildins.typetesting.Predicate_compound'). 
 :-build_in(nonvar/1,  'gnu.prolog.vm.buildins.typetesting.Predicate_nonvar'). 
 :-build_in(number/1,  'gnu.prolog.vm.buildins.typetesting.Predicate_number'). 
-:-build_in(java_object/1, 'gnu.prolog.vm.buildins.typetesting.Predicate_java_object'). 
+:-build_in(java_object/1, 'gnu.prolog.vm.buildins.typetesting.Predicate_java_object').
+:-build_in(rational/1,'gnu.prolog.vm.buildins.typetesting.Predicate_rational').
                                      
 % 8.4 term comparison
 :-build_in((==)/2,  'gnu.prolog.vm.buildins.termcomparsion.Predicate_term_identical'). 

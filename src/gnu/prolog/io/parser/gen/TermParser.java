@@ -520,9 +520,9 @@ VariableTerm var = options.variableNames.get(token.image);
     throw new Error("Missing return statement in function");
   }
 
-  final public IntegerTerm integer() throws ParseException {
+  final public NumericTerm integer() throws ParseException {
     jj_consume_token(INTEGER_TOKEN);
-{if ("" != null) return IntegerTerm.get(token.image);}
+{if ("" != null) return NumericTerm.get(token.image);}
     throw new Error("Missing return statement in function");
   }
 
