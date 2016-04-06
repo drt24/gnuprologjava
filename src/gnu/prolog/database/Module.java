@@ -116,7 +116,7 @@ public class Module
 					// )
 					VariableTerm quantifier = new VariableTerm("Q");
 					VariableTerm goal = new VariableTerm("Goal");
-					VariableTerm outArg = new VariableTerm("outArg");
+					VariableTerm outArg = new VariableTerm("OutArg");
 					bodyArgs[i] = outArg;
 					Term determinant = new CompoundTerm(AtomTerm.get(";"), new Term[]{new CompoundTerm(AtomTerm.get("->"), new Term[]{new CompoundTerm(AtomTerm.get("="), new Term[]{headArgs[i], new CompoundTerm(AtomTerm.get("^"), new Term[]{quantifier, goal})}),
 																			  new CompoundTerm(AtomTerm.get("="), new Term[]{outArg, new CompoundTerm(AtomTerm.get("^"), new Term[]{quantifier, new CompoundTerm(AtomTerm.get(":"), new Term[]{name, goal})})})}),
@@ -150,6 +150,7 @@ public class Module
 		{
 			body = new CompoundTerm(AtomTerm.get(","), new Term[]{body, crossModuleCall(exportingModuleName.value, new CompoundTerm(export, bodyArgs))});
 		}
+
 		Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
 		p.setType(Predicate.TYPE.USER_DEFINED);
 		p.addClauseLast(linkClause);
