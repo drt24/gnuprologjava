@@ -58,8 +58,8 @@ public class Predicate_findall extends ExecuteOnlyCode
 	 * @param template
 	 * @param goal
 	 * @param list
-	 * @return either {@link PrologCode.RC#SUCCESS_LAST} or
-	 *         {@link PrologCode.RC#FAIL}
+	 * @return either {@link gnu.prolog.vm.PrologCode.RC#SUCCESS_LAST} or
+	 *                {@link gnu.prolog.vm.PrologCode.RC#FAIL}
 	 * @throws PrologException
 	 */
 	public static RC findall(Interpreter interpreter, boolean backtrackMode, Term template, Term goal, List<Term> list)
