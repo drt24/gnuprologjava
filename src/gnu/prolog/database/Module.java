@@ -100,11 +100,7 @@ public class Module
 			headArgs[i] = new VariableTerm();
 			if (metaPredicateInfo != null)
 			{
-				if (metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.META)
-				{
-					bodyArgs[i] = new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]});
-				}
-				else if (metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.EXISTS)
+				if (metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.EXISTS)
 				{
 					// This means that it could be called with ^(Quantifiers, X) or X
 					// We want to substitute that for ^(Quantifiers, Module:X) or (Module:X), respectively
@@ -130,6 +126,10 @@ public class Module
 					{
 						body = new CompoundTerm(AtomTerm.get(","), new Term[]{determinant, body});
 					}
+				}
+				else if (metaPredicateInfo.args[i] != MetaPredicateInfo.MetaType.NORMAL)
+				{
+					bodyArgs[i] = new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]});
 				}
 				else
 				{
