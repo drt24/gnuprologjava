@@ -473,7 +473,14 @@ public class TermWriter extends PrintWriter
 		if (options.quoted)
 		{
 			String value = atom.value;
-			print(needBeQuoted(value) ? getSingleQuoted(value) : value);
+			if (TermConstants.emptyListAtom.equals(atom))
+			{
+				print(value);
+			}
+			else
+			{
+				print(needBeQuoted(value) ? getSingleQuoted(value) : value);
+			}
 		}
 		else
 		{
