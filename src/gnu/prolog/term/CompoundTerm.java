@@ -123,7 +123,7 @@ public class CompoundTerm extends Term
 				term = ct.args[1];
 			}
 		}
-		return term instanceof AtomTerm && ((AtomTerm) term) == TermConstants.listAtom;
+		return term instanceof AtomTerm && ((AtomTerm) term) == TermConstants.emptyListAtom;
 	}
 
 	/**
