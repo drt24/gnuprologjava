@@ -160,7 +160,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			else if (isrc[i] instanceof IJump)
 			{
 				ipos[i] = bytes;
-				bytes += 3;
+				bytes += 5;
 			}
 			else if (isrc[i] instanceof IPop)
 			{
@@ -187,7 +187,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			else if (isrc[i] instanceof IRetryMeElse)
 			{
 				ipos[i] = bytes;
-				bytes += 3;
+				bytes += 5;
 			}
 			else if (isrc[i] instanceof IReturn)
 			{
@@ -222,7 +222,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			else if (isrc[i] instanceof ITryMeElse)
 			{
 				ipos[i] = bytes;
-				bytes += 3;
+				bytes += 5;
 			}
 			else if (isrc[i] instanceof IUnify)
 			{
@@ -314,6 +314,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			{
 				IJump ii = (IJump) isrc[i];
 				instructions[bytes++] = (byte) IJUMP;
+				instructions[bytes++] = (byte) (ipos[ii.jumpPosition] >> 24 & 255);
+				instructions[bytes++] = (byte) (ipos[ii.jumpPosition] >> 16 & 255);
 				instructions[bytes++] = (byte) (ipos[ii.jumpPosition] >> 8 & 255);
 				instructions[bytes++] = (byte) (ipos[ii.jumpPosition] & 255);
 			}
@@ -347,6 +349,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			{
 				IRetryMeElse ii = (IRetryMeElse) isrc[i];
 				instructions[bytes++] = (byte) IRETRY_ME_ELSE;
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 24 & 255);
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 16 & 255);
 				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 8 & 255);
 				instructions[bytes++] = (byte) (ipos[ii.retryPosition] & 255);
 			}
@@ -384,6 +388,8 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			{
 				ITryMeElse ii = (ITryMeElse) isrc[i];
 				instructions[bytes++] = (byte) ITRY_ME_ELSE;
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 24 & 255);
+				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 16 & 255);
 				instructions[bytes++] = (byte) (ipos[ii.retryPosition] >> 8 & 255);
 				instructions[bytes++] = (byte) (ipos[ii.retryPosition] & 255);
 			}
@@ -609,7 +615,7 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 						}
 						case IJUMP:
 						{
-							int jp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
+                                                        int jp = ((instructions[currentPosition + 1] & 255) << 24) + ((instructions[currentPosition + 2] & 255) << 16) + ((instructions[currentPosition + 3] & 255) << 8) + (instructions[currentPosition + 4] & 255);
 							currentPosition = jp;
 							continue interpreter_loop;
 						}
@@ -663,10 +669,10 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 						}
 						case IRETRY_ME_ELSE:
 						{
-							int rp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
+							int rp = ((instructions[currentPosition + 1] & 255) << 24) + ((instructions[currentPosition + 2] & 255) << 16) + ((instructions[currentPosition + 3] & 255) << 8) + (instructions[currentPosition + 4] & 255);
 							cur_bi.codePosition = rp;
 							interpreter.pushBacktrackInfo(cur_bi);
-							currentPosition += 3;
+							currentPosition += 5;
 							backtrackMode = false;
 							continue interpreter_loop;
 						}
@@ -733,10 +739,10 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 						}
 						case ITRY_ME_ELSE:
 						{
-							int rp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
+                                                        int rp = ((instructions[currentPosition + 1] & 255) << 24) + ((instructions[currentPosition + 2] & 255) << 16) + ((instructions[currentPosition + 3] & 255) << 8) + (instructions[currentPosition + 4] & 255);
 							cur_bi = new BacktrackInfo(interpreter.getUndoPosition(), rp);
 							interpreter.pushBacktrackInfo(cur_bi);
-							currentPosition += 3;
+							currentPosition += 5;
 							cur_bi = null;
 							continue interpreter_loop;
 						}
@@ -923,9 +929,9 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			case IJUMP:
 			{
-				int jp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
+                                int jp = ((instructions[currentPosition + 1] & 255) << 24) + ((instructions[currentPosition + 2] & 255) << 16) + ((instructions[currentPosition + 3] & 255) << 8) + (instructions[currentPosition + 4] & 255);
 				rc += currentPosition + ": jump " + jp;
-				currentPosition += 3;
+				currentPosition += 5;
 				break;
 			}
 			case IPOP:
@@ -957,9 +963,9 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			case IRETRY_ME_ELSE:
 			{
-				int rp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
+				int rp = ((instructions[currentPosition + 1] & 255) << 24) + ((instructions[currentPosition + 2] & 255) << 16) + ((instructions[currentPosition + 3] & 255) << 8) + (instructions[currentPosition + 4] & 255);
 				rc += currentPosition + ": retry_me_else " + rp;
-				currentPosition += 3;
+				currentPosition += 5;
 				break;
 			}
 			case IRETURN:
@@ -1002,9 +1008,9 @@ public class InterpretedByteCode implements PrologCode, PrologCodeListener
 			}
 			case ITRY_ME_ELSE:
 			{
-				int rp = ((instructions[currentPosition + 1] & 255) << 8) + (instructions[currentPosition + 2] & 255);
+				int rp = ((instructions[currentPosition + 1] & 255) << 24) + ((instructions[currentPosition + 2] & 255) << 16) + ((instructions[currentPosition + 3] & 255) << 8) + (instructions[currentPosition + 4] & 255);
 				rc += currentPosition + ": try_me_else " + rp;
-				currentPosition += 3;
+				currentPosition += 5;
 				break;
 			}
 			case IUNIFY:
