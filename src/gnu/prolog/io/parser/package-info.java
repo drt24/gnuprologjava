@@ -10,9 +10,9 @@
  * in ANTLR 4 but ANTLR 4 does not support left-recursion with parameters
  * 
  * This package also contains classes such as
- * {@link gnu.prolog.io.parser.NameToken NameToken},
- * {@link gnu.prolog.io.parser.JavaCharStream JavaCharStream} and
- * {@link gnu.prolog.io.parser.TermParserUtils TermParserUtils} which contain
+ * {@link gnu.prolog.io.parser.NameToken},
+ * {@link gnu.prolog.io.parser.TokenFactory} and
+ * {@link gnu.prolog.io.parser.TermParserUtils} which contain
  * some of the code needed to integrate the generated parser with the rest of
  * the codebase.
  * 
