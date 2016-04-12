@@ -471,9 +471,8 @@ public class TermWriter extends PrintWriter
 	protected void displayAtom(WriteOptions options, AtomTerm atom)
 	{
 		if (options.quoted)
-		{
-			String value = atom.value;
-			print(needBeQuoted(value) ? getSingleQuoted(value) : value);
+                {
+			print(needsToBeQuoted(atom) ? getSingleQuoted(atom.value) : atom.value);
 		}
 		else
 		{
@@ -505,11 +504,14 @@ public class TermWriter extends PrintWriter
 	 * check if the string is needed to be quoted .
 	 * 
 	 * @param s
-	 *          string to test
+	 *          AtomTerm to test
 	 * @return true if string need to quoted in displayq
 	 */
-	protected static boolean needBeQuoted(String s)
+	protected static boolean needsToBeQuoted(AtomTerm term)
 	{
+		if (TermConstants.emptyListAtom.equals(term))
+			return false;
+		String s = term.value;
 		if (s.length() == 0)
 		{
 			return true;
