@@ -258,7 +258,7 @@ The final element that is required for the module system is the fallback to the 
 
 @node Multiprecision Arithmetic
 @subsection Large Integers and Rationals
-If gnu.prolog.vm.Evaluate.isUnbounded is set to true then:
+If gnu.prolog.vm.Evaluate.isUnbounded is set to true (which is the default) then:
 @itemize @bullet
    @item The prolog flag bounded will be set to false, and the max_integer and min_integer flags will be destroyed
    @item Integers outside the range of Java's int type will be stored as BigIntegers. The backing term for this is a BigIntegerTerm
@@ -348,7 +348,7 @@ Additionally, a predicate rational/1 will succeed if its argument is a rational 
 
 @node Non-ISO arithmetic
 @subsection Non-ISO arithmetic functions
-If gnu.prolog.vm.Evaluate.strictISO is set to false then:
+If gnu.prolog.vm.Evaluate.strictISO is set to false (which is the default) then:
 @itemize @bullet
    @item  Several functions that would otherwise raise a domain error now evaluate to their logical values (for example, floor(3) is allowed and evaluates to 3)
    @item  div/2 is provided. This is inspired by SWI-Prolog, and has the property that for every pair of integers X,Y where Y =\= 0:
