@@ -17,6 +17,9 @@
  */
 package gnu.prolog.term;
 
+import gnu.prolog.io.TermWriter;
+import gnu.prolog.io.WriteOptions;
+
 /**
  * base class for all constant terms
  * 
@@ -37,6 +40,23 @@ public abstract class AtomicTerm extends Term
 	public Object clone()
 	{
 		return this;
+	}
+
+	/**
+	 * You can override this to control printing of terms
+	 * that derive from AtomicTerm that are not otherwise built-in
+	 * If the default implementation below is used, a term will be
+	 * printed that cannot be read back. This is by design, to
+	 * highlight the problem that the method is not implemented in
+	 * the subclass
+	 * @param options
+	 *          WriteOptions to use
+	 * @param writer
+	 *          TermWriter to write the term to
+	 */
+	public void displayTerm(WriteOptions options, TermWriter writer)
+	{
+		writer.print("<unprintable>");
 	}
 
 }
