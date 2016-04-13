@@ -172,7 +172,7 @@ public class Predicate_call extends ExecuteOnlyMetaCode
 	 * 
 	 * @param term
 	 * @param argumentsToArgumentVariables
-	 * @return
+	 * @return clause generated from term
 	 */
 	public static Term getClause(Term term, Map<Term, VariableTerm> argumentsToArgumentVariables)
 	{

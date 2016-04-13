@@ -191,7 +191,8 @@ Ant Buildfile for GNU Prolog for Java.
 	<target name="doc" depends="init,manual" description="Make the javadoc api and copy the demo applications">
 		<mkdir dir="build/api" />
 		<javadoc sourcepath="src" destdir="build/api" version="yes" author="yes"
-			use="yes" classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar">
+			 use="yes" classpath="${java.class.path}:/usr/share/java/gnu-getopt.jar">
+		  <arg value="-Xdoclint:none"/>
 			<packageset dir="src">
 				<include name="gnu/prolog/**" />
 			</packageset>
