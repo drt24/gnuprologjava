@@ -19,12 +19,13 @@
 
 package gnu.prolog.vm.buildins.meta;
 
+import gnu.prolog.database.MetaPredicateInfo;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
 import gnu.prolog.term.Term;
 import gnu.prolog.vm.BacktrackInfoWithCleanup;
-import gnu.prolog.vm.ExecuteOnlyCode;
+import gnu.prolog.vm.ExecuteOnlyMetaCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
 import gnu.prolog.vm.BacktrackInfo;
@@ -35,7 +36,7 @@ import gnu.prolog.vm.interpreter.Predicate_call;
  * 
  */
 
-public class Predicate_setup_call_catcher_cleanup extends ExecuteOnlyCode
+public class Predicate_setup_call_catcher_cleanup extends ExecuteOnlyMetaCode
 {
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[]) throws PrologException
@@ -145,6 +146,15 @@ public class Predicate_setup_call_catcher_cleanup extends ExecuteOnlyCode
 			}
 		}
 
+	}
+
+private static MetaPredicateInfo metaPredicateInfo = new MetaPredicateInfo(new MetaPredicateInfo.MetaType[]{MetaPredicateInfo.MetaType.META,
+													    MetaPredicateInfo.MetaType.META,
+													    MetaPredicateInfo.MetaType.NORMAL,
+													    MetaPredicateInfo.MetaType.META});
+	public MetaPredicateInfo getMetaPredicateInfo()
+	{
+		return metaPredicateInfo;
 	}
 
 }

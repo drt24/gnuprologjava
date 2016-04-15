@@ -188,12 +188,16 @@ write_canonical(S,Term):-write_term(S,Term,[quoted(true),ignore_ops(true)]).
 
 % 8.15 logic and control
 
+:-meta_predicate('\\+'(0)).
 '\\+'(Goal) :- call(Goal),!,fail.
 '\\+'(Goal).
 
+:-meta_predicate(not(0)).
 not(Goal) :- '\\+'(Goal).
+:-meta_predicate(fail_if(0)).
 fail_if(Goal) :- '\\+'(Goal).
 
+:-meta_predicate(once(0)).
 once(Goal) :- call(Goal),!.
 
 repeat.

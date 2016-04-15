@@ -79,7 +79,7 @@ public class Module
 	   }
 	}
 
-	public Predicate importPredicate(Environment environment, AtomTerm exportingModule, CompoundTermTag export) throws PrologException
+	public Predicate importPredicate(Environment environment, AtomTerm exportingModuleName, CompoundTermTag export) throws PrologException
 	{
 		Predicate p = null;
 		try
@@ -90,14 +90,71 @@ public class Module
 		{
 			PrologException.permissionError(AtomTerm.get("redefine"), AtomTerm.get("predicate"), export.getPredicateIndicator());
 		}
-		Term[] args = new Term[export.arity];
-		for (int i = 0; i < args.length; i++)
-			args[i] = new VariableTerm();
-		Term head = new CompoundTerm(export, args);
-		Term body = crossModuleCall(exportingModule.value, head);
+                Term[] headArgs = new Term[export.arity];
+		Term[] bodyArgs = new Term[export.arity];
+		Term body = null;
+		Module exportingModule = environment.getModule(exportingModuleName);
+		MetaPredicateInfo metaPredicateInfo = exportingModule.getMetaPredicateInfo(environment, export);
+                for (int i = 0; i < export.arity; i++)
+                {
+			headArgs[i] = new VariableTerm();
+			if (metaPredicateInfo != null)
+			{
+				if (metaPredicateInfo.args[i] == MetaPredicateInfo.MetaType.EXISTS)
+				{
+					// This means that it could be called with ^(Quantifiers, X) or X
+					// We want to substitute that for ^(Quantifiers, Module:X) or (Module:X), respectively
+					// Add this to body:
+					// ;(->(=(InArg, ^(Q, Goal)), =(OutArg, ^(Q, Module:Goal))), =(OutArg, Module:Goal)) which is
+					// (  InArg = ^(Q,Goal)
+					// -> X = ^(Q, Module:Goal)
+					// ;  X = Module:InArg
+					// )
+					VariableTerm quantifier = new VariableTerm("Q");
+					VariableTerm goal = new VariableTerm("Goal");
+					VariableTerm outArg = new VariableTerm("OutArg");
+					bodyArgs[i] = outArg;
+					Term determinant = new CompoundTerm(AtomTerm.get(";"), new Term[]{new CompoundTerm(AtomTerm.get("->"), new Term[]{new CompoundTerm(AtomTerm.get("="), new Term[]{headArgs[i], new CompoundTerm(AtomTerm.get("^"), new Term[]{quantifier, goal})}),
+																			  new CompoundTerm(AtomTerm.get("="), new Term[]{outArg, new CompoundTerm(AtomTerm.get("^"), new Term[]{quantifier, new CompoundTerm(AtomTerm.get(":"), new Term[]{name, goal})})})}),
+													  new CompoundTerm(AtomTerm.get("="), new Term[]{outArg,
+																			 new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]})})});
+					if (body == null)
+					{
+						body = determinant;
+					}
+					else
+					{
+						body = new CompoundTerm(AtomTerm.get(","), new Term[]{determinant, body});
+					}
+				}
+				else if (metaPredicateInfo.args[i] != MetaPredicateInfo.MetaType.NORMAL)
+				{
+					bodyArgs[i] = new CompoundTerm(AtomTerm.get(":"), new Term[]{name, headArgs[i]});
+				}
+				else
+				{
+					bodyArgs[i] = headArgs[i];
+				}
+                        }
+                        else
+                        {
+                                bodyArgs[i] = headArgs[i];
+                        }
+		}
+                Term head = new CompoundTerm(export, headArgs);
+		if (body == null)
+		{
+			body = crossModuleCall(exportingModuleName.value, new CompoundTerm(export, bodyArgs));
+		}
+		else
+		{
+			body = new CompoundTerm(AtomTerm.get(","), new Term[]{body, crossModuleCall(exportingModuleName.value, new CompoundTerm(export, bodyArgs))});
+		}
+
 		Term linkClause = new CompoundTerm(CompoundTermTag.get(":-", 2), new Term[]{head, body});
 		p.setType(Predicate.TYPE.USER_DEFINED);
 		p.addClauseLast(linkClause);
+		p.setSourceModule(exportingModule);
 		environment.pushModule(name);
 		try
 		{
@@ -108,7 +165,7 @@ public class Module
 		{
 			environment.popModule();
 		}
-	}
+        }
 
 	/**
 	 * convenience method for getting a Module:Goal term
@@ -412,5 +469,35 @@ public class Module
 	public String toString()
 	{
 		return name.toString();
+	}
+
+	public AtomTerm getName()
+	{
+		return name;
+	}
+
+	public MetaPredicateInfo getMetaPredicateInfo(Environment env, CompoundTermTag tag) throws PrologException
+	{
+		Predicate p = tag2predicate.get(tag);
+		if (p == null)
+		{
+			return null;
+		}
+		// We have to also ensure the code is loaded. Foreign predicates that define their
+		// own meta-args will only do so once resolved. We are going to have to load them
+		// very soon anyway if we are about to call them
+		if (p.getType() == Predicate.TYPE.BUILD_IN)
+		{
+			env.pushModule(name);
+			try
+			{
+				getPrologCode(env, tag);
+			}
+			finally
+			{
+				env.popModule();
+			}
+		}
+		return p.getMetaPredicateInfo();
 	}
 }

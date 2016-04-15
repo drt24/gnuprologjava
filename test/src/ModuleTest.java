@@ -25,15 +25,99 @@ import gnu.prolog.vm.PrologException;
 import gnu.prolog.database.PrologTextLoaderError;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.Term;
+import gnu.prolog.term.VariableTerm;
+import gnu.prolog.term.CompoundTerm;
+import gnu.prolog.vm.PrologCode.RC;
+
+import java.util.Collection;
+import gnu.prolog.vm.TermConstants;
 
 import org.junit.Test;
 import org.junit.Ignore;
 import java.io.ByteArrayOutputStream;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeThat;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.core.IsNull.nullValue;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Arrays;
+
 
 public class ModuleTest
 {
+
+	public Term callPredicate(String source, String name, Term... args) throws PrologException
+        {
+                VariableTerm result = new VariableTerm("Result");
+                Term[] goalArgs = new Term[args.length+1];
+                System.arraycopy(args, 0, goalArgs, 0, args.length);
+                goalArgs[args.length] = result;
+                Term goalTerm = new CompoundTerm(name, goalArgs);
+		RC rc = createInterpreter(source).runOnce(goalTerm);
+                assertEquals(RC.SUCCESS_LAST, rc);
+                return result.dereference();
+        }
+
+	public Interpreter createInterpreter(String source)
+        {
+		Environment env = new Environment();
+		Interpreter interpreter = env.createInterpreter();
+		env.ensureLoaded(AtomTerm.get(source));
+		env.runInitialization(interpreter);
+		for (PrologTextLoaderError error : env.getLoadingErrors())
+		{
+                        System.err.println("Prolog compile error: " + error);
+                }
+                assertEquals(0, env.getLoadingErrors().size());
+                return interpreter;
+        }
+
+	@Test
+	public void testMetaPredicateBefore() throws PrologException
+	{
+		List<Term> collection = new LinkedList<Term>();
+		Term result = callPredicate("test_metapredicate_before.pl", "test");
+		assertThat(result, instanceOf(CompoundTerm.class));
+		assertThat(CompoundTerm.toCollection(result, collection), is(true));
+		assertThat(collection, hasItems(new Term[]{AtomTerm.get("w"), AtomTerm.get("x"), AtomTerm.get("y")}));
+	}
+
+	@Test
+	public void testMetaPredicateAfter() throws PrologException
+	{
+		List<Term> collection = new LinkedList<Term>();
+		Term result = callPredicate("test_metapredicate_after.pl", "test");
+		assertThat(result, instanceOf(CompoundTerm.class));
+		assertThat(CompoundTerm.toCollection(result, collection), is(true));
+		assertThat(collection, hasItems(new Term[]{AtomTerm.get("w"), AtomTerm.get("x"), AtomTerm.get("y")}));
+	}
+
+	@Test
+	public void testMetaPredicateMissing() throws PrologException
+	{
+		PrologException expected = null;
+		try
+		{
+			callPredicate("test_metapredicate_missing.pl", "test");
+		}
+		catch(PrologException exception)
+		{
+			expected = exception;
+		}
+		assertThat(expected, not(is(nullValue())));
+		assertThat(expected.getTerm().toString(), is("error(existence_error(procedure,goal / 1),error)"));
+	}
+
 	@Test
 	public void testNoModules() throws PrologException
 	{
