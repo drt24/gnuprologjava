@@ -1,6 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
  * Copyright (C) 2010       Daniel Thomas
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -17,6 +18,8 @@
  * at http://www.gnu.org/copyleft/lgpl.html
  */
 package gnu.prolog.term;
+
+import gnu.prolog.vm.Evaluate;
 
 /**
  * Floating point number term (uses double)
@@ -42,15 +45,33 @@ public class FloatTerm extends NumericTerm
 	 *           when str is not valid string
 	 */
 	public FloatTerm(String str)
-	{
+        {
+                double d;
 		try
 		{
-			value = new Double(str).doubleValue();
+                        d = new Double(str).doubleValue();
 		}
 		catch (NumberFormatException ex)
-		{
-			throw new IllegalArgumentException("argument should be floating point number", ex);
-		}
+                {
+                        // Could be a very large integer in a non-Java format, and we do not have unbounded processing
+                        if (!Evaluate.isUnbounded && (str.charAt(0) == '0' && str.length() > 1) || (str.charAt(0) == '-' && str.charAt(1) == '0' && str.length() > 2))
+                        {
+                                try
+                                {
+                                        d = BigIntegerTerm.parseBigInt(str).doubleValue();
+                                }
+                                catch(NumberFormatException otherEx)
+                                {
+                                        // Ignore this one and just through the first exception?
+                                        throw new IllegalArgumentException("argument should be floating point number", ex);
+                                }
+                        }
+                        else
+                        {
+                                throw new IllegalArgumentException("argument should be floating point number", ex);
+                        }
+                }
+                value = d;
 	}
 
 	/**

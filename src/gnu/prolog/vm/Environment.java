@@ -1,6 +1,7 @@
 /* GNU Prolog for Java
  * Copyright (C) 1997-1999  Constantine Plotnikov
  * Copyright (C) 2010       Daniel Thomas
+ * Copyright (C) 2016       Matt Lilley
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
@@ -131,9 +132,16 @@ public class Environment implements PredicateListener
 				.get("/gnu/prolog/vm/buildins/buildins.pro") });
 		ensureLoaded(term);
 		// set flags for environment
-		createNewPrologFlag(boundedAtom, TermConstants.trueAtom, false);
-		createNewPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
-		createNewPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
+		if (Evaluate.isUnbounded)
+		{
+			createNewPrologFlag(boundedAtom, TermConstants.falseAtom, false);
+		}
+		else
+		{
+			createNewPrologFlag(boundedAtom, TermConstants.trueAtom, false);
+			createNewPrologFlag(TermConstants.maxIntegerAtom, maxIntegerTerm, false);
+			createNewPrologFlag(TermConstants.minIntegerAtom, minIntegerTerm, false);
+		}
 		createNewPrologFlag(integerRoundingFunctionAtom, downAtom, false);
 		createNewPrologFlag(charConversionAtom, offAtom, true);
 		createNewPrologFlag(debugAtom, offAtom, true);
