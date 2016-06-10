@@ -18,6 +18,7 @@
  */
 package gnu.prolog.io;
 
+import gnu.prolog.term.AtomicTerm;
 import gnu.prolog.term.AtomTerm;
 import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.CompoundTermTag;
@@ -220,6 +221,10 @@ public class TermWriter extends PrintWriter
 		else if (term instanceof JavaObjectTerm)
 		{
 			displayJavaObject(options, (JavaObjectTerm) term);
+		}
+		else if (term instanceof AtomicTerm)
+		{
+			((AtomicTerm)term).displayTerm(options, this);
 		}
 	}
 

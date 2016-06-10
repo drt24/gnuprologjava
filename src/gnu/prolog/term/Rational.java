@@ -104,27 +104,22 @@ public class Rational implements Comparable
         private static final double DBL_EPSILON = 0.00000000000000022204;
         public static Rational getApproximate(double val)
         {
-                // This is borrowed directly from SWI Prolog
-                // The source code there references a paper at http://www.cs.dartmouth.edu/~brd/papers/rotations-scg92.pdf
-                // which is sadly no longer available for investigation
+		// This is borrowed directly from SWI Prolog, which references a paper at http://www.cs.dartmouth.edu/~brd/papers/rotations-scg92.pdf
+		// This is no longer available, but https://www.cs.duke.edu/brd/papers/src-papers/rotations-scg92.pdf has a copy of it
+		// The paper is called "Rational Rotation Method for Robust Geometric Algorithms", and the below algorithm is detailed in figure 3
                 double e0 = val, p0 = 0.0, q0 = 1.0;
                 double e1 = -1.0, p1 = 1.0, q1 = 0.0;
-                double d;
-
-                do
+		do
                 {
                         double r = Math.floor(e0/e1);
                         double e00 = e0, p00 = p0, q00 = q0;
-                        double p1_q1;		/* see (*) */
-                        e0 = e1;
+			e0 = e1;
                         p0 = p1;
                         q0 = q1;
                         e1 = e00 - r*e1;
                         p1 = p00 - r*p1;
                         q1 = q00 - r*q1;
-                        p1_q1 = p1/q1;
-                        d = p1_q1 - val;
-                } while(Math.abs(d) > DBL_EPSILON);
+		} while(Math.abs(p1/q1 - val) > DBL_EPSILON);
                 return new Rational(BigInteger.valueOf((long)p1), BigInteger.valueOf((long)q1));
         }
 

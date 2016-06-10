@@ -230,6 +230,8 @@ If you wish to add further Prolog functionality, for example to support golog or
 * Golog:: Using Prolog for situation calculus.
 * Definite clause grammar (DCG):: Support for part 3 of the ISO Prolog standard (ISO/IEC DTR 13211-3:2006) ``provide convenient and simple functionality for parsing and processing text in a variety of languages.''
 * Modules:: Support for modular code
+* Multiprecision Arithmetic:: Support for very large integers and rationals
+* Non-ISO arithmetic:: Support for arithemtic operations outside of ISO specifications
 @end menu
 
 @node Golog
@@ -245,15 +247,160 @@ This should then provide support for part 3 of the standard. This currently does
 
 @node Modules
 @subsection Module support in GPJ
-GPJ supports SWI-Prolog-style modules. A single file can define 0..N modules, using the directive :-module/2. The first argument is the name of the module you would like to define, and must be an atom. The second argument is a list of predicate indicators which comprise the exported predicates - those accessible to other modules. By default, code is compiled into the module 'user' - if you never use the :-module/2 directive, this is where all your code will end up.
+GPJ supports SWI-Prolog-style modules. A single file can define 0..N modules, using the directive @code{:-module/2}. The first argument is the name of the module you would like to define, and must be an atom. The second argument is a list of predicate indicators which comprise the exported predicates - those accessible to other modules. By default, code is compiled into the module 'user' - if you never use the @code{:-module/2} directive, this is where all your code will end up.
 
-A meta-predicate :/2 is provided to call code directly in other modules. The first argument is the name of the module, the second is the goal. Doing this changes the value of the current module to the named one, then executes the goal directly.
+A meta-predicate @code{:/2} is provided to call code directly in other modules. The first argument is the name of the module, the second is the goal. Doing this changes the value of the current module to the named one, then executes the goal directly.
 
-When compiling a module, shims are installed in user for exported predicate. Suppose you export foo/3 from your module bar. This will result in the following predicate being created in the user module:
-@code{foo(A,B,C):- bar:foo(A,B,C).}
+When compiling a module, shims are installed in user for exported predicate. Suppose you export @code{foo/3} from your module bar. This will result in the following predicate being created in the user module:
+@example
+foo(A,B,C):- bar:foo(A,B,C).
+@end example
 
-The final element that is required for the module system is the fallback to the user module. If the currently executing code tries to call a predicate which is not defined in the current module, it will not decide that the predicate is undefined until it has further checked the user module. Continuing the example above, that means that if you are executing code in a module qux, and call foo(a,b,c) then - assuming there is not a foo/3 also defined in qux, which would take preference - the foo/3 definition in user would be used. This would call :/2, changing the current module to bar, then call foo/3 again, only this time the definition of the exported predicate would be found and executed. The current module is implemented via a stack, and manages restoring the state on backtrack as well as popping modules off the top once the :/2 goal has completed.
+The final element that is required for the module system is the fallback to the user module. If the currently executing code tries to call a predicate which is not defined in the current module, it will not decide that the predicate is undefined until it has further checked the user module. Continuing the example above, that means that if you are executing code in a module qux, and call @code{foo(a,b,c)} then - assuming there is not a @code{foo/3} also defined in qux, which would take preference - the @code{foo/3} definition in user would be used. This would call @code{:/2}, changing the current module to bar, then call @code{foo/3} again, only this time the definition of the exported predicate would be found and executed. The current module is implemented via a stack, and manages restoring the state on backtrack as well as popping modules off the top once the @code{:/2} goal has completed.
 
+@subsubsection Meta-predicates
+GNU Prolog for Java supports the @code{meta_predicate/1} directive. Code extending ExecuteOnlyMetaCode also explicitly declares information about which arguments are meta- via the @code{getMetaPredicateInfo()} method.
+
+The directive has the format
+@example
+:-meta_predicate(functor(ArgType, ArgType, ...)).
+@end example
+
+The allowed values for ArgType are:
+@itemize @bullet
+@item 0-9 The arg is a meta-argument (the actual number used is currently ignored)
+@item :   The arg is not a goal, but is still module-sensitive
+@item ^   The arg is a possibly existentially quantified goal. This is required for bagof/3 and setof/3
+@item +   The arg is not module sensitive and expected to be bound on call (this is not actually checked)
+@item -   The arg is not module sensitive and expected to be unbound on call (this is not actually checked)
+@item ?   The arg is not module sensitive and no expectation about instantiation is made on call
+@end itemize
+
+Meta-predicate information is required to solve a problem that quickly arises when using modules. A quick example will illustrate it succinctly:
+@example
+:-module(my_module, my_predicate/1).
+my_predicate(Xs):-
+   findall(X, private_predicate(X), Xs).
+
+private_predicate(a).
+private_predicate(b).
+@end example
+
+Note that findall/3 is defined in @code{module(user)}. If we run
+@example
+?- my_predicate(X)
+@end example
+
+then the VM would first switch to @code{module(my_module)} to run @code{my_predicate/1}, then try to resolve @code{findall/3}, which is defined in user. So, we switch back to @code{module(user)} to run @code{findall(X, private_predicate(X), Xs)}, but immediately there is a problem, because when @code{findall/3} tries to execute its second argument, the VM discovers that @code{private_predicate/1} is not resolvable in the current module.
+
+To fix this, @code{findall/3} is declared as a meta-predicate: The first and last args have meta-type @code{?}, and the second arg has meta-type @code{0}. This means that when the VM changes module to run @code{findall/3}, it actually rewrites the goals - in particular, the second goal is rewritten as @code{my_module:private_predicate(X)}. Now when @code{findall/3} is executed, it includes an explicit context-switch back to my_module, and @code{private_predicate/1} is able to be resolved.
+
+
+
+
+@node Multiprecision Arithmetic
+@subsection Large Integers and Rationals
+If gnu.prolog.vm.Evaluate.isUnbounded is set to true (which is the default) then:
+@itemize @bullet
+   @item The prolog flag bounded will be set to false, and the max_integer and min_integer flags will be destroyed
+   @item Integers outside the range of Java's int type will be stored as BigIntegers. The backing term for this is a BigIntegerTerm
+   @item The evaluables rdiv/2, rational/1 and rationalize/1 are made available. These produce terms of type RationalTerm
+   @item Arithmetic is extended to accept RationalTerm and BigIntegerTerm types where possible.
+   @itemize @bullet
+      @item integer_overflow is no longer possible except for **/2
+      @item float_overflow is still possible for evaluable functions that first convert the argument to a float
+   @end itemize
+@end itemize
+If it is not set to true then:
+@itemize @bullet
+   @item A large integer appearing in source will result in a compile error
+@end itemize
+
+The following evaluable functions will accept any type:
+@itemize @bullet
+   @item  +/2
+   @item  -/2
+   @item  */2
+   @item  ///2
+   @item  div/2 (see the section on non-ISO arithmetic)
+   @item  //2
+   @item  -/1
+   @item  abs/1
+   @item  sign/1
+   @item  float/1
+   @item  rdiv/2
+@end itemize
+
+The following evaluable functions will accept any type of integer:
+@itemize @bullet
+   @item  rem/2
+   @item  mod/2
+   @item  >>/1
+   @item  <</1
+   @item  /\/1
+   @item  \//1
+   @item  \+/1
+   @item  gcd/2 (see the section on non-ISO arithmetic)
+@end itemize
+
+The following evaluable functions will accept any term if non-ISO arithmetic is enabled, and any integer type otherwise:
+@itemize @bullet
+   @item  float_integer_part/1
+   @item  float_fractional_part/1
+   @item  floor/1
+   @item  truncate/1
+   @item  round/1
+   @item  ceiling/
+@end itemize
+
+The following evaluable functions will only accept a type in the range of a double:
+@itemize @bullet
+   @item  sqrt/1
+   @item  sin/1
+   @item  cos/1
+   @item  atan/1
+   @item  exp/1
+   @item  rationalize/1
+   @item  rational/1
+@end itemize
+
+The following evaluable functions will only accept a type in the range of a int:
+@itemize @bullet
+   @item  random/1
+@end itemize
+
+**/2 is more restrictive:
+@itemize @bullet
+   @item  If the first arg is a float, or the second argument is either a rational or a float, everything is converted to a double
+   @item  If the first arg is rational, and the second argument is a large integer, everything is converte to a double
+   @item  If the first arg is rational, and the second argument is a small integer, the result is a rational, and no conversion is done
+   @item  Otherwise, the result is either an integer or a biginteger (depending on the size of the result). It is possible to get an overflow here.
+@end itemize
+
+Three functions are provided for dealing with rationals:
+@itemize @bullet
+   @item  rdiv(+Numerator, +Denominator) will evaluate to a rational with the specified numerator and denominator
+   @item  rational(+Float) will evaluate to a rational that evaluates exactly to Float.
+   @item  rationalize(+Float) evaluates to a rational that is very close to Float. The result is only accurate within the rounding error of floating point numbers, generally producing a much smaller denominator.
+@end itemize
+
+rational/1 and rationalize/1 are inspired by SWI-Prolog, which in turn says that ``The names rational/1 and rationalize/1 as well as their semantics are inspired by Common Lisp.''.
+
+Additionally, a predicate rational/1 will succeed if its argument is a rational (similar to float/1, integer/1 and atom/1). integer/1 succeeds for both IntegerTerms and BigIntegerTerms.
+
+@node Non-ISO arithmetic
+@subsection Non-ISO arithmetic functions
+If gnu.prolog.vm.Evaluate.strictISO is set to false (which is the default) then:
+@itemize @bullet
+   @item  Several functions that would otherwise raise a domain error now evaluate to their logical values (for example, floor(3) is allowed and evaluates to 3)
+   @item  div/2 is provided. This is inspired by SWI-Prolog, and has the property that for every pair of integers X,Y where Y =\= 0:
+   @example
+   Q is div(X, Y),
+   M is mod(X, Y),
+   X =:= Y*Q+M.
+   @end example
+   @item  gcd(A,B) evaluates to the greatest common divisor of A and B.
+@end itemize
 @node Contributing
 @chapter Contributing
 The GNU Prolog For Java provides users with a great way of performing Prolog tasks through Java. This project could do with contributions from increasing number of users.
