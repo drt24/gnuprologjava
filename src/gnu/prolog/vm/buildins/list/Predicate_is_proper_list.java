@@ -54,7 +54,7 @@ public class Predicate_is_proper_list extends ExecuteOnlyCode
 			{
 				return RC.FAIL;
 			}
-			list = ct.args[1];
+                        list = ct.args[1].dereference();
 		}
 		return RC.FAIL;
 	}

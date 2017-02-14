@@ -66,7 +66,7 @@ public abstract class Abstract_sort extends ExecuteOnlyCode
 
 		if (CompoundTerm.isListPair(listTerm))
 		{
-			Term[] arrayOfList = { listTerm };
+                        Term[] arrayOfList = { listTerm.dereference() };
 			if (new Predicate_is_proper_list().execute(interpreter, false, arrayOfList) == RC.FAIL)
 			{
 				PrologException.instantiationError();
