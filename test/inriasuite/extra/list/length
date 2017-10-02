@@ -30,11 +30,25 @@
 [length(List,3),[[List <--[_,_,_]]]].
 [length(List, -2), failure].
 [once(length(List, Length)),[[List <-- [], Length <-- 0]]].
-[(repeat(3),length(List, Length)),
+% The original test here was (repeat(3), length(List, Length)) but this will never terminate if length/2 works properly
+% with both args unbound because in that case length/2 has infinite solutions, regardless of repeat/1.
+% It is very hard to write a test that verifies all the solutions of a predicate with infinite solutions. To find the
+% first N solutions (as an approximation) requires at least some kind of extra-logical predicate like nb_setarg, attributed
+% variables, flag/3 or assert/retract.
+[(member(Length, [0,1,2]),length(List, Length)),
     [[List <-- [], Length <-- 0],
      [List <-- [_], Length <-- 1],
      [List <-- [_,_], Length <-- 2]]].
 
-
+% Here is a rough attempt. It is ugly and assumes length_counter/1 doesnt exist, but it does the job
+[(assertz(length_counter(0)), length(List, Length), retract(length_counter(OldCount)),( OldCount =:= 5 -> ! ;  NewCount is OldCount+1, assertz(length_counter(NewCount)))),
+   [[List <-- [], Length <-- 0, OldCount <-- _, NewCount <-- _],
+    [List <-- [_], Length <-- 1, OldCount <-- _, NewCount <-- _],
+    [List <-- [_,_], Length <-- 2, OldCount <-- _, NewCount <-- _],
+    [List <-- [_,_,_], Length <-- 3, OldCount <-- _, NewCount <-- _],
+    [List <-- [_,_,_,_], Length <-- 4, OldCount <-- _, NewCount <-- _],
+    [List <-- [_,_,_,_,_], Length <-- 5, OldCount <-- _]]].
 
 /* end of length */
+
+

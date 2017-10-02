@@ -23,6 +23,7 @@ import gnu.prolog.term.CompoundTerm;
 import gnu.prolog.term.IntegerTerm;
 import gnu.prolog.term.Term;
 import gnu.prolog.term.VariableTerm;
+import gnu.prolog.vm.BacktrackInfo;
 import gnu.prolog.vm.ExecuteOnlyCode;
 import gnu.prolog.vm.Interpreter;
 import gnu.prolog.vm.PrologException;
@@ -40,11 +41,31 @@ public class Predicate_length extends ExecuteOnlyCode
 	public Predicate_length()
 	{}
 
+	protected static class LengthBacktrackInfo extends BacktrackInfo
+	{
+		protected int length;
+		protected int startUndoPosition;
+		public LengthBacktrackInfo(int l, int s)
+		{
+			super(-1, -1);
+			startUndoPosition = s;
+			length = l;
+		}
+
+	}
+
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, Term[] args) throws PrologException
 	{
 		Term listTerm = args[0];
 		Term lengthTerm = args[1];
+		LengthBacktrackInfo bi = null;
+		if (backtrackMode)
+		{
+			bi = (LengthBacktrackInfo) interpreter.popBacktrackInfo();
+			interpreter.undo(bi.startUndoPosition);
+			interpreter.unify(lengthTerm, IntegerTerm.get(++bi.length));
+		}
 		if (!(lengthTerm instanceof VariableTerm | lengthTerm instanceof IntegerTerm))
 		{
 			PrologException.typeError(TermConstants.integerAtom, lengthTerm);
@@ -52,7 +73,6 @@ public class Predicate_length extends ExecuteOnlyCode
 		if (CompoundTerm.isListPair(listTerm) || TermConstants.emptyListAtom.equals(listTerm))
 		{
 			int length = 0;
-
 			Term lst = listTerm;
 			while (lst != null)
 			{
@@ -84,8 +104,10 @@ public class Predicate_length extends ExecuteOnlyCode
 		else if (listTerm instanceof VariableTerm)
 		{
 			if ((lengthTerm.dereference() instanceof VariableTerm))
-			{// TODO we need to do better on backtracking
-				((VariableTerm) lengthTerm).value = new IntegerTerm(0);
+			{
+				bi = new LengthBacktrackInfo(0, interpreter.getUndoPosition());
+				((VariableTerm) lengthTerm).value = IntegerTerm.get(bi.length);
+
 			}
 			List<Term> genList = new ArrayList<Term>();
 			int length = ((IntegerTerm) lengthTerm.dereference()).value;
@@ -98,7 +120,13 @@ public class Predicate_length extends ExecuteOnlyCode
 				genList.add(new VariableTerm());
 			}
 			Term term = CompoundTerm.getList(genList);
-			return interpreter.unify(listTerm, term);
+			RC rc = interpreter.unify(listTerm, term);
+			if (rc == RC.SUCCESS_LAST && bi != null)
+			{
+				interpreter.pushBacktrackInfo(bi);
+				return RC.SUCCESS;
+			}
+			return rc;
 		}
 		else
 		{
