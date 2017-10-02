@@ -21,9 +21,9 @@
 [findall(X,call(1),S),type_error(callable, 1)].
 
 %Instances is neither a partial list nor a list - type error(list, Instances).
-[findall(X,true,a),[type_error(list, a)]].
-[findall(X,true,a/3),[type_error(list, a/3)]].
-[findall(X,true,foo(a,b)),[type_error(list, foo(a,b))]].
+[findall(X,true,a), type_error(list, a)].
+[findall(X,true,a/3), type_error(list, a/3)].
+[findall(X,true,foo(a,b)), type_error(list, foo(a,b))].
 
 [findall(X,sum_list([], 0),S),[[S <-- [_]]]].
 
