@@ -89,6 +89,11 @@ public class IntegerTerm extends NumericTerm
 				str = str.substring(1);
 			}
 			// if first symbol is 0 do special processing
+			// unless the next symbol is also a digit, in which case just ignore the leading 0
+			while (str.charAt(0) == '0' && str.length() > 1 && str.charAt(1) >= '0' && str.charAt(1) <= '9')
+			{
+				str = str.substring(1);
+			}
 			if (str.charAt(0) == '0' && str.length() > 1)
 			{
 				switch (str.charAt(1))
