@@ -37,26 +37,33 @@ import java.util.HashMap;
 public class MetaPredicateInfo
 {
 	private static HashMap<Term, MetaType> map = new HashMap<Term, MetaType>();
+	private static HashMap<MetaType, Term> reverse_map = new HashMap<MetaType, Term>();
+
+	static void map_value(Term term, MetaType metatype)
+	{
+		map.put(term, metatype);
+		reverse_map.put(metatype, term);
+	}
 
 	static
 	{
-		map.put(AtomTerm.get("+"), MetaType.NORMAL);
-		map.put(AtomTerm.get("-"), MetaType.NORMAL);
-		map.put(AtomTerm.get("*"), MetaType.NORMAL);
-		map.put(AtomTerm.get("?"), MetaType.NORMAL);
-		map.put(AtomTerm.get("//"), MetaType.TWO);
-		map.put(IntegerTerm.get(0), MetaType.META);
-		map.put(IntegerTerm.get(1), MetaType.ONE);
-		map.put(IntegerTerm.get(2), MetaType.TWO);
-		map.put(IntegerTerm.get(3), MetaType.THREE);
-		map.put(IntegerTerm.get(4), MetaType.FOUR);
-		map.put(IntegerTerm.get(5), MetaType.FIVE);
-		map.put(IntegerTerm.get(6), MetaType.SIX);
-		map.put(IntegerTerm.get(7), MetaType.SEVEN);
-		map.put(IntegerTerm.get(8), MetaType.EIGHT);
-		map.put(IntegerTerm.get(9), MetaType.NINE);
-		map.put(AtomTerm.get(":"), MetaType.COLON);
-		map.put(AtomTerm.get("^"), MetaType.EXISTS);
+		map_value(AtomTerm.get("-"), MetaType.NORMAL);
+		map_value(AtomTerm.get("*"), MetaType.NORMAL);
+		map_value(AtomTerm.get("?"), MetaType.NORMAL);
+		map_value(AtomTerm.get("+"), MetaType.NORMAL);
+		map_value(AtomTerm.get("//"), MetaType.TWO);
+		map_value(IntegerTerm.get(0), MetaType.META);
+		map_value(IntegerTerm.get(1), MetaType.ONE);
+		map_value(IntegerTerm.get(2), MetaType.TWO);
+		map_value(IntegerTerm.get(3), MetaType.THREE);
+		map_value(IntegerTerm.get(4), MetaType.FOUR);
+		map_value(IntegerTerm.get(5), MetaType.FIVE);
+		map_value(IntegerTerm.get(6), MetaType.SIX);
+		map_value(IntegerTerm.get(7), MetaType.SEVEN);
+		map_value(IntegerTerm.get(8), MetaType.EIGHT);
+		map_value(IntegerTerm.get(9), MetaType.NINE);
+		map_value(AtomTerm.get(":"), MetaType.COLON);
+		map_value(AtomTerm.get("^"), MetaType.EXISTS);
 	}
 
 	public enum MetaType
@@ -83,4 +90,19 @@ public class MetaPredicateInfo
 		PrologException.domainError(AtomTerm.get("meta_argument_specifier"), t);
 		return MetaType.NORMAL; // Unreachable
 	}
+
+	/**
+	 *  Return a list of Term objects representing the meta-types
+	 */
+	public Term[] asArgs()
+	{
+		Term[] result = new Term[args.length];
+		for (int i = 0; i < args.length; i++)
+		{
+			result[i] = reverse_map.get(args[i]);
+		}
+		return result;
+	}
+
+
 }
