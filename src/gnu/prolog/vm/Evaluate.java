@@ -764,12 +764,12 @@ public class Evaluate
 				if (arg0 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
-					return IntegerTerm.get(i0.value >= 0 ? 1 : -1);
+                                        return IntegerTerm.get((int)Math.signum(i0.value));
 				}
 				else if (arg0 instanceof FloatTerm)
 				{
 					FloatTerm f0 = (FloatTerm) arg0;
-					double res = f0.value >= 0 ? 1 : -1;
+                                        double res = Math.signum(f0.value);
 					return new FloatTerm(res);
 				}
 				else if (arg0 instanceof BigIntegerTerm)

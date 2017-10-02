@@ -790,6 +790,7 @@ arith('arith_lt=').
 arith(arith_plus_minus).
 arith(arith_multiply_divide).
 arith(arith_elementary_operations).
+arith(arith_sign).
 
 %terms
 terms(term_diff).
