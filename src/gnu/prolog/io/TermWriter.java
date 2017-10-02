@@ -633,7 +633,9 @@ public class TermWriter extends PrintWriter
 	 * 
 	 * @param ch
 	 *          character to test
-	 * @return true if character is graphics char
+         * @return true if character is graphics-token-char. Note that graphics-token-char is defined in ISO
+         *         as graphic-char or backslash-char. If we do not include backslash-char here then (x \== y) is
+         *         printed as 'x \'\\==\' y' instead of just 'x \\== y'
 	 */
 	protected static boolean isGraphicsChar(char ch)
 	{
@@ -655,7 +657,8 @@ public class TermWriter extends PrintWriter
 			case '@':
 			case '^':
 			case '~':
-				return true;
+                        case '\\':
+                                return true;
 			default:
 				return false;
 		}
