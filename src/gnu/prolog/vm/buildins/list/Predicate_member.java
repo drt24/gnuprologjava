@@ -102,7 +102,7 @@ public class Predicate_member extends ExecuteOnlyCode
 	 */
 	protected RC nextSolution(Interpreter interpreter, MemberBacktrackInfo bi) throws PrologException
 	{
-		while (!TermConstants.emptyListAtom.equals(bi.list))
+                while (bi.list instanceof CompoundTerm && ((CompoundTerm)bi.list).tag == TermConstants.listTag)
 		{
 			if (bi.listExpand)
 			{
