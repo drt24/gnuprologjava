@@ -78,18 +78,21 @@ public class Predicate_predicate_property extends ExecuteOnlyCode
 				CompoundTerm ct = (CompoundTerm) pi;
 				if (ct.tag != divideTag)
 				{
-					PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
-				}
-				Term n = ct.args[0].dereference();
-				Term a = ct.args[1].dereference();
-				if (!(n instanceof VariableTerm || n instanceof AtomTerm))
-				{
-					PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
-				}
-				if (!(a instanceof VariableTerm || a instanceof IntegerTerm))
-				{
-					PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
-				}
+                                        pi = ct.tag.getPredicateIndicator();
+                                }
+                                else
+                                {
+                                        Term n = ct.args[0].dereference();
+                                        Term a = ct.args[1].dereference();
+                                        if (!(n instanceof VariableTerm || n instanceof AtomTerm))
+                                        {
+                                                PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
+                                        }
+                                        if (!(a instanceof VariableTerm || a instanceof IntegerTerm))
+                                        {
+                                                PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
+                                        }
+                                }
 			}
 			else
 			{
@@ -111,17 +114,12 @@ public class Predicate_predicate_property extends ExecuteOnlyCode
 		while (bi.tagsIterator.hasNext())
 		{
 			CompoundTermTag tag = bi.tagsIterator.next();
-			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
-			if (p == null) // if was destroyed
-			{
-				continue;
-			}
-			if (p.getType() != Predicate.TYPE.USER_DEFINED && p.getType() != Predicate.TYPE.EXTERNAL) // no
-			// buidins
-			{
-				continue;
-			}
-			RC rc = interpreter.unify(bi.pi, tag.getPredicateIndicator());
+                        Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
+                        if (p == null) // if was destroyed
+                        {
+                        	continue;
+                        }
+                        RC rc = interpreter.unify(bi.pi, tag.getPredicateIndicator());
 			if (rc == RC.SUCCESS_LAST)
 			{
 				interpreter.pushBacktrackInfo(bi);
