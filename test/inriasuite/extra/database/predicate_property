@@ -1,13 +1,16 @@
 /* file predicate_property */
-%predicate_property(Head, Property)
+% predicate_property(Head, Property)
 
-%Head is neither a variable nor a callable term
-[predicate_property(var(_),_),success].
-%Property is neither a variable nor a predicate property
+% Head is neither a variable nor a callable term
+[predicate_property(30,P), type_error(predicate_indicator,30)].
+
+% Property is neither a variable nor a predicate property
 [predicate_property(_,foo_not_property),failure].
 
 % from examples
-[predicate_property(once(_), built_in),success].
+% Note the original example was checking that once(_) was built-in, but it isnt. It is defined as pure
+% Prolog in buildins.pro.
+[predicate_property(set_prolog_flag(_,_), built_in),success].
 [predicate_property(atom_codes(_, _), Property),[[Property <-- static],[Property <-- built_in]]].
 
 /* end of predicate_property */

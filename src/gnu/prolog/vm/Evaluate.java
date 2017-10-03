@@ -296,16 +296,10 @@ public class Evaluate
 			CompoundTermTag tag = ct.tag;
 			int i, arity = tag.arity;
 			Term sargs[] = ct.args;
-			Term args[] = new Term[arity];
-			for (i = 0; i < arity; i++)
-			{// TODO: we need to check whether tag represents an evaluable function
-				// before we try to evaluate it's arguments
-				args[i] = evaluate(sargs[i].dereference());
-			}
-			if (tag == add2) // ***************************************
+                        if (tag == add2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				int targetType = commonType(arg0, arg1);
 				switch(targetType)
 				{
@@ -350,8 +344,8 @@ public class Evaluate
 			}
 			else if (tag == sub2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				int targetType = commonType(arg0, arg1);
 				switch(targetType)
 				{
@@ -396,8 +390,8 @@ public class Evaluate
 			}
 			else if (tag == mul2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				int targetType = commonType(arg0, arg1);
 
 				switch(targetType)
@@ -443,8 +437,8 @@ public class Evaluate
 			}
 			else if (tag == intdiv2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg0);
@@ -497,8 +491,8 @@ public class Evaluate
                                 //      Q is div(X, Y),
                                 //      M is mod(X, Y),
                                 //      X =:= Y*Q+M.
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg0);
@@ -549,8 +543,8 @@ public class Evaluate
 			}
 			else if (tag == div2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				// If a rational is NOT involved, convert everything to a float and do float division
 				if (arg0 instanceof RationalTerm || arg1 instanceof RationalTerm)
 				{
@@ -564,7 +558,7 @@ public class Evaluate
 				else
 				{
 					// Convert to floats
-					double[] doubles = toDouble(args[0], args[1]);
+					double[] doubles = toDouble(arg0, arg1);
 					double d0 = doubles[0];
 					double d1 = doubles[1];
 
@@ -582,8 +576,8 @@ public class Evaluate
 			}
 			else if (tag == rem2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg0);
@@ -623,8 +617,8 @@ public class Evaluate
 			}
 			else if (tag == mod2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				if (!(arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm))
 				{
 					PrologException.typeError(TermConstants.integerAtom, arg0);
@@ -665,7 +659,7 @@ public class Evaluate
 			}
 			else if (tag == neg1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
@@ -708,7 +702,7 @@ public class Evaluate
 			}
 			else if (tag == abs1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
@@ -750,7 +744,7 @@ public class Evaluate
 			}
 			else if (tag == sqrt1) // ***************************************
 			{
-				double d0 = toDouble(args[0])[0];
+				double d0 = toDouble(evaluate(sargs[0].dereference()))[0];
 				double res = Math.sqrt(d0);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
@@ -760,7 +754,7 @@ public class Evaluate
 			}
 			else if (tag == sign1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
@@ -787,7 +781,7 @@ public class Evaluate
 			}
 			else if (tag == intpart1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					if (strictISO)
@@ -816,7 +810,7 @@ public class Evaluate
 			}
 			else if (tag == fractpart1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					if (strictISO)
@@ -846,14 +840,15 @@ public class Evaluate
 				}
 			}
 			else if (tag == float1) // ***************************************
-			{
-				if (args[0] instanceof FloatTerm)
-					return args[0];
-				return new FloatTerm(toDouble(args[0])[0]);
+                        {
+                                Term arg0 = evaluate(sargs[0].dereference());
+                                if (arg0 instanceof FloatTerm)
+                                        return arg0;
+                                return new FloatTerm(toDouble(arg0)[0]);
 			}
 			else if (tag == floor1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					if (strictISO)
@@ -896,7 +891,7 @@ public class Evaluate
 			}
 			else if (tag == truncate1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					if (strictISO)
@@ -938,7 +933,7 @@ public class Evaluate
 			}
 			else if (tag == round1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					if (strictISO)
@@ -981,7 +976,7 @@ public class Evaluate
 			}
 			else if (tag == ceiling1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm || arg0 instanceof BigIntegerTerm)
 				{
 					if (strictISO)
@@ -1030,12 +1025,15 @@ public class Evaluate
 				// If the base and rational are both [big]integers then the result is a [big]integer
 				// int ** int is either int or bigint
 				// Actually if the exponent is a bigint, and the base is an int, we have a very big problem
-				// Unless the base is 1, every number is going to result in memory exhaustion
-				if (args[0] instanceof FloatTerm ||
-				    args[1] instanceof FloatTerm ||
-				    args[1] instanceof RationalTerm)
+                                // Unless the base is 1, every number is going to result in memory exhaustion
+				Term arg0 = evaluate(sargs[0].dereference());
+                                Term arg1 = evaluate(sargs[1].dereference());
+
+                                if (arg0 instanceof FloatTerm ||
+                                    arg1 instanceof FloatTerm ||
+                                    arg1 instanceof RationalTerm)
 				{
-					double[] doubles = toDouble(args[0], args[1]);
+                                        double[] doubles = toDouble(arg0, arg1);
 					double d0 = doubles[0];
 					double d1 = doubles[1];
 
@@ -1050,15 +1048,15 @@ public class Evaluate
 					}
 					return new FloatTerm(res);
 				}
-				else if (args[0] instanceof RationalTerm)
+                                else if (arg0 instanceof RationalTerm)
 				{
-					// args[1] is a kind of integer, the result is a rational, except...
-					RationalTerm r = (RationalTerm)args[0];
-					if (args[1] instanceof BigIntegerTerm)
+                                        // arg1 is a kind of integer, the result is a rational, except...
+                                        RationalTerm r = (RationalTerm)arg0;
+                                        if (arg1 instanceof BigIntegerTerm)
 					{
 						// This is what SWI-Prolog does, but they do it for IntegerTerm as well
 						// Here we take things a bit further and return (2/3)**10 as (2**10)/(3**10)
-						double[] doubles = toDouble(args[0], args[1]);
+                                                double[] doubles = toDouble(arg0, arg1);
 						double d0 = doubles[0];
 						double d1 = doubles[1];
 						if (d0 == 0 && d1 < 0)
@@ -1072,7 +1070,7 @@ public class Evaluate
 						}
 						return new FloatTerm(res);
 					}
-					IntegerTerm i0 = (IntegerTerm)args[1];
+                                        IntegerTerm i0 = (IntegerTerm)arg1;
 					if (r.value.numerator().equals(BigInteger.ZERO) && i0.value <= 0)
 					{
 						undefined();
@@ -1081,17 +1079,17 @@ public class Evaluate
 				}
 				else
 				{
-					if (args[1] instanceof BigIntegerTerm)
+                                        if (arg1 instanceof BigIntegerTerm)
 					{
-						if (args[0] instanceof IntegerTerm)
+                                                if (arg0 instanceof IntegerTerm)
 						{
-							if (((IntegerTerm)args[0]).value == 1)
+                                                        if (((IntegerTerm)arg0).value == 1)
 								return IntegerTerm.get(1);
-							else if (((IntegerTerm)args[0]).value == 0)
+                                                        else if (((IntegerTerm)arg0).value == 0)
 								return IntegerTerm.get(0);
-							else if (((IntegerTerm)args[0]).value == -1)
+                                                        else if (((IntegerTerm)arg0).value == -1)
 							{
-								BigInteger mod = ((BigIntegerTerm)args[0]).value.mod(BigInteger.valueOf(2));
+                                                                BigInteger mod = ((BigIntegerTerm)arg0).value.mod(BigInteger.valueOf(2));
 								if (mod.equals(BigInteger.ONE))
 									return IntegerTerm.get(-1);
 								else
@@ -1103,8 +1101,8 @@ public class Evaluate
 						intOverflow();
 					}
 					// base is either an integer or a biginteger. Exponent is an integer
-					BigInteger[] bi = toBigInteger(args[0]);
-					IntegerTerm i0 = (IntegerTerm)args[1];
+                                        BigInteger[] bi = toBigInteger(arg0);
+                                        IntegerTerm i0 = (IntegerTerm)arg1;
 					if (bi[0].equals(BigInteger.ZERO) && i0.value < 0)
 					{
 						undefined();
@@ -1114,25 +1112,25 @@ public class Evaluate
 			}
 			else if (tag == sin1) // ***************************************
 			{
-				double d0 = toDouble(args[0])[0];
+				double d0 = toDouble(evaluate(sargs[0].dereference()))[0];
 				double res = Math.sin(d0);
 				return new FloatTerm(res);
 			}
 			else if (tag == cos1) // ***************************************
 			{
-				double d0 = toDouble(args[0])[0];
+				double d0 = toDouble(evaluate(sargs[0].dereference()))[0];
 				double res = Math.cos(d0);
 				return new FloatTerm(res);
 			}
 			else if (tag == atan1) // ***************************************
 			{
-				double d0 = toDouble(args[0])[0];
+				double d0 = toDouble(evaluate(sargs[0].dereference()))[0];
 				double res = Math.atan(d0);
 				return new FloatTerm(res);
 			}
 			else if (tag == exp1) // ***************************************
 			{
-				double d0 = toDouble(args[0])[0];
+				double d0 = toDouble(evaluate(sargs[0].dereference()))[0];
 				double res = Math.exp(d0);
 				if (res == Double.POSITIVE_INFINITY || res == Double.NEGATIVE_INFINITY)
 				{
@@ -1142,7 +1140,7 @@ public class Evaluate
 			}
 			else if (tag == log1) // ***************************************
 			{
-				double d0 = toDouble(args[0])[0];
+				double d0 = toDouble(evaluate(sargs[0].dereference()))[0];
 				if (d0 <= 0)
 				{
 					undefined();
@@ -1156,8 +1154,8 @@ public class Evaluate
 			}
 			else if (tag == brshift2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
                                 if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm && (!isUnbounded || ((IntegerTerm)arg1).value <= 32))
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
@@ -1197,8 +1195,8 @@ public class Evaluate
 			}
 			else if (tag == blshift2) // ***************************************
                         {
-				Term arg0 = args[0];
-                                Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+                                Term arg1 = evaluate(sargs[1].dereference());
                                 // Note that if we are unbounded then do not even bother trying to do this as an integer shift
                                 if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm && !isUnbounded)
 				{
@@ -1228,8 +1226,8 @@ public class Evaluate
 			}
 			else if (tag == band2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
@@ -1253,8 +1251,8 @@ public class Evaluate
 			}
 			else if (tag == bor2) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				if (arg0 instanceof IntegerTerm && arg1 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
@@ -1278,7 +1276,7 @@ public class Evaluate
 			}
 			else if (tag == bnot1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (arg0 instanceof IntegerTerm)
 				{
 					IntegerTerm i0 = (IntegerTerm) arg0;
@@ -1297,7 +1295,7 @@ public class Evaluate
 			}
 			else if (tag == random1) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
 				if (!(arg0 instanceof IntegerTerm))
 				{
 					undefined();
@@ -1314,8 +1312,8 @@ public class Evaluate
 			}
 			else if (tag == rdiv2 && isUnbounded) // ***************************************
 			{
-				Term arg0 = args[0];
-				Term arg1 = args[1];
+				Term arg0 = evaluate(sargs[0].dereference());
+				Term arg1 = evaluate(sargs[1].dereference());
 				if (!(arg0 instanceof NumericTerm))
 				{
 					PrologException.typeError(TermConstants.numericAtom, arg0);
@@ -1353,7 +1351,7 @@ public class Evaluate
                         }
                         else if (tag == rationalize1 && isUnbounded) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
                                 if (!(arg0 instanceof FloatTerm))
 				{
                                         PrologException.typeError(TermConstants.floatAtom, arg0);
@@ -1362,7 +1360,7 @@ public class Evaluate
                         }
                         else if (tag == rational1 && isUnbounded) // ***************************************
 			{
-				Term arg0 = args[0];
+				Term arg0 = evaluate(sargs[0].dereference());
                                 if (!(arg0 instanceof FloatTerm))
 				{
                                         PrologException.typeError(TermConstants.floatAtom, arg0);
@@ -1371,8 +1369,8 @@ public class Evaluate
                         }
                         else if (tag == gcd2 && !strictISO)
                         {
-                                Term arg0 = args[0];
-                                Term arg1 = args[1];
+                                Term arg0 = evaluate(sargs[0].dereference());
+                                Term arg1 = evaluate(sargs[1].dereference());
                                 typeTestInt(arg0);
                                 typeTestInt(arg1);
                                 if (arg0 instanceof IntegerTerm &&  arg1 instanceof IntegerTerm)

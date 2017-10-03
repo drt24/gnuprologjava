@@ -105,17 +105,11 @@ public class ModuleTest
 	@Test
 	public void testMetaPredicateMissing() throws PrologException
 	{
-		PrologException expected = null;
-		try
-		{
-			callPredicate("test_metapredicate_missing.pl", "test");
-		}
-		catch(PrologException exception)
-		{
-			expected = exception;
-		}
-		assertThat(expected, not(is(nullValue())));
-		assertThat(expected.getTerm().toString(), is("error(existence_error(procedure,goal / 1),error)"));
+		List<Term> collection = new LinkedList<Term>();
+		Term result = callPredicate("test_metapredicate_missing.pl", "test");
+		assertThat(result, instanceOf(CompoundTerm.class));
+		assertThat(CompoundTerm.toCollection(result, collection), is(true));
+		assertThat(collection, hasItems(new Term[]{AtomTerm.get("wrong"), AtomTerm.get("wrong"), AtomTerm.get("wrong")}));
 	}
 
 	@Test

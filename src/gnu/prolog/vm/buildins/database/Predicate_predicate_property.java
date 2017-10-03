@@ -38,8 +38,10 @@ import java.util.Set;
 /**
  * predicate_property(Head, Property) is true iff the procedure associated with
  * the argument Head has predicate property Property.
+ * TBD: Only static/0, dynamic/0, built_in/0 and meta_predicate/1 are implemented
+ *      None of these are mentioned in ISO-13211/1 which is the only ISO Prolog standard
+ *      available to me. Someone can perhaps implement more (and/or fix) the ones here
  * 
- * TODO: not yet implemented just a copy of current_predicate.
  */
 public class Predicate_predicate_property extends ExecuteOnlyCode
 {
@@ -47,87 +49,228 @@ public class Predicate_predicate_property extends ExecuteOnlyCode
 
 	private static class PredicatePropertyBacktrackInfo extends BacktrackInfo
 	{
+		int startUndoPosition;
+		Iterator<CompoundTermTag> tagsIterator = null;
+		Iterator<PredicateProperty> propertyIterator = null;
+		Predicate predicate = null;
+		CompoundTermTag pi = null;
+		boolean mustUnify;
 		PredicatePropertyBacktrackInfo()
 		{
 			super(-1, -1);
 		}
+	}
 
-		int startUndoPosition;
-		Iterator<CompoundTermTag> tagsIterator;
-		Term pi;
+	private static HashSet<PredicateProperty> properties = new HashSet<PredicateProperty>();
+	private interface PredicateProperty
+	{
+		public boolean isPropertyOf(Predicate p);
+		public Term getTerm(Predicate p);
+	}
+
+	static
+	{
+		properties.add(new PredicateProperty()
+		{
+			public boolean isPropertyOf(Predicate p)
+			{
+				return !p.isDynamic();
+			}
+			public Term getTerm(Predicate p)
+			{
+				return AtomTerm.get("static");
+			}
+		});
+
+		properties.add(new PredicateProperty()
+		{
+			public boolean isPropertyOf(Predicate p)
+			{
+				return p.isDynamic();
+			}
+			public Term getTerm(Predicate p)
+			{
+				return AtomTerm.get("dynamic");
+			}
+		});
+
+		properties.add(new PredicateProperty()
+		{
+			public boolean isPropertyOf(Predicate p)
+			{
+				return p.getType() == Predicate.TYPE.BUILD_IN;
+			}
+			public Term getTerm(Predicate p)
+			{
+				return AtomTerm.get("built_in");
+			}
+		});
+
+		properties.add(new PredicateProperty()
+		{
+			public boolean isPropertyOf(Predicate p)
+			{
+				return p.getMetaPredicateInfo() != null;
+			}
+			public Term getTerm(Predicate p)
+			{
+				return new CompoundTerm(CompoundTermTag.get("meta_predicate", 1), new CompoundTerm(p.getTag(), p.getMetaPredicateInfo().asArgs()));
+			}
+		});
+
+
 	}
 
 	@Override
 	public RC execute(Interpreter interpreter, boolean backtrackMode, gnu.prolog.term.Term args[])
 			throws PrologException
 	{
+		PredicatePropertyBacktrackInfo bi = null;
 		if (backtrackMode)
 		{
-			PredicatePropertyBacktrackInfo bi = (PredicatePropertyBacktrackInfo) interpreter.popBacktrackInfo();
+			bi = (PredicatePropertyBacktrackInfo) interpreter.popBacktrackInfo();
 			interpreter.undo(bi.startUndoPosition);
-			return nextSolution(interpreter, bi);
 		}
 		else
 		{
-			Term pi = args[0];
-			if (pi instanceof VariableTerm)
+			Term a0 = args[0];
+			if (a0 instanceof VariableTerm)
 			{
+				// In this case, we must enumerate all predicates unfortunately
+				Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.getEnvironment().getModule().getPredicateTags());
+				bi = new PredicatePropertyBacktrackInfo();
+				bi.startUndoPosition = interpreter.getUndoPosition();
+				bi.tagsIterator = tagSet.iterator();
+				bi.mustUnify = true;
 			}
-			else if (pi instanceof CompoundTerm)
+			else if (a0 instanceof CompoundTerm && ((CompoundTerm)a0).tag == divideTag && ((((CompoundTerm)a0).args[0] instanceof VariableTerm) ||
+												       (((CompoundTerm)a0).args[1] instanceof VariableTerm)))
 			{
-				CompoundTerm ct = (CompoundTerm) pi;
-				if (ct.tag != divideTag)
-				{
-					PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
-				}
-				Term n = ct.args[0].dereference();
-				Term a = ct.args[1].dereference();
-				if (!(n instanceof VariableTerm || n instanceof AtomTerm))
-				{
-					PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
-				}
-				if (!(a instanceof VariableTerm || a instanceof IntegerTerm))
-				{
-					PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
-				}
+				// In this case, we must enumerate all predicates as well
+				Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.getEnvironment().getModule().getPredicateTags());
+				bi = new PredicatePropertyBacktrackInfo();
+				bi.startUndoPosition = interpreter.getUndoPosition();
+				bi.tagsIterator = tagSet.iterator();
+				bi.mustUnify = true;
 			}
 			else
 			{
-				PrologException.typeError(TermConstants.predicateIndicatorAtom, pi);
+				// in this case the first argument is well-defined and we can just get the predicate they are asking for
+				CompoundTermTag pi = null;
+				if (a0 instanceof CompoundTerm)
+				{
+					CompoundTerm ct = (CompoundTerm) a0;
+					if (ct.tag != divideTag)
+					{
+						pi = ct.tag;
+					}
+					else
+					{
+						Term n = ct.args[0].dereference();
+						Term a = ct.args[1].dereference();
+						if (!(n instanceof AtomTerm))
+						{
+							PrologException.typeError(TermConstants.predicateIndicatorAtom, a0);
+						}
+						if (!(a instanceof IntegerTerm))
+						{
+							PrologException.typeError(TermConstants.predicateIndicatorAtom, a0);
+						}
+						pi = CompoundTermTag.get((AtomTerm)n, ((IntegerTerm)a).value);
+					}
+				}
+				else if (a0 instanceof AtomTerm)
+				{
+					pi = CompoundTermTag.get((AtomTerm)a0, 0);
+				}
+				else
+				{
+					PrologException.typeError(TermConstants.predicateIndicatorAtom, a0);
+				}
+				HashSet<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>();
+				tagSet.add(pi);
+				bi = new PredicatePropertyBacktrackInfo();
+				bi.startUndoPosition = interpreter.getUndoPosition();
+				bi.mustUnify = false;
+				bi.tagsIterator = tagSet.iterator();
 			}
-			Set<CompoundTermTag> tagSet = new HashSet<CompoundTermTag>(interpreter.getEnvironment().getModule()
-					.getPredicateTags());
-			PredicatePropertyBacktrackInfo bi = new PredicatePropertyBacktrackInfo();
-			bi.startUndoPosition = interpreter.getUndoPosition();
-			bi.pi = pi;
-			bi.tagsIterator = tagSet.iterator();
-			return nextSolution(interpreter, bi);
 		}
+		return nextSolution(interpreter, bi, args[0], args[1]);
 
 	}
 
-	private static RC nextSolution(Interpreter interpreter, PredicatePropertyBacktrackInfo bi) throws PrologException
+	private static RC nextSolution(Interpreter interpreter, PredicatePropertyBacktrackInfo bi, Term pi, Term property) throws PrologException
 	{
-		while (bi.tagsIterator.hasNext())
+		while (true)
 		{
-			CompoundTermTag tag = bi.tagsIterator.next();
-			Predicate p = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
-			if (p == null) // if was destroyed
+			while (bi.predicate != null && bi.propertyIterator.hasNext())
 			{
-				continue;
+				// Get the next property
+				PredicateProperty pp = bi.propertyIterator.next();
+				if (pp.isPropertyOf(bi.predicate))
+				{
+					if (interpreter.unify(pp.getTerm(bi.predicate), property) == RC.FAIL)
+					{
+						// Cannot unify this property. Keep looking
+						interpreter.undo(bi.startUndoPosition);
+						continue;
+					}
+					else
+					{
+						interpreter.pushBacktrackInfo(bi);
+						return RC.SUCCESS;
+					}
+				}
+
 			}
-			if (p.getType() != Predicate.TYPE.USER_DEFINED && p.getType() != Predicate.TYPE.EXTERNAL) // no
-			// buidins
+			// We get here immediately on entry, but also if we have run out of properties in an old predicate
+			// and need to look for another one. To make the logic the same for both cases, we set bi.predicate
+			// to null here:
+			bi.predicate = null;
+
+			// Get the next predicate
+			while (bi.predicate == null)
 			{
-				continue;
-			}
-			RC rc = interpreter.unify(bi.pi, tag.getPredicateIndicator());
-			if (rc == RC.SUCCESS_LAST)
-			{
-				interpreter.pushBacktrackInfo(bi);
-				return RC.SUCCESS;
+				if (bi.tagsIterator.hasNext())
+				{
+					CompoundTermTag tag = bi.tagsIterator.next();
+					bi.predicate = interpreter.getEnvironment().getModule().getDefinedPredicate(tag);
+					if (bi.predicate == null) // if was destroyed
+					{
+						continue;
+					}
+					// Check that we can unify this if the first argument is suitably shaped
+					if (bi.mustUnify)
+					{
+						RC rc = interpreter.unify(pi, tag.getPredicateIndicator());
+						if (rc == RC.SUCCESS_LAST)
+						{
+							// OK good. Now that bi.predicate is set, we can break out of here and go back to
+							// looking at the possible properties
+							bi.propertyIterator = properties.iterator();
+							break;
+						}
+						else
+						{
+							// No, try the next predicate
+							interpreter.undo(bi.startUndoPosition);
+							bi.predicate = null;
+						}
+					}
+					else
+					{
+						// If mustUnify is false it means the first argument is either a head (not a PI)
+						// or was ground, so unification isnt needed. In this case, we are done
+						bi.propertyIterator = properties.iterator();
+						break;
+					}
+				}
+				else
+				{
+					// We have run out of predicates. Give up.
+					return RC.FAIL;
+				}
 			}
 		}
-		return RC.FAIL;
 	}
 }
