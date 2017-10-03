@@ -1,4 +1,4 @@
-GNU Prolog for Java 0.3.0
+GNU Prolog for Java 0.3.1
 -------------------------
 
 This is a conforming implementation of ISO Prolog standard part 
